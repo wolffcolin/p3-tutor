@@ -1,0 +1,454 @@
+/* P3 Guide - shared styles.
+   Layout: a book. A sticky chapter list on the left at desktop widths, one reading column of about
+   68 characters, and wide tables, code and diagrams that scroll inside their own boxes. At phone width
+   the chapter list folds into a box above the text.
+   Palette: the course's Mines navy as the accent, cool neutrals biased toward it, and three semantic
+   hues: amber for "watch out", green for "what you will see", and brick for failures. The windows a
+   student types into have a colour each, used on their tags and their "say" boxes: the Guide blue,
+   the Builder green, the tutor amber, and a plain terminal grey. */
+
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #18212e;
+  --muted: #56616e;
+  --faint: #8592a1;
+  --accent: #21314d;
+  --link: #2a5a8c;
+  --rule: #d8dde5;
+  --code-bg: #eef1f5;
+  --code-fg: #1b2738;
+  --mark: #fff3c4;
+  --amber: #8a4b06;
+  --amber-bg: #fdf3e2;
+  --amber-line: #ecc993;
+  --green: #1d6340;
+  --green-bg: #eaf5ee;
+  --green-line: #b4dcc4;
+  --brick: #8f2a2a;
+  --brick-bg: #fbecec;
+  --brick-line: #e7b9b9;
+  --blue-bg: #edf2f8;
+  --blue-line: #c8d5e6;
+  --scroll-shadow: rgba(24, 33, 46, 0.18);
+  --font-display: "Bitter", "Rockwell", "Georgia", serif;
+  --font-body: "Public Sans", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: 2.1rem;
+  --measure: 68ch;
+  --radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b;
+    --surface: #161d27;
+    --fg: #e5e9ef;
+    --muted: #a3aebb;
+    --faint: #75818f;
+    --accent: #a9bfde;
+    --link: #8fc1f5;
+    --rule: #2b3543;
+    --code-bg: #1c2532;
+    --code-fg: #dce4ee;
+    --mark: #4a3f12;
+    --amber: #f2b15c;
+    --amber-bg: #2a1f10;
+    --amber-line: #5c4320;
+    --green: #7fd3a1;
+    --green-bg: #11251a;
+    --green-line: #2b5a3f;
+    --brick: #f19a9a;
+    --brick-bg: #2a1515;
+    --brick-line: #5e2c2c;
+    --blue-bg: #18222f;
+    --blue-line: #2e3d52;
+    --scroll-shadow: rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f141b;
+  --surface: #161d27;
+  --fg: #e5e9ef;
+  --muted: #a3aebb;
+  --faint: #75818f;
+  --accent: #a9bfde;
+  --link: #8fc1f5;
+  --rule: #2b3543;
+  --code-bg: #1c2532;
+  --code-fg: #dce4ee;
+  --mark: #4a3f12;
+  --amber: #f2b15c;
+  --amber-bg: #2a1f10;
+  --amber-line: #5c4320;
+  --green: #7fd3a1;
+  --green-bg: #11251a;
+  --green-line: #2b5a3f;
+  --brick: #f19a9a;
+  --brick-bg: #2a1515;
+  --brick-line: #5e2c2c;
+  --blue-bg: #18222f;
+  --blue-line: #2e3d52;
+  --scroll-shadow: rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+}
+
+/* ---------- frame ---------- */
+
+.topbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--accent);
+  color: var(--bg);
+  padding-inline: 16px;
+}
+.topbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-block: 10px;
+}
+.topbar a { color: inherit; text-decoration: none; }
+.topbar .book { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); letter-spacing: 0.01em; }
+.topbar .where { font-size: var(--step--1); opacity: 0.85; }
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 24px 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+@media (min-width: 980px) {
+  .layout { grid-template-columns: 250px minmax(0, 1fr); gap: 48px; }
+  .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); align-self: start; }
+  /* The list scrolls inside its box, so the box's top edge and its title stay in view. */
+  .toc-list {
+    max-height: calc(100vh - 150px); overflow-y: auto; overscroll-behavior: contain;
+    background:
+      linear-gradient(var(--surface) 30%, transparent) center top / 100% 32px no-repeat local,
+      linear-gradient(transparent, var(--surface) 70%) center bottom / 100% 32px no-repeat local,
+      linear-gradient(var(--scroll-shadow), transparent) center top / 100% 12px no-repeat scroll,
+      linear-gradient(transparent, var(--scroll-shadow)) center bottom / 100% 12px no-repeat scroll,
+      var(--surface);
+  }
+}
+
+/* ---------- chapter list ---------- */
+
+.toc-box { border: 1px solid var(--rule); background: var(--surface); border-radius: var(--radius); }
+.toc-box > summary { cursor: pointer; padding: 10px 14px; font-weight: 700; font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.toc-list { list-style: none; margin: 0; padding: 0 8px 10px; }
+.toc-list li a { display: block; padding: 5px 8px; border-radius: 3px; color: var(--fg); text-decoration: none; font-size: 0.92rem; line-height: 1.35; }
+.toc-list li a:hover { background: var(--blue-bg); }
+.toc-list li a.current { background: var(--accent); color: var(--bg); font-weight: 600; }
+.toc-part { margin: 12px 8px 4px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+
+/* ---------- reading column ---------- */
+
+main { min-width: 0; }
+.chapter { max-width: var(--measure); }
+.chapter > * + * { margin-top: 1rem; }
+
+.eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); color: var(--accent); line-height: 1.2; text-wrap: balance; }
+h1 { font-size: var(--step-3); margin: 0.25rem 0 0; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: var(--step-2); margin-top: 2.6rem; padding-top: 0.6rem; border-top: 1px solid var(--rule); font-weight: 700; }
+h3 { font-size: var(--step-1); margin-top: 1.8rem; font-weight: 700; }
+h4 { font-size: 1.02rem; margin-top: 1.4rem; font-weight: 700; font-family: var(--font-body); }
+h2 + *, h3 + *, h4 + * { margin-top: 0.6rem; }
+/* ".chapter > * + *" is more specific than a bare h2, so the headings' spacing is repeated here. */
+.chapter > h2 { margin-top: 2.6rem; }
+.chapter > h3 { margin-top: 1.8rem; }
+.chapter > h4 { margin-top: 1.4rem; }
+.chapter > :is(h2, h3, h4) + * { margin-top: 0.6rem; }
+
+p { margin: 0; }
+p + p { margin-top: 0.8rem; }
+ul, ol { margin: 0; padding-left: 1.4rem; }
+li + li { margin-top: 0.3rem; }
+li > ul, li > ol { margin-top: 0.3rem; }
+/* A box, a code block or a second paragraph inside a list item or a definition. */
+li > :is(p, div, pre, figure, dl, ul, ol) + :is(p, div, pre, figure, dl, ul, ol),
+dd > :is(p, div, pre, figure, dl, ul, ol) + :is(p, div, pre, figure, dl, ul, ol) { margin-top: 0.5rem; }
+
+a { color: var(--link); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+strong { font-weight: 700; }
+mark { background: var(--mark); color: inherit; padding: 0 2px; }
+
+.lede { font-size: 1.12rem; color: var(--muted); }
+.meta { font-size: var(--step--1); color: var(--faint); }
+
+/* In this chapter */
+.summary { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 18px; }
+.summary h2 { margin: 0; padding: 0; border: 0; font-family: var(--font-body); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.summary ul { margin-top: 0.4rem; }
+
+/* ---------- code ---------- */
+
+code, kbd, samp { font-family: var(--font-mono); font-size: 0.88em; }
+:not(pre) > code { background: var(--code-bg); color: var(--code-fg); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+kbd { border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px; padding: 0 5px; background: var(--surface); }
+
+pre {
+  margin: 0;
+  --scroll-bg: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  tab-size: 4;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+/* Example text in a plain pre (a reply, a review entry, a JSON file) wraps at every width. A file
+   tree or a drawing whose columns matter is a pre.tree, and scrolls instead. */
+pre:not(.in):not(.out):not(.tree) { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* A box that scrolls sideways shows a shadow at each edge that has more to see, since phones and
+   many desktops hide the scrollbar. The covers move with the content and hide a shadow once its
+   edge is reached. */
+pre, .table-wrap, figure .diagram, .formula {
+  background:
+    linear-gradient(to right, var(--scroll-bg) 30%, transparent) left center / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--scroll-bg) 30%, transparent) right center / 40px 100% no-repeat local,
+    linear-gradient(to right, var(--scroll-shadow), transparent) left center / 14px 100% no-repeat scroll,
+    linear-gradient(to left, var(--scroll-shadow), transparent) right center / 14px 100% no-repeat scroll,
+    var(--scroll-bg);
+}
+
+/* A command and, under it, what it prints */
+.cmd { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+.cmd > .cmd-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 10px 6px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); overflow-wrap: anywhere; }
+.cmd > pre { border-radius: 0; }
+.cmd > pre.in::before { content: "$ "; color: var(--faint); }
+.cmd > pre.out { --scroll-bg: var(--surface); color: var(--muted); border-top: 1px dashed var(--rule); }
+/* What a command prints wraps like a terminal, each line's continuation indented under its text
+   (book.js splits the lines and marks the block). Output whose columns matter is a pre.out.cols. */
+pre.out.hang { white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.out.hang .ln { display: block; padding-left: var(--hang); text-indent: calc(-1 * var(--hang)); }
+/* book.js puts a head's words in one span, so markup inside them stays one flex item. */
+.head-label { min-width: 0; }
+/* A path or name in an uppercase label or table header keeps its own case. */
+.cmd-head code, .say-head code, th code { text-transform: none; letter-spacing: 0; }
+.cmd-head code, .say-head code { font-size: 1.05em; }
+.copy { font: inherit; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--link); background: transparent; border: 1px solid var(--rule); border-radius: 3px; padding: 2px 8px; cursor: pointer; flex: none; white-space: nowrap; }
+
+/* ---------- callouts ---------- */
+
+.note, .you-see, .watch, .student, .why, .do, .fail {
+  border: 1px solid var(--blue-line);
+  background: var(--blue-bg);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.note > .label, .you-see > .label, .watch > .label, .student > .label, .why > .label, .do > .label, .fail > .label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.you-see { background: var(--green-bg); border-color: var(--green-line); }
+.you-see > .label { color: var(--green); }
+.watch { background: var(--amber-bg); border-color: var(--amber-line); }
+.watch > .label { color: var(--amber); }
+.fail { background: var(--brick-bg); border-color: var(--brick-line); }
+.fail > .label { color: var(--brick); }
+.student { background: var(--surface); border-color: var(--rule); border-style: dashed; }
+.student > .label { color: var(--muted); }
+.why { background: var(--surface); border-color: var(--rule); }
+.do { background: var(--surface); border: 2px solid var(--accent); }
+.note > * + *, .you-see > * + *, .watch > * + *, .student > * + *, .why > * + *, .do > * + *, .fail > * + * { margin-top: 0.5rem; }
+
+/* ---------- steps: a real sequence ---------- */
+
+ol.steps { list-style: none; padding-left: 0; counter-reset: step; }
+ol.steps > li { counter-increment: step; position: relative; padding-left: 2.6rem; }
+ol.steps > li + li { margin-top: 1.2rem; }
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0.05rem;
+  width: 1.8rem; height: 1.8rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--bg);
+  font-weight: 700; font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+ol.steps > li > * + * { margin-top: 0.5rem; }
+
+/* ---------- tables ---------- */
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); --scroll-bg: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--rule); }
+th { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+caption { caption-side: bottom; text-align: left; padding: 8px 12px; font-size: var(--step--1); color: var(--faint); }
+/* book.js shows a table's caption under its box, like a figure's, so it never scrolls away with a
+   wide table; the caption itself stays for screen readers. */
+.table-caption { font-size: var(--step--1); color: var(--muted); }
+.table-wrap + .table-caption { margin-top: 6px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+/* At phone width a table keeps readable columns and scrolls inside its box, instead of squeezing
+   each column until words and paths break letter by letter. */
+@media (max-width: 640px) {
+  th, td { min-width: 6.5rem; }
+  th.num, td.num { min-width: 0; }
+  td code, th code { overflow-wrap: normal; }
+}
+
+/* ---------- figures ---------- */
+
+figure { margin: 0; }
+figure .diagram { overflow-x: auto; --scroll-bg: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px; }
+figure svg { display: block; max-width: 100%; height: auto; color: var(--fg); }
+/* Diagrams are drawn 640 to 800 units wide with 11 to 13 unit labels, and a desktop column shows
+   them 640 px wide. A narrower screen keeps that size, so the labels stay as readable as on a desktop,
+   and the diagram scrolls inside its box like a wide table. */
+figure .diagram svg { min-width: 640px; }
+figcaption { font-size: var(--step--1); color: var(--muted); margin-top: 6px; }
+
+/* ---------- definition lists (glossary, file maps) ---------- */
+
+dl { margin: 0; }
+dt { font-weight: 700; margin-top: 1rem; }
+dt code { font-weight: 600; }
+dd { margin: 0.2rem 0 0 0; color: var(--fg); }
+
+/* ---------- formula ---------- */
+
+.formula { font-family: var(--font-mono); --scroll-bg: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 14px; overflow-x: auto; white-space: nowrap; }
+
+/* ---------- pager ---------- */
+
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 3rem; max-width: var(--measure); }
+.pager a { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); text-decoration: none; min-width: 0; }
+.pager a:hover { border-color: var(--link); }
+.pager .next { text-align: right; grid-column: 2; }
+.pager-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.pager-title { color: var(--link); font-weight: 600; }
+@media (max-width: 520px) { .pager { grid-template-columns: 1fr; } .pager .next { grid-column: 1; } }
+
+/* ---------- index page ---------- */
+
+.chapter-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+.chapter-list a { display: block; padding: 12px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); text-decoration: none; }
+.chapter-list a:hover { border-color: var(--link); }
+.chapter-list .t { color: var(--link); font-weight: 600; display: block; }
+.chapter-list .s { color: var(--muted); font-size: 0.92rem; display: block; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.facts > div { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 14px; min-width: 0; }
+.facts .k { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; }
+.facts .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.nw { white-space: nowrap; }
+
+/* ---------- P3: the short path at the top of a page ---------- */
+
+.path { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; }
+.path > h2 { margin: 0; padding: 0; border: 0; font-family: var(--font-body); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.path > dl { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 8px 14px; margin-top: 10px; }
+.path > dl > dt { margin: 0; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 0.15rem; }
+.path > dl > dd { margin: 0; min-width: 0; }
+.path > dl > dd > * + * { margin-top: 0.4rem; }
+.path ol, .path ul { padding-left: 1.2rem; }
+@media (max-width: 560px) {
+  .path > dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .path > dl > dd + dt { margin-top: 10px; }
+}
+
+/* ---------- P3: the windows, as tags and as "say" boxes ---------- */
+
+:root { --win-guide: var(--link); --win-builder: var(--green); --win-tutor: var(--amber); --win-plain: var(--muted); }
+.tag { display: inline-block; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.5; padding: 0 7px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; vertical-align: 0.08em; }
+.tag.guide { color: var(--win-guide); }
+.tag.builder { color: var(--win-builder); }
+.tag.tutor { color: var(--win-tutor); }
+.tag.plain { color: var(--win-plain); }
+
+.say { border: 1px solid var(--rule); border-left: 4px solid var(--win-plain); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+.say.guide { border-left-color: var(--win-guide); }
+.say.builder { border-left-color: var(--win-builder); }
+.say.tutor { border-left-color: var(--win-tutor); }
+.say > .say-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 10px 6px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--rule); overflow-wrap: anywhere; color: var(--win-plain); }
+.say.guide > .say-head { color: var(--win-guide); }
+.say.builder > .say-head { color: var(--win-builder); }
+.say.tutor > .say-head { color: var(--win-tutor); }
+.say > pre { border-radius: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-body); font-size: 0.95rem; background: var(--surface); color: var(--fg); }
+.say > p { padding: 8px 14px 10px; color: var(--muted); font-size: 0.92rem; border-top: 1px dashed var(--rule); }
+
+/* ---------- P3: the map of the project on the start page ---------- */
+
+ol.map { list-style: none; padding: 0; counter-reset: stage; display: grid; gap: 8px; }
+ol.map > li { counter-increment: stage; position: relative; padding: 10px 14px 10px 3.2rem; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); }
+ol.map > li + li { margin-top: 0; }
+ol.map > li::before { content: counter(stage); position: absolute; left: 12px; top: 10px; width: 1.85rem; height: 1.85rem; letter-spacing: -0.02em; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--bg); font-weight: 700; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+ol.map > li > a { font-weight: 600; }
+ol.map > li > .when { float: right; margin-left: 10px; font-size: 0.8rem; color: var(--faint); font-variant-numeric: tabular-nums; }
+ol.map > li > p { margin-top: 2px; color: var(--muted); font-size: 0.93rem; }
+
+/* ---------- P3: phone width ---------- */
+
+/* Inline code breaks only at its spaces, slashes and commas: book.js keeps each name, such as
+   c1-skills, whole. A page can keep a whole code span on one line with class="nw". */
+code.nw { white-space: nowrap; }
+
+@media (max-width: 640px) {
+  /* A table with a column of prose becomes one card per row, each cell under its column's name
+     (book.js adds the names and the class). */
+  .table-wrap table.stack, .table-wrap table.stack tbody, .table-wrap table.stack tr, .table-wrap table.stack td, .table-wrap table.stack tbody th { display: block; width: 100%; }
+  .table-wrap table.stack thead { display: none; }
+  .table-wrap table.stack { display: flex; flex-direction: column; }
+  .table-wrap table.stack caption { display: block; order: 2; width: 100%; border-top: 1px solid var(--rule); }
+  .table-wrap table.stack tr { border-bottom: 1px solid var(--rule); padding: 8px 0; }
+  .table-wrap table.stack tr:last-child { border-bottom: 0; }
+  .table-wrap table.stack td, .table-wrap table.stack tbody th { border: 0; padding: 4px 14px; min-width: 0; background: none; text-transform: none; letter-spacing: 0; font-size: 0.92rem; color: var(--fg); }
+  .table-wrap table.stack td.num { text-align: left; white-space: normal; }
+  .table-wrap table.stack td:empty { display: none; }
+  .table-wrap table.stack [data-label]::before { content: attr(data-label); display: block; margin-bottom: 1px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+}
+
+/* ---------- print ---------- */
+
+@media print {
+  .topbar, .toc, .pager, .copy { display: none !important; }
+  .layout { display: block; padding: 0; }
+  body { background: #fff; color: #000; }
+  h2 { break-after: avoid; }
+  pre, .cmd, .say, .path, .note, .you-see, .watch, .student, .why, .do, .fail, table { break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }

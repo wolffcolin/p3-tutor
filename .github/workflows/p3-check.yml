@@ -1,0 +1,41 @@
+# p3-check: the check GitHub runs on every push and pull request of your P3 repo.
+# It runs `python -m p3 check`, the same command you run on your machine: are the course's fixed
+# files unchanged, do your snapshots, runs and comparison records still match each other, does
+# every topic validate, and does c1-skills stay free of subagents? Work you have not done yet, in
+# reviews/ as anywhere else, is a TODO line and keeps the run green; only a FAIL line turns it red,
+# and each FAIL line names the file to look at.
+# It never calls Claude: your runs were made on your machine and are checked as committed.
+# This file belongs to the course, so please leave it as it is.
+
+name: p3-check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p3-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Full history, so the check can confirm that each test topic and PREREG.md were committed
+      # before the runs that used them.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      # p3 uses only Python's standard library, so there is nothing to install.
+      - name: Run p3 check
+        run: python -m p3 check

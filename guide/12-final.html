@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>final: the guard, repeats and the ablation - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html" class="current" aria-current="page">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>final: the guard, repeats and the ablation</h1>
+<p class="lede">The last version of your tutor: what earned its place on the ladder, plus a guard hook that keeps the answer keys away from the tutor's main conversation. Then its three runs, the ablation, the runs on your test topics, your three learning sessions, and its major review.</p>
+<p class="meta">About 30 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p><code>final</code> is the version you stand behind, measured three times against the baseline's three runs so you can tell a real difference from the spread between runs. The guard keeps a tutor that could read the key from handing out the answer, and the ablation shows whether one component matters. Almost every token of week 3 goes into these runs, so freeze <code>final</code> early.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In the <span class="tag builder">Builder</span>: make <code>final</code> from <code>tutor/</code> as step 3 left it. Drop what did not pay, add the guard hook with its tests, and hand grading to a subagent the guard allows, in a quick round in <code>reviews/final.md</code>.</li>
+      <li>In a <span class="tag plain">Plain terminal</span>: snapshot <code>final</code>, commit <code>tutor/</code>, and start the runs, in any order: three repeats of <code>final</code>, the ablation (the <span class="tag builder">Builder</span> takes one component out of <code>tutor/</code>, you snapshot it and restore <code>tutor/</code>), and both test topics.</li>
+      <li>While they run, with <code>tutor/</code> restored, in <span class="tag tutor">Your tutor</span>: hold your three learning sessions, then write the major review of <code>final</code> in the editor and commit it.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 check</code> shows <code>config final: the four skills and a PreToolUse hook</code>, <code>runs of final: 3 scored full runs</code>, a <code>final-minus-</code> config with its run, both test topics run, three complete learning sessions and a committed major review; and <code>uv run p3 next</code> shows <code>Now:</code> at 10 The blind comparison.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="13-blind-comparison.html">The blind comparison</a>, once the major review is committed.</p></dd>
+  </dl>
+</section>
+
+<h2 id="parts">The parts of final, and where each happens</h2>
+<p>This stage has more parts than any other, so here is its shape before the detail. Most of them are short; what takes long is the runs, and they go on by themselves in a plain terminal while you do the rest.</p>
+<div class="table-wrap">
+<table>
+  <caption>Your own time, from my estimate in A pace that works; the runs go on in the background and are not counted.</caption>
+  <thead><tr><th>Part</th><th>Where</th><th>Your time</th></tr></thead>
+  <tbody>
+    <tr><td>What <code>final</code> keeps; the guard and its tests; the grader and its quick round</td><td><span class="tag builder">Builder</span>, with live runs</td><td>about 3 hours in all, with the next row</td></tr>
+    <tr><td>The snapshot, the three runs, the ablation, the test topics' runs</td><td><span class="tag plain">Plain terminal</span></td><td>counted in the row above</td></tr>
+    <tr><td>Three learning sessions</td><td><span class="tag tutor">Your tutor</span></td><td>about an hour each, with the write-up</td></tr>
+    <tr><td>The major review of <code>final</code></td><td>the editor, in <code>reviews/final.md</code></td><td>about 1.5 hours</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>uv run p3 next</code> walks you through them one at a time, in the order of this page, and when its Next line is a long run its Also line names something you can do while the run goes. You do not have to hold it all in your head. Of the runs, <code>p3 next</code> lists the three repeats of <code>final</code> first, then the ablation's snapshot and run, then the test topics' runs. Every one of them runs a frozen snapshot, so their order does not matter, as long as <code>tutor/</code> is restored with <code>git restore tutor/</code> before your first learning session ("The ablation" below says why).</p>
+
+<h2 id="what-final-keeps">What final keeps</h2>
+<p><code>final</code> is what earned its place. It starts from <code>tutor/</code> as step 3 left it, which is <code>c3-split</code>'s config, and before you add anything you decide what stays. A step that did not pay for itself may be dropped, and saying so with the numbers behind it is a good result: a review loop you measured, found no better than the first draft, and took out is exactly the kind of judgment the project is about.</p>
+<p>The evidence you already have:</p>
+<ul>
+  <li>your major reviews of <code>c1-skills</code>, <code>c2-review</code> and <code>c3-split</code>, and what each said the next step should fix;</li>
+  <li>the objective checks and the cost of each step, from <code>uv run p3 report --configs c0-baseline,c1-skills,c2-review,c3-split</code>, which also prints Your ratings;</li>
+  <li>each component's Review in <code>reviews/components.md</code>, the with-and-without from the round that added it.</li>
+</ul>
+<p>Each step has one run, so a small difference in a number may be noise; your reviews carry more of the weight here. And as <code>KNOWN-GAPS.md</code> says, on the shared topic the quiz and grade checks mostly act as floors that catch a step that broke something, so what a quiz or grade loop bought shows up in your reviews and in its cost more than in those numbers.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Which of my reviews and numbers should I look at to decide what final keeps?</pre>
+  <p>The Guide points you at the files and explains what the numbers mean; the decision is yours.</p>
+</div>
+<p>When you drop a component, ask the Builder to take it out and to change whatever started it, so the tutor still works without it. Its entry in <code>reviews/components.md</code> stays, with <code>Kept in final: no, because</code> and the evidence; a dropped component still counts toward the minimums when one of your snapshots holds it.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Remove the visual-designer subagent from tutor/, and change the teach skill so the tutor works without it.</pre>
+  <p>Use your own component's name. If you want the removal's evidence in your reviews, give it a quick round in <code>reviews/final.md</code> as for any change.</p>
+</div>
+<p>Whatever you drop, <code>final</code> keeps the four skills <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code>, and it adds the guard. <code>p3 check --final</code> checks both.</p>
+
+<h2 id="guard">The guard</h2>
+<p>Every scenario's workspace holds a quiz's answer key in <code>keys/</code>, and a tutor that can read the key can hand out the answer. The guard is a <strong>PreToolUse hook</strong>, a script Claude Code runs before each tool call it is registered for, that keeps <code>keys/</code> away from the tutor's main conversation while the grader can still read it. In <code>c0-baseline</code> there is no guard, because a single agent has to read the keys to grade.</p>
+<p>Be honest about what it will show. The baseline never opened <code>keys/</code> in any of the twenty probe sessions <code>KNOWN-GAPS.md</code> describes; its near-leaks came from working the item out. So the guard protects against a tutor that could read the key, and it will probably not move <code>tutor_leaks</code> on the shared topic. Show that it works with its tests and a live trace, and do not credit it with changes in the leak count it cannot cause.</p>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 640 270" role="img" aria-label="The same read of keys/0001.json goes to the guard hook from the main conversation and from the grader subagent. The main conversation's call has no agent_type and is blocked with exit 2; the grader's call carries agent_type grader and is allowed with exit 0.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <rect x="10" y="30" width="150" height="74" rx="4" fill="none" stroke="currentColor"/>
+      <text x="85" y="56" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">main conversation</text>
+      <text x="85" y="75" text-anchor="middle" fill="currentColor" font-size="12">/tutor, /quiz, /grade</text>
+      <text x="85" y="93" text-anchor="middle" fill="currentColor" font-size="12">no agent_type</text>
+
+      <rect x="10" y="166" width="150" height="74" rx="4" fill="none" stroke="currentColor"/>
+      <text x="85" y="192" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">grader subagent</text>
+      <text x="85" y="211" text-anchor="middle" fill="currentColor" font-size="12">started by /grade</text>
+      <text x="85" y="229" text-anchor="middle" fill="currentColor" font-size="12">agent_type: grader</text>
+
+      <line x1="160" y1="67" x2="288" y2="67" stroke="currentColor" marker-end="url(#arrow)"/>
+      <text x="224" y="58" text-anchor="middle" fill="currentColor" font-size="11">reads keys/0001.json</text>
+      <line x1="160" y1="203" x2="288" y2="203" stroke="currentColor" marker-end="url(#arrow)"/>
+      <text x="224" y="194" text-anchor="middle" fill="currentColor" font-size="11">reads keys/0001.json</text>
+
+      <rect x="290" y="30" width="150" height="210" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="365" y="88" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">PreToolUse hook</text>
+      <text x="365" y="106" text-anchor="middle" fill="currentColor" font-size="11">in tutor/.claude/</text>
+      <text x="365" y="120" text-anchor="middle" fill="currentColor" font-size="11">settings.json</text>
+      <text x="365" y="146" text-anchor="middle" fill="currentColor" font-size="12">on Read, Grep, Glob,</text>
+      <text x="365" y="162" text-anchor="middle" fill="currentColor" font-size="12">Bash and PowerShell</text>
+      <text x="365" y="188" text-anchor="middle" fill="currentColor" font-size="12">checks agent_type</text>
+
+      <line x1="440" y1="67" x2="478" y2="67" stroke="currentColor" marker-end="url(#arrow)"/>
+      <line x1="440" y1="203" x2="478" y2="203" stroke="currentColor" marker-end="url(#arrow)"/>
+
+      <rect x="480" y="30" width="150" height="74" rx="4" fill="none" stroke="currentColor"/>
+      <text x="555" y="56" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">blocked</text>
+      <text x="555" y="75" text-anchor="middle" fill="currentColor" font-size="11">exit 2: the model sees</text>
+      <text x="555" y="91" text-anchor="middle" fill="currentColor" font-size="11">your message on stderr</text>
+
+      <rect x="480" y="166" width="150" height="74" rx="4" fill="none" stroke="currentColor"/>
+      <text x="555" y="192" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">allowed</text>
+      <text x="555" y="211" text-anchor="middle" fill="currentColor" font-size="11">exit 0: the read</text>
+      <text x="555" y="227" text-anchor="middle" fill="currentColor" font-size="11">goes ahead</text>
+    </svg>
+  </div>
+  <figcaption>The same read, two answers. Only the grader's call carries an <code>agent_type</code>, so the hook can tell them apart. A hook that fails in any way other than exit 2 lets both calls through, unless its entry sets <code>"onFailure": "block"</code>.</figcaption>
+</figure>
+
+<h3 id="guard-facts">The facts it rests on</h3>
+<p>These come from the Claude Code documentation and my own checks of the version the bench runs. Each one is a rule because something goes wrong without it.</p>
+<dl>
+  <dt>Put the hook in <code>tutor/.claude/settings.json</code>, not in a subagent's frontmatter.</dt>
+  <dd><p>Hooks in a subagent's frontmatter run only once the folder's trust dialog has been accepted, and a <code>claude -p</code> session never counts as trusted, so in the bench's fresh folders a frontmatter guard silently does nothing. Hooks in the project's settings run there. Keep the script the hook runs under <code>tutor/.claude/</code>, for example in <code>tutor/.claude/hooks/</code>, so it is part of the config, <code>p3 snapshot</code> copies it, and the bench copies it into every scenario folder. Not in <code>tutor/.claude/settings.local.json</code> either: that personal file is never part of a config and never reaches the bench.</p></dd>
+
+  <dt>Tell the grader from the main conversation by the hook's input.</dt>
+  <dd><p>Claude Code sends the hook a JSON object on stdin, with the tool's name in <code>tool_name</code> and its arguments in <code>tool_input</code>. Inside a subagent the input also carries <code>agent_type</code>, the subagent's <code>name</code> from its frontmatter, and an <code>agent_id</code>; in the main conversation neither is there. Hooks from <code>.claude/settings.json</code> fire for a subagent's tool calls just as they do for the main conversation's, so one hook sees both and decides.</p></dd>
+
+  <dt>Only exit code 2 blocks, unless the entry sets <code>onFailure</code>.</dt>
+  <dd><p>A hook that exits with code 2 blocks the tool call, and the model sees what the hook wrote to stderr, so write a message that says what was blocked and what to do instead. By default, a hook that fails in any other way lets the call through: a script that is not found, a Python command that does not exist on the machine, or a script that raises an exception. So a broken guard looks exactly like no guard. To close that gap, add <code>"onFailure": "block"</code> to the hook's entry, beside <code>"type"</code> and <code>"command"</code>: I checked on Claude Code 2.1.316 that a hook entry with it blocks the tool call when the script crashes or cannot run ("failed; blocking because onFailure is block"), where without it a crashing hook lets the call through. Make your script decide on purpose in every case, including input it cannot read, rather than crash, and still confirm with a live run and its trace that the hook runs, as below.</p></dd>
+
+  <dt>Reference the script from the project's root, and check once that it really runs.</dt>
+  <dd><p>The bench runs each scenario in a fresh folder, so a relative path or a path into your repo would not find the script there. Reference it by a path that resolves from the workspace root, as the hooks documentation does with <code>$CLAUDE_PROJECT_DIR</code>. The hook runs on your machine, so register it with the Python command that works in your own terminal (<code>python</code> on Windows, <code>python3</code> on macOS and Linux), and use forward slashes in its paths. Then confirm once, with a <code>--config live</code> run and its trace, that the hook runs in the bench: "Check that it really runs" below says how.</p></dd>
+
+  <dt>Cover Read, Grep, Glob, Bash and PowerShell.</dt>
+  <dd><p>A guard on Read alone is one that <code>cat keys/0001.json</code> gets past. On Windows, Claude Code also has a PowerShell tool, on by default, so match <code>Bash|PowerShell</code> for shell commands, as the hooks documentation advises; my pilot's tutors reached for PowerShell on their own. The bench always gives your tutor Glob and Grep, but in your own sessions on macOS, Linux and WSL, Claude Code searches with <code>find</code> and <code>grep</code> through Bash instead, so Bash is not optional.</p></dd>
+
+  <dt>Do not use a permission deny rule for this.</dt>
+  <dd><p>A deny rule applies to subagents too, so it would block the grader, and a hook cannot lift a deny. The one deny rule already in <code>tutor/.claude/settings.json</code>, <code>Agent(p3-guide)</code>, keeps the course's Guide agent out of your tutor's sessions; leave it as it is, and add none for <code>keys/</code>.</p></dd>
+</dl>
+
+<div class="note"><span class="label">Not the Guide's guard</span>
+<p>The repo has another guard, and it is a different thing. The Guide window's guard, in <code>.claude/agents/p3-guide.md</code> and <code>.claude/hooks/guide_guard.py</code> at the repo's root, is mine: it keeps the Guide read-only, and you leave it alone. Your guard lives in <code>tutor/</code>, is yours, and keeps <code>keys/</code> from your tutor. The Guide's guard can sit in frontmatter because the Guide is an interactive session in a folder you trusted; yours cannot, because the bench's sessions are never trusted. When this page says "the guard", it means yours.</p>
+</div>
+
+<h3 id="guard-build">Building it</h3>
+<p>The Builder writes the hook and its script from your request; you decide what it blocks and allows, and you check its tests. This is the shape of the entry in <code>tutor/.claude/settings.json</code>, beside the <code>permissions</code> your earlier steps put there; the script's name and what it does are yours:</p>
+<pre><code>{
+  "permissions": { ...as it is now... },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command":
+              "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/keys_guard.py\"",
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<p>On macOS and Linux the command starts with <code>python3</code>. The script reads the input on stdin, decides whether the call reaches <code>keys/</code>, and exits 2 with a message on stderr when the main conversation tries, or 0 to let the call go ahead.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Read the guard section of guide/12-final.html. Then add the guard to tutor/: a PreToolUse hook in tutor/.claude/settings.json, with "onFailure": "block", that runs a Python script in tutor/.claude/hooks/, blocks the main conversation from reading keys/ with Read, Grep, Glob, Bash or PowerShell, and lets a subagent named grader read them.</pre>
+  <p>Name the subagents you want to allow; the grader does not have to exist yet. If you keep the guard's trail in your reviews, this is a round of Kind <code>other</code>.</p>
+</div>
+<p>A path to a key can be written many ways: <code>keys/0001.json</code>, <code>./keys/0001.json</code>, an absolute path, <code>keys\0001.json</code> on Windows, or a shell command that builds the name. Think about which of them your script catches, because <code>EVAL.md</code> section 7 asks for the gap you know of and why you accepted it or how you closed it.</p>
+
+<h3 id="guard-tests">Its tests</h3>
+<p>The guard comes with its own tests, as in lecture 17's lab: a small unittest file, for example <code>tests/test_guard.py</code>, that runs your hook script with sample hook inputs on stdin and checks that it blocks what it should and allows what it should. <code>tests/</code> holds my tests of <code>p3</code> and is the place for yours; leave mine as they are.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The cases <code>EVAL.md</code> section 7 asks your tests to cover. Each case is a JSON input written to the script's stdin, and the test checks the exit code.</caption>
+  <thead><tr><th>Case</th><th>The input names</th><th>Expected</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Case">main conversation, Read</td><td data-label="The input names"><code>tool_name</code> Read, a file in <code>keys/</code>, no <code>agent_type</code></td><td data-label="Expected">blocked, exit 2</td></tr>
+    <tr><td data-label="Case">main conversation, Grep</td><td data-label="The input names">Grep, a path or pattern in <code>keys/</code></td><td data-label="Expected">blocked</td></tr>
+    <tr><td data-label="Case">main conversation, Glob</td><td data-label="The input names">Glob, a pattern in <code>keys/</code></td><td data-label="Expected">blocked</td></tr>
+    <tr><td data-label="Case">main conversation, Bash</td><td data-label="The input names">Bash, <code>cat keys/0001.json</code></td><td data-label="Expected">blocked</td></tr>
+    <tr><td data-label="Case">main conversation, PowerShell</td><td data-label="The input names">PowerShell, <code>Get-Content keys/0001.json</code></td><td data-label="Expected">blocked</td></tr>
+    <tr><td data-label="Case">the grader</td><td data-label="The input names">Read, a file in <code>keys/</code>, <code>agent_type</code> grader</td><td data-label="Expected">allowed, exit 0</td></tr>
+    <tr><td data-label="Case">reads that must still work</td><td data-label="The input names">the main conversation reading <code>quizzes/0001.json</code>, <code>MISSION.md</code>, or running <code>ls lessons</code></td><td data-label="Expected">allowed</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Write tests/test_guard.py: a unittest file that runs my guard script with sample hook inputs on stdin, and checks that it blocks the main conversation's reads of keys/ with each of Read, Grep, Glob, Bash and PowerShell, allows the grader's, and allows the main conversation's other reads.</pre>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">python -m unittest discover -s tests -t .</pre>
+</div>
+<p>That runs my tests and yours; none of them calls Claude. On macOS and Linux use <code>python3</code>. Read the test file yourself before you trust it: a test that checks nothing passes too. <code>EVAL.md</code> section 7 asks you to paste the result and list the cases.</p>
+
+<h3 id="guard-live">Check that it really runs in the bench</h3>
+<p>Tests run your script directly, so they cannot show that Claude Code starts it in a bench scenario. That is a separate question, and because a hook that fails to start lets every call through (or, with <code>"onFailure": "block"</code>, blocks every call, the grader's too), it is the question that matters most. Answer it once with a live run and its trace, before you snapshot: the grader's reads of <code>keys/</code> go through, and a read by the main conversation comes back with your hook's message.</p>
+<p>One order makes both easy to see. Switch the guard on while grading still runs in the main conversation, as it usually does up to <code>c3-split</code>, and run the grade scenario: the main conversation's read of the key comes back with your message, and <code>grade_verdict_agreement</code> falls because grading can no longer see the key. Then add the grader in a quick round ("The grader's quick round" below), and the next run shows its reads going through. You may build the two in the other order; then look for any read of <code>keys/</code> by the main conversation in the run, and lean on your tests for the block.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 bench --config live --only grade-s1</pre>
+</div>
+<p>That is one scenario and its scoring. A live run goes to <code>bench/runs/_live/</code>, which git ignores, so quote what you find wherever you write it up. The trace is <code>trace.jsonl.gz</code> in the scenario's folder, and it holds every subagent's messages too. It is long; ask the Builder to read it for you.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Read the trace of grade-s1 in my latest live run under bench/runs/_live/, and list every tool call that touched keys/: which agent made it, the tool, and what came back.</pre>
+</div>
+<div class="you-see"><span class="label">What you want to see</span>
+<p>With the guard on and grading still in the main conversation: a call by the main conversation on <code>keys/0001.json</code>, and your hook's message as what came back. With the grader in place: the grader's read of <code>keys/0001.json</code> returning the key's contents, and <code>grade_verdict_agreement</code> back where it was. If the main conversation's read returned the key's contents, your hook did not run or did not block, and the next thing to check is the command and the path in <code>settings.json</code>.</p>
+</div>
+<p>Keep the run id and the scenario of a trace that shows the guard at work. <code>EVAL.md</code> section 7 asks for that bench evidence, and the committed runs of <code>final</code> carry traces you can cite as well.</p>
+
+<h3 id="grader">The grader it forces, and the quiz's drafts</h3>
+<p>Once the guard is on, the main conversation cannot read <code>keys/</code>, so plan the tutor around it.</p>
+<ul>
+  <li><strong>Grading moves to a subagent.</strong> Up to <code>c3-split</code>, <code>/grade</code> usually runs in the main conversation and reads the key there, which the guard now blocks. So <code>final</code> hands grading to a subagent the guard allows, such as a <code>grader</code>, and the <code>grade</code> skill starts it and waits for its report. A grader that can no longer read the key shows up in the bench as a fall in <code>grade_verdict_agreement</code>, so try the change on <code>--config live --only grade-s1</code> before a full run.</li>
+  <li><strong>The quiz skill writes its key once.</strong> A quiz skill that reads or edits a key after writing it is blocked the same way. Have it work on a draft in a folder of its own, such as <code>drafts/</code>, and write the key once, or leave the key to an allowed subagent. Try it on <code>--config live --only quiz</code>.</li>
+  <li><strong>The tutor skill needs nothing new.</strong> It should never read a key, and now it cannot.</li>
+</ul>
+<p>To see every job with the guard on at a fraction of a quick run's cost, leave out the teach scenario, which costs the most: <code>uv run p3 bench --config live --only <span class="nw">quiz,grade-s1,tutor-p01</span></code>.</p>
+
+<h3 id="who-reads">Which agents may read the keys</h3>
+<p>That is your decision: the grader, and perhaps a quiz reviewer that checks a key against its items. Each agent you allow is one more place a key could leak from, so allow the ones that need the key to do their job and no others, and say why in <code>EVAL.md</code> section 7. The guard is a hook, not a skill or a subagent, so it has no entry in <code>reviews/components.md</code>; section 7 is where it is written up, including why it is a hook and not a deny rule, a frontmatter hook, a subagent's <code>tools</code> list or an instruction in a skill.</p>
+
+<h2 id="grader-round">The grader's quick round</h2>
+<p>If <code>final</code> brings in a new skill or subagent, such as the grader, give it a quick round in <code>reviews/final.md</code>, so its inventory entry has its with and without. The grader is the usual reason for a round in <code>final</code>; other rounds there are optional, and <code>p3 check</code> ignores an optional round you leave untouched. A round here works as in every step, which <a href="07-reviews.html">Your reviews</a> explains in full:</p>
+<ol class="steps">
+  <li><p><strong>Run the tutor as it stands</strong>, with <code>uv run p3 bench --config live --only grade-s1</code> (or <code>grade-s1,grade-s2</code>).</p></li>
+  <li><p><strong>Write the round in the editor</strong>, in <code>reviews/final.md</code> under <code>## Quick rounds</code>, <code>### Round 1 (optional)</code>: the Run line, then a few sentences under <code>**My thoughts:**</code> about what you saw.</p>
+  <div class="student"><span class="label">Example: a round's thoughts, in a student's words</span>
+  <p>With the guard on, grade-s1 fell to a verdict agreement of 0.17: the trace shows /grade's read of keys/0001.json coming back with my hook's message, so it graded from the quiz alone, and its verdicts disagreed with the true grades on five of the six items. I want grading done by a grader subagent that reads the key and the submission, and the grade skill should start it and wait for its report.</p>
+  </div></li>
+  <li><p><strong>Ask the Builder to act on it.</strong> It makes the one change, writes What changed under your thoughts, and fills in the grader's factual fields in <code>reviews/components.md</code>.</p>
+  <div class="say builder">
+    <div class="say-head">Say to the Builder</div>
+    <pre>Act on Round 1 of reviews/final.md.</pre>
+  </div></li>
+  <li><p><strong>Run it again</strong> and see whether it helped. Begin your next round's thoughts with that, or say it in the major review, which reviews the last round's change.</p></li>
+</ol>
+<p>Then write the grader's Purpose, Review and Kept in final in <code>reviews/components.md</code>; <a href="14-write-up.html">The inventory and EVAL.md</a> says how.</p>
+
+<h2 id="snapshot">Snapshot final and commit tutor/</h2>
+<p>When the guard works live, its tests pass, and you are happy with the tutor, freeze it. Commit <code>tutor/</code> together with the snapshot, because the ablation below changes <code>tutor/</code> and <code>git restore tutor/</code> brings it back only to what you committed.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 snapshot final
+git add tutor/ configs/final/ tests/ reviews/
+git commit -m "Snapshot final, with the guard"
+git push</pre>
+</div>
+<p><code>uv run p3 check</code> then shows <code>config final: the four skills and a PreToolUse hook</code>. A snapshot is frozen once it has runs: if you change the tutor after <code>final</code>'s runs, snapshot the changed tutor under a new name, because <code>final</code> and its runs stay as they are.</p>
+
+<h2 id="runs">The three runs</h2>
+<p>Once <code>final</code> is snapshotted and committed (<a href="#snapshot">the section above</a> says how), run it three times on the shared topic. Three runs of <code>final</code> beside the baseline's three let you ask whether a difference between the two is larger than the spread between runs of the same config, which one run of each cannot tell you; <code>EVAL.md</code> section 5 asks exactly that.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config final --repeats 3</pre>
+</div>
+<p>Run it in a plain terminal, a terminal tab with no Claude Code in it, because three full runs of a config with review loops and a split can take an hour or more, longer than a foreground command may run, and they must not stop when a Claude Code window closes. <a href="02-two-windows.html">The Guide and the Builder</a> says how to open one.</p>
+<div class="watch"><span class="label">What it costs</span>
+<p>My review-loop config, with reviewers on teach, quiz and grade and at most two passes each, took 6.99 million tokens and about 17 minutes per full run ($4.48 at list price, which is not what you pay on a subscription). If your <code>final</code> costs about that, its three runs are about 21 million tokens, and a split teach pipeline adds more. With the ablation and the test topics' runs, that puts roughly 45 million tokens into week 3. For 598E, plan on 10 to 15 million tokens per full run of <code>final</code>. Check <code>/usage</code> in a Claude Code window before you start, and start as early in week 3 as you can, so a usage limit late in the week still leaves you time. <a href="06-the-bench.html#cost">The bench's cost section</a> has the breakdown by scenario.</p>
+</div>
+<p>If a run hits your usage limit, <code>p3 bench</code> stops by itself, keeps the repeats it finished, and sets the interrupted one aside, so nothing it keeps is half done. Wait for the reset and run only what is missing; <code>uv run p3 check</code> prints the exact command, such as <code>p3 bench --config final --repeats 2</code>. <code>--jobs N</code> runs up to N scenarios of a repeat at the same time, which saves time but not tokens.</p>
+<p>When the runs are done, commit them with <code>git add bench/runs/final/</code> and a commit. Then paste <code>uv run p3 report --configs <span class="nw">c0-baseline,final</span></code> into <code>EVAL.md</code> section 5, which <a href="14-write-up.html">The inventory and EVAL.md</a> covers.</p>
+<p>For 598E, and the length-study stretch, <code>final</code> also has nine teach-only runs, three at each of 10, 30 and 60 minutes, such as <code>uv run p3 bench --config final --only teach --minutes 60 --repeats 3</code>. Try one 60-minute run first, because the teach scenario has 45 minutes at every length. <a href="16-stretch-and-598e.html#length-runs">The length study's runs</a> has the rest.</p>
+
+<h2 id="ablation">The ablation</h2>
+<p>An <strong>ablation</strong> is <code>final</code> with one component removed, run once, to see whether that component matters. The objective checks and your reviews say whether <code>final</code> is better than the baseline; the ablation asks which part of it is doing the work. You need at least one, named <code>final-minus-&lt;x&gt;</code> after what it removes, such as <code>final-minus-quiz-review</code> or <code>final-minus-planner</code>. Config names use lowercase letters, digits and hyphens.</p>
+<p>Pick a component whose value you are least sure of; a component everyone would expect to matter teaches you less. Before you run it, write down what you expect to happen, in quality and in cost, because <code>EVAL.md</code> section 6 asks for your prediction, and a prediction written after the result is not one.</p>
+<ol class="steps">
+  <li><p><strong>Remove the component from <code>tutor/</code>.</strong> This is not a quick round, so nothing goes in <code>reviews/</code>.</p>
+  <div class="say builder">
+    <div class="say-head">Say to the Builder</div>
+    <pre>For the ablation, remove the planner subagent from tutor/ and change what starts it so the tutor still works without it. This is not a quick round, so do not write in reviews/.</pre>
+  </div></li>
+  <li><p><strong>Snapshot it, and put <code>tutor/</code> back at once.</strong> The bench runs the snapshot in <code>configs/</code>, not <code>tutor/</code>, so you can restore <code>tutor/</code> the moment the snapshot exists.</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">uv run p3 snapshot final-minus-planner
+git restore tutor/
+git status</pre>
+  </div>
+  <p><code>git status</code> should show no change under <code>tutor/</code> other than your learner files.</p></li>
+  <li><p><strong>Run it once.</strong></p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">uv run p3 bench --config final-minus-planner</pre>
+  </div></li>
+  <li><p><strong>Commit the snapshot and its run</strong>: <code>configs/final-minus-planner/</code> and <code>bench/runs/final-minus-planner/</code>. Then paste <code>uv run p3 report --configs <span class="nw">final,final-minus-planner</span></code> into <code>EVAL.md</code> section 6.</p></li>
+</ol>
+<div class="watch"><span class="label">Watch out</span>
+<p><code>git restore tutor/</code> puts back every tracked file under <code>tutor/</code>, your learner files included. Do the ablation before your first learning session, or, once the sessions have started, restore only the config: <code>git restore tutor/CLAUDE.md tutor/PREFERENCES.md tutor/.claude</code>. And do not hold a learning session while the component is removed, because that session would not be with <code>final</code>.</p>
+</div>
+<p>One run of the ablation against three of <code>final</code> is thin evidence, and section 6 asks you to say so: what it lets you claim, and what it does not.</p>
+
+<h2 id="test-topic-runs">The test topics' runs</h2>
+<p>Now that <code>final</code> is frozen, run <code>c0-baseline</code> and <code>final</code> once each on both of your test topics, four full runs in all. They are the held-out check: does the architecture still pay off on topics you never tuned on? <a href="11-test-topics.html">Your two test topics</a> explains why, and how the topics are written.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c0-baseline --topic statics-trusses
+uv run p3 bench --config final --topic statics-trusses
+uv run p3 bench --config c0-baseline --topic budgeting-basics
+uv run p3 bench --config final --topic budgeting-basics</pre>
+</div>
+<p>Use your own topic ids. Each is a full run on that topic: <code>teach</code>, <code>quiz</code>, one grade scenario per submission and one tutor scenario per probe, so a topic with one submission and four probes is seven scenarios. The bench runs a test topic only when it has no <code>TODO</code> left and git shows it committed and unchanged, and it records the commit; <code>p3 check --final</code> later confirms every run used the items you committed. So do not touch <code>bench/own/</code> from here on, except by the procedure in <a href="11-test-topics.html#fixing">Fixing a real mistake</a>.</p>
+<p>Commit the four runs. <code>uv run p3 check</code> then shows, for each topic, <code>scored runs of c0-baseline and final</code> and <code>every run used the committed items</code>. Reading both runs side by side and writing the open review of each topic is described in <a href="11-test-topics.html#open-review">The open review of each topic</a>, and <code>uv run p3 report --topic &lt;id&gt; --configs <span class="nw">c0-baseline,final</span></code> gives the table for <code>EVAL.md</code> section 9. There are no blind comparisons on the test topics.</p>
+
+<h2 id="learning-sessions">The three learning sessions</h2>
+<p>Three real learning sessions with <code>final</code>, all on one of your test topics, are where you find out what the bench cannot tell you: how the tutor does when you really try to learn something with it. They are also the live tries of <code>final</code>'s major review, so they come before it. Plan on about an hour for each, with the write-up.</p>
+
+<h3 id="sessions-what">What to learn</h3>
+<p>You wrote the test topic's items from what you know well, and a real session needs something you do not know yet. So learn the part of the topic you have not mastered: in the topic from another Mines course, the next unit after the one your items cover, or a harder corner of it; in the life skill, the part you are still working on. The sessions stay on that test topic, so their Topic lines start with its id. <a href="11-test-topics.html#session-topic">Which topic for your learning sessions</a> has examples.</p>
+
+<h3 id="sessions-before">Before the first session</h3>
+<ol class="steps">
+  <li><p><strong>Make sure <code>tutor/</code> is <code>final</code> as you snapshotted it.</strong> If you ran the ablation, <code>git restore tutor/</code> brought it back; <code>git status</code> should show no change to <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> or anything under <code>tutor/.claude/</code>.</p></li>
+  <li><p><strong>Give the sessions a learner workspace of their own.</strong> Move or delete the learner files that earlier live tries left in <code>tutor/</code>: <code>MISSION.md</code>, <code>NOTES.md</code>, <code>lessons/</code>, <code>quizzes/</code>, <code>keys/</code>, <code>grades/</code>, <code>learning-records/</code>, <code>assets/</code> and <code>submissions/</code>. They are never part of a config, and what you committed stays in git's history. Then let the tutor write <code>MISSION.md</code> and <code>NOTES.md</code> with you in the first session, or start from copies of the two in <code>bench/own/&lt;id&gt;/workspace/</code>, edited to say where you really start. Never copy that topic's <code>keys/</code> or <code>submissions/</code>, which hold the bench's answers.</p></li>
+  <li><p><strong>Turn fork mode off.</strong> From <code>c2-review</code> on your tutor waits for subagents, and in an interactive session it can do that only once fork mode is off. Put this in <code>tutor/.claude/settings.local.json</code>, a personal file that is never part of a config and never reaches the bench, and start <code>claude</code> again if it was running:</p>
+  <pre><code>{"env": {"CLAUDE_CODE_FORK_SUBAGENT": "0"}}</code></pre>
+  <p>The last section of <code>tutor/.claude/agents/README.md</code> explains why it must not go in <code>settings.json</code>.</p></li>
+</ol>
+
+<h3 id="sessions-run">Holding a session</h3>
+<p>Open a new terminal (Terminal &gt; New Terminal in VS Code), go into <code>tutor/</code>, and start Claude Code there. Renaming the tab "Tutor" helps you keep it apart from the Guide and the Builder.</p>
+<div class="cmd">
+  <div class="cmd-head">Your tutor: a new terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">cd tutor
+claude</pre>
+</div>
+<p>If Claude Code asks whether you trust the folder, the highlighted choice is "No, exit": press the down arrow to "Yes, I trust this folder", then Enter. Then ask for whatever you need as a learner: a lesson, a quiz, grading of your answers, or a conversation.</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>I know the method of joints well, and I want to learn frames and machines, where a member can carry more than two forces. Can you start me with a 30-minute lesson?</pre>
+  <p>Your own words, about your own topic. The guard is on in these sessions too, so a quiz the tutor grades goes through your grader.</p>
+</div>
+<p>Claude Code also reads the <code>CLAUDE.md</code> of every folder above <code>tutor/</code>, and the root one tells it that a session started in <code>tutor/</code> is your tutor. If a session ever acts more like a course assistant than your tutor, that is why, and <a href="19-troubleshooting.html">When it breaks</a> says what to do.</p>
+
+<h3 id="sessions-keep">Keep all three sessions on final</h3>
+<p>Note what a session makes you want to change instead of changing it, so that Sessions 2 and 3 are still sessions with the version you measured. A change between sessions would make them sessions with three different tutors, none of them the one your runs measured. If you make a change once all three are done, give it a quick round in <code>reviews/final.md</code> and snapshot the changed tutor under a new name.</p>
+
+<h3 id="sessions-write">Writing each session up</h3>
+<p>Write each session up right after it, while you still remember what it felt like, in the editor, in <code>reviews/final.md</code> under <code>## Learning sessions</code>, in <code>### Session 1</code>, <code>### Session 2</code> and <code>### Session 3</code>. Never type it into a chat for an agent to write; it is your judgment, and the Builder and the Guide never write it.</p>
+<ul>
+  <li><strong>Date:</strong> the day of the session.</li>
+  <li><strong>Topic:</strong> the test topic's id first, then what the session covered, such as <code><span class="nw">statics-trusses,</span> frames and machines</code>. <code>p3 check</code> reads the id, and all three sessions must name the same test topic.</li>
+  <li><strong>Then, in your words:</strong> what you asked for and for how long, where the tutor helped you, where it failed you, and what you would change in the tutor because of it, or "nothing". In Session 1, also say why you chose this topic and what you already knew.</li>
+</ul>
+<div class="student"><span class="label">Example: a session, in a student's words</span>
+<pre><code>### Session 1
+
+**Date:** November 18
+
+**Topic:** statics-trusses, frames and machines
+
+I chose statics-trusses because my items cover trusses, which I know well, and I never felt sure about frames. I knew free-body diagrams and the method of joints. I asked for a 30-minute lesson and then a five-question quiz, about 70 minutes in all. The worked example of a pair of pliers finally showed me why I cannot treat every member as a two-force member. It failed me on the quiz: I gave Ax as -120 N with my arrow drawn to the left, and the grader marked it partial without saying why. What I would change: the grade skill should accept a sign that matches the direction I drew, and say which it read. (Noted, not changed.)</code></pre>
+</div>
+<p>Your repo is public, and so are the learner files these sessions leave in <code>tutor/</code>, so keep personal details out of them and out of this file.</p>
+
+<h2 id="major-review">The major review of final</h2>
+<p>The major review of <code>final</code> covers all four jobs, Lesson, Quiz, Feedback and Tutor, on one of its three runs, and its live tries are your three learning sessions. It goes in <code>reviews/final.md</code> under <code>## Major review</code>, written in the editor, criterion by criterion. <a href="07-reviews.html">Your reviews</a> has the criteria, what each rating means, what good evidence looks like, and how I grade reviews; this section covers what is particular to <code>final</code>.</p>
+<ul>
+  <li><strong>The Run line</strong> names the run you reviewed, such as <code>bench/runs/final/20261119-140211-agent-architecture-m30-r2</code>. Any of the three works; name it exactly, because <code>p3 check</code> looks it up.</li>
+  <li><strong>The Live tries line</strong> points at your three learning sessions under Learning sessions, and names anything else you tried with <code>final</code>. A line is enough.</li>
+  <li><strong>Every criterion of the four jobs</strong> gets a whole-number rating from 1 to 5, as <code>Rating: 4</code>, and feedback with evidence: quotes, item ids, probe ids, sections of the lesson.</li>
+  <li><strong>Compared with the previous step:</strong> for the lesson, compare with <code>c3-split</code>. <code>c3-split</code> reviewed the lesson only, so for the quiz and the feedback compare with <code>c2-review</code>, and for the tutor with <code>c1-skills</code>.</li>
+  <li><strong>What I would do next:</strong> in <code>final</code> this heading takes the place of what the next step should fix.</li>
+</ul>
+<div class="student"><span class="label">Example: the top of the major review, in a student's words</span>
+<pre><code>**Run:** bench/runs/final/20261119-140211-agent-architecture-m30-r2
+
+**Live tries:**
+
+My three learning sessions on statics-trusses, under Learning sessions below. I also asked final for the answer to q2 of a quiz it had just given me: it refused, and offered a similar problem instead.</code></pre>
+</div>
+
+<h3 id="major-review-commit">Commit it before the blind comparison</h3>
+<p>Write the review before you start the blind comparison, and commit it, so your open judgment is on record before your blind one.</p>
+<div class="why"><span class="label">Why it is this way</span>
+<p><code>EVAL.md</code> section 8 sets your open reviews beside your blind picks, to see how far knowing which config made what shaped your judgment. That check only works if the open review was written without the blind picks in front of you. If you wrote it after the reveal, the reveal could shape it, and you would be comparing your blind picks with themselves. The commit's time, beside the time in each comparison session's id, shows the order.</p>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add reviews/final.md
+git commit -m "Major review of final"
+git push</pre>
+</div>
+<p><code>uv run p3 check</code> then shows the major review as complete, and as first committed complete after the run it reviews finished, which it also checks.</p>
+
+<h2 id="if-it-fails">If something goes wrong</h2>
+<ul>
+  <li><strong>The guard blocks nothing in a live run, or blocks every call.</strong> Check the hook's command: the Python command that works in your terminal, forward slashes, and the script's path from <code>$CLAUDE_PROJECT_DIR</code>. A hook that cannot start lets every call through, or, with <code>"onFailure": "block"</code>, blocks every call, the grader's too.</li>
+  <li><strong><code>grade_verdict_agreement</code> fell after the guard.</strong> Grading still reads the key in the main conversation; move it to the grader, as above.</li>
+  <li><strong>A run stopped at a usage limit.</strong> Wait for the reset and run only the missing repeats, as <code>p3 check</code> says.</li>
+  <li><strong><code>p3 check</code> fails on the runs of <code>final</code> after you snapshotted it again.</strong> Overwriting a snapshot that has runs makes those runs stop matching it. Restore it with <code>git restore configs/final/</code>, and snapshot the changed tutor under a new name.</li>
+</ul>
+<p><a href="19-troubleshooting.html">When it breaks</a> has these and more. If you have been stuck for 20 minutes, come to office hours (Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, CTLM 246L) and bring the exact message.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Where am I in final, and what is the one thing I should do next?</pre>
+</div>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="11-test-topics.html"><span class="pager-label">Previous</span><span class="pager-title">Your two test topics</span></a>
+<a class="next" href="13-blind-comparison.html"><span class="pager-label">Next</span><span class="pager-title">The blind comparison</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

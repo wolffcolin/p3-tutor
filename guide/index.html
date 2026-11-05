@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Start here - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html" class="current" aria-current="page">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<h1>Start here</h1>
+<p class="lede">This page is Project 3 on one page: what you build, the map of the three weeks with a link to the page for each stage, and the windows you work in. Read it once at the start, and come back to the map whenever you want to see where you are.</p>
+<p class="meta">About 10 minutes to read.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#project-3">Project 3 in one paragraph</a>, and <a href="#the-facts">the facts</a>: points, deadline, time, cost</li>
+    <li><a href="#what-you-build">What you build</a>: the four jobs and the ladder of configs</li>
+    <li><a href="#the-map">The map</a>: the twelve stages, in order, each with its page</li>
+    <li><a href="#the-windows">The windows</a>: the Guide, the Builder, a plain terminal and your tutor</li>
+    <li><a href="#how-to-use">How to use this guide</a>, and <a href="#where-am-i">where am I?</a></li>
+  </ul>
+</section>
+
+<h2 id="project-3">Project 3 in one paragraph</h2>
+<p>You build a tutor that runs entirely inside Claude Code and does four jobs: it teaches a lesson, talks with you as a tutor, writes a quiz with its answer key, and grades your answers with feedback.
+The template ships a tutor that already does all four with a single skill, and you rebuild it in fixed steps, first four skills of your own, then review loops, then a split of the teach job into several subagents, then <code>final</code>, which keeps what earned its place, and you measure every step: what it bought in quality, and what it cost in tokens and time.
+Much of a tutor's quality is personal fit, and no script can tell you whether a lesson works for you, so you are the judge.
+At every step you read and try what your tutor made and write a review of it, and your reviews decide the next change.
+Fixed objective checks sit beside your reviews and catch what taste cannot, such as a wrong fact, a wrong answer key, or a quiz answer given away.
+The tutor itself is not the point; the engineering judgment is: which machinery pays for itself, which does not, and how you know.</p>
+
+<h3 id="the-facts">The facts</h3>
+<div class="facts">
+  <div><span class="k">Weight</span><span class="v">20% of your final grade</span></div>
+  <div><span class="k">Points</span><span class="v">200 on Canvas: 150 for the project and 50 for the video, in one discussion post</span></div>
+  <div><span class="k">Due</span><span class="v">Tuesday, November 24, at 11:59 pm, one deadline for everything, no checkpoints</span></div>
+  <div><span class="k">Work</span><span class="v">Individual; 598E adds a rider, the length study</span></div>
+  <div><span class="k">Late work</span><span class="v">20% off, and nothing accepted more than a week late</span></div>
+  <div><span class="k">Your time</span><span class="v">About 32 hours for 498E, and about 40 to 42 for 598E</span></div>
+  <div><span class="k">Your repo</span><span class="v">Public, made from the template, named <code>p3-tutor</code>, cloned to <code>work/p3-tutor</code></span></div>
+  <div><span class="k">Cost</span><span class="v">Every run draws on your own Claude plan; you never need an API key</span></div>
+  <div><span class="k">Help</span><span class="v">Office hours Tue and Thu, 9 to 10 am and 2 to 3 pm, CTLM 246L</span></div>
+</div>
+<p>You hand in three things: the URL of your public repo, the work inside it (your tutor, your snapshots, your runs, your reviews and your write-up), and a 5 to 10 minute video, all in one post in the Project 3 discussion on Canvas.
+<a href="15-hand-in.html">Hand in</a> has the details and the points table, and <code>README.md</code> in your repo is the brief, the formal source for every rule.</p>
+
+<h2 id="what-you-build">What you build</h2>
+<p>Your tutor lives in <code>tutor/</code> in your repo, and it does four jobs.</p>
+<div class="table-wrap">
+<table>
+  <caption>The four jobs, from the README's "What this project is".</caption>
+  <thead><tr><th>Job</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Teach</strong></td><td>writes a comprehensive lesson of a requested length, such as 30 minutes or an hour: a plan, explanations, examples, figures and visualizations, and external references where they help</td></tr>
+    <tr><td><strong>Tutor</strong></td><td>a conversational helper the learner talks to on the go, personalized to how the learner likes to talk, with guardrails: it does not hand out quiz answers</td></tr>
+    <tr><td><strong>Quiz</strong></td><td>a quiz with an answer key, at the right difficulty, covering the core of the lesson, clearly worded and aligned with the learning goals</td></tr>
+    <tr><td><strong>Grade</strong></td><td>grades plus useful feedback: a verdict on each answer and enough explanation, in the way this learner likes things explained</td></tr>
+  </tbody>
+</table>
+</div>
+<p>You build it as a fixed sequence of <em>configs</em>, which the README calls the ladder. A config is the tutor's instructions, preferences, skills, subagents and settings, frozen under a name with <code>uv run p3 snapshot</code>.
+The ladder is <code>c0-baseline</code> (the tutor as it ships), <code>c1-skills</code> (four skills of your own), <code>c2-review</code> (review loops on teach, quiz and grade, as subagents), <code>c3-split</code> (the teach job split across subagents), and <code>final</code> (what earned its place, plus a guard that keeps the answer keys from the tutor), with at least one <code>final-minus-&lt;x&gt;</code>, which is <code>final</code> with one component taken out.
+<a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a> explains what a config and a snapshot are, and <a href="06-the-bench.html">The bench</a> explains how each config is measured.</p>
+
+<h2 id="the-map">The map</h2>
+<p>The project runs through twelve stages, in this order.
+<code>uv run p3 next</code> uses the same numbers and names, so when it says "Now: 4 Step 1, <span class="nw">c1-skills"</span>, you are on the fourth line below.
+The weeks are the pace I would keep; nothing is checked on those dates, and <a href="17-pace.html">A pace that works</a> says what fits in each week.</p>
+<ol class="map">
+  <li><a href="01-setup.html">Set up</a><span class="when">Week 1</span>
+    <p>Your own public copy of the template in <code>work/p3-tutor</code>, open in VS Code, with its CI check green, and the Guide and the Builder running in two terminals (<a href="02-two-windows.html">The Guide and the Builder</a>).</p></li>
+  <li><a href="03-baseline.html">The baseline</a><span class="when">Week 1</span>
+    <p>A quick run and three full runs of <code>c0-baseline</code>, the tutor as it ships, and a first read of what it made and of <code>KNOWN-GAPS.md</code>.</p></li>
+  <li><a href="04-preferences.html">Your preferences</a><span class="when">Week 1</span>
+    <p><code>tutor/PREFERENCES.md</code> rewritten in your own words, so every later review and the blind comparison measure fit to you.</p></li>
+  <li><a href="08-step1-skills.html">Step 1, <code>c1-skills</code></a><span class="when">Week 1</span>
+    <p>The four skills <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code> built in quick rounds, then the snapshot, its full run, its major review, its section of <code>EVAL.md</code> and its inventory entries.</p></li>
+  <li><a href="09-step2-review-loops.html">Step 2, <code>c2-review</code></a><span class="when">Week 2</span>
+    <p>Reviewer subagents on teach, quiz and grade, with checklists drawn from your <code>c1-skills</code> review, measured and reviewed the same way.</p></li>
+  <li><a href="16-stretch-and-598e.html">The length study, part 1 (598E or <code>length-study</code> only)</a><span class="when">Week 2</span>
+    <p>Sections 1 to 4 of <code>PREREG.md</code>, your plan, written and committed, then nine teach-only runs of <code>c1-skills</code> at 10, 30 and 60 minutes; if you are in 498E without this stretch, you skip this stage.</p></li>
+  <li><a href="10-step3-split.html">Step 3, <code>c3-split</code></a><span class="when">Week 2</span>
+    <p>The teach job split across subagents of your design, measured on teach against <code>c2-review</code>.</p></li>
+  <li><a href="11-test-topics.html">Test topics</a><span class="when">Week 2</span>
+    <p>Two topics of your own in <code>bench/own/</code>, one from another Mines course and one life skill, written and committed before any run uses them.</p></li>
+  <li><a href="12-final.html"><code>final</code></a><span class="when">Week 3</span>
+    <p>What earned its place plus the guard hook, then its three runs, the ablation, the runs on your test topics, your three learning sessions and its major review.</p></li>
+  <li><a href="13-blind-comparison.html">The blind comparison</a><span class="when">Week 3</span>
+    <p><code>c0-baseline</code> against <code>final</code> on all four jobs with the labels hidden, your picks, and the reveal.</p></li>
+  <li><a href="14-write-up.html">The write-up</a><span class="when">Week 3</span>
+    <p>Your open review of the test topics, the complete component inventory in <code>reviews/components.md</code>, and <code>EVAL.md</code>, with its judge check, with no TODO left.</p></li>
+  <li><a href="15-hand-in.html">Hand in</a><span class="when">Week 3</span>
+    <p><code>uv run p3 check --final</code> passing, then the video, the last push and one Canvas post, by Tuesday, November 24, at 11:59 pm.</p></li>
+</ol>
+<p>Stages 4, 5 and 7 each run the same loop: quick rounds while you build, a snapshot, one full run, a major review, the step's section of <code>EVAL.md</code>, and the step's entries in the component inventory.
+<a href="07-reviews.html">Your reviews</a> explains the quick rounds and the major reviews once, and each step page shows them for its own step.</p>
+
+<h2 id="the-windows">The windows</h2>
+<p>You work on P3 in one VS Code window with your repo, <code>work/p3-tutor</code>, open as its folder, and in that window you keep a few terminals, each with one job.
+Two of them run Claude Code all the time: <strong>the Guide</strong> explains and points the way, and <strong>the Builder</strong> changes your tutor.
+In Project 2 one agent did both, and many of you told me that was confusing, so here they are separate.</p>
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 760 322" role="img" aria-label="One VS Code window with work/p3-tutor open holds four terminals. The Guide, started with claude --agent p3-guide, explains each step and why, names the one next thing, and never changes a file; it only reads the repo. The Builder, started with claude, changes your tutor one change per round and runs the p3 commands you ask for; it changes tutor/. A plain terminal with no Claude Code in it runs the full bench runs, from about 6 minutes for one run of the baseline to over an hour for three repeats of a larger config, and writes bench/runs/. Your tutor, started with claude in tutor/, is for learning with it, in live tries and the learning sessions. All four work on the same repo.">
+      <defs>
+        <marker id="win-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <rect x="8" y="8" width="744" height="196" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+      <text x="22" y="30" fill="currentColor" font-size="12" font-weight="700">One VS Code window, with work/p3-tutor open as its folder</text>
+
+      <rect x="22" y="44" width="170" height="146" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-guide)"/>
+      <text x="107" y="66" text-anchor="middle" font-size="13" font-weight="700" style="fill: var(--win-guide)">The Guide</text>
+      <text x="107" y="86" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">claude --agent p3-guide</text>
+      <text x="107" y="110" text-anchor="middle" fill="currentColor" font-size="12">explains each step and</text>
+      <text x="107" y="127" text-anchor="middle" fill="currentColor" font-size="12">why, names the one</text>
+      <text x="107" y="144" text-anchor="middle" fill="currentColor" font-size="12">next thing, and never</text>
+      <text x="107" y="161" text-anchor="middle" fill="currentColor" font-size="12">changes a file</text>
+
+      <rect x="204" y="44" width="170" height="146" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-builder)"/>
+      <text x="289" y="66" text-anchor="middle" font-size="13" font-weight="700" style="fill: var(--win-builder)">The Builder</text>
+      <text x="289" y="86" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">claude</text>
+      <text x="289" y="110" text-anchor="middle" fill="currentColor" font-size="12">changes your tutor,</text>
+      <text x="289" y="127" text-anchor="middle" fill="currentColor" font-size="12">one change per round,</text>
+      <text x="289" y="144" text-anchor="middle" fill="currentColor" font-size="12">and runs the p3</text>
+      <text x="289" y="161" text-anchor="middle" fill="currentColor" font-size="12">commands you ask for</text>
+
+      <rect x="386" y="44" width="170" height="146" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-plain)"/>
+      <text x="471" y="66" text-anchor="middle" font-size="13" font-weight="700" style="fill: var(--win-plain)">A plain terminal</text>
+      <text x="471" y="86" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">uv run p3 bench ...</text>
+      <text x="471" y="110" text-anchor="middle" fill="currentColor" font-size="12">no Claude Code in it;</text>
+      <text x="471" y="127" text-anchor="middle" fill="currentColor" font-size="12">runs the full bench</text>
+      <text x="471" y="144" text-anchor="middle" fill="currentColor" font-size="12">runs: about 6 minutes</text>
+      <text x="471" y="161" text-anchor="middle" fill="currentColor" font-size="12">to over an hour</text>
+
+      <rect x="568" y="44" width="170" height="146" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-tutor)"/>
+      <text x="653" y="66" text-anchor="middle" font-size="13" font-weight="700" style="fill: var(--win-tutor)">Your tutor</text>
+      <text x="653" y="86" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">claude, in tutor/</text>
+      <text x="653" y="110" text-anchor="middle" fill="currentColor" font-size="12">the tutor you built,</text>
+      <text x="653" y="127" text-anchor="middle" fill="currentColor" font-size="12">for learning with it:</text>
+      <text x="653" y="144" text-anchor="middle" fill="currentColor" font-size="12">live tries and the</text>
+      <text x="653" y="161" text-anchor="middle" fill="currentColor" font-size="12">learning sessions</text>
+
+      <line x1="107" y1="190" x2="107" y2="247" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#win-arrow)"/>
+      <text x="115" y="228" fill="currentColor" font-size="11">reads only</text>
+      <line x1="289" y1="190" x2="289" y2="247" stroke="currentColor" marker-end="url(#win-arrow)"/>
+      <text x="297" y="228" fill="currentColor" font-size="11">changes tutor/</text>
+      <line x1="471" y1="190" x2="471" y2="247" stroke="currentColor" marker-end="url(#win-arrow)"/>
+      <text x="479" y="228" fill="currentColor" font-size="11">writes bench/runs/</text>
+      <line x1="653" y1="190" x2="653" y2="247" stroke="currentColor" marker-end="url(#win-arrow)"/>
+      <text x="661" y="228" fill="currentColor" font-size="11">works in tutor/</text>
+
+      <rect x="22" y="250" width="716" height="64" rx="4" fill="none" stroke="currentColor"/>
+      <text x="380" y="274" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">Your repo, work/p3-tutor: the state of your project lives in its files</text>
+      <text x="380" y="298" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">tutor/ · reviews/ · configs/ · bench/runs/ · EVAL.md · guide/</text>
+    </svg>
+  </div>
+  <figcaption>The four terminals in your VS Code window and what each one touches. You write your own reviews in <code>reviews/</code> yourself, in the editor, and never through a chat.</figcaption>
+</figure>
+<ul>
+  <li><span class="tag guide">Guide</span> <code>claude --agent p3-guide</code>: explains what you are doing and why, and tells you the one next thing to do and which window does it; it never changes a file.</li>
+  <li><span class="tag builder">Builder</span> <code>claude</code>: changes your tutor, one change per round, writes what it changed, and runs the <code>p3</code> commands you ask for; it never plans the project.</li>
+  <li><span class="tag plain">Plain terminal</span> a terminal with no Claude Code in it: runs the full bench runs, from about 6 minutes for one run of the baseline to an hour or more for three repeats of a larger config, which must keep going when a Claude Code window closes.</li>
+  <li><span class="tag tutor">Your tutor</span> <code>claude</code> started inside <code>tutor/</code>: the tutor you built, for learning with it.</li>
+</ul>
+<p><a href="02-two-windows.html">The Guide and the Builder</a> shows how to start each window, what to say to each, and what each will not do.</p>
+
+<h2 id="how-to-use">How to use this guide</h2>
+<p>The <code>README.md</code> in your repo is the brief: what you hand in, who owns which files, the ground rules, the grading and the deadline.
+This guide is the walkthrough: for every stage, what to do, in which window, and why the project asks for it.
+When the two ever disagree, the README wins, and I would like to hear about it.</p>
+<ul>
+  <li><strong>Every step page opens with the short path</strong>, a box with four parts: Why the step exists, what to Do (three actions at most, each naming its window), how you know it is Done, and where to go Then. If you only want the next action, read the box. The sections below it explain how, with examples and the mistakes to avoid.</li>
+  <li><p><strong>The exact words to type sit in boxes</strong> whose head names the window, with a copy button, like this one:</p>
+    <div class="say guide">
+      <div class="say-head">Say to the Guide</div>
+      <pre>What is the one thing I should do next?</pre>
+      <p>The Guide checks your repo and answers with one next thing and the reason for it.</p>
+    </div>
+  </li>
+  <li><strong>Commands sit in boxes whose head says where to run them</strong>, such as "Run in a plain terminal in work/p3-tutor", with what they print underneath when that helps.</li>
+  <li><strong>Colored tags name the windows</strong>: <span class="tag guide">Guide</span> <span class="tag builder">Builder</span> <span class="tag plain">Plain terminal</span> <span class="tag tutor">Your tutor</span>.</li>
+  <li><strong>The Guide reads these same pages</strong> before it explains a step, and it names the page and section it used, so what the Guide tells you and what you read here agree.</li>
+  <li><strong>The pages open from disk</strong>, with no server: open <code>guide/index.html</code> in your browser. <a href="01-setup.html#open-the-guide">Set up your repo</a> shows the quickest ways.</li>
+</ul>
+
+<h2 id="where-am-i">Where am I?</h2>
+<div class="note"><span class="label">Where am I?</span>
+  <p>Any time you are unsure, ask the Guide "What's next?", or run <code>uv run p3 next</code> yourself in a plain terminal in <code>work/p3-tutor</code>.
+  It reads your repo, changes nothing, makes no model call, and prints where you are on the map above, the one next thing to do, and the page that explains it.</p>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 next</pre>
+  <pre class="out">p3 next: 498E (C:\...\work\p3-tutor)
+
+Done:  1 Set up, 2 The baseline, 3 Your preferences
+Now:   4 Step 1, c1-skills: quick rounds (1 of at least 2 complete)
+Next:  In the Builder window, say: Act on Round 2 of reviews/c1-skills.md.
+Read:  guide/08-step1-skills.html#rounds
+Also:  the baseline's runs: 2 of 3 scored full runs (start the last one in a plain terminal)</pre>
+</div>
+<p>That example is a student in the middle of step 1. This is how to read each line.</p>
+<dl>
+  <dt>Done</dt>
+  <dd>The stages of the map you are past: every stage before the one on the Now line, and any later stage already complete.</dd>
+  <dt>Now</dt>
+  <dd>The stage you are on, and the item within it: the first stage with something not done. A stage whose only items left are long runs counts as passed once you have done something in a later stage, so a run that is still going never holds you back, and the runs left show under Also. When the next item needs runs you have not made yet, such as the blind comparison, which pairs only the runs there are, Now goes back to the first of those runs.</dd>
+  <dt>Next</dt>
+  <dd>The one next thing to do, with the window it happens in, or the exact command.</dd>
+  <dt>Read</dt>
+  <dd>The page of this guide, and the section, that explains that next thing.</dd>
+  <dt>Also</dt>
+  <dd>Shown only sometimes: a bench still running (a run folder with no <code>run.json</code> that changed in the last 90 minutes, which <code>p3 next</code> does not count as a failure, though <code>p3 check</code> does), at most two things left over from earlier stages, and, when the next thing is a long run, something you can do while it runs.</dd>
+</dl>
+<p>If <code>uv run p3 check</code> finds something broken, <code>p3 next</code> puts that first, because a broken repo comes before any next step, and it points you to <a href="19-troubleshooting.html">When it breaks</a>.</p>
+
+<h2 id="tell-me">If something here is unclear or wrong</h2>
+<p>I wrote this guide so that you always know what you are doing and why, and I will not have got every page right the first time.
+If anything here is unclear, seems wrong, or disagrees with what the Guide or <code>p3</code> tells you, tell me, in a message on Canvas or at office hours (Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, CTLM 246L).
+That is a bug too, and I would rather fix it for everyone than have you guess.</p>
+<p>When you are ready, start with <a href="01-setup.html">Set up your repo</a>.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<span></span>
+<a class="next" href="01-setup.html"><span class="pager-label">Next</span><span class="pager-title">Set up your repo</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

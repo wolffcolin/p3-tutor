@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Commands and files - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html" class="current" aria-current="page">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part IV · Reference</p>
+<h1>Commands and files</h1>
+<p class="lede">Every <code>p3</code> command with its options, what each one prints or writes, and whether it draws on your Claude plan; then every file and folder in your repo, who owns it, and where to find each output.
+Come here to look something up; the step pages explain when and why you run each command.</p>
+<p class="meta">About 34 minutes to read in full; most visits need one section.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#run-a-command">How to run a p3 command</a>: <code>uv run p3 &lt;command&gt;</code> from <code>work/p3-tutor</code>, or <code>python -m p3 &lt;command&gt;</code> without uv (<code>python3</code> on macOS and Linux).</li>
+    <li><a href="#at-a-glance">The commands at a glance</a>: only <code>p3 bench</code> and <code>p3 score</code> start Claude; every other command is free.</li>
+    <li><a href="#who-runs-what">Who runs what</a>: long runs in a plain terminal, quick runs in the Builder, blind comparisons only by you.</li>
+    <li>Each command: <a href="#p3-next">next</a>, <a href="#p3-check">check</a>, <a href="#p3-snapshot">snapshot</a>, <a href="#p3-bench">bench</a>, <a href="#p3-score">score</a>, <a href="#p3-report">report</a>, <a href="#p3-compare">compare</a>, <a href="#p3-new-topic">new-topic</a> and <a href="#p3-rehash">rehash</a>.</li>
+    <li><a href="#repo-files">Every file and folder in your repo</a>, with its owner, and <a href="#course-owned">the course's files you leave as they are</a>.</li>
+    <li><a href="#run-folder-files">A run folder's files</a>, <a href="#review-files">the review files</a>, and <a href="#where-outputs">where to find each output</a>.</li>
+    <li><a href="#names">Names and ids</a>: configs, runs, scenarios, sessions and topics.</li>
+  </ul>
+</section>
+
+<h2 id="run-a-command">How to run a p3 command</h2>
+<p><code>p3</code> is the course's tool for this project: it snapshots your tutor, runs the bench, scores and reports runs, runs blind comparisons, and checks the repo.
+Every command runs from the root of your P3 repo, <code>work/p3-tutor</code>, and starts with <code>uv run</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+</div>
+<p>If you do not have <code>uv</code>, every command also works as <code>python -m p3 check</code>, or <code>python3 -m p3 check</code> on macOS and Linux, because <code>p3</code> uses only Python's standard library, from Python 3.11 on.
+This guide writes every command with <code>uv run</code>; swap in the other form wherever you need it.</p>
+<ul>
+  <li><strong>Help.</strong> <code>uv run p3 --help</code> lists the commands, and <code>uv run p3 &lt;command&gt; --help</code> lists a command's options. <code>uv run p3 --version</code> prints the version.</li>
+  <li><strong>Which repo.</strong> <code>p3</code> works on the nearest folder at or above the one you are in that holds <code>p3.json</code>, so it also works from <code>tutor/</code>; <code>--root &lt;path&gt;</code>, before the command name, points it at another repo.</li>
+  <li><strong>Errors.</strong> A command that cannot do its job prints one message, starting with <code>p3 &lt;command&gt;:</code>, that says what is wrong and usually what to do, and exits with status 1. Ctrl-C prints <code>p3: stopped</code>.</li>
+</ul>
+
+<h2 id="at-a-glance">The commands at a glance</h2>
+<div class="table-wrap">
+<table class="stack">
+  <caption>Every <code>p3</code> command. "Draws on your plan" means it starts Claude Code sessions, which count against your usage limit.</caption>
+  <thead><tr><th>Command</th><th>What it does</th><th>What it writes</th><th>Draws on your plan</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Command"><a href="#p3-next"><code>p3 next</code></a></td><td data-label="What it does">prints where you are on the project's map and the one next thing to do, with the guide page for it</td><td data-label="What it writes">nothing</td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-check"><code>p3 check</code></a> <code>[--final]</code></td><td data-label="What it does">prints a checklist of the repo's state, and fails when something is broken</td><td data-label="What it writes">nothing</td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-snapshot"><code>p3 snapshot</code></a> <code>&lt;name&gt; [--force]</code></td><td data-label="What it does">copies the tutor's config into a frozen snapshot with its hash</td><td data-label="What it writes"><code>configs/&lt;name&gt;/</code></td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-bench"><code>p3 bench</code></a> <code>--config &lt;name&gt;</code></td><td data-label="What it does">runs the scenarios on a config, scores them and prints a summary</td><td data-label="What it writes">a run folder under <code>bench/runs/</code></td><td data-label="Draws on your plan"><strong>yes</strong></td></tr>
+    <tr><td data-label="Command"><a href="#p3-score"><code>p3 score</code></a> <code>&lt;run&gt;</code></td><td data-label="What it does">scores a run, or scores it again</td><td data-label="What it writes">the run's <code>score.json</code></td><td data-label="Draws on your plan"><strong>yes</strong>, unless <code>--no-model</code></td></tr>
+    <tr><td data-label="Command"><a href="#p3-report"><code>p3 report</code></a></td><td data-label="What it does">prints Markdown tables of your scored runs and your ratings, for <code>EVAL.md</code></td><td data-label="What it writes">nothing</td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-compare"><code>p3 compare</code></a></td><td data-label="What it does">runs a blind comparison of two configs on one job, then the reveal</td><td data-label="What it writes"><code>bench/compare/&lt;session-id&gt;.json</code> and <code>.key.json</code></td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-new-topic"><code>p3 new-topic</code></a> <code>&lt;id&gt;</code></td><td data-label="What it does">writes a skeleton test topic</td><td data-label="What it writes"><code>bench/own/&lt;id&gt;/</code></td><td data-label="Draws on your plan">no</td></tr>
+    <tr><td data-label="Command"><a href="#p3-rehash"><code>p3 rehash</code></a></td><td data-label="What it does">instructor only; never run it</td><td data-label="What it writes"><code>p3/bench.sha256</code></td><td data-label="Draws on your plan">no</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="who-runs-what">Who runs what</h2>
+<p>You work in three places: the <span class="tag guide">Guide</span> window, which explains and changes nothing; the <span class="tag builder">Builder</span> window, which changes your tutor and runs commands you ask for; and a <span class="tag plain">Plain terminal</span>, a terminal tab with no Claude Code in it (<a href="02-two-windows.html">The Guide and the Builder</a> sets them up).
+Which one runs a command depends on how long it takes and whose judgment it records.</p>
+<div class="table-wrap">
+<table>
+  <caption>Where each command belongs.</caption>
+  <thead><tr><th>Command</th><th>Where it belongs</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td><code>p3 next</code>, <code>p3 check</code>, <code>p3 report</code>, <code>p3 compare --list</code></td><td>anywhere; the Guide runs them itself</td><td>they only read</td></tr>
+    <tr><td><code>p3 snapshot</code>, <code>p3 new-topic</code></td><td>the Builder when you ask, or a plain terminal</td><td>they write files, so the Guide may not run them</td></tr>
+    <tr><td><code>p3 bench --quick</code>, or with <code>--only</code></td><td>the Builder, in the background, after it asks you; or a plain terminal</td><td>a quick run is short (about 4 minutes for the baseline in my pilot, longer once review loops are in), and the Builder says how many sessions it will start before it starts any</td></tr>
+    <tr><td><code>p3 bench</code> for a full run, or with <code>--repeats</code></td><td>a plain terminal</td><td>a full run takes much longer than a quick one (the lesson alone is allowed up to 45 minutes, and the baseline's three full runs took about 20 to 25 minutes in my pilot); Claude Code stops a foreground command after ten minutes at most, and a run must not stop when a Claude Code window closes</td></tr>
+    <tr><td><code>p3 score</code></td><td>a plain terminal, or the Builder</td><td>it makes model calls, so the Guide may not run it</td></tr>
+    <tr><td><code>p3 compare</code>, <code>--resume</code> and <code>--reveal</code></td><td>you, in a plain terminal, and never an agent</td><td>the picks must be yours, and no agent may say which config made an output</td></tr>
+    <tr><td><code>p3 rehash</code></td><td>nowhere</td><td>it is for the instructor's template only</td></tr>
+  </tbody>
+</table>
+</div>
+<p>When the Guide says a command is blocked, that is its guard working: the Guide only reads, and it tells you who runs the command instead, with the exact words for the Builder or the exact command for a plain terminal.</p>
+
+<h2 id="p3-next">p3 next</h2>
+<pre><code>uv run p3 next</code></pre>
+<p>It prints where you are on the project's map and the one next thing to do, with the guide page that explains it.
+It makes no model call and changes nothing: it reads the same state <code>p3 check</code> reads, and exits 0 unless the repo cannot be read.
+Run it whenever you are unsure what comes next; a new Guide window runs it first thing.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code>, or ask the Guide</div>
+  <pre class="in">uv run p3 next</pre>
+  <pre class="out">p3 next: 498E (C:\...\work\p3-tutor)
+
+Done:  1 Set up, 2 The baseline, 3 Your preferences
+Now:   4 Step 1, c1-skills: quick rounds (1 of at least 2 complete)
+Next:  In the Builder window, say: Act on Round 2 of reviews/c1-skills.md.
+Read:  guide/08-step1-skills.html#rounds
+Also:  the baseline's runs: 2 of 3 scored full runs (start the last one in a plain terminal)</pre>
+</div>
+<dl>
+  <dt>Done</dt><dd><p>the stages before the one you are in, and any later stage already complete.</p></dd>
+  <dt>Now</dt><dd><p>the first stage with something not done, and where you are in it.</p></dd>
+  <dt>Next</dt><dd><p>that stage's next item, as one action: the words to say to the Builder, the command to run in a plain terminal, or the file and heading to write under.
+  A long run is always given as the exact command for a plain terminal, with <code>--repeats N</code> for the runs still missing, <code>--topic &lt;id&gt;</code> for a test topic, and <code>--only teach --minutes M --repeats N</code> for the length study.</p></dd>
+  <dt>Read</dt><dd><p>the guide page and section that explain it.</p></dd>
+  <dt>Also</dt><dd><p>sometimes: a bench still running (below), at most two items not done from earlier stages (the long runs left behind), and, when Next is a long run, the first later item that needs no run, as "While it runs: ...".</p></dd>
+</dl>
+<p>Two rules keep a long run from holding you back.
+A stage whose only items left are long runs counts as passed once you have done an item of a later stage, so you can go on while a run goes in a plain terminal, and Also keeps the run in view; within a stage the items stay in order, because a major review needs its run.
+And an item that needs runs you left behind sends Now back to the first of those runs: a blind comparison pairs only the runs there are when it starts, the test topics' open review reads their runs, and <code>EVAL.md</code> with no TODO reports on every run.</p>
+<p>Two cases change the shape.
+When <code>p3 check</code> has an integrity failure, Now says so ("1 Set up: p3 check reports an integrity failure"), Next is its FAIL line, and Read is <a href="19-troubleshooting.html">When it breaks</a>, because nothing else is worth doing until the repo is sound.
+The one exception is a bench still running: a run folder with no <code>run.json</code> that changed in the last 90 minutes is not a failure for <code>p3 next</code>, which names it under Also, while <code>p3 check</code> still fails on it; after 90 minutes with no change it counts as a stopped run (<a href="19-troubleshooting.html#stopped-run">You stopped a run</a>).
+When everything <code>p3 check --final</code> checks is done, Now is 12 Hand in, and Next says the video, the push and the Canvas post remain.</p>
+
+<h3 id="next-stages">The stages p3 next walks through</h3>
+<div class="table-wrap">
+<table>
+  <caption>The map, in order. A stage is done when every item in it is done, and passed when only its long runs are left and you have done an item of a later stage.</caption>
+  <thead><tr><th>Stage</th><th>Its items, in order</th><th>Page</th></tr></thead>
+  <tbody>
+    <tr><td>1 Set up</td><td>the repo has an <code>origin</code> remote that is not the course template; no integrity failure</td><td><a href="01-setup.html">01</a></td></tr>
+    <tr><td>2 The baseline</td><td>a run of <code>c0-baseline</code> exists, quick or full; 3 scored full runs (a long run)</td><td><a href="03-baseline.html">03</a></td></tr>
+    <tr><td>3 Your preferences</td><td><code>tutor/PREFERENCES.md</code> differs from <code>configs/c0-baseline/PREFERENCES.md</code>, line endings ignored</td><td><a href="04-preferences.html">04</a></td></tr>
+    <tr><td>4 Step 1, <code>c1-skills</code></td><td>the quick rounds; the snapshot; 1 scored full run (long); the major review complete; <code>EVAL.md</code> section 2 with no TODO; an entry in <code>reviews/components.md</code> for each component of the snapshot, with Purpose and Review written</td><td><a href="08-step1-skills.html">08</a></td></tr>
+    <tr><td>5 Step 2, <code>c2-review</code></td><td>the same, with <code>EVAL.md</code> section 3</td><td><a href="09-step2-review-loops.html">09</a></td></tr>
+    <tr><td>6 The length study, part 1</td><td>598E or <code>length-study</code> only: <code>PREREG.md</code>, sections 1 to 4 written (no TODO) and committed; 3 teach-only runs of <code>c1-skills</code> at each of 10, 30 and 60 minutes (long)</td><td><a href="16-stretch-and-598e.html#prereg">16</a></td></tr>
+    <tr><td>7 Step 3, <code>c3-split</code></td><td>the same as step 1, with <code>EVAL.md</code> section 4</td><td><a href="10-step3-split.html">10</a></td></tr>
+    <tr><td>8 Test topics</td><td>two topics in <code>bench/own/</code>, each valid with no TODO, each committed and unchanged</td><td><a href="11-test-topics.html">11</a></td></tr>
+    <tr><td>9 <code>final</code></td><td>a PreToolUse hook in <code>tutor/.claude/settings.json</code>; the snapshot <code>final</code> with the four skills and the hook; 3 scored full runs (long); a <code>final-minus-*</code> snapshot and its full run (long); runs of <code>c0-baseline</code> and <code>final</code> on both test topics (long); for the length study, 3 teach-only runs of <code>final</code> at each length (long); 3 complete learning sessions; the major review of <code>final</code> complete and committed</td><td><a href="12-final.html">12</a></td></tr>
+    <tr><td>10 The blind comparison</td><td>complete sessions of <code>c0-baseline</code> against <code>final</code> for teach, quiz, grade and tutor; for the length study, the three teach-only sessions</td><td><a href="13-blind-comparison.html">13</a></td></tr>
+    <tr><td>11 The write-up</td><td>the test topics' open reviews in <code>reviews/final.md</code>; <code>reviews/components.md</code> complete with the minimums met; <code>EVAL.md</code> (and <code>PREREG.md</code> for the study) with no TODO</td><td><a href="14-write-up.html">14</a></td></tr>
+    <tr><td>12 Hand in</td><td><code>p3 check --final</code> passes</td><td><a href="15-hand-in.html">15</a></td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>p3 next</code> lists stage 9's runs in the order above, but each one runs a frozen snapshot, so their order does not matter, as long as <code>tutor/</code> is restored with <code>git restore tutor/</code> after the ablation and before your first learning session (<a href="12-final.html#runs">final</a> says why).</p>
+
+<h3 id="next-rounds">What Next says during quick rounds</h3>
+<p>In stages 4, 5 and 7, <code>p3 next</code> looks at the first round in the step's review file that is not complete, and names the one thing that round needs.</p>
+<ul>
+  <li><strong>The round is untouched:</strong> "Run the live tutor (uv run p3 bench <span class="nw">--config</span> live <span class="nw">--quick</span>, or <span class="nw">--only</span> with the scenarios you are working on), then write what you noticed under Round k &gt; My thoughts in reviews/&lt;step&gt;.md."</li>
+  <li><strong>Your thoughts are written and What changed still holds its markers:</strong> "In the Builder window, say: Act on Round k of reviews/&lt;step&gt;.md."</li>
+  <li><strong>Something else in the round is incomplete:</strong> "Finish Round k in reviews/&lt;step&gt;.md:" and the first problem.</li>
+  <li><strong>Every round is complete, and there are fewer than the minimum of two:</strong> "Add Round k to reviews/&lt;step&gt;.md by copying the last round with its marker lines."</li>
+  <li><strong>The minimum is reached:</strong> in step 1, while one of the four required skills is missing from <code>tutor/</code>, "Add a round for the &lt;job&gt; skill: copy the last round of reviews/c1-skills.md with its marker lines, as Round k."; otherwise the rounds are done, and Next moves on to the snapshot.</li>
+</ul>
+<p>The snapshot advice names what the step must hold, which neither <code>p3 next</code> nor <code>p3 check</code> can see: in step 1, "When the four skills are in and you are happy with the tutor, snapshot it: uv run p3 snapshot c1-skills (or add another round first)."; in step 2, "When teach, quiz and grade each have their review loop and you are happy with the tutor, ..."; in step 3, "When the teach job is split across its subagents and you are happy with the tutor, ...".
+So step 2 takes at least three rounds, one reviewer per round, even though <code>p3 check</code> counts only two.</p>
+<p><code>p3 next</code> cannot see everything: whether CI is green, whether you have read <code>KNOWN-GAPS.md</code>, or what your skills and subagents actually do.
+The Guide asks you about those when they matter.</p>
+
+<h2 id="p3-check">p3 check</h2>
+<pre><code>uv run p3 check [--final]</code></pre>
+<p>It prints a checklist of the repo's state, one line per item, in two parts, and it is the same command CI runs on every push (the <code>p3-check</code> workflow).
+It calls no model.
+Run it before every push.</p>
+<ul>
+  <li><strong>Integrity</strong>, always: the fixed files are unchanged (<code>p3/bench.sha256</code> matches), <code>tutor/FORMATS.md</code> is identical to <code>bench/FORMATS.md</code>, every snapshot matches its <code>SNAPSHOT.json</code>, every run names a config whose hash matches, every JSON file under <code>bench/</code> and <code>configs/</code> parses, every topic validates, every comparison record fits its configs and runs and has its key file, and <code>c1-skills</code> adds no subagent.
+  A FAIL here makes the command exit with status 1, and turns CI red.</li>
+  <li><strong>Hand-in</strong>: everything you hand in, from the snapshots and runs to every part of your reviews, the inventory and <code>EVAL.md</code>.
+  Without <code>--final</code>, a missing item is a TODO line, which is work still to do and not an error; with <code>--final</code>, each one is a FAIL.</li>
+</ul>
+<p>Each line starts with one of four words: <code>OK</code> (the item holds), <code>TODO</code> (hand-in work not done yet), <code>WARN</code> (worth a look, never a failure) or <code>FAIL</code> (something is broken, or, with <code>--final</code>, something the hand-in needs is missing).
+A line can have indented detail lines under it, such as the review headings still to write.
+On a fresh copy of the template it starts like this:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+  <pre class="out">p3 check: 498E (C:\...\work\p3-tutor)
+
+Integrity
+  OK    p3.json: section 498E, no stretch chosen yet
+  OK    p3/bench.sha256 matches the 31 fixed files
+  OK    tutor/FORMATS.md is identical to bench/FORMATS.md
+  OK    configs/c0-baseline/ matches its SNAPSHOT.json (14 files)
+  OK    bench/runs/: no runs yet
+  ...
+
+Hand-in
+  TODO  EVAL.md: 30 TODO markers left (lines 31, 38, 49, 55, 65, 77, 84, 90, 98, 110, ...)
+  OK    config c0-baseline: the baseline
+  TODO  config c1-skills: not snapshotted yet (p3 snapshot c1-skills)
+  ...
+  TODO  runs of c0-baseline: 0 of the 3 scored full runs needed on agent-architecture at 30 minutes (p3 bench --config c0-baseline --repeats 3)
+  ...
+
+Integrity: no failures.
+Hand-in: 2 of 29 items done (TODO lines are work still to do; p3 check --final fails on them).</pre>
+</div>
+<p>The reviews part of Hand-in reads your files in <code>reviews/</code> and lists what is still to do in them, by file and heading, such as a round with an empty part, a rating that is not a whole number from 1 to 5, or a component with no inventory entry.
+<a href="07-reviews.html">Your reviews</a> explains those lines, and <a href="19-troubleshooting.html">When it breaks</a> has the usual reasons for a FAIL and for a review it will not count.
+Run <code>uv run p3 check --final</code> before you hand in (<a href="15-hand-in.html">Hand in</a>).</p>
+
+<h2 id="p3-snapshot">p3 snapshot</h2>
+<pre><code>uv run p3 snapshot &lt;name&gt; [--force]</code></pre>
+<p>It copies the config files of <code>tutor/</code> (<code>CLAUDE.md</code>, <code>PREFERENCES.md</code> and everything under <code>.claude/</code> except <code>settings.local.json</code>) into <code>configs/&lt;name&gt;/</code>, and records their hash in <code>configs/&lt;name&gt;/SNAPSHOT.json</code>.
+It calls no model.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The options of <code>p3 snapshot</code>.</caption>
+  <thead><tr><th>Argument or option</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Argument or option"><code>&lt;name&gt;</code></td><td data-label="What it does">the config's name, such as <code>c1-skills</code>: lowercase letters, digits and hyphens, starting with a letter or a digit, at most 41 characters, and not <code>live</code></td></tr>
+    <tr><td data-label="Argument or option"><code>--force</code></td><td data-label="What it does">replaces an existing snapshot of that name; when that snapshot has runs, <code>p3 check</code> then fails, because the runs no longer match it</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 snapshot c1-skills</pre>
+  <pre class="out">configs/c1-skills/: &lt;N&gt; config files, sha256:&lt;64 hexadecimal digits&gt;
+Run it with: p3 bench --config c1-skills</pre>
+</div>
+<p>It refuses an existing name without <code>--force</code>, and a config file that is not <span class="nw">UTF-8</span>, naming the file.
+<a href="05-tutor-and-configs.html#snapshot">A snapshot</a> explains the hash, why snapshots are frozen once they have runs, and when <code>--force</code> is safe.</p>
+
+<h2 id="p3-bench">p3 bench</h2>
+<pre><code>uv run p3 bench --config &lt;name&gt;
+    [--topic &lt;id&gt;] [--repeats N]
+    [--quick] [--minutes M]
+    [--only &lt;ids&gt;] [--jobs N] [--keep]
+    [--no-score] [--offline]</code></pre>
+<p>It runs a config's tutor on a topic's scenarios, each one a headless <code>claude -p</code> session in a fresh folder outside your repo, saves everything each session did, and scores the run.
+<strong>It draws on your Claude plan</strong>: every scenario is a real Claude Code session, and so is each scoring call.
+<a href="06-the-bench.html">The bench</a> explains what a scenario does and what each number means.</p>
+<div class="table-wrap">
+<table>
+  <caption>The options of <code>p3 bench</code>, from <code>p3 bench --help</code>.</caption>
+  <thead><tr><th>Option</th><th>What it does</th><th>Default</th></tr></thead>
+  <tbody>
+    <tr><td><code>--config &lt;name&gt;</code></td><td>required: a snapshot under <code>configs/</code>, or <code>live</code> for <code>tutor/</code> as it is now, into <code>bench/runs/_live/</code>, which git ignores</td><td>none</td></tr>
+    <tr><td><code>--topic &lt;id&gt;</code></td><td>the topic; an id is looked up in <code>bench/topics/</code> and then in <code>bench/own/</code>; a test topic runs only when it is committed and unchanged</td><td><code>agent-architecture</code></td></tr>
+    <tr><td><code>--repeats N</code></td><td>runs the whole set N times, one after another, each repeat its own run</td><td>1</td></tr>
+    <tr><td><code>--quick</code></td><td>runs <code>teach</code>, <code>quiz</code>, <code>grade-s1</code> and the first two tutor probes, once; <code>--repeats</code> is ignored</td><td>off</td></tr>
+    <tr><td><code>--minutes M</code></td><td>the lesson length to request (the length study uses 10, 30 and 60)</td><td>the topic's: 30 on the shared topic</td></tr>
+    <tr><td><code>--only &lt;ids&gt;</code></td><td>runs only these scenarios, comma-separated, such as <code>teach,tutor-p03</code>; such a run is not a full run, so <code>p3 report</code>, <code>p3 compare</code> and <code>p3 check</code> leave it out, except that <code>--only teach</code> runs are the length study's and <code>--teach-only</code> shows them</td><td>every scenario</td></tr>
+    <tr><td><code>--jobs N</code></td><td>runs up to N scenarios of a repeat at the same time, which saves time but not tokens</td><td>1</td></tr>
+    <tr><td><code>--keep</code></td><td>keeps each scenario's working folder and prints where it is, to look inside afterwards; a later <code>p3 bench</code> deletes kept folders more than a day old</td><td>off</td></tr>
+    <tr><td><code>--no-score</code></td><td>skips scoring; score later with <code>p3 score &lt;run-dir&gt;</code></td><td>off</td></tr>
+    <tr><td><code>--offline</code></td><td>skips the link checks when scoring, so dead links are unknown</td><td>off</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Here are the commands you will use most.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 bench --config live --quick</pre>
+</div>
+<p>A quick round's run: five scenarios of <code>tutor/</code> as it stands; add <code>--only</code> in place of <code>--quick</code> to run just the scenarios you are working on.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c0-baseline --repeats 3</pre>
+</div>
+<p>Three full runs of a snapshot, 30 sessions plus their scoring; start it when you can leave it running.</p>
+<p>What it prints, in this shape (the angle brackets stand for your own values):</p>
+<pre class="out"><code>p3 bench: config c0-baseline (sha256:&lt;first 12 digits&gt;), topic agent-architecture, 30-minute lesson, 5 scenarios x 1 repeat, model sonnet
+  claude &lt;version&gt;; each scenario is a claude -p session on your Claude subscription
+
+repeat 1 of 1: bench/runs/c0-baseline/&lt;run-id&gt;
+  start  teach
+  [1/5] teach: ok, &lt;m&gt; min, &lt;n&gt; turns, &lt;tokens&gt; tokens, 1 file
+  start  quiz
+  ...
+
+scenario   status  minutes  turns  tokens  output  subagents  list-price
+...
+total      ...
+(list-price: the list-price equivalent, not what you pay on a subscription; ~ marks tokens counted from an unfinished trace)
+
+scoring...
+  &lt;N&gt; model-scored calls (claude -p, no tools)
+  teach: facts present and correct (share)                       &lt;number&gt;
+  ...
+  tutor: expected behavior met (share)                           &lt;number&gt;
+  scoring: &lt;N&gt; calls, &lt;tokens&gt; tokens, $&lt;cost&gt; (list-price equivalent, not what you pay on a subscription)</code></pre>
+<p>It may also print one of these lines, each worth reading; all but the last come before the first scenario starts:</p>
+<ul>
+  <li>for a live run, "config live: results go to bench/runs/_live/, which is not committed; snapshot the tutor to keep a run";</li>
+  <li>when you add <code>--repeats</code> to <code>--quick</code>, "<span class="nw">--quick</span> runs once; <span class="nw">--repeats</span> is ignored";</li>
+  <li>a warning that a <code>CLAUDE.md</code> sits in a folder above the scenario folders, so it reaches every scenario (<a href="06-the-bench.html#one-scenario">What one scenario does</a>);</li>
+  <li>on Windows, a warning that the run folders are long enough to pass the 260-character path limit (<a href="19-troubleshooting.html">When it breaks</a>);</li>
+  <li>a line saying it removed <code>ANTHROPIC_API_KEY</code> so the bench uses your Claude subscription;</li>
+  <li>after a run, a warning that Claude Code changed version during it.</li>
+</ul>
+<p>And it refuses to start, with a message that says why, when the config does not exist ("there is no config named ..."), when a snapshot no longer matches its <code>SNAPSHOT.json</code>, when an <code>--only</code> id is not a scenario (it lists the real ones), when a test topic still has TODO markers or is not committed and unchanged, or when <code>claude --version</code> does not answer (the message names <code>P3_CLAUDE</code>).
+If a usage limit or a sign-in problem stops a run partway, it sets that repeat aside under <code>bench/runs/_live/_aborted/</code>; <a href="06-the-bench.html#usage-limit">A usage limit in the middle of a run</a> says what to do.</p>
+
+<h2 id="p3-score">p3 score</h2>
+<pre><code>uv run p3 score [--offline]
+    [--no-model] &lt;run&gt;</code></pre>
+<p>It scores one run, or scores it again, and writes the run's <code>score.json</code>, replacing any earlier one.
+<code>&lt;run&gt;</code> is a run folder, such as <code>bench/runs/c0-baseline/&lt;run-id&gt;</code>, or just the run id.
+<code>p3 bench</code> already scores every run, so you need this command only in a few cases: a run made with <code>--no-score</code>, a run whose scoring a usage limit stopped, and a run scored before you fixed this Python's certificates on macOS.
+<strong>It draws on your plan</strong> for the judge and the two solvers, about 57,000 tokens for a full run in my pilot, unless you add <code>--no-model</code>.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The options of <code>p3 score</code>.</caption>
+  <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Option"><code>--offline</code></td><td data-label="What it does">skips the link checks, so <code>teach_dead_links</code> is unknown</td></tr>
+    <tr><td data-label="Option"><code>--no-model</code></td><td data-label="What it does">skips every check that calls a model (the judge and the solvers); the checks done by script still run</td></tr>
+  </tbody>
+</table>
+</div>
+<p>It prints "scored &lt;run&gt;", the twelve headline numbers, one line on what the scoring cost, and any warnings.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>Because <code>p3 score</code> replaces <code>score.json</code>, scoring a run again with <code>--no-model</code> replaces its judged numbers with unknowns (shown as "-").
+Use <code>--no-model</code> to try the script checks for free, not on a run you will report.</p>
+</div>
+
+<h2 id="p3-report">p3 report</h2>
+<pre><code>uv run p3 report [--topic &lt;id&gt;]
+    [--configs a,b,...] [--minutes M]
+    [--quick] [--teach-only]
+    [--reviews]</code></pre>
+<p>It prints Markdown tables, for pasting into <code>EVAL.md</code>: one row per config with each headline number as the mean over its scored full runs and the range in brackets, with the run count, then a cost table per job and one for all jobs.
+In a report of the shared topic's full runs, it then adds "Your ratings": the 1 to 5 ratings from your major reviews in <code>reviews/</code>, one row per criterion and one column per step.
+It calls no model.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The options of <code>p3 report</code>.</caption>
+  <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Option"><code>--topic &lt;id&gt;</code></td><td data-label="What it does">the topic; <code>agent-architecture</code> by default</td></tr>
+    <tr><td data-label="Option"><code>--configs a,b,...</code></td><td data-label="What it does">only these configs, in this order; by default every config with a scored run</td></tr>
+    <tr><td data-label="Option"><code>--minutes M</code></td><td data-label="What it does">only runs at this lesson length; by default every length, one row each</td></tr>
+    <tr><td data-label="Option"><code>--quick</code></td><td data-label="What it does">the quick runs instead of the full ones</td></tr>
+    <tr><td data-label="Option"><code>--teach-only</code></td><td data-label="What it does">the length study's teach-only runs (<code>p3 bench --only teach</code>) instead of the full runs</td></tr>
+    <tr><td data-label="Option"><code>--reviews</code></td><td data-label="What it does">only the table of your ratings; the other options do not apply</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 report --configs c0-baseline,c1-skills</pre>
+</div>
+<p>Runs made with <code>--only</code> are left out of a full-run report, because a job they did not run would count as zero tokens and minutes.
+"Your ratings" is left out of a report of a test topic, of quick runs or of teach-only runs.
+When there is nothing to report, it says so and why, for example "no scored full runs (quick runs and <span class="nw">--only</span> runs left out) on topic <span class="nw">agent-architecture</span>", and suggests <code>--quick</code> when only quick runs exist.
+<a href="14-write-up.html">The inventory and EVAL.md</a> says where each table goes.</p>
+
+<h2 id="p3-compare">p3 compare</h2>
+<pre><code>uv run p3 compare &lt;config-a&gt; &lt;config-b&gt;
+    --job teach|quiz|grade|tutor
+    [--minutes M] [--quick]
+    [--teach-only] [--terminal]
+    [--port P] [--topic &lt;id&gt;]
+uv run p3 compare --resume &lt;session-id&gt;
+uv run p3 compare --reveal &lt;session-id&gt;
+uv run p3 compare --list</code></pre>
+<p>It runs a blind comparison: it puts two configs' outputs for the same task side by side, labelled only "Left" and "Right", records your pick for each pair, and at the end reveals which config was which, quality first and then cost.
+It calls no model, because the pairs come from runs you already have; it costs your reading time and nothing else.
+Run it yourself, in a plain terminal, because the picks must be yours.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The options of <code>p3 compare</code>.</caption>
+  <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Option"><code>&lt;config-a&gt; &lt;config-b&gt;</code></td><td data-label="What it does">the two configs, such as <code>c0-baseline final</code></td></tr>
+    <tr><td data-label="Option"><code>--job</code></td><td data-label="What it does"><code>teach</code>, <code>quiz</code>, <code>grade</code> or <code>tutor</code>: whose outputs to compare</td></tr>
+    <tr><td data-label="Option"><code>--minutes M</code></td><td data-label="What it does">pairs only runs at this lesson length; the topic's 30 by default</td></tr>
+    <tr><td data-label="Option"><code>--quick</code></td><td data-label="What it does">pairs quick runs instead, for trying the tool out; <code>p3 check</code> does not count such a session</td></tr>
+    <tr><td data-label="Option"><code>--teach-only</code></td><td data-label="What it does">with <code>--job teach</code>: pairs the length study's teach-only runs</td></tr>
+    <tr><td data-label="Option"><code>--terminal</code></td><td data-label="What it does">writes each pair as one side-by-side HTML file, prints its path, and asks the three questions in the terminal, for when a browser is awkward</td></tr>
+    <tr><td data-label="Option"><code>--port P</code></td><td data-label="What it does">the local port for the comparison page; a free one by default</td></tr>
+    <tr><td data-label="Option"><code>--topic &lt;id&gt;</code></td><td data-label="What it does">the topic; every comparison this project asks for is on the shared topic, the default, and there are none on the test topics</td></tr>
+    <tr><td data-label="Option"><code>--resume &lt;session-id&gt;</code></td><td data-label="What it does">continues a session you closed; every answer was saved as you gave it</td></tr>
+    <tr><td data-label="Option"><code>--reveal &lt;session-id&gt;</code></td><td data-label="What it does">shows the result of a finished session: the tally, the sign-test <span class="nw">p-value</span>, how often you could tell, your reasons, the objective checks, and only then the cost</td></tr>
+    <tr><td data-label="Option"><code>--list</code></td><td data-label="What it does">lists your sessions</td></tr>
+  </tbody>
+</table>
+</div>
+<p>When a session starts it prints its id, how many pairs it found, where the key file is ("do not open it before the reveal"), and the address of the comparison page, which opens in your browser.
+It writes two files, <code>bench/compare/&lt;session-id&gt;.json</code> (the pairs and your picks) and <code>bench/compare/&lt;session-id&gt;.key.json</code> (which config was on which side); commit both after the reveal, and never open the key file before it.
+It refuses, saying which run is missing, when either config has no scored full run on the topic at that length.
+<a href="13-blind-comparison.html">The blind comparison</a> explains the whole procedure and how to read the tally.</p>
+
+<h2 id="p3-new-topic">p3 new-topic</h2>
+<pre><code>uv run p3 new-topic &lt;id&gt;</code></pre>
+<p>It writes a skeleton test topic in <code>bench/own/&lt;id&gt;/</code>, with every file present, placeholder text marked TODO, and a short example of each JSON file's shape.
+The id is lowercase letters, digits and hyphens, such as <code>statics-trusses</code>.
+It calls no model.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 new-topic statics-trusses</pre>
+  <pre class="out">wrote bench/own/statics-trusses/ with 9 files
+9 files hold TODO markers to fill in; p3 check lists them.
+Then commit the topic before its first run: the bench runs an own topic only when it is committed and unchanged.</pre>
+</div>
+<p><a href="11-test-topics.html">Your two test topics</a> walks through filling it in, and <code>bench/own/README.md</code> says what each file holds.</p>
+
+<h2 id="p3-rehash">p3 rehash</h2>
+<p>It rewrites <code>p3/bench.sha256</code> after I change a fixed file in the course's template.
+Never run it in your repo.
+When <code>p3 check</code> reports that a fixed file differs from the course's version, restore that file from git instead (<code>git checkout -- &lt;path&gt;</code>).
+The point of the check is that your bench measures the same way as everyone's, and rehashing would only hide the difference from it.</p>
+
+<h2 id="repo-files">Every file and folder in your repo</h2>
+<p>The rule behind the layout: I own everything that runs the measurement, and you own everything that decides how the tutor behaves.
+"Written by <code>p3</code>" means the folder is yours, but only through the command that writes it, never by hand.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The top level of your P3 repo, <code>work/p3-tutor</code>, and the parts of <code>bench/</code>.</caption>
+  <thead><tr><th>Path</th><th>What it is</th><th>Whose</th><th>More</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Path"><code>README.md</code></td><td data-label="What it is">the brief: what you hand in, the ladder, the rules, the grading, the deadline</td><td data-label="Whose">mine</td><td data-label="More"><a href="index.html">Start here</a></td></tr>
+    <tr><td data-label="Path"><code>CLAUDE.md</code></td><td data-label="What it is">the two roles, the Guide and the Builder, and the Builder's rules, including what it must never write for you</td><td data-label="Whose">mine</td><td data-label="More"><a href="02-two-windows.html">02</a></td></tr>
+    <tr><td data-label="Path"><code>guide/</code></td><td data-label="What it is">this guide; open <code>guide/index.html</code> in a browser</td><td data-label="Whose">mine</td><td data-label="More"><a href="#course-owned">below</a></td></tr>
+    <tr><td data-label="Path"><code>.claude/</code></td><td data-label="What it is">the Guide's agent, its guard and the root settings</td><td data-label="Whose">mine</td><td data-label="More"><a href="#course-owned">below</a></td></tr>
+    <tr><td data-label="Path"><code>KNOWN-GAPS.md</code></td><td data-label="What it is">failures I saw when I ran the baseline, each with the run that shows it</td><td data-label="Whose">mine</td><td data-label="More"><a href="03-baseline.html">03</a></td></tr>
+    <tr><td data-label="Path"><code>THIRD-PARTY.md</code></td><td data-label="What it is">the license notice for the <code>teach</code> skill, adapted from Matt Pocock's <code>mattpocock/skills</code> under the MIT license</td><td colspan="2" data-label="Whose">mine</td></tr>
+    <tr><td data-label="Path"><code>p3.json</code></td><td data-label="What it is">your section (<code>"498E"</code> or <code>"598E"</code>) and your stretch (an option's id, or <code>null</code>)</td><td data-label="Whose">yours</td><td data-label="More"><a href="01-setup.html">01</a></td></tr>
+    <tr><td data-label="Path"><code>tutor/</code></td><td data-label="What it is">your tutor: its config and the learner files of your live sessions</td><td data-label="Whose">yours, except <code>tutor/FORMATS.md</code></td><td data-label="More"><a href="05-tutor-and-configs.html">05</a></td></tr>
+    <tr><td data-label="Path"><code>configs/</code></td><td data-label="What it is">your snapshots, one folder each, with <code>SNAPSHOT.json</code>; <code>c0-baseline</code> ships</td><td data-label="Whose">yours, written by <code>p3 snapshot</code></td><td data-label="More"><a href="05-tutor-and-configs.html#snapshot">05</a></td></tr>
+    <tr><td data-label="Path"><code>bench/FORMATS.md</code></td><td data-label="What it is">the output contract</td><td data-label="Whose">mine, <span class="nw">hash-checked</span></td><td data-label="More"><a href="05-tutor-and-configs.html#output-contract">05</a></td></tr>
+    <tr><td data-label="Path"><code>bench/scenarios.json</code></td><td data-label="What it is">the scenarios, their requests, and their time and turn limits</td><td data-label="Whose">mine, <span class="nw">hash-checked</span></td><td data-label="More"><a href="06-the-bench.html#scenarios">06</a></td></tr>
+    <tr><td data-label="Path"><code>bench/judge/</code></td><td data-label="What it is">the prompts of the judge (<code>teach.md</code>, <code>tutor.md</code>) and the solvers (<code>solver.md</code>)</td><td data-label="Whose">mine, <span class="nw">hash-checked</span></td><td data-label="More"><a href="06-the-bench.html#judge">06</a></td></tr>
+    <tr><td data-label="Path"><code>bench/topics/</code></td><td data-label="What it is">the shared topic, <code>agent-architecture/</code></td><td data-label="Whose">mine, <span class="nw">hash-checked</span></td><td data-label="More"><a href="06-the-bench.html#shared-topic">06</a></td></tr>
+    <tr><td data-label="Path"><code>bench/own/</code></td><td data-label="What it is">your two test topics, one folder each, and a <code>README.md</code> that walks you through them</td><td data-label="Whose">yours</td><td data-label="More"><a href="11-test-topics.html">11</a></td></tr>
+    <tr><td data-label="Path"><code>bench/runs/</code></td><td data-label="What it is">your committed runs, one folder per config, one folder per run</td><td data-label="Whose">written by <code>p3 bench</code> and <code>p3 score</code></td><td data-label="More"><a href="06-the-bench.html#run-folder">06</a></td></tr>
+    <tr><td data-label="Path"><code>bench/runs/_live/</code></td><td data-label="What it is">the runs of <code>--config live</code>, and repeats set aside under <code>_aborted/</code>; git ignores it</td><td data-label="Whose">written by <code>p3 bench</code></td><td data-label="More"><a href="06-the-bench.html#usage-limit">06</a></td></tr>
+    <tr><td data-label="Path"><code>bench/compare/</code></td><td data-label="What it is">your blind comparisons, two files per session</td><td data-label="Whose">written by <code>p3 compare</code></td><td data-label="More"><a href="13-blind-comparison.html">13</a></td></tr>
+    <tr><td data-label="Path"><code>reviews/</code></td><td data-label="What it is">your quick rounds and major reviews, your learning sessions, your test-topic reviews, the component inventory, and a <code>README.md</code> on how to write each part</td><td data-label="Whose">yours; the Builder writes only what it changed in each round and the inventory's factual fields</td><td data-label="More"><a href="#review-files">below</a></td></tr>
+    <tr><td data-label="Path"><code>EVAL.md</code></td><td data-label="What it is">your write-up: what each step bought and cost, in your own words</td><td data-label="Whose">yours</td><td data-label="More"><a href="14-write-up.html">14</a></td></tr>
+    <tr><td data-label="Path"><code>PREREG.md</code></td><td data-label="What it is">the length study's pre-registration, for 598E and the <code>length-study</code> stretch; anyone else can ignore it or delete it</td><td data-label="Whose">yours</td><td data-label="More"><a href="16-stretch-and-598e.html#prereg">16</a></td></tr>
+    <tr><td data-label="Path"><code>p3/</code></td><td data-label="What it is">the tool: the runner, the scorer, the comparison tool, the check and <code>p3 next</code></td><td data-label="Whose">mine, <span class="nw">hash-checked</span></td><td data-label="More">this page</td></tr>
+    <tr><td data-label="Path"><code>p3/bench.sha256</code></td><td data-label="What it is">the hashes of the 31 fixed files: <code>bench/FORMATS.md</code>, <code>bench/scenarios.json</code>, <code>bench/judge/</code>, <code>bench/topics/</code> and every <code>.py</code> file in <code>p3/</code></td><td data-label="Whose">mine</td><td data-label="More"><a href="#p3-rehash">above</a></td></tr>
+    <tr><td data-label="Path"><code>tests/</code></td><td data-label="What it is">the tests of <code>p3</code>, which run against a stand-in for Claude and never call it; your guard's tests go here too, such as <code>tests/test_guard.py</code></td><td data-label="Whose">mine, plus the tests you add</td><td data-label="More"><a href="12-final.html#guard">12</a></td></tr>
+    <tr><td data-label="Path"><code>pyproject.toml</code></td><td data-label="What it is">what makes <code>uv run p3</code> work; <code>p3</code> has no dependencies</td><td colspan="2" data-label="Whose">the template's; leave it</td></tr>
+    <tr><td data-label="Path"><code>.github/workflows/</code></td><td data-label="What it is"><code>p3-check.yml</code>, which runs <code>python -m p3 check</code> on every push of your repo, and <code>template-ci.yml</code>, which runs only in the course's template and is skipped in your copy</td><td data-label="Whose">mine</td><td data-label="More"><a href="01-setup.html">01</a></td></tr>
+    <tr><td data-label="Path"><code>.gitignore</code>, <code>.gitattributes</code></td><td data-label="What it is">what git ignores (<code>bench/runs/_live/</code>, Python's caches, <code>.venv/</code>, the <code>uv.lock</code> that <code>uv run</code> writes the first time, and every <code>.claude/settings.local.json</code>, the personal file of the tools you approved in your own sessions) and how it stores line endings (LF)</td><td colspan="2" data-label="Whose">the template's; leave them</td></tr>
+    <tr><td data-label="Path"><code>.venv/</code></td><td data-label="What it is">the environment <code>uv</code> makes the first time you use <code>uv run</code>; git ignores it</td><td colspan="2" data-label="Whose">your machine's</td></tr>
+  </tbody>
+</table>
+</div>
+<p>"Hash-checked" means <code>p3 check</code> fails, in CI as on your machine, when one of those files changes; restore it with <code>git restore &lt;path&gt;</code>.
+If you think one of my files has a bug, tell me with the evidence, and I will fix it for everyone.</p>
+
+<h2 id="course-owned">The course's files you leave as they are</h2>
+<p>Besides <code>bench/</code> (outside <code>bench/own/</code>), <code>p3/</code>, the test files already in <code>tests/</code> and <code>.github/workflows/</code>, two parts of your repo belong to the course and run the windows you work in.
+They are not hash-checked, but please leave them as they are: the Guide's read-only limits come from them, and the Guide reads the guide to answer you.</p>
+<dl>
+  <dt><code>.claude/agents/p3-guide.md</code></dt>
+  <dd><p>The Guide: <code>claude --agent p3-guide</code> starts a session with this file's body as its whole instructions, with the tools <code>Read</code>, <code>Glob</code>, <code>Grep</code> and <code>Bash</code>, and with a first message it sends by itself, "Where am I in Project 3, and what is the one thing I should do next?".
+  Its frontmatter registers the Guide's guard as a PreToolUse hook.</p></dd>
+  <dt><code>.claude/hooks/guide_guard.sh</code> and <code>.claude/hooks/guide_guard.py</code></dt>
+  <dd><p>The Guide's guard.
+  The shell script finds a working Python and hands it the hook's input; with no Python it blocks the Guide's tools, with a message that points at <a href="19-troubleshooting.html">When it breaks</a>.
+  The Python script lets the Guide read anything except a blind comparison's key, run read-only shell commands, and run <code>p3 next</code>, <code>p3 check</code>, <code>p3 report</code>, <code>p3 compare --list</code> and any <code>--help</code>; it blocks everything else, with a message that tells the Guide to tell you who runs the command instead.</p></dd>
+  <dt><code>.claude/settings.json</code></dt>
+  <dd><p>The root settings, which the Guide and the Builder both load: an allow list for the read-only commands the Guide runs (<code>p3 next</code>, <code>p3 check</code> and <code>p3 report</code> through <code>uv run</code>, <code>python -m</code>, <code>python3 -m</code> and <code>py -m</code>, and <code>git status</code>, <code>git log</code> and <code>git diff</code>), so they run without a prompt, and a deny of <code>Agent(p3-guide)</code>, so the Builder never hands work to the Guide.</p></dd>
+  <dt><code>guide/</code></dt>
+  <dd><p>This guide: <code>index.html</code> and the numbered pages, their stylesheet <code>book.css</code> and script <code>book.js</code>, the chapter list <code>chapters.json</code>, and <code>build.py</code> and <code>_page-template.html</code>, which I use to make the pages.
+  It opens from disk, with no server: in VS Code, right-click <code>guide/index.html</code> and choose "Reveal in File Explorer" (Windows) or "Reveal in Finder" (macOS), then double-click it, or run <code>start guide/index.html</code> (Windows) or <code>open guide/index.html</code> (macOS) in a terminal in <code>work/p3-tutor</code>.</p></dd>
+</dl>
+<div class="watch"><span class="label">Watch out</span>
+<p>There are two guards in this project, and they are not the same thing.
+The Guide's guard, above, is the course's, and keeps the Guide read-only.
+The guard you build in <code>final</code> is yours: a PreToolUse hook in <code>tutor/.claude/settings.json</code> that keeps <code>keys/</code> from your tutor's main conversation (<a href="12-final.html#guard">The guard</a>).</p>
+</div>
+
+<h2 id="run-folder-files">A run folder's files</h2>
+<p>A run of config <code>&lt;config&gt;</code> writes <code>bench/runs/&lt;config&gt;/&lt;run-id&gt;/</code>; a run of <code>--config live</code> writes <code>bench/runs/_live/&lt;run-id&gt;/</code>.
+<a href="06-the-bench.html#open-files">How to open each file</a> says what to look for in each one.</p>
+<div class="table-wrap">
+<table>
+  <caption>The files in a run folder.</caption>
+  <thead><tr><th>File</th><th>What it holds</th><th>Open it with</th></tr></thead>
+  <tbody>
+    <tr><td><code>run.json</code></td><td>the config and its hash, the topic and its hash and commit, the Claude Code version, the model, and per scenario its status, duration, turns, tokens, subagents, web use and permission denials</td><td>VS Code</td></tr>
+    <tr><td><code>score.json</code></td><td>every check's result, the headline numbers, and what the scoring itself cost</td><td>VS Code</td></tr>
+    <tr><td><code>&lt;scenario&gt;/outputs/</code></td><td>every file the scenario wrote or changed, at its own path</td><td>a browser for a lesson, VS Code for the rest</td></tr>
+    <tr><td><code>&lt;scenario&gt;/result.json</code></td><td>the final result line, including the tutor's reply under <code>"result"</code></td><td>VS Code</td></tr>
+    <tr><td><code>&lt;scenario&gt;/trace.jsonl.gz</code></td><td>the whole stream of the session, gzipped, including every subagent's messages</td><td><code>gzip -dc &lt;file&gt; | less</code>, or ask the Builder</td></tr>
+    <tr><td><code>&lt;scenario&gt;/stderr.txt</code></td><td>anything Claude Code printed to stderr, only when there was something</td><td>VS Code</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="review-files">The review files</h2>
+<p>You write your reviews yourself, in VS Code, in these files, under the headings they already have; you never type a review into a chat for an agent to write.
+Each file ships with marker lines, the word TODO where your words go; replace each one, keep every heading exactly as it is, because <code>p3 check</code> finds your reviews by their headings, and save as <span class="nw">UTF-8</span>.
+<a href="07-reviews.html">Your reviews</a> explains every part, with examples.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The files in <code>reviews/</code>.</caption>
+  <thead><tr><th>File</th><th>What it holds</th></tr></thead>
+  <tbody>
+    <tr><td data-label="File"><code>reviews/README.md</code></td><td data-label="What it holds">how to write each part, with an example of each; mine, read it once</td></tr>
+    <tr><td data-label="File"><code>reviews/c1-skills.md</code></td><td data-label="What it holds"><code>## Quick rounds</code>, with a <code>### Round k</code> for each round (its Run line, <code>**My thoughts:**</code> and <code>**What changed:**</code>), then <code>## Major review</code>: its Run line, <code>**Live tries:**</code>, a <code>### Lesson</code>, <code>### Quiz</code>, <code>### Feedback</code> and <code>### Tutor</code> section with a <code>####</code> heading for each criterion (<code>Rating: N</code> and your feedback), then <code>### Compared with the previous step</code> and <code>### What the next step should fix</code></td></tr>
+    <tr><td data-label="File"><code>reviews/c2-review.md</code></td><td data-label="What it holds">the same, with Lesson, Quiz and Feedback</td></tr>
+    <tr><td data-label="File"><code>reviews/c3-split.md</code></td><td data-label="What it holds">the same, with the Lesson only</td></tr>
+    <tr><td data-label="File"><code>reviews/final.md</code></td><td data-label="What it holds">optional quick rounds; the major review of all four jobs, ending in <code>### What I would do next</code>; <code>## Learning sessions</code>, with <code>### Session 1</code> to <code>3</code> (a Date line, a Topic line and your account); and <code>## Test topics</code>, with a <code>###</code> section headed with each test topic's id</td></tr>
+    <tr><td data-label="File"><code>reviews/components.md</code></td><td data-label="What it holds">the component inventory: a <code>###</code> entry per skill and subagent you built, with six fields, Kind, Step added, Purpose, With and without, Review, and Kept in final</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Everything in these files is yours to write, with two exceptions: the Builder writes the What changed part of a round (its Kind, Files and Why lines) when you ask it to act on that round, and it may fill in an inventory entry's Kind, Step added, and With and without, which you check.
+It never writes or edits your parts, even to tidy them, because your judgment is the measurement.</p>
+
+<h2 id="where-outputs">Where to find each output</h2>
+<div class="table-wrap">
+<table class="stack">
+  <caption>Where each thing lands. <code>&lt;run&gt;</code> stands for <code>bench/runs/&lt;config&gt;/&lt;run-id&gt;</code>.</caption>
+  <thead><tr><th>You want</th><th>Where it is</th></tr></thead>
+  <tbody>
+    <tr><td data-label="You want">a run's lesson</td><td data-label="Where it is"><code>&lt;run&gt;/teach/outputs/lessons/0001-&lt;slug&gt;.html</code></td></tr>
+    <tr><td data-label="You want">a run's quiz and key</td><td data-label="Where it is"><code>&lt;run&gt;/quiz/outputs/quizzes/0002.json</code> and <code>&lt;run&gt;/quiz/outputs/keys/0002.json</code> (on the shared topic, whose workspace already holds quiz <code>0001</code>)</td></tr>
+    <tr><td data-label="You want">a run's grades</td><td data-label="Where it is"><code>&lt;run&gt;/grade-s1/outputs/grades/0001-s1.json</code>, and the same under <code>grade-s2</code></td></tr>
+    <tr><td data-label="You want">a tutor reply</td><td data-label="Where it is"><code>&lt;run&gt;/tutor-pNN/result.json</code>, under <code>"result"</code></td></tr>
+    <tr><td data-label="You want">what a review loop recorded</td><td data-label="Where it is">the folder your tutor writes its records to, such as <code>&lt;run&gt;/&lt;scenario&gt;/outputs/review-records/</code></td></tr>
+    <tr><td data-label="You want">each scenario's status, time, tokens, subagents and denials</td><td data-label="Where it is"><code>&lt;run&gt;/run.json</code></td></tr>
+    <tr><td data-label="You want">a run's headline numbers</td><td data-label="Where it is"><code>&lt;run&gt;/score.json</code>, under <code>"summary"</code>, or printed at the end of <code>p3 bench</code> and <code>p3 score</code></td></tr>
+    <tr><td data-label="You want">what a session actually did</td><td data-label="Where it is"><code>&lt;run&gt;/&lt;scenario&gt;/trace.jsonl.gz</code></td></tr>
+    <tr><td data-label="You want">a quick round's run</td><td data-label="Where it is"><code>bench/runs/_live/&lt;run-id&gt;/</code></td></tr>
+    <tr><td data-label="You want">a test topic's runs</td><td data-label="Where it is"><code>bench/runs/&lt;config&gt;/&lt;run-id&gt;/</code>, with the topic's id in the run id</td></tr>
+    <tr><td data-label="You want">a repeat a usage limit stopped</td><td data-label="Where it is"><code>bench/runs/_live/_aborted/&lt;config&gt;/&lt;run-id&gt;/</code></td></tr>
+    <tr><td data-label="You want">a scenario folder kept with <code>--keep</code></td><td data-label="Where it is">the path <code>p3 bench</code> printed ("kept the folder of &lt;id&gt;: &lt;path&gt;"), in your temporary folder</td></tr>
+    <tr><td data-label="You want">a blind comparison</td><td data-label="Where it is"><code>bench/compare/&lt;session-id&gt;.json</code>, and its key file, which you do not open before the reveal</td></tr>
+    <tr><td data-label="You want">the tables for <code>EVAL.md</code></td><td data-label="Where it is">printed by <code>uv run p3 report</code>; nothing is saved</td></tr>
+    <tr><td data-label="You want">what your live tries made</td><td data-label="Where it is"><code>tutor/lessons/</code>, <code>tutor/quizzes/</code>, <code>tutor/grades/</code> and the other learner folders in <code>tutor/</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="names">Names and ids</h2>
+<dl>
+  <dt>A config name</dt>
+  <dd><p>lowercase letters, digits and hyphens, starting with a letter or a digit, at most 41 characters: <code>c0-baseline</code>, <code>c1-skills</code>, <code>c2-review</code>, <code>c3-split</code>, <code>final</code>, <code>final-minus-&lt;x&gt;</code>; <code>live</code> means <code>tutor/</code> as it is now.</p></dd>
+  <dt>A run id</dt>
+  <dd><p>the time the repeat started in UTC, the topic, the lesson minutes and the repeat number, such as <code>20261105-141502-<wbr>agent-architecture-m30-r1</code>.</p></dd>
+  <dt>A scenario id</dt>
+  <dd><p><code>teach</code>, <code>quiz</code>, <code>grade-</code> and a submission id (<code>grade-s1</code>, <code>grade-s2</code>), and <code>tutor-</code> and a probe id (<code>tutor-p01</code> to <code>tutor-p06</code>); on a test topic, its own submissions and probes give the ids.</p></dd>
+  <dt>A session id</dt>
+  <dd><p>a blind comparison's id: the time it started in UTC and the job, such as <code>20261120-190312-tutor</code>; <code>uv run p3 compare --list</code> shows yours.</p></dd>
+  <dt>A topic id</dt>
+  <dd><p>lowercase letters, digits and hyphens: <code>agent-architecture</code> for the shared topic, and your own, such as <code>statics-trusses</code> or <code>knife-skills</code>, in <code>bench/own/</code>.</p></dd>
+</dl>
+
+<h2 id="next">If a command fails</h2>
+<p>Read its message first: every <code>p3</code> message says what is wrong, and most say what to do.
+<a href="19-troubleshooting.html">When it breaks</a> has the symptoms and fixes, from a missing <code>claude</code> to a review <code>p3 check</code> will not count, and <a href="20-glossary.html">the glossary</a> defines every term on this page.
+If the message does not make sense, paste it to the Guide.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>This command failed with the message below. What does it mean, and who should run what next?</pre>
+  <p>Paste the exact message under your question; the words on the screen usually save half the debugging time.</p>
+</div>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="17-pace.html"><span class="pager-label">Previous</span><span class="pager-title">A pace that works</span></a>
+<a class="next" href="19-troubleshooting.html"><span class="pager-label">Next</span><span class="pager-title">When it breaks</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

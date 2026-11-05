@@ -1,0 +1,62 @@
+{
+  "id": "0001",
+  "objective": "O1",
+  "title": "The agent loop and tool calling",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "Which of these is what makes a system an agent, rather than a single call to a language model?",
+      "options": [
+        {"id": "a", "text": "A longer, more detailed prompt that spells out the assistant's role and rules"},
+        {"id": "b", "text": "Automatic memory of every earlier conversation the assistant has had with users"},
+        {"id": "c", "text": "A larger model whose context window can hold a whole textbook at once"},
+        {"id": "d", "text": "A loop where the model picks actions, they are run, and results come back"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O2",
+      "stem": "A student asks your makerspace assistant, \"Is the laser cutter free tomorrow?\" The assistant has a tool check_calendar(machine, date), and the model decides to use it. What does the model itself output at that point?",
+      "options": [
+        {"id": "a", "text": "The calendar entries, which it read by opening the booking system on its own"},
+        {"id": "b", "text": "Nothing yet; the program notices the question is about bookings and calls the tool"},
+        {"id": "c", "text": "A request naming check_calendar, with the laser cutter and tomorrow's date as arguments"},
+        {"id": "d", "text": "The Python code inside check_calendar, so that it can run that code itself"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "Your team points a coding agent at a bug in the makerspace booking script. After 40 steps it is still making the same edit and getting the same failing test, and all 40 steps are still in its context. Which change to the agent program is the best safeguard against this?",
+      "options": [
+        {"id": "a", "text": "A model with a larger context window, so that it can see more"},
+        {"id": "b", "text": "A step limit that stops the loop and reports what happened so far"},
+        {"id": "c", "text": "No change; left to run longer, it will eventually fix the bug"},
+        {"id": "d", "text": "A longer system prompt that tells the model to try much harder"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "numeric",
+      "objective": "O1",
+      "stem": "A student asks your makerspace assistant, \"Is the laser cutter free tomorrow at 3 pm, and do I need training to use it?\" Each time the model is called, it either requests exactly one tool or writes the final answer. In this run it requests check_calendar, then search_manuals, then check_training_record, and then writes its final answer. How many times was the model called in total?",
+      "unit": "model calls"
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O2",
+      "stem": "The program around the model has just run a tool that the model asked for. In one or two sentences, what does the program do with the tool's result, and why?"
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O2",
+      "stem": "Your model has never seen the code inside your tools. In one or two sentences, how does it know which tool to call for a request?"
+    }
+  ]
+}

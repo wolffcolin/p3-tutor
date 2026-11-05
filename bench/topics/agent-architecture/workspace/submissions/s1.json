@@ -1,0 +1,12 @@
+{
+  "quiz": "0001",
+  "learner": "Riley",
+  "answers": [
+    {"id": "q1", "response": "d"},
+    {"id": "q2", "response": "a"},
+    {"id": "q3", "response": "b"},
+    {"id": "q4", "response": "1. The model gets the question once, then it runs the 3 tools itself and answers"},
+    {"id": "q5", "response": "it sends it back to the model"},
+    {"id": "q6", "response": "it gets sent a list of the tools, each with a name and a little description of what it does, and picks the one that fits what the user asked. it also remembers on its own which tool it picked for questions like that in earlier sessions"}
+  ]
+}

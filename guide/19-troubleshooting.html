@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>When it breaks - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html" class="current" aria-current="page">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part IV · Reference</p>
+<h1>When it breaks</h1>
+<p class="lede">Symptoms and their fixes, grouped by where you meet them: starting the windows, running the bench, scoring and comparing, and the checks. Find the heading that matches what you see, and the fix is under it.</p>
+<p class="meta">About 27 minutes to read in full; most visits need one section.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#first">Before anything else</a>, including what it means when <code>p3 next</code> sends you here</li>
+    <li><a href="#windows">Starting the Guide, the Builder and your tutor</a></li>
+    <li><a href="#bench">Running the bench</a></li>
+    <li><a href="#scoring">Scoring and comparing</a></li>
+    <li><a href="#checks"><code>p3 check</code>, <code>p3 next</code> and CI</a></li>
+    <li><a href="#windows-os">Windows</a></li>
+    <li><a href="#stuck">Still stuck</a></li>
+  </ul>
+</section>
+
+<p>Three windows come up on this page. <strong>The Guide</strong> <span class="tag guide">Guide</span> is Claude Code started with <code>claude --agent p3-guide</code> in <code>work/p3-tutor</code>; it explains and never changes a file. <strong>The Builder</strong> <span class="tag builder">Builder</span> is plain <code>claude</code> in the same folder; it changes your tutor and runs the <code>p3</code> commands you ask for. <strong>A plain terminal</strong> <span class="tag plain">Plain terminal</span> is a terminal tab with no Claude Code in it, where the long runs go. <a href="02-two-windows.html">The Guide and the Builder</a> explains all three.</p>
+
+<h2 id="first">Before anything else</h2>
+<p><strong>Read the exact message.</strong> Every error and warning <code>p3</code> prints says what went wrong, and most of them name the command that fixes it. The words on the screen usually save half the debugging time, so copy them before you close anything.</p>
+<p><strong>Ask the Guide what it means.</strong> It can read your repo, run <code>p3 check</code>, and tell you who fixes the problem: you, the Builder, or me.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>p3 printed this. What does it mean, and who should fix it?
+(paste the exact output here)</pre>
+</div>
+
+<h3 id="sent-here">If p3 next sent you here</h3>
+<p><code>uv run p3 next</code> points at this page when <code>p3 check</code> has an <strong>integrity failure</strong>: something is broken, such as a changed course file or a run whose snapshot no longer matches. Its Now line reads <code>1 Set up: p3 check reports an integrity failure</code>, and its Next line is that failure's FAIL line. A run folder of a bench that is still running does not count as one there until 90 minutes after its last change; <a href="#stopped-run">You stopped a run</a> says why. Integrity comes first because a broken measurement makes everything after it unreliable, and CI stays red until it is fixed. Run the check to see the whole line:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+</div>
+<p>The FAIL lines are in the Integrity section at the top, and each names a file. Then look under <a href="#check-fails"><code>p3 check</code> fails</a> for the usual causes.</p>
+
+<h2 id="windows">Starting the Guide, the Builder and your tutor</h2>
+
+<h3 id="guide-wrong-folder">The Guide acts like a course assistant, or does not know P3</h3>
+<p><strong>What you see.</strong> A window you started as the Guide answers questions about the course in general, does not know what <code>p3 next</code> is, or offers to edit files.</p>
+<p><strong>Why.</strong> It was started in the wrong folder, usually the course repo's root instead of <code>work/p3-tutor</code>, or it was started as plain <code>claude</code>. There the course repo's own <code>CLAUDE.md</code> applies, and its role is a course assistant. The Guide is defined in <code>work/p3-tutor/.claude/agents/p3-guide.md</code>, which Claude Code only finds from inside the P3 repo.</p>
+<p><strong>How to tell.</strong> A real Guide window shows <code>@p3-guide</code> in its startup header, sends its own first message ("Where am I in Project 3, and what is the one thing I should do next?"), and says in its first reply that it is the Guide.</p>
+<p><strong>Fix.</strong></p>
+<ol class="steps">
+  <li><p>Type <code>/exit</code> in that window.</p></li>
+  <li><p>Open <code>work/p3-tutor</code> as its own VS Code window: <strong>File &gt; Open Folder</strong> and choose <code>work/p3-tutor</code>, or run <code>code work/p3-tutor</code> in a terminal at the course repo's root. Then every terminal you open in that window starts in the P3 repo.</p></li>
+  <li><p>Open a terminal there (<strong>Terminal &gt; New Terminal</strong>) and check you are at the repo root, the folder that holds <code>p3.json</code>:</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">pwd
+ls p3.json</pre>
+  </div>
+  <p><code>pwd</code> should end in <code>work/p3-tutor</code>, and <code>ls</code> should list <code>p3.json</code>.</p></li>
+  <li><p>Start the Guide again with <code>claude --agent p3-guide</code>.</p></li>
+</ol>
+<p>If you started it in <code>tutor/</code>, the Guide may load but tell you to close the window and start it again from <code>work/p3-tutor</code>; do that.</p>
+
+<h3 id="guide-not-found">Claude Code says it cannot find the agent <span class="nw">p3-guide</span></h3>
+<p><strong>Why.</strong> Claude Code finds project agents in <code>.claude/agents/</code> of the folder you start it in and of the folders above it, up to the root of that repository. The Guide's file is in <code>work/p3-tutor/.claude/agents/</code>, below the course repo's root, so a session started at the course repo's root, or anywhere outside <code>work/p3-tutor</code>, never sees it.</p>
+<p><strong>Fix.</strong> Start it at the repo root, the folder with <code>p3.json</code>, as in the steps just above. Then check that the agent's file is there and unchanged:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">ls .claude/agents/
+git status .claude/</pre>
+</div>
+<p>You should see <code>p3-guide.md</code>, and <code>git status</code> should show nothing changed under <code>.claude/</code>. If it shows the file deleted or modified, put it back with <code>git restore .claude/agents/p3-guide.md</code>; it is a course file, and the Guide's whole instructions are in it. Check the spelling too: the name is <code>p3-guide</code>, with a hyphen. If the file was never in your repo at all, tell me.</p>
+
+<h3 id="guide-in-panel">You tried to start the Guide from the Claude Code panel</h3>
+<p>The Claude Code panel in VS Code cannot start an agent with <code>--agent</code>, so a panel session is always plain <code>claude</code>, which in <code>work/p3-tutor</code> is the Builder. The Guide needs a terminal: <strong>Terminal &gt; New Terminal</strong>, then <code>claude --agent p3-guide</code>. You can use the panel for the Builder if you prefer it, as long as the VS Code window has <code>work/p3-tutor</code> open as its folder.</p>
+
+<h3 id="trust-exit">You pressed Enter on the trust question and Claude Code exited</h3>
+<p><strong>What you saw.</strong> The first time Claude Code starts in a folder, it asks "Quick safety check: Is this a project you created or one you trust?". The choice that starts highlighted is <strong>No, exit</strong>, so pressing Enter right away closes Claude Code.</p>
+<p><strong>Fix.</strong> Start it again with the same command. When the question comes back, press the down arrow to <strong>Yes, I trust this folder</strong>, then Enter. Claude Code remembers the answer for that folder, so you see the question once per folder.</p>
+<div class="why"><span class="label">Why it matters for the Guide</span>
+<p>The Guide's guard, the hook that keeps it read-only, is registered in the Guide's own file, and a hook there runs only once the folder is trusted. Trusting <code>work/p3-tutor</code> is what turns the guard on.</p>
+</div>
+
+<h3 id="guide-blocked">The Guide says a command is blocked</h3>
+<p><strong>What you see.</strong> The Guide tries a command and reports that it was blocked, often with a line that starts <code>p3-guide guard:</code>, such as <code>p3-guide guard: the Guide only reads, so it cannot run this: ...</code>.</p>
+<p><strong>Why.</strong> That is the guard working, not a fault. The Guide's guard is a hook the course ships, in <code>.claude/agents/p3-guide.md</code> and <code>.claude/hooks/</code>, that lets the Guide read files and run only read-only commands: <code>p3 next</code>, <code>p3 check</code>, <code>p3 report</code>, <code>p3 compare --list</code>, read-only <code>git</code> and a few others. Everything that writes a file, starts Claude Code or calls a model, such as <code>p3 bench</code>, <code>p3 snapshot</code> or <code>p3 score</code>, is blocked, and so is any read of a blind comparison's key. (This is not the guard you build in <code>final</code>, which keeps <code>keys/</code> from your tutor's main conversation; that one is in <code>tutor/.claude/settings.json</code>.)</p>
+<p><strong>Fix.</strong> Nothing to fix. The Guide then tells you who runs the command instead, with the exact words for the Builder or the exact command for a plain terminal. Do that. Do not ask the Guide to find a way around its guard, and do not ask it to edit a file; that is the Builder's job.</p>
+
+<h3 id="guide-no-python">The Guide says no Python was found</h3>
+<p><strong>What you see.</strong> Every tool call of the Guide fails with:</p>
+<pre>p3-guide guard: no Python found on
+this machine, so the Guide's tools
+are off; see
+guide/19-troubleshooting.html</pre>
+<p><strong>Why.</strong> The guard is a small Python script, and a shell script finds a Python to run it: it tries <code>python3</code>, <code>python</code> and <code>py</code> on your PATH, in that order, and uses the first that is Python 3.8 or later, skipping the Microsoft Store placeholder that Windows sometimes installs as <code>python3</code>. With none, it blocks the Guide's tools rather than let the Guide run unguarded. <code>uv run p3</code> can work even then, because <code>uv</code> can bring its own Python, so a working <code>uv</code> does not mean Python is on your PATH.</p>
+<p><strong>Fix.</strong> Check in a VS Code terminal:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">python --version
+python3 --version
+py --version</pre>
+</div>
+<p>If none prints <code>Python 3.</code> and a number, install Python as the course's setup guide says (<code>setup.md</code> in the course repo, section 3, "Install Python"): on Windows and macOS, the installer from python.org, and on Windows, tick <strong>Add Python to PATH</strong> in the installer. Then close VS Code completely and open it again, so its new terminals see the new PATH, check <code>python --version</code> once more, and start the Guide again.</p>
+
+<h3 id="builder-plans">The Builder gives you a list of steps, or plans ahead</h3>
+<p><strong>Why it should not.</strong> The Builder's rules, in the root <code>CLAUDE.md</code>, say it does one thing per request, ends with what it changed and at most one next action, and never plans the project, because long lists of things to do overwhelmed students in Project 2. Planning and "why" are the Guide's job.</p>
+<p><strong>Fix.</strong> Ask it for one thing:</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Do only the first of those, then stop and tell me what you changed.</pre>
+</div>
+<p>For "what next" or "why", ask the Guide instead, for example "What do I do after this round?". If the Builder keeps doing it, check that its window was started in <code>work/p3-tutor</code>, where the root <code>CLAUDE.md</code> loads by itself, because that file is where its rules live; if it was started somewhere else, close it and start <code>claude</code> again in <code>work/p3-tutor</code>.</p>
+
+<h3 id="tutor-course-assistant">Your tutor acts like a course assistant</h3>
+<p><strong>Why.</strong> When you learn with your tutor, you start <code>claude</code> in <code>work/p3-tutor/tutor</code>, and Claude Code also reads the <code>CLAUDE.md</code> of every folder above the one it starts in: the P3 repo's root <code>CLAUDE.md</code> and, inside the course repo, the course's own. The root file tells a session in <code>tutor/</code> to ignore it and be the tutor, but the course's file can still pull a session toward being a course assistant. The bench avoids this, because it runs each scenario in a fresh folder outside your repo.</p>
+<p><strong>Fix.</strong> First check that the session really started in <code>tutor/</code> (<code>pwd</code> should end in <code>work/p3-tutor/tutor</code>). If it still acts that way, learn from a copy of <code>tutor/</code> outside the course repo instead.</p>
+
+<h3 id="tutor-subagents-wait">In your own session, your tutor does not wait for its subagents</h3>
+<p><strong>Why.</strong> From <code>c2-review</code> on, your tutor starts subagents and needs their reports. In an interactive session (the terminal, VS Code or the desktop app), Claude can wait for a subagent only once fork mode is off, and it is on by default.</p>
+<p><strong>Fix.</strong> Put this in <code>tutor/.claude/settings.local.json</code>, then start <code>claude</code> in <code>tutor/</code> again:</p>
+<pre><code>{"env": {"CLAUDE_CODE_FORK_SUBAGENT": "0"}}</code></pre>
+<p>That file is personal: it is never part of a config and never reaches the bench, which is the point, and git ignores it, so it never reaches your public repo either. Do not put this setting in <code>tutor/.claude/settings.json</code>, because there it would change how your tutor runs in the bench. The last section of <code>tutor/.claude/agents/README.md</code> says more.</p>
+
+<h2 id="bench">Running the bench</h2>
+
+<h3 id="claude-not-found">p3 cannot find claude</h3>
+<p><strong>What you see.</strong></p>
+<pre>Could not find the claude command.
+Install Claude Code (see setup.md in
+the course repo) and open a new
+terminal, or set P3_CLAUDE to the
+full path of the claude program.</pre>
+<p><strong>Why.</strong> <code>p3</code> looks for Claude Code in the environment variable <code>P3_CLAUDE</code> first, and then for <code>claude</code> on your PATH, and names <code>P3_CLAUDE</code> when it finds neither.</p>
+<p><strong>Fix.</strong> Check that <code>claude --version</code> works in the same terminal. If it does not, find where <code>claude</code> really is (<code>which claude</code> in Git Bash, macOS or Linux; <code>where.exe claude</code> in PowerShell) and point <code>P3_CLAUDE</code> at it:</p>
+<div class="table-wrap">
+<table>
+  <caption>Use the path where your <code>claude</code> really is. A path with spaces works as it is, with or without quotes around the whole path.</caption>
+  <thead><tr><th>Terminal</th><th>Command</th></tr></thead>
+  <tbody>
+    <tr><td>Git Bash</td><td><code>export P3_CLAUDE="C:/Users/&lt;you&gt;/.local/bin/claude.exe"</code></td></tr>
+    <tr><td>PowerShell</td><td><code>$env:P3_CLAUDE = "C:\Users\&lt;you&gt;\.local\bin\claude.exe"</code></td></tr>
+    <tr><td>macOS or Linux</td><td><code>export P3_CLAUDE="$HOME/.local/bin/claude"</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Each of these lasts until you close that terminal, so set it again in a new one, or open a new terminal after installing Claude Code so its PATH is current.</p>
+<p>On Windows you may see a different message instead: <code>The claude command here is ..., a Windows script that cannot pass a prompt safely.</code> That means the first <code>claude</code> on your PATH is a <code>.cmd</code> or <code>.bat</code> file, which cannot pass the bench's prompts through intact. Install Claude Code with the official installer from <code>setup.md</code> so that <code>where.exe claude</code> lists <code>claude.exe</code> first, or set <code>P3_CLAUDE</code> to the full path of <code>claude.exe</code>.</p>
+<p>And if the message starts <code>`claude --version` did not answer, so nothing was run</code>, <code>p3</code> found a program but it did not answer; the message quotes what it said, and its advice is to check that Claude Code is installed and signed in. Signing in is the next section.</p>
+
+<h3 id="sign-in">claude -p fails, or asks you to sign in</h3>
+<p><strong>Fix.</strong> Open <code>claude</code> once in a terminal and sign in, then run the command again. The bench stops at the first scenario that fails this way, as it does at a usage limit (below), so no half-made run is kept.</p>
+
+<h3 id="api-key">You see "removed ANTHROPIC_API_KEY so the bench uses your Claude subscription"</h3>
+<p>That is <code>p3</code> protecting you, and nothing needs fixing. In headless mode an API key in your shell silently replaces your subscription login, and after lecture 20 many of you have one set. So <code>p3</code> removes <code>ANTHROPIC_API_KEY</code> and <code>ANTHROPIC_AUTH_TOKEN</code> from every <code>claude</code> it starts, and says so. It also removes Claude Code's own session variables, so running the bench from inside a Claude Code session is fine. You never need an API key in this project.</p>
+
+<h3 id="usage-limit">A run hits your usage limit</h3>
+<p><strong>What happens.</strong> <code>p3 bench</code> stops at the first scenario that reports a usage limit, a sign-in problem or an API outage, stops every scenario still running, and starts no new one. Its message begins with what went wrong and then says <code>Nothing in repeat k measures your tutor, so it was not saved as a run</code>.</p>
+<ul>
+  <li>That repeat says nothing about your tutor, so it is not saved as a run: its files go to <code>bench/runs/_live/_aborted/</code>, which git ignores.</li>
+  <li>The repeats after it do not run, and the repeats before it are complete and kept.</li>
+  <li>If the limit comes while a run is being scored, the run keeps its <code>run.json</code> with no <code>score.json</code>. <code>p3 report</code>, <code>p3 compare</code> and <code>p3 check</code> ignore it until you score it with <code>uv run p3 score &lt;run-dir&gt;</code>.</li>
+</ul>
+<p><strong>Fix.</strong> Wait for the reset (<code>/usage</code> in any Claude Code window shows when), then run the bench again, with <code>--repeats</code> set to the number still missing. In the meantime, do the work that needs no Claude: your test topics, your reviews of runs you already have, the blind comparison once its runs exist, and the write-up.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>If you ever find a committed run whose <code>result.json</code> files say Claude was not working, delete that run, because it measures nothing. A scenario that failed for any other reason, such as a timeout or a lesson that was never written, is a result about your tutor: keep it and report it.</p>
+</div>
+
+<h3 id="denials">A scenario keeps hitting permission denials</h3>
+<p><strong>Why.</strong> A bench scenario has no one to approve a tool, so the bench passes your config's <code>permissions.allow</code> list from <code>tutor/.claude/settings.json</code> to Claude Code, and in a fresh folder that list is the only thing that allows a tool. Anything else that would need a prompt is denied, and <code>run.json</code> lists every scenario's denials. The bench always adds <code>Glob</code> and <code>Grep</code> to the list, so every config can search its workspace the same way on every system.</p>
+<p><strong>Fix.</strong> Either allow the narrow command you need in <code>tutor/.claude/settings.json</code>, or tell the skill how to finish without it. Try the change with <code>--config live</code> before you snapshot.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Read the permission denials of the teach scenario in run.json of my latest live run, and tell me which narrow allow rule in tutor/.claude/settings.json would fix them, or how the skill could finish without it.</pre>
+  <p>An allow rule is a change of Kind <code>other</code> in a quick round.</p>
+</div>
+<p>If the denials are in a run of a snapshot, that run stays as it is: it is a result about that config, and the fix belongs in a round of the step you are building.</p>
+
+<h3 id="timeout">A scenario times out, or writes nothing</h3>
+<p><strong>Why.</strong> Each scenario has a time and a turn limit, set in <code>bench/scenarios.json</code>: <code>teach</code> 45 minutes and 200 turns, <code>quiz</code> and each <code>grade</code> 15 minutes and 80 turns, each tutor probe 10 minutes and 40 turns. A scenario that reaches one is stopped and recorded as a timeout or an error. A review loop with no cap on its passes, or a pipeline of many subagents, can run into these limits.</p>
+<p><strong>Fix.</strong> Read its trace, <code>&lt;scenario&gt;/trace.jsonl.gz</code> in the run folder. It opens with any gzip tool, and the Builder can read it for you:</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Read teach/trace.jsonl.gz in my latest live run and tell me where the session spent its turns and why it stopped.</pre>
+</div>
+<p>Then rerun just that scenario, keeping its working folder so you can look inside it afterwards; the command prints where the folder is.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 bench --config live --only teach --keep</pre>
+</div>
+<p>A later <code>p3 bench</code> deletes kept folders more than a day old. A timeout in a committed run of a snapshot is a result: keep it and report it.</p>
+
+<h3 id="stopped-run">You stopped a run, or its terminal closed</h3>
+<p><strong>What you see.</strong> <code>Stopped. bench/runs/&lt;config&gt;/&lt;run-id&gt; is incomplete (no run.json); delete it.</code>, or a run folder with no <code>run.json</code> in it.</p>
+<p><strong>First check that it really stopped.</strong> <code>p3 bench</code> writes <code>run.json</code> only when its last scenario ends, so <code>p3 check</code> reports a bench that is still running the same way, as <code>bench/runs/&lt;config&gt;/&lt;run-id&gt;/ has no run.json (a run that was stopped; delete it)</code>. <code>p3 next</code> tells the two apart by time: a folder with no <code>run.json</code> that changed in the last 90 minutes is a bench still running, which its Also line names as <code>bench/runs/&lt;config&gt;/&lt;run-id&gt; has no run.json yet: a bench still running (or one that stopped, which you delete)</code>, and only after 90 minutes with no change does it count as a stopped run. So if a bench is still going in your plain terminal, let it finish.</p>
+<p><strong>Fix.</strong> Delete that folder before you commit, because <code>p3 check</code> fails on a run folder with no <code>run.json</code>. In Git Bash, macOS or Linux:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">rm -r bench/runs/&lt;config&gt;/&lt;run-id&gt;</pre>
+</div>
+<p>In PowerShell, <code>Remove-Item -Recurse bench/runs/&lt;config&gt;/&lt;run-id&gt;</code>. Then start the run again in a plain terminal, where closing a Claude Code window cannot stop it; that is why full runs go there.</p>
+
+<h3 id="claude-md-warning">p3 bench warns about a CLAUDE.md above the scenario folders</h3>
+<p><strong>What you see.</strong> <code>warning: &lt;path&gt; sits in a folder above the scenario folders, so Claude Code reads it in every scenario and it shapes your results; move it or rename it before you make runs you will commit (run.json records it as ancestor_memory)</code></p>
+<p><strong>Why.</strong> The bench runs each scenario in your system's temporary folder. On Windows that folder is inside your home folder, so a <code>CLAUDE.md</code> in your home folder itself would reach every scenario and change how your tutor behaves.</p>
+<p><strong>Fix.</strong> Move or rename the file the warning names before you make runs you will commit.</p>
+
+<h3 id="long-paths">p3 bench warns about Windows' path limit</h3>
+<p><strong>What you see.</strong> A warning that the run folders are so long that a scenario's files may pass Windows' 260-character path limit and fail to copy or to commit.</p>
+<p><strong>Fix.</strong> The warning's own fix: clone the repo to a shorter path, such as <code>C:\work\p3-tutor</code>, and run <code>git config core.longpaths true</code> in it. Open the new folder as its own VS Code window, as before, and start the Guide and the Builder in it.</p>
+
+<h3 id="topic-refused">p3 bench refuses your test topic</h3>
+<p><code>p3 bench --topic &lt;id&gt;</code> runs one of your test topics only when it is valid, has no TODO markers left, and is committed and unchanged. The message says which of the three it is.</p>
+<ul>
+  <li><strong><code>bench/own/&lt;id&gt;/ is not a valid topic</code></strong>, followed by the problems. Fix each one; <code>uv run p3 check</code> lists them too.</li>
+  <li><strong><code>bench/own/&lt;id&gt;/ still has TODO markers; fill them in first</code></strong>, followed by where they are.</li>
+  <li><strong><code>bench/own/&lt;id&gt;/ must be committed and unchanged before it is run</code></strong>. Commit it, check that <code>git status</code> shows nothing under it, and run the bench again:</li>
+</ul>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add bench/own/&lt;id&gt;
+git commit -m "Test topic &lt;id&gt;"
+git status bench/own/</pre>
+</div>
+<p>The commit rule exists so your items are on record before any result: a test you write after seeing how the tutor does is a test you can shape, even without meaning to. <a href="11-test-topics.html">Your two test topics</a> says more.</p>
+<p>When git itself cannot be used, the message says why instead:</p>
+<ul>
+  <li><strong>git is missing from your PATH:</strong> install it, or open a terminal where <code>git --version</code> works.</li>
+  <li><strong>git does not trust the repository</strong>, usually because another account owns the folder: the message quotes git's own, which names the <code>git config --global --add safe.directory</code> fix with your folder's path. Run that.</li>
+  <li><strong>The folder is not its own clone</strong>, for example a downloaded zip inside another repo: clone your repo with git and work in the clone.</li>
+</ul>
+
+<h2 id="scoring">Scoring and comparing</h2>
+
+<h3 id="certificates">The scorer warns that no link could be checked</h3>
+<p><strong>What you see.</strong> <code>no link could be checked, because this Python cannot verify web certificates, so dead links are unknown; on macOS, run Install Certificates.command in your Python folder (in Applications), then score again: p3 score &lt;run-id&gt;</code></p>
+<p><strong>Why.</strong> This happens with the python.org installer on macOS until its <code>Install Certificates.command</code> has run.</p>
+<p><strong>Fix.</strong> Open the Python folder in Applications, double-click <code>Install Certificates.command</code>, then score the run again:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 score &lt;run-dir&gt;</pre>
+</div>
+<p>Until then, the run's dead links are unknown, not zero, so do not report them as zero.</p>
+
+<h3 id="compare-refuses">p3 compare refuses</h3>
+<p><strong>What you see.</strong> A message that starts <code>nothing to compare:</code>, such as <code>nothing to compare: final has no scored full run on agent-architecture at 30 minutes that ran the teach job</code>, usually followed by a hint.</p>
+<p><strong>Why.</strong> Both configs need scored full runs on that topic at the same lesson length, and the message says which one is missing. Quick runs and <code>--only</code> runs are left out on purpose, so a short run never takes a full run's place.</p>
+<p><strong>Fix,</strong> by what the hint says:</p>
+<ul>
+  <li><strong>A run is not scored</strong>, for example because you ran with <code>--no-score</code> or a usage limit came during scoring: score it first with <code>uv run p3 score &lt;run-dir&gt;</code>.</li>
+  <li><strong>The runs are at another length:</strong> add <code>--minutes M</code>.</li>
+  <li><strong>The runs are the length study's teach-only runs:</strong> add <code>--teach-only</code> (with <code>--job teach</code>).</li>
+  <li><strong>There are no runs yet:</strong> make them first, with <code>uv run p3 bench --config &lt;name&gt;</code> in a plain terminal.</li>
+</ul>
+<p>Three other refusals you may meet:</p>
+<ul>
+  <li><code>live runs are not committed and cannot be compared</code>: snapshot the tutor, run the snapshot, and compare that.</li>
+  <li><code>session &lt;id&gt; is not finished: k of n pairs have no pick yet</code>, when you try <code>--reveal</code> early: finish it with <code>uv run p3 compare --resume &lt;session-id&gt;</code>, because revealing early would end the blinding. <code>uv run p3 compare --list</code> shows your sessions.</li>
+  <li><code>cannot listen on 127.0.0.1:&lt;port&gt;</code>: pick another port with <code>--port</code>, or leave it out for a free one. If a browser is awkward altogether, <code>--terminal</code> writes each pair as one side-by-side HTML file and asks the three questions in the terminal.</li>
+</ul>
+
+<h2 id="checks">p3 check, p3 next and CI</h2>
+
+<h3 id="check-review">p3 check lists a review as still to do, and you think it is done</h3>
+<p>Its line names the file and the heading, such as <code>reviews/<span class="nw">c1-skills.md,</span> quick rounds</code> with <code>Quick rounds &gt; Round 2: ...</code> under it. <code>p3 check</code> finds each part of a review by its heading, so most causes are about headings and the exact form of a few lines. The usual causes:</p>
+<ul>
+  <li><strong>A heading that no longer matches the template's word for word</strong>, such as <code>#### Wording and misreadings</code> for <code>#### Wording and possible misreadings</code>. Copy the heading back from the template.</li>
+  <li><strong>One of the template's marker lines left somewhere in the part</strong>, such as a <code>TODO</code> under your text. A marker word inside code you quote, in backticks or a code block, is your quote and does not count.</li>
+  <li><strong>A rating that is not a whole number from 1 to 5 on its own line</strong>: <code>Rating: 4.5</code>, <code>Rating: four</code> or <code>Rating: 3-4</code> instead of <code>Rating: 4</code>.</li>
+  <li><strong>A major review whose Run line does not name a scored full run of that step on the shared topic</strong> under <code>bench/runs/</code>. It should look like <code>**Run:** bench/runs/c1-skills/20261105-141502-<wbr>agent-architecture-m30-r1</code>, with your own run id.</li>
+  <li><strong>A major review that is complete on your disk but in no commit yet:</strong> <code>complete here but in no commit yet; commit it</code>. <code>p3 check</code> compares the time of that commit with when the run finished, so commit a review when you finish it.</li>
+  <li><strong>A learning session whose Topic line does not start with the id of one of your test topics</strong>, such as <code>**Topic:** <span class="nw">statics-trusses,</span> the method of joints</code>; all three sessions must name the same test topic.</li>
+  <li><strong>A skill or subagent in one of your snapshots whose name matches no heading in <code>reviews/components.md</code></strong>. The heading is the skill's folder name or the subagent's <code>name</code> from its frontmatter, exactly.</li>
+  <li><strong>A review file saved as UTF-16</strong>, which Windows PowerShell's <code>&gt;</code> and <code>Out-File</code> write, or in another encoding than UTF-8. <code>p3 check</code> names the encoding. In VS Code, click the encoding in the status bar, choose <strong>Save with Encoding</strong>, then <strong>UTF-8</strong>.</li>
+</ul>
+<p>A round of yours where only the Run line is missing is complete, so it gets a warning and not a TODO line; write the Run line anyway, because it is the trail I follow. <a href="07-reviews.html">Your reviews</a> shows each part done well.</p>
+
+<h3 id="check-fails">p3 check fails</h3>
+<p>Read the failing lines; each one names the file. The usual causes, and their fixes:</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The usual integrity failures.</caption>
+  <thead><tr><th>Cause</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Cause">an edit under <code>bench/</code> outside <code>bench/own/</code>, or under <code>p3/</code></td><td data-label="Fix">restore it from git: <code>git restore &lt;path&gt;</code> (or <code>git checkout -- &lt;path&gt;</code>), and delete a file the check says is not listed. If you think the file has a bug, tell me, and I will fix it for everyone.</td></tr>
+    <tr><td data-label="Cause">a changed <code>tutor/FORMATS.md</code></td><td data-label="Fix"><code>git restore tutor/FORMATS.md</code>; it must stay identical to <code>bench/FORMATS.md</code></td></tr>
+    <tr><td data-label="Cause">a snapshot edited by hand, or overwritten with <code>--force</code> after it had runs</td><td data-label="Fix">if the change is not committed yet, <code>git restore configs/&lt;name&gt;/</code> puts the committed snapshot back; then snapshot the new version under a new name. If the change is already committed, ask me before you do anything else.</td></tr>
+    <tr><td data-label="Cause">a run that was stopped midway (its folder has no <code>run.json</code>)</td><td data-label="Fix">delete that folder (<a href="#stopped-run">above</a>)</td></tr>
+    <tr><td data-label="Cause">a test topic changed after its runs</td><td data-label="Fix">if the change was an accident, <code>git restore bench/own/&lt;id&gt;/</code>; if it fixes a real mistake, follow "Commit before the first run" in <code>bench/own/README.md</code></td></tr>
+    <tr><td data-label="Cause">a subagent in <code>configs/c1-skills/</code>, or a round of Kind <code>new subagent</code> in <code>reviews/c1-skills.md</code></td><td data-label="Fix">step 1 adds no subagent. Ask the Guide or come to office hours before you snapshot again, because a snapshot with runs is frozen.</td></tr>
+    <tr><td data-label="Cause">a file saved in a Windows "ANSI" encoding instead of UTF-8, which can make a snapshot or a test topic stop matching its hash</td><td data-label="Fix"><code>p3 check</code> and <code>p3 snapshot</code> name such files; open each in VS Code, click the encoding in the status bar, and choose <strong>Save with Encoding</strong>, then <strong>UTF-8</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+<p>Never run <code>p3 rehash</code> in your repo. It is the instructor's command for rewriting the hash file after I change a course file, and in your repo it would hide the change instead of fixing it.</p>
+</div>
+
+<h3 id="ci-red">CI is red, but p3 check passes on your machine</h3>
+<p>CI runs <code>python -m p3 check</code> on the files you pushed, not on your disk. So the cause is a difference between what you pushed and what is on your disk, such as something committed without what it depends on: runs pushed without the snapshot they name in <code>configs/</code>, a blind comparison's session file without its key file, or a change you made and never committed. Run <code>git status</code>, commit what belongs together (<code>configs/</code> with <code>bench/runs/</code>, both files of every session in <code>bench/compare/</code>), and push again. Then open the failed run in the <strong>Actions</strong> tab: its FAIL lines are the same as the ones <code>p3 check</code> would print.</p>
+
+<h3 id="next-setup">p3 next says set up is not done</h3>
+<p><strong>Why.</strong> Stage 1 of <code>p3 next</code> is done when your repo has an <code>origin</code> remote that is not the course's template. Without one, you are working in a copy that is not your own GitHub repo, such as a clone of the template itself or a downloaded zip, and nothing you push would reach a repo of yours.</p>
+<p><strong>Check.</strong></p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git remote -v</pre>
+  <pre class="out">origin  https://github.com/&lt;your-github-username&gt;/p3-tutor.git (fetch)
+origin  https://github.com/&lt;your-github-username&gt;/p3-tutor.git (push)</pre>
+</div>
+<p>That is what it should show. <strong>Fix.</strong> If it shows no <code>origin</code>, do what <code>p3 next</code> says and point <code>origin</code> at your own repo on GitHub, with your own username: <code>git remote add origin https://github.com/&lt;your-github-username&gt;/p3-tutor.git</code>. If it shows the course's template, make your own copy with <strong>Use this template</strong> and clone it into <code>work/p3-tutor</code>, as <a href="01-setup.html">Set up your repo</a> describes. If you have already done work in the other copy, do not delete it; come to office hours or message me, and we will move it across without losing anything.</p>
+<p>If its Now line reads <code>1 Set up: p3 check reports an integrity failure</code> instead, set up is waiting on something broken, which is the case under <a href="#sent-here">If p3 next sent you here</a>.</p>
+
+<h2 id="windows-os">Windows</h2>
+<p>The template is written to run on Windows, macOS and Linux, and its own tests run on all three, but Windows is the setup I have tested least. A few things that help:</p>
+<ul>
+  <li><strong>Use Git Bash for the commands</strong>, as in P2. PowerShell works for <code>p3</code> too.</li>
+  <li><strong>Line endings do not matter.</strong> Git stores this repo's text files with LF line endings, and every hash <code>p3</code> computes ignores the difference, so a checkout with Windows line endings does not break the check.</li>
+  <li><strong>Do not write review files with PowerShell's <code>&gt;</code> or <code>Out-File</code></strong>, which write UTF-16; edit them in VS Code, which saves UTF-8.</li>
+  <li><strong>Your guard hook in <code>final</code> runs on your machine</strong>, so register it with the Python command that works in your own terminal (<code>python</code> on Windows, <code>python3</code> on macOS and Linux), and use forward slashes in its paths. A hook that fails to start lets every tool call through, so a broken guard looks exactly like no guard, unless its entry in <code>tutor/.claude/settings.json</code> sets <code>"onFailure": "block"</code>, which makes a hook that crashes or cannot run block the call instead. Either way, confirm with a live run and its trace that it runs; <a href="12-final.html#guard">final, under the guard</a>, says how.</li>
+</ul>
+<p>If something fails on Windows, send me the exact output.</p>
+
+<h2 id="stuck">Still stuck</h2>
+<p>Still stuck after 20 minutes? Come to office hours: Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, in CTLM 246L. Bring the exact error message, because the words on the screen usually save us half the debugging time, and the command you ran to get it.</p>
+<p>And if anything in this guide or the README is unclear or seems wrong, tell me. That is a bug too, and I would rather fix it than have you guess.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="18-commands-and-files.html"><span class="pager-label">Previous</span><span class="pager-title">Commands and files</span></a>
+<a class="next" href="20-glossary.html"><span class="pager-label">Next</span><span class="pager-title">Glossary</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

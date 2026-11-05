@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Set up your repo - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html" class="current" aria-current="page">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part I · Getting set up</p>
+<h1>Set up your repo</h1>
+<p class="lede">This page takes you from the template to your own P3 repo: a public copy on GitHub, cloned into <code>work/p3-tutor</code>, open as its own VS Code window, with <code>p3 check</code> passing on your machine and in CI. It costs nothing from your Claude plan, and it is the step with the most ways to go wrong, so please do it on the day P3 is released.</p>
+<p class="meta">About 14 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>Every later step runs in this repo, so it has to be your own public copy, in the right folder, with a green check, before you spend any of your Claude plan on it. Getting it right now means a problem shows up while there is plenty of time to ask.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In your browser, on GitHub: make your copy of the template with <strong>Use this template</strong>, named <code>p3-tutor</code>, <strong>Public</strong>.</li>
+      <li>In a terminal at the root of the course repo: clone it into <code>work/p3-tutor</code>, then open <code>work/p3-tutor</code> as its own VS Code window.</li>
+      <li>In a terminal in that new window: check <code>p3.json</code>, run <code>uv run p3 check</code>, then commit and push; then, in your browser, watch <code>p3-check</code> go green on your repo's Actions tab.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 check</code> shows <code>Integrity: no failures.</code>, the <code>p3-check</code> run on your repo's Actions tab has a green check mark, and <code>uv run p3 next</code> lists <code>1 Set up</code> under Done.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="02-two-windows.html">The Guide and the Builder</a>, to start the two windows you work in from now on.</p></dd>
+  </dl>
+</section>
+
+<h2 id="what-you-set-up">What you are setting up</h2>
+<p>By the end of this page your files sit like this on your machine.</p>
+<pre class="tree"><code>&lt;course repo&gt;/          your clone of the course repo
+  work/                 your own space, which the course repo's git ignores
+    p3-tutor/           your P3 repo: open this folder in VS Code
+      README.md         the brief
+      CLAUDE.md         the rules for the Builder, the Claude Code
+                        window that builds
+      p3.json           your section and your stretch
+      tutor/            your tutor
+      reviews/          your reviews
+      guide/            this guide
+      ...</code></pre>
+<p>Three choices shape that picture, and each has a reason.
+Your repo is your own copy on GitHub, because you hand it in by its URL.
+It sits inside <code>work/</code>, so it never gets in the way of course updates.
+And you open <code>work/p3-tutor</code> itself in VS Code, not the course repo around it, so every terminal and every Claude Code session starts inside your P3 repo.
+The sections below take these one at a time.</p>
+
+<h2 id="make-your-copy">Make your copy of the template</h2>
+<ol class="steps">
+  <li><p><strong>Open the P3 template's page on GitHub</strong>, the repo whose <code>README.md</code> is the Project 3 brief.</p></li>
+  <li><p><strong>Click Use this template</strong>, near the top right, then <strong>Create a new repository</strong>.</p></li>
+  <li><p><strong>Set the owner to your own GitHub account, name it <code>p3-tutor</code>, and choose Public.</strong> Leave the other options as they are.</p></li>
+  <li><p><strong>Click Create repository.</strong> GitHub makes the copy in a few seconds and opens its page, at <code>github.com/&lt;your-github-username&gt;/p3-tutor</code>.</p></li>
+</ol>
+<div class="why"><span class="label">Why it is this way</span>
+  <p><strong>Public</strong>, because you hand the project in by posting your repo's URL on Canvas, and I read your work there, so it has to be open to me without an invitation.
+  <strong><code>p3-tutor</code></strong>, because every path in this guide and in the README assumes <code>work/p3-tutor</code>, and when the names match you can copy any command as it is.</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+  <p>Your repo is public, and so is its history: anything you commit stays readable even after you delete it.
+  Never commit an API key, a password, or private information about anyone.
+  You never need an API key in this project, because the bench runs on your Claude Code sign-in.</p>
+</div>
+
+<h2 id="clone">Clone it into work/p3-tutor</h2>
+<p>Open a terminal at the root of the course repo, the folder that holds <code>work/</code>, and clone your copy into <code>work/p3-tutor</code> with this command, putting your own GitHub username in place of the placeholder:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a terminal at the root of the course repo</div>
+  <pre class="in">gh repo clone &lt;your-github-username&gt;/p3-tutor work/p3-tutor</pre>
+</div>
+<p>If you would rather not type it, say "clone my P3 repo into work/p3-tutor" to Claude Code in the course repo, the way you use it for the rest of the course, and it does the same. That session is the course's assistant, not the Guide or the Builder, the two Claude Code windows you work in for P3 (<a href="02-two-windows.html">The Guide and the Builder</a> sets them up), so use it for the clone and nothing else in P3.</p>
+<p>The course repo's git ignores everything in <code>work/</code>, so your P3 repo can live there as a git repository of its own, with its own history and its own remote on GitHub, and a course update never collides with it.</p>
+<p>Check that you cloned your copy, and not the template itself:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a terminal at the root of the course repo</div>
+  <pre class="in">git -C work/p3-tutor remote -v</pre>
+</div>
+<div class="you-see"><span class="label">What you will see</span>
+  <p>Two lines starting with <code>origin</code>, one ending in <code>(fetch)</code> and one in <code>(push)</code>, each with your GitHub username and <code>p3-tutor</code> in the address.</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+  <p>If the address names the course's template instead of your username, you cloned the template, and GitHub would refuse your pushes.
+  Delete the <code>work/p3-tutor</code> folder and clone your own copy.
+  <code>uv run p3 next</code> does not count setup as done until <code>origin</code> is a repo other than the course template.</p>
+</div>
+<div class="fail"><span class="label">If it fails</span>
+  <p>If <code>gh</code> says you are not logged in, run <code>gh auth login</code> as you did when you set up the course, then clone again.
+  If it says the repository is not found, check the spelling of your username and that the repo is named exactly <code>p3-tutor</code>.</p>
+</div>
+
+<h2 id="open-in-vs-code">Open work/p3-tutor as its own VS Code window</h2>
+<p>Open the P3 repo as a VS Code window of its own, with <code>work/p3-tutor</code> as the folder at the top of the Explorer.
+Either way works:</p>
+<ul>
+  <li>In VS Code, choose <strong>File &gt; Open Folder</strong>, go into your course repo, then into <code>work</code>, select <code>p3-tutor</code>, and open it.</li>
+  <li>Or, from a terminal at the root of the course repo, run <code>code work/p3-tutor</code>. If <code>code</code> is not found, use the menu instead.</li>
+</ul>
+<p>VS Code may ask whether you trust the authors of the files in this folder.
+It is your own repo, so say yes.
+Keep the course repo's window too if you use it for other parts of the course, but do all of your P3 work in this one.</p>
+<div class="why"><span class="label">Why a window of its own</span>
+  <p>VS Code starts every terminal in the folder the window has open, and Claude Code starts in the folder of the terminal you start it from.
+  Claude Code reads the <code>CLAUDE.md</code> of the folder it starts in and of every folder above it, and it finds project agents in the repo it starts in.
+  So in this window, every Claude Code session gets the P3 repo's own <code>CLAUDE.md</code>, which holds the Builder's rules (one change per round, never write your parts of <code>reviews/</code>, ask before any bench run), and <code>claude --agent p3-guide</code> finds the Guide in <code>.claude/agents/</code>.</p>
+  <p>A session started at the course repo's root gets the course assistant's instructions instead, and it sees the P3 repo's <code>CLAUDE.md</code> only once it happens to read a file in <code>work/p3-tutor</code>, which can be too late: it may already have run a command or changed a file without those rules.</p>
+</div>
+<p>Now open a terminal in the new window, with <strong>Terminal &gt; New Terminal</strong>.
+Its prompt shows the folder it is in, and it should end in <code>p3-tutor</code>; if you are not sure, run <code>pwd</code>, which prints the whole path.
+On Windows, use Git Bash for the commands, as in P2: open the small menu next to the <strong>+</strong> in the terminal panel and choose Git Bash.
+PowerShell works for <code>p3</code> too.</p>
+
+<h2 id="check-tools">Check uv, Claude Code and Python</h2>
+<p>Three programs need to work in this terminal, each for its own reason.</p>
+<ul>
+  <li><strong><code>uv</code></strong> runs every <code>p3</code> command in this guide, which is why they all start with <code>uv run</code>. You installed it for lecture 12.</li>
+  <li><strong><code>claude</code></strong> is Claude Code itself: the two windows on the next page run it, and so does the bench, which starts it once for every scenario.</li>
+  <li><strong>Python on your PATH</strong>, because the guard that keeps the Guide read-only is a small Python script, and it looks for <code>python3</code>, <code>python</code> or <code>py</code> on your PATH. <code>uv</code> can bring its own Python for <code>p3</code>, so a working <code>uv</code> does not prove that Python is on your PATH.</li>
+</ul>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv --version
+claude --version
+python --version</pre>
+</div>
+<div class="you-see"><span class="label">What you will see</span>
+  <p>One line from each, with a version number in it. On macOS and Linux, type <code>python3 --version</code> for the last one.</p>
+</div>
+<p>If you do not have <code>uv</code>, every command also works as <code>python -m p3 ...</code> (on macOS and Linux, <code>python3 -m p3 ...</code>), because <code>p3</code> uses only Python's standard library, from Python 3.11 on, so your Python should then be 3.11 or later.
+Wherever this guide says <code>uv run p3 check</code>, you would type <code>python -m p3 check</code>.</p>
+<p>The first time you use <code>uv run</code> in this repo, <code>uv</code> sets up the project's environment before it runs the command, so you may see a few lines from <code>uv</code> itself.
+It builds the project into a <code>.venv/</code> folder and writes a <code>uv.lock</code> file, and git ignores both, so <code>git status</code> shows no new file afterwards; <code>p3</code> has no dependencies, so there is nothing to lock.</p>
+<div class="fail"><span class="label">If it fails</span>
+  <p>If <code>claude</code> is not found, <code>p3</code> cannot start the bench either.
+  <a href="19-troubleshooting.html#claude-not-found">When it breaks</a> shows how to point <code>P3_CLAUDE</code> at the program.
+  If no Python is found, the Guide will say that its tools are off; the same page has the fix.</p>
+</div>
+
+<h2 id="p3-json">Set your section in p3.json</h2>
+<p>Open <code>p3.json</code> in the editor.
+It says which section you are in and which stretch you chose, and as it ships it reads:</p>
+<pre><code>{
+  "section": "498E",
+  "stretch": null
+}</code></pre>
+<ul>
+  <li><strong>If you are in 498E</strong>, it is already right. Leave <code>stretch</code> as <code>null</code> until you choose one of the five stretch options, and then set it to that option's id (<a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a> lists them).</li>
+  <li><strong>If you are in 598E</strong>, your stretch is the length study, which is required, so set both now:</li>
+</ul>
+<pre><code>{
+  "section": "598E",
+  "stretch": "length-study"
+}</code></pre>
+<p><code>p3 check</code> reads your section to know which minimums to count you against (498E needs at least four skills and five subagents across your snapshots, 598E at least six and eight), and <code>598E</code> or the <code>length-study</code> stretch switches on the length study's checks in <code>uv run p3 check --final</code>.
+Keep the double quotes around <code>"498E"</code> or <code>"598E"</code>, keep the comma at the end of the <code>"section"</code> line, and write <code>null</code> without quotes.</p>
+<div class="fail"><span class="label">If it fails</span>
+  <p>A section that is not exactly <code>498E</code> or <code>598E</code> gives a WARN line such as <code>p3.json: section is '498e'; set it to "498E" or "598E"</code>, and a missing quote or comma gives a FAIL line saying that <code>p3.json</code> does not parse. Fix the file and run the check again.</p>
+</div>
+
+<h2 id="p3-check">Run p3 check, and read what it says</h2>
+<p><code>p3 check</code> is the command you will run more than any other.
+It reads your whole repo, makes no model call and costs nothing, and prints a checklist of the repo's state: whether the course's fixed files are unchanged, whether your snapshots and runs still match each other, and what is still to do for the hand-in, down to which review still holds a marker.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 check</pre>
+  <pre class="out">p3 check: 498E (C:\...\work\p3-tutor)
+
+Integrity
+  OK    p3.json: section 498E, no stretch chosen yet
+  OK    p3/bench.sha256 matches the 31 fixed files
+  OK    tutor/FORMATS.md is identical to bench/FORMATS.md
+  OK    configs/c0-baseline/ matches its SNAPSHOT.json (14 files)
+  OK    bench/runs/: no runs yet
+  ...
+  OK    no config file copies 40 or more characters from a shared topic
+
+Hand-in
+  TODO  EVAL.md: 30 TODO markers left (lines 31, 38, 49, 55, 65, 77, 84, 90, 98, 110, ...)
+  OK    config c0-baseline: the baseline
+  TODO  config c1-skills: not snapshotted yet (p3 snapshot c1-skills)
+  ...
+  TODO  runs of c0-baseline: 0 of the 3 scored full runs needed on agent-architecture at 30 minutes (p3 bench --config c0-baseline --repeats 3)
+  ...
+  TODO  reviews/c1-skills.md, quick rounds: 0 of the 2 complete rounds needed
+          Quick rounds &gt; Round 1: not written yet
+          Quick rounds &gt; Round 2: not written yet
+  ...
+
+Integrity: no failures.
+Hand-in: 2 of 29 items done (TODO lines are work still to do; p3 check --final fails on them).</pre>
+</div>
+<p>That is the fresh template's output, trimmed where it says <code>...</code>; yours starts with your own path, and the numbers can differ a little.
+On a fresh copy almost every Hand-in line is TODO, and that is exactly right: you have not done the work yet.</p>
+<p>Each line starts with one of four words.</p>
+<dl>
+  <dt>OK</dt>
+  <dd>The item holds.</dd>
+  <dt>TODO</dt>
+  <dd>Hand-in work you have not done yet. It is work to do, not an error, and it never makes the check fail. The text in parentheses often names the command that does it.</dd>
+  <dt>WARN</dt>
+  <dd>Worth a look, such as a file to tidy, and never a failure.</dd>
+  <dt>FAIL</dt>
+  <dd>Something is broken, and the line names the file to look at. Only a FAIL makes the check fail.</dd>
+</dl>
+<p>The <strong>Integrity</strong> section is what must hold at every moment of the project: the fixed files unchanged, every snapshot matching its recorded hash, every run pointing at a config that still matches it.
+The <strong>Hand-in</strong> section is everything you hand in, item by item.
+The last two lines add it up.
+<code>Integrity: no failures.</code> is the line you want to see before every push.
+The Hand-in count goes up as you work, and at the very end, <code>uv run p3 check --final</code> turns every TODO that is left into a FAIL, so that one command tells you whether the hand-in is complete (<a href="15-hand-in.html">Hand in</a> covers it).</p>
+<div class="you-see"><span class="label">What you will see</span>
+  <p>On a fresh copy: no FAIL line, <code>Integrity: no failures.</code>, and a long list of TODO lines. That is a working setup.</p>
+</div>
+<div class="fail"><span class="label">If it fails</span>
+  <p>A FAIL line on a fresh copy usually means a file changed on the way, for example an edit under <code>bench/</code> or <code>p3/</code>, which are the course's fixed files. Restore it with <code>git restore &lt;path&gt;</code> and run the check again, or see <a href="19-troubleshooting.html">When it breaks</a>.</p>
+</div>
+
+<h2 id="push-and-ci">Commit, push, and watch CI go green</h2>
+<p>Your repo comes with a GitHub Actions workflow called <code>p3-check</code>, which runs the same check on GitHub every time you push.
+Commit what you changed and push it:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git status
+git add -A
+git commit -m "Set my section in p3.json"
+git push</pre>
+</div>
+<p><code>git status</code> first shows you what is about to go in, so nothing surprises you.
+Then open your repo on GitHub, click the <strong>Actions</strong> tab, and click the newest <code>p3-check</code> run.
+When it finishes, a green check mark next to it means it passed.</p>
+<p>If <code>git</code> says there is nothing to commit, which happens when you are in 498E and did not need to change <code>p3.json</code>, start a run by hand: on the Actions tab, choose <code>p3-check</code> in the list on the left, then <strong>Run workflow</strong>.</p>
+<div class="why"><span class="label">What CI checks, and why it is there</span>
+  <p>CI runs <code>python -m p3 check</code> on a fresh machine of GitHub's, on exactly the files you pushed, with their full git history.
+  It never calls a model: your runs were made on your machine with your Claude plan, and CI checks them as you committed them.
+  Like the check on your machine, only a FAIL line turns it red; TODO lines keep it green.</p>
+  <p>It is there because "it works on my machine" is not the same as "it is in the repo I handed in".
+  When your own check passes and CI fails, a file is usually missing from a commit or different from yours, and you want to find that out now, not on the last night.
+  A green <code>p3-check</code> is also part of the setup points.</p>
+</div>
+<div class="fail"><span class="label">If it fails</span>
+  <p>Click the red run, then the <code>check</code> job, then the <code>Run p3 check</code> step, and read its FAIL lines: each one names the file.
+  Fix it on your machine, check that <code>uv run p3 check</code> shows <code>Integrity: no failures.</code>, and push again.</p>
+</div>
+<p>From the next page on, you can also ask the Builder to commit and push for you.</p>
+
+<h2 id="open-the-guide">Open this guide from your repo</h2>
+<p>This guide is part of your repo, in <code>guide/</code>, so the pages you read always match the version of the project you have.
+The pages open straight from disk in any browser, with no server and nothing to install.
+Open <code>guide/index.html</code> in one of these ways:</p>
+<ul>
+  <li>In VS Code's Explorer, right-click <code>guide/index.html</code>, choose <strong>Reveal in File Explorer</strong> (Windows) or <strong>Reveal in Finder</strong> (macOS), and double-click the file.</li>
+  <li>From a terminal in <code>work/p3-tutor</code>, run <code>start guide/index.html</code> on Windows (in Git Bash or PowerShell) or <code>open guide/index.html</code> on macOS.</li>
+</ul>
+<p>Bookmark the page in your browser, so it is one click away for the next three weeks.
+The Guide window reads these same pages from your repo, so when it says "see <code>guide/08-step1-skills.html</code>, under Rounds", that is a page you can open here.</p>
+
+<h2 id="next">What comes next</h2>
+<p>Run <code>uv run p3 next</code> once now.
+It should list <code>1 Set up</code> under Done and show <code>2 The baseline</code> on its Now line.</p>
+<p>Before the baseline, start the two windows you will work in from now on, the Guide and the Builder, because from here on most of the project happens through them.
+<a href="02-two-windows.html">The Guide and the Builder</a> shows how.
+If anything on this page did not work, <a href="19-troubleshooting.html">When it breaks</a> lists the usual causes, and office hours are Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, in CTLM 246L; bring the exact message from your screen.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="index.html"><span class="pager-label">Previous</span><span class="pager-title">Start here</span></a>
+<a class="next" href="02-two-windows.html"><span class="pager-label">Next</span><span class="pager-title">The Guide and the Builder</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

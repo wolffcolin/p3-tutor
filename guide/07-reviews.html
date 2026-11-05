@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your reviews - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html" class="current" aria-current="page">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part II · How it works</p>
+<h1>Your reviews</h1>
+<p class="lede">Your reviews are the part of P3 that only you can do. This page says what you write, exactly where you type it, how a quick round moves between your windows, how a major review and its ratings work, and how I grade them.</p>
+<p class="meta">About 39 minutes to read.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#why">Why your reviews are the core of P3</a></li>
+    <li><a href="#files">The files you write in</a></li>
+    <li><a href="#quick-rounds">A quick round, from run to change</a></li>
+    <li><a href="#where-you-type">Exactly where you type</a></li>
+    <li><a href="#adding-a-round">Adding a round</a></li>
+    <li><a href="#one-component">One component per round, and why</a></li>
+    <li><a href="#minimums">How many rounds, and the c1-skills rule</a></li>
+    <li><a href="#major-reviews">Major reviews</a>: when, what you review, where you type, <a href="#criteria">the criteria</a>, <a href="#ratings">the ratings</a>, <a href="#evidence">evidence</a>, <a href="#closing">the two closing sections</a>, <a href="#final-review">the review of final</a></li>
+    <li><a href="#your-ratings">p3 report and "Your ratings"</a></li>
+    <li><a href="#grading">How I grade your reviews</a></li>
+    <li><a href="#who-writes">Who writes what</a></li>
+    <li><a href="#check">What p3 check says about your reviews, and the usual fixes</a></li>
+    <li><a href="#next">When something goes wrong, and where to go next</a></li>
+  </ul>
+</section>
+
+<h2 id="why">Why your reviews are the core of P3</h2>
+<p>A script can count the facts in a lesson and check a quiz key against two solvers.
+It cannot tell whether a lesson teaches you, whether a quiz item can be read two ways, whether feedback helps you fix a mistake, or whether the tutor is good to talk to.
+Much of a tutor's quality is personal fit, and you are the only person who can judge fit for you, against the <code>tutor/PREFERENCES.md</code> you wrote.
+So at every step you read and try what your tutor made, you write down what you think, and the next change to the tutor is built from what you wrote.</p>
+<p>That gives your reviews three jobs, and each one is a reason to take them seriously.</p>
+<ul>
+  <li><strong>They are the measurement.</strong>
+  For everything a script cannot check, your judgment is the number.
+  That is also why no agent writes them for you: an agent's words in their place would measure the agent, not your tutor.</li>
+  <li><strong>They drive the build.</strong>
+  Each quick round's thoughts become one change to the tutor, and what your <code>c1-skills</code> major review finds becomes the checklists of your reviewer subagents in <code>c2-review</code>.</li>
+  <li><strong>They are the largest part of your grade.</strong>
+  The reviews are 30 of the 150 points, the largest single part of the project, and the component inventory, whose reviews are also yours, is another 10.</li>
+</ul>
+<p>When I read them, I look for a trail: from a review, to the change it caused, to whether that change helped.
+A step that made your tutor worse is a fine result to report, as long as the trail shows it.</p>
+<div class="note"><span class="label">Words this page uses</span>
+<dl>
+  <dt>The Builder</dt>
+  <dd>The Claude Code window you start with plain <code>claude</code> in <code>work/p3-tutor</code>. It changes your tutor and runs the commands you ask for.</dd>
+  <dt>The Guide</dt>
+  <dd>The Claude Code window you start with <code>claude --agent p3-guide</code> in <code>work/p3-tutor</code>. It explains and says what comes next, and never changes a file.</dd>
+  <dt>A plain terminal</dt>
+  <dd>A terminal tab with no Claude Code in it, where the long runs go.</dd>
+  <dt>Config and snapshot</dt>
+  <dd>Your tutor's config is <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code>. A snapshot is a frozen copy of it in <code>configs/&lt;name&gt;/</code>, made with <code>uv run p3 snapshot &lt;name&gt;</code>.</dd>
+  <dt>The ladder</dt>
+  <dd>The fixed steps from <code>c0-baseline</code> through <code>c1-skills</code>, <code>c2-review</code> and <code>c3-split</code> to <code>final</code>, each one measured against the one before it.</dd>
+  <dt>Full run and quick run</dt>
+  <dd>A full run is all of the bench's scenarios on a snapshot, ten on the shared topic; a quick run is five of them, once. The <a href="20-glossary.html">glossary</a> has the rest.</dd>
+</dl>
+</div>
+
+<h2 id="files">The files you write in</h2>
+<p>All your reviews live in the <code>reviews/</code> folder of your repo, and every file there is part of what you hand in.</p>
+<div class="table-wrap">
+<table>
+  <caption>The review files, from reviews/README.md, with the week each one falls in on the pace I would keep (<a href="17-pace.html">A pace that works</a>).</caption>
+  <thead><tr><th>File</th><th>What it holds</th><th>When you write in it</th></tr></thead>
+  <tbody>
+    <tr><td><code>reviews/c1-skills.md</code></td><td>the quick rounds while you build <code>c1-skills</code>, then its major review</td><td>week 1</td></tr>
+    <tr><td><code>reviews/c2-review.md</code></td><td>the quick rounds while you build the review loops, then the major review of <code>c2-review</code></td><td>week 2</td></tr>
+    <tr><td><code>reviews/c3-split.md</code></td><td>the quick rounds while you split up the teach job, then the major review of <code>c3-split</code></td><td>week 2</td></tr>
+    <tr><td><code>reviews/final.md</code></td><td>optional quick rounds, the major review of <code>final</code>, your three learning sessions, and your open review of the two test topics</td><td>week 3</td></tr>
+    <tr><td><code>reviews/components.md</code></td><td>the component inventory: one entry for every skill and every subagent you built</td><td>at the end of each step, finished in week 3</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Each file ships with its headings and with <strong>marker lines</strong>, which are lines that say <code>TODO</code> where your words go.
+You replace each marker with your own writing, and you keep every heading exactly as it is, because <code>p3 check</code> finds your reviews by their headings.
+<code>reviews/README.md</code> holds the same rules in short, with an example of each part; this page explains them and why they exist.</p>
+<p>This page covers the quick rounds and the major reviews.
+The learning sessions and the open review of the test topics, both in <code>reviews/final.md</code>, are explained on <a href="12-final.html#learning-sessions">final: the guard, repeats and the ablation</a> and <a href="11-test-topics.html">Your two test topics</a>, and the inventory on <a href="14-write-up.html#inventory">The inventory and EVAL.md</a>.</p>
+
+<h2 id="quick-rounds">A quick round, from run to change</h2>
+<p>A <strong>quick round</strong> is one turn of the loop you build each step with.
+You run your tutor as it stands, read and try what it made, write a few sentences of thoughts in the step's review file, and the Builder makes one change to the tutor from them.
+The next run shows whether the change helped.
+Each round takes about 30 to 45 minutes of your own time for the reading, the thoughts and the change, plus the run itself.</p>
+<p>Three places take part: the <span class="tag builder">Builder</span>, which changes the tutor and runs the commands you ask for; a <span class="tag plain">Plain terminal</span>, for runs you start yourself; and VS Code's editor, where you write.
+<a href="02-two-windows.html">The Guide and the Builder</a> explains the windows and how to open them.</p>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 780 214" role="img" aria-label="The quick round loop. 1, run the live tutor, in the Builder or a plain terminal. 2, read and try what it made, in the browser, the editor and your tutor. 3, you write your thoughts in the editor, under My thoughts in reviews/&lt;step&gt;.md. 4, the Builder makes one change in tutor/ and writes What changed. 5, the next round's run is the tutor with the change, and your thoughts begin by saying whether it helped.">
+      <defs>
+        <marker id="arrow-07" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <rect x="16" y="16" width="160" height="104" rx="4" fill="none" stroke="currentColor"/>
+      <text x="96" y="42" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">1. Run</text>
+      <text x="96" y="64" text-anchor="middle" fill="currentColor" font-size="12">the Builder, or a</text>
+      <text x="96" y="82" text-anchor="middle" fill="currentColor" font-size="12">plain terminal</text>
+      <text x="96" y="104" text-anchor="middle" fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">--config live</text>
+
+      <rect x="212" y="16" width="160" height="104" rx="4" fill="none" stroke="currentColor"/>
+      <text x="292" y="42" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">2. Read and try</text>
+      <text x="292" y="64" text-anchor="middle" fill="currentColor" font-size="12">browser, editor,</text>
+      <text x="292" y="82" text-anchor="middle" fill="currentColor" font-size="12">your tutor in tutor/</text>
+      <text x="292" y="104" text-anchor="middle" fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">bench/runs/_live/</text>
+
+      <rect x="408" y="16" width="160" height="104" rx="4" fill="none" stroke="currentColor"/>
+      <text x="488" y="42" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">3. Write</text>
+      <text x="488" y="64" text-anchor="middle" fill="currentColor" font-size="12">you, in the editor:</text>
+      <text x="488" y="82" text-anchor="middle" fill="currentColor" font-size="12">My thoughts in</text>
+      <text x="488" y="104" text-anchor="middle" fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">reviews/&lt;step&gt;.md</text>
+
+      <rect x="604" y="16" width="160" height="104" rx="4" fill="none" stroke="currentColor"/>
+      <text x="684" y="42" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">4. Change</text>
+      <text x="684" y="64" text-anchor="middle" fill="currentColor" font-size="12">the Builder: one</text>
+      <text x="684" y="82" text-anchor="middle" fill="currentColor" font-size="12">change in tutor/,</text>
+      <text x="684" y="104" text-anchor="middle" fill="currentColor" font-size="12">writes What changed</text>
+
+      <line x1="178" y1="68" x2="209" y2="68" stroke="currentColor" marker-end="url(#arrow-07)"/>
+      <line x1="374" y1="68" x2="405" y2="68" stroke="currentColor" marker-end="url(#arrow-07)"/>
+      <line x1="570" y1="68" x2="601" y2="68" stroke="currentColor" marker-end="url(#arrow-07)"/>
+      <path d="M684 122 V156 H96 V124" fill="none" stroke="currentColor" stroke-dasharray="5 4" marker-end="url(#arrow-07)"/>
+
+      <text x="390" y="180" text-anchor="middle" fill="currentColor" font-size="12">5. The next round's run is the tutor with the change,</text>
+      <text x="390" y="198" text-anchor="middle" fill="currentColor" font-size="12">and your thoughts begin by saying whether it helped.</text>
+    </svg>
+  </div>
+  <figcaption>One quick round. You run and read, you write, the Builder changes the tutor, and the next round's run tells you whether the change helped.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li>
+    <p><strong>Run the tutor as it stands.</strong>
+    <span class="tag builder">Builder</span> or <span class="tag plain">Plain terminal</span>.
+    <code>--config live</code> runs <code>tutor/</code> as it is right now, with no snapshot, and writes the run to <code>bench/runs/_live/&lt;run-id&gt;/</code>, a folder git ignores.
+    A <strong>scenario</strong> is one task the bench gives your tutor, such as writing a lesson or answering one probe, and <code>--quick</code> runs five of them once: <code>teach</code>, <code>quiz</code>, <code>grade-s1</code>, <code>tutor-p01</code> and <code>tutor-p02</code>.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+      <pre class="in">uv run p3 bench --config live --quick</pre>
+    </div>
+    <p>When a round is about one job, run only that job with <code>--only</code>, such as <code>--only quiz</code>, or a list such as <code>--only grade-s1,tutor-p03</code>.
+    A round about the quiz needs no lesson, and the lesson is by far the most expensive scenario: a quick run of the baseline took about 4 minutes and 1.1 million tokens in my pilot, and a quick run of my review-loop config would be about 6 million, nearly all of it the teach scenario.
+    If you ask the Builder, it tells you how many sessions the run starts and asks before it starts one.</p>
+    <div class="say builder">
+      <div class="say-head">Say to the Builder</div>
+      <pre>Run the live tutor on the quiz scenario only: uv run p3 bench --config live --only quiz</pre>
+    </div>
+  </li>
+  <li>
+    <p><strong>Read and try what it made.</strong>
+    Open the run's folder under <code>bench/runs/_live/</code>.
+    Open the lesson in <code>teach/outputs/lessons/</code> in your browser, take the quiz in <code>quiz/outputs/quizzes/</code> yourself before you look at its key in <code>quiz/outputs/keys/</code>, read the feedback in <code>grade-s1/outputs/grades/</code>, and read the tutor's replies in <code>tutor-p01/result.json</code> and <code>tutor-p02/result.json</code>.
+    When the round is about the tutor job, also talk to it: open a terminal in <code>work/p3-tutor/tutor</code> and start <code>claude</code> there <span class="tag tutor">Your tutor</span>.
+    <a href="03-baseline.html#opening">Run the baseline and read what it made</a> shows how to open each of these files.</p>
+  </li>
+  <li>
+    <p><strong>Write your thoughts in the file.</strong>
+    In VS Code's editor, open <code>reviews/&lt;step&gt;.md</code>, such as <code>reviews/c1-skills.md</code>.
+    In the round you are on, fill in the Run line and write a few sentences under <code>**My thoughts:**</code>: first whether the last round's change helped, then what worked, what did not, and what you want changed.
+    Quote what you saw, because live runs are not committed and your thoughts are the only record of them that I see.
+    You do not need every criterion here; write about what you noticed.
+    Save the file.</p>
+  </li>
+  <li>
+    <p><strong>Ask the Builder to act on the round.</strong></p>
+    <div class="say builder">
+      <div class="say-head">Say to the Builder</div>
+      <pre>Act on Round 2 of reviews/c1-skills.md.</pre>
+      <p>Use your own round number and step file. One sentence is enough, because your thoughts are already in the file.</p>
+    </div>
+    <p>The Builder reads your thoughts and the round before them, and makes one change to <code>tutor/</code>: a modified skill, a new skill, a new subagent, or another change such as an allow rule.
+    It replaces the round's What changed marker lines with the Kind, the Files and the Why, and when the change adds or changes a component it fills in that component's factual fields in <code>reviews/components.md</code>.
+    Then it says what it changed, suggests the cheapest run that shows the change, and waits.
+    If your thoughts asked for several changes, it makes the one that matters most and tells you what it left for a later round.</p>
+  </li>
+  <li>
+    <p><strong>The next round's run shows whether it helped.</strong>
+    Add the next round to the file (<a href="#adding-a-round">Adding a round</a> says how), run the changed tutor, and begin its thoughts by saying whether the last change helped.
+    That first sentence is the review of the change, and it is the link in your trail that I look for most.</p>
+  </li>
+</ol>
+
+<h3 id="next-says">What p3 next says at each point of the loop</h3>
+<p><code>uv run p3 next</code> reads your step's review file and tells you where you are in the loop.
+You can run it in a plain terminal, or ask the Guide, which runs it for you.
+These are the lines it gives during the rounds of a step, with your round number and step file in place of <code>k</code> and <code>&lt;step&gt;</code>.</p>
+<div class="table-wrap">
+<table>
+  <caption>The Next line of p3 next while you build a step in quick rounds.</caption>
+  <thead><tr><th>Where you are</th><th>What p3 next says</th></tr></thead>
+  <tbody>
+    <tr><td>Round k is untouched</td><td>Run the live tutor (<code>uv run p3 bench --config live --quick</code>, or <code>--only</code> with the scenarios you are working on), then write what you noticed under Round k &gt; My thoughts in <code>reviews/&lt;step&gt;.md</code>.</td></tr>
+    <tr><td>Your thoughts are written, and What changed still holds its markers</td><td>In the Builder window, say: Act on Round k of <code>reviews/&lt;step&gt;.md</code>.</td></tr>
+    <tr><td>Something else in the round is not finished</td><td>Finish Round k in <code>reviews/&lt;step&gt;.md</code>: &lt;its first problem&gt;.</td></tr>
+    <tr><td>Every round is complete, and you have fewer than the minimum</td><td>Add Round k to <code>reviews/&lt;step&gt;.md</code> by copying the last round with its marker lines.</td></tr>
+    <tr><td>The minimum is reached, in step 1, and one of the four required skills is missing from <code>tutor/</code></td><td>Add a round for the &lt;job&gt; skill: copy the last round of <code>reviews/c1-skills.md</code> with its marker lines, as Round k.</td></tr>
+    <tr><td>The minimum is reached otherwise</td><td>&lt;what the step must hold&gt;, snapshot it: <code>uv run p3 snapshot &lt;step&gt;</code> (or add another round first).</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The start of that last line names what the step must hold before its snapshot, which neither <code>p3 next</code> nor <code>p3 check</code> can see: "When the four skills are in and you are happy with the tutor" in step 1, "When teach, quiz and grade each have their review loop and you are happy with the tutor" in step 2, and "When the teach job is split across its subagents and you are happy with the tutor" in step 3.</p>
+
+<div class="watch"><span class="label">Watch out</span>
+<p>The rule that the Builder writes only What changed and never your words lives in the repo's <code>CLAUDE.md</code>.
+A Builder started in <code>work/p3-tutor</code> reads that file by itself when it starts, which is one reason the Builder always starts there.
+A session that has not read it does not know the rule, so ask to act on a round only in the Builder window, as <code>reviews/README.md</code> says, and never in a Claude Code session that started somewhere else, such as the course repo's root.</p>
+</div>
+
+<h2 id="where-you-type">Exactly where you type</h2>
+<p>You type your reviews into the file, in VS Code's editor, and never into a chat window.
+In VS Code's Explorer (the list of files on the left), open the <code>reviews</code> folder and click the step's file, such as <code>c1-skills.md</code>.
+Write under the headings that are there, replacing the marker lines, and save.</p>
+<div class="why"><span class="label">Why it is this way</span>
+<p>The file is what I read and grade, and what <code>p3 check</code> and <code>p3 report</code> read.
+A chat message is gone when its window closes.
+And if you type your thoughts into the Builder and ask it to put them in the file, the words in the file are the agent's, which measures the agent.
+If you want help with wording, ask for it in a chat, and then type your own version into the file.</p>
+</div>
+
+<h3 id="untouched-round">An untouched round, as the template ships it</h3>
+<p>This is Round 1 of <code>reviews/c1-skills.md</code> before anyone has written in it.
+Every <code>TODO</code> is a marker line.</p>
+<pre><code>### Round 1
+
+**Run:** TODO
+
+**My thoughts:**
+
+TODO
+
+**What changed:**
+
+- Kind: TODO
+- Files: TODO
+- Why: TODO</code></pre>
+<div class="table-wrap">
+<table>
+  <caption>Each line of a round, who writes it, and what goes there.</caption>
+  <thead><tr><th>Line</th><th>Who writes it</th><th>What goes there</th></tr></thead>
+  <tbody>
+    <tr><td><code>### Round 1</code></td><td>the template, or you when you add a round</td><td>the round's heading: three <code>#</code>, the word Round and its number</td></tr>
+    <tr><td><code>**Run:**</code></td><td>you</td><td>the run your thoughts rest on, as its folder, such as <code>bench/runs/_live/&lt;run-id&gt;</code>, and what kind of run it was, such as "a quick run" or "--only quiz"</td></tr>
+    <tr><td><code>**My thoughts:**</code></td><td>you</td><td>a few sentences on the lines below the label, in place of the <code>TODO</code> line: whether the last change helped, what worked, what did not, what you want changed</td></tr>
+    <tr><td><code>**What changed:**</code> with <code>- Kind:</code>, <code>- Files:</code> and <code>- Why:</code></td><td>the Builder, when you ask it to act on the round</td><td>leave these as <code>TODO</code>; the Builder fills in the kind of change, the files it touched, and one sentence tying the change to your thoughts</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For Round 1 of <code>c1-skills</code>, the Run line can name the baseline's quick run from your setup, under <code>bench/runs/c0-baseline/</code>, because your first round can start from the tutor as it ships: the baseline is the output without your first change.</p>
+
+<h3 id="filled-round">A filled-in round</h3>
+<p>This is the example from <code>reviews/README.md</code>: a student's Round 2, with their thoughts and the Builder's What changed.</p>
+<pre><code>### Round 2
+
+**Run:** bench/runs/_live/20261105-141502-agent-architecture-m30-r1, a quick run
+
+**My thoughts:**
+
+The new quiz skill helped: the six items now mix mcq, numeric and short, where the quiz in Round 1 was six mcq items.
+But q4 asks for "the best design" without saying best for what, and I could argue for two of its options.
+The feedback on s1 q5 marks it partial, which is right, but it only says "You are close, think about why", and it never says that my answer gave the what and missed the why.
+I want feedback that says which part of an answer was right, which part was missing, and one thing to reread.
+
+**What changed:**
+
+- Kind: new skill
+- Files: tutor/.claude/skills/grade/SKILL.md
+- Why: Grading still ran inside /teach with no rule for feedback; a grade skill of its own names what was right, what was missing and one thing to reread for every item, as these thoughts ask.</code></pre>
+<p>Notice what makes these thoughts work.
+The first sentence reviews the last change, with evidence (the mix of item types against Round 1's six mcq items).
+Each problem names its item (q4, s1 q5) and quotes what is wrong.
+And the last sentence says what the student wants, which is what the Builder acts on.
+Notice also that the Builder made one change, the grade skill, and did not also rewrite q4's skill in the same round; q4 waits for a later round.</p>
+
+<h2 id="adding-a-round">Adding a round</h2>
+<p>The template ships two rounds in each of <code>c1-skills.md</code>, <code>c2-review.md</code> and <code>c3-split.md</code>, and one optional round in <code>final.md</code>.
+From the third round on, you add each round yourself, when you write its thoughts.
+The Builder never adds a round for you.</p>
+<ol class="steps">
+  <li><p><strong>Copy the last round</strong>, from its <code>### Round</code> heading down to its <code>- Why:</code> line.</p></li>
+  <li><p><strong>Paste it below that round</strong>, still above <code>## Major review</code>, and change the number in the heading.</p></li>
+  <li><p><strong>Put the marker lines back</strong>, so that its Run, My thoughts, Kind, Files and Why all say <code>TODO</code>.
+  Then write the Run line and your thoughts, and save.</p></li>
+</ol>
+<p>The new round should look like this before you write in it:</p>
+<pre><code>### Round 3
+
+**Run:** TODO
+
+**My thoughts:**
+
+TODO
+
+**What changed:**
+
+- Kind: TODO
+- Files: TODO
+- Why: TODO</code></pre>
+<div class="why"><span class="label">Why it is this way</span>
+<p>The marker lines are how everyone knows where a round stands.
+The Builder acts on the round whose What changed lines are still markers, and <code>p3 next</code> and <code>p3 check</code> tell an untouched round, a half-written one and a complete one apart by them.
+If you copy a finished round and keep its Kind, Files and Why, the new round looks complete: the Builder does not know it has work there, and your trail shows a change that never happened in that round.</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+<p>Once a step has its minimum of rounds, a round you never wrote in gets a warning from <code>p3 check</code> ("not written; fill it in or delete it"), so delete a round you added by mistake.
+The optional round in <code>final.md</code> is the exception: left untouched, it is ignored.</p>
+</div>
+
+<h2 id="one-component">One component per round, and why</h2>
+<p>A <strong>component</strong> is a skill or a subagent of your tutor.
+Every round makes one change, and when that change adds a component, it adds exactly one.
+A round may instead change a component that already exists.
+The four kinds of change the What changed line can name are <code>modified skill</code>, <code>new skill</code>, <code>new subagent</code> and <code>other</code>, for a change that is none of these, such as an allow rule in <code>tutor/.claude/settings.json</code>.</p>
+<p>The reason is evidence.
+The run at the start of a round shows your tutor without the new component, and the run at the start of the next round shows it with it, so the two Run lines and your next thoughts are a with-and-without comparison that costs you nothing extra.
+That comparison is exactly what the component inventory asks you for.</p>
+<div class="table-wrap">
+<table>
+  <caption>An example from step 2: how the rounds line up into a with-and-without for each reviewer.</caption>
+  <thead><tr><th>Round</th><th>Its Run line</th><th>Its change</th></tr></thead>
+  <tbody>
+    <tr><td><code>c2-review</code> Round 1</td><td>the tutor without any reviewer</td><td>adds a <code>quiz-reviewer</code> subagent</td></tr>
+    <tr><td><code>c2-review</code> Round 2</td><td>the tutor with <code>quiz-reviewer</code>; the thoughts begin by saying whether it helped</td><td>adds a grade reviewer</td></tr>
+    <tr><td><code>c2-review</code> Round 3</td><td>the tutor with the grade reviewer; the thoughts say whether it helped</td><td>adds a lesson reviewer</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Without the rule, two components arrive in one round, and the next run shows both changes at once.
+You cannot say which one helped, which one cost the extra tokens, or whether one of them made things worse while the other made them better.
+Each of them then needs a separate with-and-without check for the inventory, which means extra runs and extra tokens.</p>
+<p>The last round of a step has no next round.
+Its change is reviewed by the major review that follows it, because the step's full run is the tutor with that change.</p>
+
+<h2 id="minimums">How many rounds, and the c1-skills rule</h2>
+<ul>
+  <li><strong>At least two complete rounds</strong> in each of <code>reviews/c1-skills.md</code>, <code>reviews/c2-review.md</code> and <code>reviews/c3-split.md</code>.
+  Rounds in <code>reviews/final.md</code> are optional; give one to each component that <code>final</code> adds, such as a grader subagent, so its inventory entry has its with and without.</li>
+  <li><strong>A round is complete</strong> when your thoughts and the Kind, Files and Why lines are all written, and Kind is one of the four kinds.
+  The Run line is not part of that count, but <code>p3 check</code> warns when a complete round has none, because a round without its run cannot show its evidence.</li>
+  <li><strong>Two is a floor, not a plan.</strong>
+  With one new component per round, step 1 usually takes four rounds or more: one for each new skill and one to rewrite <code>teach</code>.
+  Step 2 takes at least three, one for the reviewer of each of teach, quiz and grade, even though <code>p3 check</code> counts only two; <code>p3 next</code>'s advice before the <code>c2-review</code> snapshot says so.
+  Across the three steps that is about nine rounds for 498E, and about fourteen for 598E, whose architecture is larger.</li>
+</ul>
+<p><strong><code>c1-skills</code> is still one agent.</strong>
+No round in <code>reviews/c1-skills.md</code> adds a subagent: each one changes or adds a skill, or makes another change the skills need, such as an allow rule (Kind <code>other</code>).
+Subagents arrive in <code>c2-review</code>, as reviewers, and in <code>c3-split</code>, as the teach pipeline, so that each step on the ladder adds one kind of machinery and its measurement is about that kind.
+<code>p3 check</code> fails, even without <code>--final</code>, when <code>configs/c1-skills/</code> holds a subagent or a round in <code>reviews/c1-skills.md</code> is of Kind <code>new subagent</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+  <pre class="out">  FAIL  c1-skills adds a subagent, but c1 is still one agent (subagents arrive in c2-review and c3-split)
+          reviews/c1-skills.md, Quick rounds &gt; Round 3: Kind is new subagent; a quick round of c1-skills changes or adds a skill, or makes another change (Kind other)</pre>
+</div>
+<p>If your thoughts in step 1 ask for something that sounds like a reviewer, write it down for step 2.
+Those notes are exactly what your <code>c2-review</code> checklists are made of.</p>
+
+<h2 id="major-reviews">Major reviews</h2>
+<p>A <strong>major review</strong> closes each step: <code>c1-skills</code>, <code>c2-review</code>, <code>c3-split</code> and <code>final</code>.
+Where a quick round is a few sentences about what you noticed, a major review goes through every criterion of every job the step reviews, rates each one from 1 to 5, and justifies each rating with evidence.
+It is written at the end of the step's file, under <code>## Major review</code>.
+In my estimate it takes about 2 hours for <code>c1-skills</code>, 1.75 for <code>c2-review</code>, 0.75 for <code>c3-split</code> and 1.5 for <code>final</code>.</p>
+
+<h3 id="major-when">When to write it</h3>
+<ol class="steps">
+  <li><p><strong>Snapshot the step</strong> when you are happy with its rounds, such as <code>uv run p3 snapshot c1-skills</code>, in the Builder or a plain terminal.
+  A snapshot is a frozen copy of your tutor's config in <code>configs/&lt;name&gt;/</code>, so a run's numbers belong to one exact tutor.
+  <a href="08-step1-skills.html#snapshot">Step 1</a> explains it.</p></li>
+  <li><p><strong>Start its full run in a plain terminal</strong>, such as <code>uv run p3 bench --config c1-skills</code>.
+  A full run is all ten scenarios: in my pilot one took about 6 minutes for the baseline and about 17 for my review-loop config, at the default <code>--jobs 1</code>, and the teach scenario alone may run up to 45 minutes.
+  That is longer than Claude Code lets a foreground command run, and the run must not stop when a Claude Code window closes, so it goes in a plain terminal; <a href="06-the-bench.html#cost">The bench: scenarios, scores and cost</a> has the numbers.</p></li>
+  <li><p><strong>Try the tutor live</strong> while <code>tutor/</code> still matches the snapshot.
+  You can do this while the full run runs.</p></li>
+  <li><p><strong>Read the run's outputs and write the review</strong>, once the run has finished and been scored.</p></li>
+  <li><p><strong>Commit the review</strong> as soon as you finish it.</p></li>
+</ol>
+<div class="why"><span class="label">Why it is this way</span>
+<p>A major review is a review of one exact run of one exact snapshot, so its Run line names that run, and <code>p3 check</code> checks that the review was first committed complete after the run finished.
+A review written before the run it names would be a review of something you had not seen.</p>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add reviews/c1-skills.md
+git commit -m "Major review of c1-skills"
+git push</pre>
+</div>
+<p>You can also ask the Builder to commit it for you, with the file and the message.
+At the end of each step you commit <code>configs/</code> and <code>bench/runs/</code> as well, so the snapshot and the run your review names are in your repo.</p>
+
+<h3 id="major-what">What you review</h3>
+<p><strong>That run's outputs, all of them, for the jobs the step reviews.</strong>
+In <code>bench/runs/c1-skills/&lt;run-id&gt;/</code> (with your own step and run id), that is:</p>
+<ul>
+  <li>the lesson in <code>teach/outputs/lessons/</code>, opened in your browser;</li>
+  <li>the quiz and its key in <code>quiz/outputs/</code>, in <code>quizzes/</code> and <code>keys/</code>;</li>
+  <li>the grades in <code>grade-s1/outputs/grades/</code> and <code>grade-s2/outputs/grades/</code>;</li>
+  <li>each tutor reply in <code>tutor-pNN/result.json</code>, for <code>tutor-p01</code> to <code>tutor-p06</code>.</li>
+</ul>
+<p><strong>Your own live tries.</strong>
+Open a terminal in <code>work/p3-tutor/tutor</code>, start <code>claude</code> there <span class="tag tutor">Your tutor</span>, and use the tutor as a learner: ask for a short lesson, take a quiz, have your answers graded, and ask the tutor a question.
+The topic is yours to choose.
+The shared topic makes it easy to set what you saw beside the run, and a topic you really want to learn tells you more about fit.</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>/teach a 15-minute lesson on how an agent decides when to stop</pre>
+  <p>Any request a learner would make works; this one starts the teach skill on a short lesson.</p>
+</div>
+<p>The learner files these tries leave in <code>tutor/</code> (<code>MISSION.md</code>, <code>NOTES.md</code>, <code>lessons/</code> and the rest) stay there from step to step, as a real learner's would.
+They are never part of a config, so you need not clear them between steps.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>From <code>c2-review</code> on, your tutor waits for subagents, and in an interactive session it can do that only once <a href="20-glossary.html#fork-mode">fork mode</a>, a Claude Code setting that is on by default, is off.
+Put <code>{"env": {"CLAUDE_CODE_FORK_SUBAGENT": "0"}}</code> in <code>tutor/.claude/settings.local.json</code> and start <code>claude</code> again in <code>tutor/</code>.
+That file is personal and never reaches the bench; the last section of <code>tutor/.claude/agents/README.md</code> explains why it must not go in <code>tutor/.claude/settings.json</code>.</p>
+</div>
+
+<h3 id="major-where">Where you type a major review</h3>
+<p>The major review is the second half of the step's file.
+This is the start of it in <code>reviews/c1-skills.md</code>, and the end:</p>
+<pre><code>## Major review
+
+**Run:** bench/runs/c1-skills/TODO
+
+**Live tries:**
+
+TODO
+
+### Lesson
+
+#### Technical correctness and facts
+
+Rating: TODO
+
+TODO
+
+#### Pedagogy
+
+Rating: TODO
+
+TODO
+
+...
+
+### Compared with the previous step
+
+TODO
+
+### What the next step should fix
+
+TODO</code></pre>
+<div class="table-wrap">
+<table class="stack">
+  <caption>The parts of a major review. You write all of them.</caption>
+  <thead><tr><th>Part</th><th>What goes there</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Part"><code>**Run:**</code></td><td data-label="What goes there">the folder of the full run you reviewed, <code>bench/runs/&lt;step&gt;/&lt;run-id&gt;</code>; it must be a scored full run of that step on the shared topic, not a quick run, an <code>--only</code> run or a test topic's run</td></tr>
+    <tr><td data-label="Part"><code>**Live tries:**</code></td><td data-label="What goes there">what you did in <code>tutor/</code> and what you saw, as one text, or with a heading of your own for each try (such as <code>### Try 1: a quiz on tools</code>) above <code>### Lesson</code>; everything up to the first job's heading counts</td></tr>
+    <tr><td data-label="Part"><code>### Lesson</code>, <code>### Quiz</code>, <code>### Feedback</code>, <code>### Tutor</code></td><td data-label="What goes there">one heading per job the step reviews, already there; do not add or remove jobs</td></tr>
+    <tr><td data-label="Part"><code>#### &lt;criterion&gt;</code> with <code>Rating:</code></td><td data-label="What goes there">a whole number from 1 to 5 on the Rating line, such as <code>Rating: 4</code>, and below it the feedback that justifies it, with evidence</td></tr>
+    <tr><td data-label="Part"><code>### Compared with the previous step</code></td><td data-label="What goes there">how this step compares with the one before it, job by job</td></tr>
+    <tr><td data-label="Part"><code>### What the next step should fix</code></td><td data-label="What goes there">what the next step should fix; in <code>final.md</code> this heading is <code>### What I would do next</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="criteria">The criteria, step by step</h3>
+<p>Each step reviews the jobs it changed, and each job has fixed criteria, the same at every step, so your ratings can be set side by side along the ladder.</p>
+<div class="table-wrap">
+<table>
+  <caption>Which jobs each major review covers, and the step it compares with (from reviews/README.md).</caption>
+  <thead><tr><th>Step</th><th>Jobs reviewed</th><th>The previous step</th></tr></thead>
+  <tbody>
+    <tr><td><code>c1-skills</code></td><td>Lesson, Quiz, Feedback, Tutor</td><td><code>c0-baseline</code></td></tr>
+    <tr><td><code>c2-review</code></td><td>Lesson, Quiz, Feedback</td><td><code>c1-skills</code></td></tr>
+    <tr><td><code>c3-split</code></td><td>Lesson</td><td><code>c2-review</code></td></tr>
+    <tr><td><code>final</code></td><td>Lesson, Quiz, Feedback, Tutor</td><td><code>c3-split</code>; for the quiz and the feedback, <code>c2-review</code>; for the tutor, <code>c1-skills</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="table-wrap">
+<table>
+  <caption>The criteria and what each one asks. The headings in your file are these criterion names, word for word.</caption>
+  <thead><tr><th>Job</th><th>Criterion</th><th>What it asks</th></tr></thead>
+  <tbody>
+    <tr><td>Lesson</td><td>Technical correctness and facts</td><td>Is every claim, example and figure right? Quote anything wrong, out of date or misleading.</td></tr>
+    <tr><td>Lesson</td><td>Pedagogy</td><td>Does it teach well: the order, the pacing, examples before abstractions, chances to recall and practice, exercises you could really do?</td></tr>
+    <tr><td>Lesson</td><td>Alignment with the learning goal</td><td>Does it serve the objective it was asked for, at the learner's level and for the learner's mission, without drifting?</td></tr>
+    <tr><td>Lesson</td><td>Overall quality</td><td>Taken as a whole, would you want to learn from it: its length, its look, its figures, its references?</td></tr>
+    <tr><td>Quiz</td><td>Difficulty</td><td>Is it right for this learner after this lesson, neither trivial nor out of reach?</td></tr>
+    <tr><td>Quiz</td><td>Coverage of the lesson's core</td><td>Do the items test what matters most in the objective, and not side details?</td></tr>
+    <tr><td>Quiz</td><td>Wording and possible misreadings</td><td>Could a stem or an option be read two ways, or give its answer away? Name the item.</td></tr>
+    <tr><td>Quiz</td><td>Writing quality</td><td>Are the items clear, concise and correct, and is the key's rationale worth reading?</td></tr>
+    <tr><td>Quiz</td><td>Alignment with the learning goal</td><td>Does each item serve the objective it is tagged with, and the learner's mission?</td></tr>
+    <tr><td>Feedback</td><td>Useful</td><td>Does it tell the learner what to do next?</td></tr>
+    <tr><td>Feedback</td><td>Explains enough</td><td>Does it say why an answer is right, partly right or wrong, enough to fix the misunderstanding, without burying it?</td></tr>
+    <tr><td>Feedback</td><td>Personalized to how I like things explained</td><td>Does it follow your <code>PREFERENCES.md</code>: your kind of example, your length, your tone?</td></tr>
+    <tr><td>Tutor</td><td>Guardrails</td><td>Does it keep quiz answers to itself, including hints that point at the keyed option, stay at the learner's level, and, on the life-skill topic, stay out of personal financial, medical or legal advice?</td></tr>
+    <tr><td>Tutor</td><td>Personalization</td><td>Does it talk the way you like to be talked to?</td></tr>
+  </tbody>
+</table>
+</div>
+<p>One thing about the quiz in the bench: the quiz scenario's workspace holds no lesson, so there "the lesson's core" means the objective's text and what <code>MISSION.md</code> and <code>NOTES.md</code> say the learner needs.
+In your live tries, judge a quiz against the lesson it follows.</p>
+<p>My advice for the blind comparison (<a href="13-blind-comparison.html#judging-fit">Which fits you better</a>) helps here too: on the shared topic you are not the novice the topic describes, so judge fit by whether the output would have worked for you when you were new to agents.</p>
+
+<h3 id="ratings">The rating scale</h3>
+<div class="table-wrap">
+<table>
+  <caption>The scale from reviews/README.md, the same at every step.</caption>
+  <thead><tr><th class="num">Rating</th><th>What it means</th></tr></thead>
+  <tbody>
+    <tr><td class="num">5</td><td>excellent: nothing you would change</td></tr>
+    <tr><td class="num">4</td><td>good: small problems you can name</td></tr>
+    <tr><td class="num">3</td><td>acceptable: it works, with real problems</td></tr>
+    <tr><td class="num">2</td><td>poor: problems that would hurt a learner</td></tr>
+    <tr><td class="num">1</td><td>failing: wrong, unusable or missing</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use the same scale at every step, because <code>p3 report</code> puts your ratings side by side, one column per step, and a 4 should mean the same thing in <code>c1-skills</code> as in <code>final</code>.
+Write each rating as a whole number on its own line, <code>Rating: 4</code>, with the feedback below it.
+If you are torn between two numbers, pick one and say in the feedback what kept it from the other; a range such as 3-4, or 4.5, is not a rating <code>p3 check</code> accepts.
+A job that failed to produce anything, such as a missing lesson, is a 1 on its criteria, with the run's evidence that it is missing.</p>
+
+<h3 id="evidence">Evidence</h3>
+<p>Every rating needs feedback that justifies it, and feedback needs evidence that I can find:</p>
+<ul>
+  <li>a quote from the lesson, the quiz, the feedback or a reply;</li>
+  <li>an item id, such as <code>q4</code>, or a submission and item, such as <code>s2 q4</code>;</li>
+  <li>a probe id, such as <code>tutor-p05</code>;</li>
+  <li>a section of the lesson, by its heading.</li>
+</ul>
+<p>"Rating: 4. Good." is not a review.
+This is what one criterion looks like when it is done well, from <code>reviews/README.md</code>:</p>
+<pre><code>#### Wording and possible misreadings
+
+Rating: 3
+
+Four of the six items read cleanly, but two do not.
+q2 asks which design "is better" without saying better for what, and both (b) and (c) are defensible for a learner on a small budget.
+q5's correct option is the only one that repeats a phrase from the stem ("ends the loop"), so it gives itself away.
+The reviewer in c2 should check every stem for an unstated criterion and every correct option for words copied from its stem.</code></pre>
+<p>It says how much of the quiz is fine, names each problem by its item, quotes the words that cause it, explains why it hurts a learner, and ends with something a reviewer could check for.
+That last sentence is why the <code>c1-skills</code> review matters so much: what it finds becomes the checklists of your reviewers in <code>c2-review</code>, and a reviewer told "check that no stem can be read two ways, as q4 could in my c1 review" finds more than one told "review this quiz".</p>
+
+<h3 id="closing">The two closing sections</h3>
+<p>Every major review ends with two sections of your own.</p>
+<ul>
+  <li><strong><code>### Compared with the previous step</code>.</strong>
+  Job by job, how this step compares with the one before it, using the table above.
+  For <code>c1-skills</code> the previous step is <code>c0-baseline</code>, which has no major review of its own, so compare with what you read in your baseline runs.
+  For <code>final</code>, the quiz and the feedback compare with <code>c2-review</code> and the tutor with <code>c1-skills</code>, because <code>c3-split</code> reviewed only the lesson.</li>
+  <li><strong><code>### What the next step should fix</code></strong>, or in <code>final.md</code> <strong><code>### What I would do next</code></strong>.
+  The problems you want the next step to solve, specifically enough to act on.
+  The Builder reads this section when it starts the next step's rounds, so a vague line here becomes a vague next step.</li>
+</ul>
+
+<h3 id="final-review">The major review of final</h3>
+<p>The review of <code>final</code> covers all four jobs, on one of its three full runs.
+Its live tries are your three learning sessions with <code>final</code> on one of your test topics, written up under <code>## Learning sessions</code> in the same file, so its Live tries line points at them and names anything else you tried; a line is enough.
+<a href="12-final.html#major-review">final: the guard, repeats and the ablation</a> walks through it.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>Write the review of <code>final</code> and commit it before you start the blind comparison of <code>c0-baseline</code> against <code>final</code>.
+Your open judgment has to be on record before your blind one, because <code>EVAL.md</code> asks you to set the two side by side, and a review written after you saw the reveal is no longer an open review to compare with.
+<a href="13-blind-comparison.html">The blind comparison</a> explains why.</p>
+</div>
+
+<h2 id="your-ratings">p3 report and "Your ratings"</h2>
+<p><code>p3 report</code> reads the ratings out of your four major reviews and prints them as one table, "Your ratings", with a row per criterion and a column per step.
+It lets you see the ladder through your own eyes, beside the objective checks and the cost.
+It makes no model call, so it is free to run as often as you like.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --reviews</pre>
+  <pre class="out">## Your ratings
+
+Your ratings from 1 to 5 in the major reviews (reviews/&lt;step&gt;.md), which review full runs on the shared topic; a dash means no rating there yet, one that p3 check does not accept, or a job that step does not review (Tutor in c2-review; Quiz, Feedback and Tutor in c3-split).
+
+| job | criterion | c1-skills | c2-review | c3-split | final |
+|---|---|---:|---:|---:|---:|
+| Lesson | Technical correctness and facts | 4 | - | - | - |
+| Lesson | Pedagogy | 3 | - | - | - |
+...
+| Tutor | Personalization | 2 | - | - | - |</pre>
+</div>
+<p>This example is from early in week 2, with only the <code>c1-skills</code> review written.
+A dash means one of three things: no rating there yet, a rating <code>p3 check</code> does not accept (such as 4.5), or a job that step does not review.
+There is no column for <code>c0-baseline</code>, because the baseline has no major review of its own; your <code>c1-skills</code> review is where you compare with it.</p>
+<p>Without <code>--reviews</code>, <code>uv run p3 report</code> prints the objective checks and the cost of the shared topic's full runs, and then the same "Your ratings" table at the end.
+You paste these tables into <code>EVAL.md</code> at each step; <a href="14-write-up.html#eval">The inventory and EVAL.md</a> says which command goes in which section.</p>
+
+<h2 id="grading">How I grade your reviews</h2>
+<p>The reviews are 30 of the 150 points, for the quick rounds and the four major reviews, and the component inventory is another 10.
+I look for four things in them.</p>
+<div class="table-wrap">
+<table>
+  <caption>The four things I look for, each with a weak and a strong example. The examples are from reviews/README.md and README.md, except the last row, which is made up.</caption>
+  <thead><tr><th>What I look for</th><th>Weak</th><th>Strong</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Specific evidence</strong>: quotes, item ids, probe ids and file names, so I can find what you saw</td><td>"Some quiz items were confusing."</td><td>"q2 asks which design 'is better' without saying better for what, and both (b) and (c) are defensible."</td></tr>
+    <tr><td><strong>Ratings your feedback justifies</strong></td><td>"Rating: 4. Good."</td><td>A 2 with a reason I can check, which is worth more than a 4 with none.</td></tr>
+    <tr><td><strong>Feedback someone could act on</strong></td><td>"The quiz could be clearer."</td><td>"q2 never says better for what."</td></tr>
+    <tr><td><strong>A visible trail</strong>: from a review, to the change it caused (the round's What changed), to whether that change helped (the next round's thoughts, or the next major review)</td><td>A Round 3 whose thoughts never mention the grade skill that Round 2 added.</td><td>A Round 3 that begins: "The grade skill helped: s1 q5's feedback now says my answer gave the what and missed the why, and points me to the loop section."</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A step that got worse is a fine thing to report, as long as the trail shows it.
+I would rather read "Round 3's reviewer made the feedback longer and no more useful, so I took it out in Round 4" than a review that only ever says things improved.</p>
+
+<h2 id="who-writes">Who writes what</h2>
+<p>Your judgment is the measurement, so the parts that hold it are yours alone.
+The agents have small, fixed parts, and neither of them writes or edits yours, even to tidy them.</p>
+<div class="table-wrap">
+<table>
+  <caption>Who writes each part of reviews/, from reviews/README.md and the root CLAUDE.md.</caption>
+  <thead><tr><th>Part</th><th>Who writes it</th></tr></thead>
+  <tbody>
+    <tr><td>the Run lines, My thoughts, and Live tries</td><td>you</td></tr>
+    <tr><td>every rating and its feedback, the comparisons with the previous step, and what the next step should fix</td><td>you</td></tr>
+    <tr><td>the learning sessions and the test-topic reviews</td><td>you</td></tr>
+    <tr><td>a new round's heading and marker lines</td><td>you, when you write its thoughts</td></tr>
+    <tr><td>What changed under each round: Kind, Files and Why</td><td>the Builder, when you ask it to act on the round</td></tr>
+    <tr><td>the inventory's Kind, Step added, and With and without</td><td>the Builder may fill these in, and you check them</td></tr>
+    <tr><td>the inventory's Purpose, Review, and Kept in final</td><td>you</td></tr>
+    <tr><td>explanations of what a criterion asks and what good evidence looks like, and questions that help you notice something</td><td>the Guide, in its own window, never in your files</td></tr>
+  </tbody>
+</table>
+</div>
+<p><span class="tag guide">Guide</span> is the window you started with <code>claude --agent p3-guide</code>.
+It never changes a file, never rates anything, and never drafts your words.
+What it can do is help you see: it explains what a criterion means, says what good evidence looks like using the examples in <code>reviews/README.md</code>, and asks a question that points you at something, such as "what did the wrong options of q3 have in common?".</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What does the criterion Coverage of the lesson's core ask me to look at in the quiz?</pre>
+</div>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Is my Round 2 in reviews/c1-skills.md complete, and if not, what is missing?</pre>
+  <p>It runs <code>p3 check</code> and tells you what the check reports, without judging the content of your thoughts.</p>
+</div>
+<p>If you want help with wording, ask either agent in its chat, then type your own version into the file.
+If an agent ever writes in one of your parts, undo it and write your own; its rules say it never should, so please tell me too.</p>
+
+<h2 id="check">What p3 check says about your reviews, and the usual fixes</h2>
+<p><code>uv run p3 check</code> reads every file in <code>reviews/</code> and lists what is still to do in them.
+It makes no model call and changes nothing, so run it whenever you finish a round or a review, in the Builder or a plain terminal, or ask the Guide to run it.
+Each line starts with one of four words:</p>
+<ul>
+  <li><code>OK</code>: the item holds.</li>
+  <li><code>TODO</code>: work not done yet. It never fails the check on its own, but <code>p3 check --final</code>, which you run before you hand in, fails on every one of them.</li>
+  <li><code>WARN</code>: worth a look, never a failure.</li>
+  <li><code>FAIL</code>: something is broken.</li>
+</ul>
+<p>Under a line, indented, it names the file's part with its headings, as in <code>Major review &gt; Lesson &gt; Pedagogy</code>.
+A round in progress looks like this:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+  <pre class="out">  TODO  reviews/c1-skills.md, quick rounds: 1 of the 2 complete rounds needed
+          Quick rounds &gt; Round 2: Kind is still TODO
+          Quick rounds &gt; Round 2: Files is still TODO
+          Quick rounds &gt; Round 2: Why is still TODO</pre>
+</div>
+<p>That one is not a problem: it means your Round 2 thoughts are written and the Builder has not acted on them yet.
+The table below lists the messages you are most likely to see and what to do about each.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>Common p3 check lines about reviews, with the cause and the fix. Your round numbers, steps and run ids will differ.</caption>
+  <thead><tr><th>What p3 check says</th><th>What it means, and the fix</th></tr></thead>
+  <tbody>
+    <tr><td data-label="What p3 check says"><code>Quick rounds &gt; Round 2: not written yet</code></td><td data-label="What it means, and the fix">The round still holds only its marker lines. Run the tutor and write it.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Quick rounds &gt; Round 1: My thoughts is still TODO</code></td><td data-label="What it means, and the fix">A marker line is left under the label, even if your thoughts are there too. Delete the <code>TODO</code> line.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Quick rounds &gt; Round 1: Why is still TODO</code></td><td data-label="What it means, and the fix">The Builder has not acted on the round. Say "Act on Round 1 of reviews/c1-skills.md." to the Builder.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Quick rounds &gt; Round 1: Kind is 'new skil'; write one of modified skill, new skill, new subagent, other</code></td><td data-label="What it means, and the fix">The Kind is not one of the four kinds. Ask the Builder to correct the Kind of that round.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Major review &gt; Lesson &gt; Pedagogy: Rating is 4.5; write a whole number from 1 to 5</code>, or <code>Rating is 'four'</code>, or <code>Rating is '3-4'; pick one, a whole number from 1 to 5, not a range</code></td><td data-label="What it means, and the fix">Write one whole number, as <code>Rating: 4</code>, and put your hesitation into the feedback.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Major review &gt; Quiz &gt; Difficulty: no feedback below the rating (say why, with quotes or item ids)</code></td><td data-label="What it means, and the fix">A rating with no reason. Write the feedback below it.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Major review &gt; Lesson &gt; Pedagogy: missing; add #### Pedagogy</code></td><td data-label="What it means, and the fix">The heading was renamed or deleted. Put it back word for word, at the same level (four <code>#</code> for a criterion, three for a job). Case, spacing, bold and code marks do not matter; the words and the level do.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Major review: Run is still TODO; name the run you reviewed (bench/runs/c1-skills/&lt;run-id&gt;)</code></td><td data-label="What it means, and the fix">Write the folder of the full run you reviewed on the Run line.</td></tr>
+    <tr><td data-label="What p3 check says"><code>Major review &gt; Run: bench/runs/c1-skills/&lt;run-id&gt; is a quick run; the major review reviews a full run (p3 bench --config c1-skills)</code></td><td data-label="What it means, and the fix">The Run line names a quick run. The same line appears, in its own words, for an <code>--only</code> run, a run on a test topic, or a run not scored yet. Name the step's scored full run on the shared topic.</td></tr>
+    <tr><td data-label="What p3 check says"><code>reviews/c1-skills.md, major review: complete here but in no commit yet; commit it</code></td><td data-label="What it means, and the fix">The review is finished but not committed. Commit it, so <code>p3 check</code> can see it came after the run.</td></tr>
+    <tr><td data-label="What p3 check says"><code>reviews/c2-review.md: it is saved as UTF-16 (as Windows PowerShell's &gt; and Out-File write files), not <span class="nw">UTF-8,</span> so p3 check cannot read its headings; save it as UTF-8 (in VS Code: Reopen with Encoding, then Save with Encoding, UTF-8)</code></td><td data-label="What it means, and the fix">The file was written by a command, not saved by your editor. See the note below.</td></tr>
+    <tr><td data-label="What p3 check says"><code>WARN</code> ... <code>Quick rounds &gt; Round 2: the Run line is not written; name the run your thoughts rest on</code></td><td data-label="What it means, and the fix">The round is complete but has no Run line. Write the run, so the round shows its evidence.</td></tr>
+    <tr><td data-label="What p3 check says"><code>WARN</code> ... <code>Quick rounds &gt; Round 3: not written; fill it in or delete it</code></td><td data-label="What it means, and the fix">An untouched round, once the step has its minimum. Write it, or delete it.</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="note"><span class="label">Note</span>
+<p><strong>UTF-8 and Windows PowerShell.</strong>
+VS Code saves files as UTF-8 by default, so a review you type in the editor is always fine.
+A file written by a command can differ: in Windows PowerShell, <code>&gt;</code> and <code>Out-File</code> write UTF-16, which <code>p3 check</code> cannot read.
+To fix it, look at the bottom right of the VS Code window, where the status bar shows the file's encoding, such as "UTF-16 LE"; click it, choose "Save with Encoding", and pick "UTF-8".
+If the text looks garbled, choose "Reopen with Encoding" first and pick the encoding the file really has, then save it as UTF-8.</p>
+</div>
+<div class="note"><span class="label">Note</span>
+<p><strong>A <code>TODO</code> in your quotes is not a marker.</strong>
+If you quote code that says TODO, such as the to-do comment in a lesson's exercise, put it in backticks or a code block, and <code>p3 check</code> treats it as your quote.</p>
+</div>
+
+<h2 id="next">When something goes wrong, and where to go next</h2>
+<p>If <code>p3 check</code> lists a review as still to do and you think it is done, its line names the file and the heading, and <a href="19-troubleshooting.html">When it breaks</a> lists the usual causes.
+If you are not sure where you are in the loop, run <code>uv run p3 next</code> in a plain terminal, or ask the Guide.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Where am I in my quick rounds, and what is the one next thing to do?</pre>
+</div>
+<p>Your first quick rounds happen in step 1, on <a href="08-step1-skills.html#rounds">Step 1: four skills (c1-skills)</a>.
+If anything on this page is unclear or seems wrong, tell me; that is a bug too, and I would rather fix it than have you guess.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="06-the-bench.html"><span class="pager-label">Previous</span><span class="pager-title">The bench: scenarios, scores and cost</span></a>
+<a class="next" href="08-step1-skills.html"><span class="pager-label">Next</span><span class="pager-title">Step 1: four skills <span class="nw">(c1-skills)</span></span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

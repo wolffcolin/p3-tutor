@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glossary - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html" class="current" aria-current="page">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part IV · Reference</p>
+<h1>Glossary</h1>
+<p class="lede">Every term this guide uses, in alphabetical order, each defined in a sentence or two, with a link to the page that explains it in full.</p>
+<p class="meta">About 21 minutes to read in full; look up the term you need.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <p>Jump to a letter:
+    <a href="#ablation">A</a> ·
+    <a href="#baseline">B</a> ·
+    <a href="#c0-baseline">C</a> ·
+    <a href="#eval-md">E</a> ·
+    <a href="#final">F</a> ·
+    <a href="#grader">G</a> ·
+    <a href="#headline-numbers">H</a> ·
+    <a href="#integrity-failure">I</a> ·
+    <a href="#judge">J</a> ·
+    <a href="#key">K</a> ·
+    <a href="#ladder">L</a> ·
+    <a href="#major-review">M</a> ·
+    <a href="#objective">O</a> ·
+    <a href="#p3-check">P</a> ·
+    <a href="#quick-round">Q</a> ·
+    <a href="#rating">R</a> ·
+    <a href="#scenario">S</a> ·
+    <a href="#tally">T</a> ·
+    <a href="#workspace">W</a> ·
+    <a href="#your-ratings">Y</a>
+  </p>
+  <p>Commands are written as <code>p3 ...</code>; you run each one as <code>uv run p3 ...</code> from <code>work/p3-tutor</code>, or as <code>python -m p3 ...</code> without <code>uv</code>.</p>
+</section>
+
+<h2 id="terms">The terms</h2>
+
+<dl>
+
+<dt id="ablation">ablation</dt>
+<dd><p><code>final</code> with one component removed, snapshotted under a name such as <code>final-minus-quiz-review</code> and run once on the shared topic, to see what that one component was worth. You need at least one. See <a href="12-final.html#ablation">final: the guard, repeats and the ablation</a>.</p></dd>
+
+<dt id="agent-type"><code>agent_type</code></dt>
+<dd><p>A field in the JSON that Claude Code hands a hook. Inside a subagent it holds the subagent's <code>name</code>, beside an <code>agent_id</code>; in the main conversation neither field is there, which is how your guard in <code>final</code> tells the grader from the main conversation. See <a href="12-final.html#guard">final, under the guard</a>.</p></dd>
+
+<dt id="allow-list">allow list</dt>
+<dd><p><code>permissions.allow</code> in <code>tutor/.claude/settings.json</code>: the tools your tutor may use without asking. A bench run has no one to approve anything, so the bench passes this list to Claude Code, always adds <code>Glob</code> and <code>Grep</code>, and denies every other tool that would need a prompt, recording each denial in <code>run.json</code>. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="baseline">baseline</dt>
+<dd><p>The tutor as the template ships it, snapshotted as <code>c0-baseline</code>: one <code>teach</code> skill doing all four jobs in one shot, with the neutral <code>PREFERENCES.md</code>. It is competent on purpose, because a broken baseline makes every change look like a win. See <a href="03-baseline.html">Run the baseline and read what it made</a>.</p></dd>
+
+<dt id="bench">bench, the</dt>
+<dd><p>The measurement. <code>p3 bench</code> runs a config through the same scenarios from the same starting state, each in a fresh folder outside your repo, scores the outputs with fixed checks, and records what each scenario cost. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="blind-comparison">blind comparison</dt>
+<dd><p><code>p3 compare</code>: two configs' outputs for the same task, shown side by side as "Left" and "Right" without saying which is which, where for each pair you pick one or a tie, say why in a sentence, and say whether you could tell. Everyone compares <code>c0-baseline</code> with <code>final</code> on teach, quiz, grade and tutor; each session writes <code>bench/compare/&lt;session-id&gt;.json</code> and a key file, and you commit both. See <a href="13-blind-comparison.html">The blind comparison</a>.</p></dd>
+
+<dt id="builder">Builder, the</dt>
+<dd><p>Plain <code>claude</code> started at the root of <code>work/p3-tutor</code>, in its own terminal. It changes your tutor, one change per round, runs the <code>p3</code> commands you ask for, and writes only the What changed part of each round and the inventory's factual fields; it never plans the project, and sends "what next" and "why" questions to the Guide. See <a href="02-two-windows.html">The Guide and the Builder</a>.</p></dd>
+
+<dt id="c0-baseline"><code>c0-baseline</code></dt>
+<dd><p>The first config of the ladder: the baseline, as shipped. It gets three full runs on the shared topic, and one run on each test topic. See <a href="03-baseline.html">Run the baseline and read what it made</a>.</p></dd>
+
+<dt id="c1-skills"><code>c1-skills</code></dt>
+<dd><p>Step 1: the four skills <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code>, plus any others you like, and still one agent, so no subagent. It is also the first config with your own <code>PREFERENCES.md</code>. One full run. See <a href="08-step1-skills.html">Step 1: four skills</a>.</p></dd>
+
+<dt id="c2-review"><code>c2-review</code></dt>
+<dd><p>Step 2: review loops on teach, quiz and grade, with the reviewers as subagents; the tutor job gets none. One full run. See <a href="09-step2-review-loops.html">Step 2: review loops</a>.</p></dd>
+
+<dt id="c3-split"><code>c3-split</code></dt>
+<dd><p>Step 3: the teach job split across subagents of your design, such as a planner, a writer and a figure designer; tutor, quiz and grade are not split. Measured on teach, against <code>c2-review</code>. One full run. See <a href="10-step3-split.html">Step 3: split the teach job</a>.</p></dd>
+
+<dt id="component">component</dt>
+<dd><p>A skill or a subagent that you built. Each one gets an entry in the component inventory, kept or dropped, and the section minimums count them. The guard is a hook, so it is not a component. See <a href="14-write-up.html">The inventory and EVAL.md</a>.</p></dd>
+
+<dt id="component-inventory">component inventory</dt>
+<dd><p><code>reviews/components.md</code>: one entry per component, headed with its name, with six fields: Kind, Step added, Purpose, With and without, Review, and Kept in final. The Builder may fill in Kind, Step added, and With and without; Purpose, Review and Kept in final are yours. See <a href="14-write-up.html">The inventory and EVAL.md</a>.</p></dd>
+
+<dt id="config">config</dt>
+<dd><p>One version of your tutor: <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code> except <code>settings.local.json</code>. The learner's files, such as <code>lessons/</code> and <code>keys/</code>, are never part of it. A named config is a snapshot in <code>configs/</code>; <code>live</code> means <code>tutor/</code> as it stands. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="contract">contract (the output contract)</dt>
+<dd><p><code>bench/FORMATS.md</code>: exactly what the bench reads, the file names, numbering and JSON keys of lessons, quizzes, keys, grades and learning records, with a complete example of each. <code>tutor/FORMATS.md</code> is an identical copy for your tutor to follow, and you never change either. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="could-tell">could tell</dt>
+<dd><p>Your yes or no, for each blind pair, to whether you could tell which config made which. The reveal reports the share of pairs where you could, because blinding fails when two versions look obviously different. See <a href="13-blind-comparison.html">The blind comparison</a>.</p></dd>
+
+<dt id="eval-md"><code>EVAL.md</code></dt>
+<dd><p>Your write-up, in thirteen sections from the baseline to the stretch: tables pasted from <code>p3 report</code> and from each reveal, pointers into <code>reviews/</code>, and your own prose about what each step bought and what it cost. <code>p3 check --final</code> fails while a TODO marker line is left in it. See <a href="14-write-up.html">The inventory and EVAL.md</a>.</p></dd>
+
+<dt id="final"><code>final</code></dt>
+<dd><p>The last config: what earned its place from the steps before it (a step that did not pay may be dropped), plus your guard. It gets three full runs, at least one ablation, a run on each test topic, your three learning sessions, and the blind comparison against <code>c0-baseline</code>. See <a href="12-final.html">final: the guard, repeats and the ablation</a>.</p></dd>
+
+<dt id="final-minus-x"><code>final-minus-&lt;x&gt;</code></dt>
+<dd><p>The name of an ablation config, where <code>&lt;x&gt;</code> names what was removed. <code>p3 check</code> treats every config whose name starts with <code>final-minus-</code> as an ablation and asks for one scored full run of it. See <a href="12-final.html#ablation">final, under the ablation</a>.</p></dd>
+
+<dt id="fixed-files">fixed files</dt>
+<dd><p>The course's files that run the measurement, pinned by hashes in <code>p3/bench.sha256</code>: <code>bench/FORMATS.md</code>, <code>bench/scenarios.json</code>, everything under <code>bench/judge/</code> and <code>bench/topics/</code>, and every <code>.py</code> file in <code>p3/</code>. <code>p3 check</code> fails when one changes, and you restore it from git. See <a href="18-commands-and-files.html">Commands and files</a>.</p></dd>
+
+<dt id="fork-mode">fork mode</dt>
+<dd><p>A Claude Code setting, on by default, under which an interactive session cannot wait for a subagent's report. To learn with a tutor that uses subagents, turn it off in <code>tutor/.claude/settings.local.json</code>, which never reaches the bench. See <a href="19-troubleshooting.html#tutor-subagents-wait">When it breaks</a>.</p></dd>
+
+<dt id="frontmatter">frontmatter</dt>
+<dd><p>The block of settings between two <code>---</code> lines at the very top of a <code>SKILL.md</code> or a subagent's file, the first of them on the first line. A subagent needs at least <code>name</code> and <code>description</code>, and a Markdown file in <code>.claude/agents/</code> counts as a subagent only when its frontmatter has a <code>name</code>. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="full-run">full run</dt>
+<dd><p>Every scenario of a topic, once: on the shared topic the ten scenarios <code>teach</code>, <code>quiz</code>, <code>grade-s1</code>, <code>grade-s2</code> and <code>tutor-p01</code> to <code>tutor-p06</code>. Only scored full runs count for the ladder, <code>p3 report</code> and the blind comparisons. One took about 6 minutes for the baseline and about 17 for a review-loop config in my pilot, and the teach scenario alone may run up to 45 minutes, so you start it in a plain terminal, where closing a Claude Code window cannot stop it. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="grader">grader</dt>
+<dd><p>The subagent that <code>final</code> hands grading to, because once your guard is on, the main conversation can no longer read <code>keys/</code>; the guard lets the grader read them. A grader that cannot reach the key shows up as a fall in <code>grade_verdict_agreement</code>. See <a href="12-final.html#guard">final, under the guard</a>.</p></dd>
+
+<dt id="guard">guard (two kinds, kept apart)</dt>
+<dd>
+<p><strong>The Guide's guard</strong> is the course's: a PreToolUse hook registered in <code>.claude/agents/p3-guide.md</code> that lets the Guide read files and run only read-only commands; it runs <code>.claude/hooks/guide_guard.sh</code>, which hands each call to <code>guide_guard.py</code>. You never edit it. See <a href="02-two-windows.html">The Guide and the Builder</a>.</p>
+<p><strong>Your guard in <code>final</code></strong> is yours to build: a PreToolUse hook in <code>tutor/.claude/settings.json</code> that keeps the answer keys in <code>keys/</code> from your tutor's main conversation while a grader subagent can still read them, with tests of its own such as <code>tests/test_guard.py</code>. When a page about <code>final</code> says "the guard", it means this one. See <a href="12-final.html#guard">final, under the guard</a>.</p>
+</dd>
+
+<dt id="guide">Guide, the</dt>
+<dd><p>Claude Code started with <code>claude --agent p3-guide</code> at the root of <code>work/p3-tutor</code>, in its own terminal; its startup header shows <code>@p3-guide</code>, and it sends its own first message. It explains each step and why it exists, names the one next thing to do, and hands off with the exact words for the Builder or the exact command for a plain terminal; it never changes a file. See <a href="02-two-windows.html">The Guide and the Builder</a>.</p></dd>
+
+<dt id="headline-numbers">headline numbers</dt>
+<dd><p>The twelve numbers <code>p3 report</code> and the reveal use: <code>teach_facts_correct</code>, <code>teach_misconceptions</code>, <code>teach_length_ratio</code>, <code>teach_dead_links</code>, <code>quiz_key_agreement</code>, <code>quiz_wrong_key</code>, <code>quiz_ambiguous</code>, <code>grade_verdict_agreement</code>, <code>grade_false_wrong</code>, <code>grade_misconception_hit</code>, <code>tutor_leaks</code> and <code>tutor_behavior_met</code>, plus the cost: total tokens, output tokens, minutes, subagents and the list-price equivalent. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="hook">hook</dt>
+<dd><p>A command Claude Code runs at a fixed point in a session. A PreToolUse hook runs before each tool call and blocks it by exiting with code 2; in your tutor, a hook that fails in any other way, such as a script that is not found, lets the call through, unless its entry sets <code>"onFailure": "block"</code>, which makes such a failure block the call instead. Hooks in <code>tutor/.claude/settings.json</code> run in the bench, and hooks in a subagent's frontmatter do not. See <a href="12-final.html#guard">final, under the guard</a>.</p></dd>
+
+<dt id="integrity-failure">integrity failure</dt>
+<dd><p>A FAIL line in the Integrity section of <code>p3 check</code>: something is broken, such as a changed fixed file, a snapshot that no longer matches its hash, or a run whose config changed. It fails <code>p3 check</code> and CI even without <code>--final</code>, and <code>p3 next</code> shows it before anything else. See <a href="19-troubleshooting.html#check-fails">When it breaks</a>.</p></dd>
+
+<dt id="judge">judge, the</dt>
+<dd><p>A fixed prompt in <code>bench/judge/</code> and a pinned model, <code>claude-sonnet-5-5</code>, used only for what a script cannot check: whether key facts are present and correct, whether a misconception is asserted, the fit to the learner's level, and whether a tutor reply did what its probe expected. After lecture 24 you check it against ten labels of your own, in section 10 of <code>EVAL.md</code>. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="key">key</dt>
+<dd>
+<p>An answer key, <code>keys/NNNN.json</code>: for each quiz item the answer, its accepted forms, a rationale, and the misconception behind each wrong option. Every scenario's workspace holds a quiz's key, which is why your guard keeps <code>keys/</code> from the main conversation. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p>
+<p>Not to be confused with a blind comparison's <strong>key file</strong>, <code>bench/compare/&lt;session-id&gt;.key.json</code>, which holds the secret that says which config was on which side. Nobody opens it before the reveal: not you, not the Guide, not the Builder. See <a href="13-blind-comparison.html">The blind comparison</a>.</p>
+</dd>
+
+<dt id="kind">Kind</dt>
+<dd><p>In a round's What changed, the kind of change: <code>modified skill</code>, <code>new skill</code>, <code>new subagent</code> or <code>other</code>, such as an allow rule. No round in <code>c1-skills</code> may be <code>new subagent</code>. In the inventory, Kind is <code>skill</code> or <code>subagent</code>. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="ladder">ladder, the</dt>
+<dd><p>The fixed sequence of configs you build and measure: <code>c0-baseline</code>, <code>c1-skills</code>, <code>c2-review</code>, <code>c3-split</code> and <code>final</code>, plus at least one <code>final-minus-&lt;x&gt;</code>. Each step is measured against the one before it, in quality and in cost. See <a href="index.html">Start here</a>.</p></dd>
+
+<dt id="learning-session">learning session</dt>
+<dd><p>A real session of yours, learning something you do not know yet with <code>final</code>, on one of your test topics. You hold three, all on the same topic, and write each up in <code>reviews/final.md</code> under "Learning sessions", with a Date line and a Topic line that starts with the topic's id; they are the live tries of <code>final</code>'s major review. See <a href="12-final.html#learning-sessions">final, under the learning sessions</a>.</p></dd>
+
+<dt id="length-ratio">length ratio</dt>
+<dd><p><code>teach_length_ratio</code>: the lesson's visible words divided by 150 words a minute, over the minutes requested. From 0.6 to 1.5 counts as on length; it is a rough estimate, so treat it as a warning light and not a verdict. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="list-price">list-price equivalent</dt>
+<dd><p>The dollar figure Claude Code reports for a session, shown in <code>run.json</code> and the reports. It is what the tokens would cost at list price, not what you pay on a subscription; on your plan, the cost is your usage limit. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="live-run">live run</dt>
+<dd><p>A run of <code>--config live</code>: <code>tutor/</code> as it stands, with no snapshot, written under <code>bench/runs/_live/</code>, which git ignores. Quick rounds use live runs; they are never committed or compared, so quote what you saw in your thoughts. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="live-tries">live tries</dt>
+<dd><p>Your own use of the tutor for a major review, in a session started in <code>tutor/</code>: asking for a short lesson, taking a quiz, having your answers graded, asking it a question. You write them under <code>**Live tries:**</code>; for <code>final</code>, your three learning sessions are its live tries. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="major-review">major review</dt>
+<dd><p>The review that closes a step, after its snapshot and its full run: that run's outputs and your live tries, criterion by criterion, each rated from 1 to 5 with feedback and evidence, then how the step compares with the one before and what the next step should fix. There are four, for <code>c1-skills</code>, <code>c2-review</code>, <code>c3-split</code> and <code>final</code>. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="marker-line">marker line</dt>
+<dd><p>A line in a template file, holding <code>TODO</code>, where your words go. <code>p3 check</code> lists a part that still holds one as work to do, and <code>p3 check --final</code> fails on it; a marker word inside code you quote is your quote, not a marker. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="misconception">misconception</dt>
+<dd><p>A wrong belief real learners hold, listed in a topic with an id, its text and its correction; the shared topic has six. A key ties each wrong option to one, a grade names the one behind a wrong answer, and the judge checks that a lesson never asserts one. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="objective">objective</dt>
+<dd><p>One thing a learner can explain or do, with an id such as <code>O3</code>. The shared topic has five, from O1 the agent loop to O5 multi-agent systems; the bench teaches O3, quizzes on O4, and grades quiz <code>0001</code>, which covers O1 and O2. A lesson declares its objective in its <code>p3-objective</code> meta tag. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="p3-check"><code>p3 check</code></dt>
+<dd><p>The checklist of your repo, in two sections: Integrity, where anything broken is a FAIL, and Hand-in, where work still to do is a TODO line. It reads your reviews too, and makes no model call. CI runs it on every push; with <code>--final</code>, every TODO becomes a FAIL, which makes it the last check before you hand in. See <a href="18-commands-and-files.html">Commands and files</a>.</p></dd>
+
+<dt id="p3-next"><code>p3 next</code></dt>
+<dd><p>Prints where you are on the project's map and the one next thing to do, in lines headed Done, Now, Next, Read (the guide page and section that explains it) and sometimes Also. It reads the state <code>p3 check</code> reads, makes no model call and changes nothing; the Guide runs it at the start of every session. See <a href="18-commands-and-files.html">Commands and files</a>.</p></dd>
+
+<dt id="pass">pass</dt>
+<dd><p>One revise-and-review iteration inside one of your tutor's review loops, so a loop capped at two passes reviews a draft at most twice. "Pass" never means a quick round. See <a href="09-step2-review-loops.html">Step 2: review loops</a>.</p></dd>
+
+<dt id="plain-terminal">plain terminal</dt>
+<dd><p>A terminal tab in <code>work/p3-tutor</code> with no Claude Code in it (Git Bash on Windows). Full bench runs go there, because they take long and must not stop when a Claude Code window closes, and so do your blind comparisons, because the picks must be yours. See <a href="02-two-windows.html">The Guide and the Builder</a>.</p></dd>
+
+<dt id="preferences-md"><code>PREFERENCES.md</code></dt>
+<dd><p><code>tutor/PREFERENCES.md</code>: how you like to learn, under five fixed headings, in your own words. It is part of every config and is what makes your reviews and your blind picks personal; <code>c0-baseline</code> keeps the neutral one the template ships, and <code>c1-skills</code> is the first config with yours. See <a href="04-preferences.html">Write your PREFERENCES.md</a>.</p></dd>
+
+<dt id="prereg-md"><code>PREREG.md</code></dt>
+<dd><p>The length study's pre-registration: your hypothesis, the smallest difference that matters, your measures and your analysis rule, written in sections 1 to 4 and committed before the first of the study's eighteen runs, which git history proves. For 598E and the length-study stretch only. See <a href="16-stretch-and-598e.html#prereg">Stretch options and the 598E length study</a>.</p></dd>
+
+<dt id="probe">probe</dt>
+<dd><p>One tutor scenario: a single learner message sent through <code>/tutor</code>, such as a request for a quiz answer or a question far above the learner's level. The shared topic has six, <code>tutor-p01</code> to <code>tutor-p06</code>; each has an expected behavior the judge checks, and some a leak check on a quiz item. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="quick-round">quick round</dt>
+<dd><p>How you build a step: run the tutor, read and try what it made, write a few sentences under a round's <code>**My thoughts:**</code> in <code>reviews/&lt;step&gt;.md</code>, and ask the Builder to act on it; it makes one change and writes the round's What changed. <code>p3 check</code> counts at least two complete rounds in each of <code>c1-skills</code>, <code>c2-review</code> and <code>c3-split</code>; with one new component per round, the review loops on teach, quiz and grade take at least three rounds in <code>c2-review</code>. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="quick-run">quick run</dt>
+<dd><p>A run made with <code>--quick</code>: <code>teach</code>, <code>quiz</code>, <code>grade-s1</code>, <code>tutor-p01</code> and <code>tutor-p02</code>, once. It is for trying things out, so <code>p3 report</code> and <code>p3 compare</code> leave quick runs out unless you add <code>--quick</code>, and <code>p3 check</code> never counts them. See <a href="03-baseline.html#quick-run">Run the baseline and read what it made</a>.</p></dd>
+
+<dt id="rating">rating</dt>
+<dd><p>A whole number from 1 (failing) to 5 (excellent) for one criterion of a major review, written as <code>Rating: 4</code> on its own line with the feedback that justifies it below. The scale means the same at every step, so <code>p3 report</code> can set your ratings side by side. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="repeat">repeat</dt>
+<dd><p>One of the runs that <code>--repeats N</code> makes, one after another, each with its own run id ending in <code>-r1</code>, <code>-r2</code> and so on. <code>c0-baseline</code> and <code>final</code> get three repeats, so you can see how far runs of the same config spread. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="reveal">reveal</dt>
+<dd><p><code>p3 compare --reveal &lt;session-id&gt;</code>, run once every pair of a session has a pick. It prints the tally, the sign-test <span class="nw">p-value</span>, how often you could tell, your reasons grouped by the config that won, the objective checks for the job, and only then the cost. See <a href="13-blind-comparison.html">The blind comparison</a>.</p></dd>
+
+<dt id="run-id">run id</dt>
+<dd><p>The name of a run's folder, made of the time, the topic, the minutes and the repeat, such as <code>20261105-141502-<wbr>agent-architecture-m30-r1</code>. A run of <code>c1-skills</code> lives in <code>bench/runs/c1-skills/&lt;run-id&gt;/</code>. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="run-line">Run line</dt>
+<dd><p>The <code>**Run:**</code> line at the top of each quick round and major review, naming the run folder you read. A major review's must name a scored full run of its step on the shared topic. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+<dt id="scenario">scenario</dt>
+<dd><p>One headless Claude Code session, <code>claude -p</code>, in a fresh folder outside your repo that holds the config, the topic's starting workspace and <code>FORMATS.md</code>, with one request and its own time and turn limit: <code>teach</code>, <code>quiz</code>, one <code>grade</code> per submission and one <code>tutor</code> per probe. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="shared-topic">shared topic, the</dt>
+<dd><p><code>agent-architecture</code>, in <code>bench/topics/agent-architecture/</code>: a generic introduction to agent architecture, written by me for a fixed novice, so my knowledge is the ground truth. You tune your tutor on it and only on it, and every blind comparison is made on it. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="sign-test">sign test</dt>
+<dd><p>How the reveal reads a tally: ties set aside, it asks how often one config would win that many of the rest by chance if the two were equally good. With 10 non-tie picks, 8 for one config gives a two-sided <span class="nw">p-value</span> of about 0.11 and 9 about 0.02; with three pairs, even 3 of 3 gives 0.25. See <a href="13-blind-comparison.html">The blind comparison</a>.</p></dd>
+
+<dt id="skill">skill</dt>
+<dd><p>A <code>SKILL.md</code> in <code>tutor/.claude/skills/&lt;name&gt;/</code>: instructions your tutor follows when a job starts with <code>/&lt;name&gt;</code>, receiving the rest of the request as its arguments. The four names <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code> are fixed so the bench can start each job; a config without one of them routes that job to <code>/teach</code>. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="snapshot">snapshot</dt>
+<dd><p>A copy of the live config in <code>configs/&lt;name&gt;/</code>, made by <code>p3 snapshot &lt;name&gt;</code>, with a hash of its files in <code>SNAPSHOT.json</code>, so a run's numbers belong to one exact tutor. A snapshot is frozen once it has runs: overwriting it makes <code>p3 check</code> fail, so make a new name instead. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="solver">solver</dt>
+<dd><p>One of the two models, <code>claude-sonnet-5-5</code> and <code>claude-haiku-5-5</code>, that answer your quiz without the key. When both agree with each other and not with your key, the key is probably wrong; when they disagree with each other, the item is probably ambiguous. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="stretch">stretch</dt>
+<dd><p>25 of the 150 points: one of five options for 498E, and the length study for 598E, named by its id in the <code>stretch</code> field of <code>p3.json</code> and written up in section 13 of <code>EVAL.md</code>. In this project an A needs one. See <a href="16-stretch-and-598e.html#rule">Stretch options and the 598E length study</a>.</p></dd>
+
+<dt id="subagent">subagent</dt>
+<dd><p>A separate Claude with its own system prompt, its own tools and a fresh context, defined in a Markdown file in <code>tutor/.claude/agents/</code> whose frontmatter has at least a <code>name</code> and a <code>description</code>. The main conversation starts one with the Agent tool and gets back one report; the subagent never sees the main conversation's history. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="tally">tally</dt>
+<dd><p>The wins for each config and the ties in one blind comparison session, the first thing the reveal prints. See <a href="13-blind-comparison.html">The blind comparison</a>.</p></dd>
+
+<dt id="teach-only-run">teach-only run</dt>
+<dd><p>A run made with <code>--only teach</code>, which is how the length study makes its eighteen runs at 10, 30 and 60 minutes. The <code>--teach-only</code> option shows these runs in <code>p3 report</code> and pairs them in <code>p3 compare</code>; they never count as a full run. See <a href="16-stretch-and-598e.html#length-runs">Stretch options and the 598E length study</a>.</p></dd>
+
+<dt id="test-topic">test topic</dt>
+<dd><p>One of the two topics you write yourself in <code>bench/own/&lt;id&gt;/</code>, one from another Mines course and one life skill, in the same shape as the shared topic. They are the held-out check: you commit their items before any run, run <code>c0-baseline</code> and <code>final</code> once each on both, and review the results openly. See <a href="11-test-topics.html">Your two test topics</a>.</p></dd>
+
+<dt id="trace">trace</dt>
+<dd><p><code>&lt;scenario&gt;/trace.jsonl.gz</code> in a run folder: the whole stream of the session, gzipped, including every subagent's messages. It shows where a scenario spent its turns, and whether your guard really ran in the bench. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="trust-question">trust question</dt>
+<dd><p>"Quick safety check: Is this a project you created or one you trust?", which Claude Code asks the first time it starts in a folder. The highlighted choice is "No, exit", so press the down arrow to "Yes, I trust this folder", then Enter. See <a href="02-two-windows.html">The Guide and the Builder</a>.</p></dd>
+
+<dt id="tutor">tutor</dt>
+<dd><p>What you build: the Claude Code configuration in <code>tutor/</code> that does four jobs, teach, tutor, quiz and grade. "Your tutor" also means a session started with <code>claude</code> in <code>work/p3-tutor/tutor</code>, where you learn with it. The tutor job, one of the four, is the conversational helper, started with <code>/tutor</code>. See <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>.</p></dd>
+
+<dt id="workspace">workspace</dt>
+<dd><p>The learner's folder a tutor works in. In the bench, each scenario's fresh folder holds the config, <code>FORMATS.md</code> and a copy of the topic's <code>workspace/</code> (<code>MISSION.md</code>, <code>NOTES.md</code>, its learning records, quiz <code>0001</code> with its key, and the submissions), and nothing else from your repo. In your own sessions, <code>tutor/</code> itself is the learner's workspace. See <a href="06-the-bench.html">The bench: scenarios, scores and cost</a>.</p></dd>
+
+<dt id="your-ratings">Your ratings</dt>
+<dd><p>The table <code>p3 report</code> prints from the ratings in your major reviews, one row per criterion and one column per step, beside the objective checks and the cost; <code>p3 report --reviews</code> prints it alone, for <code>EVAL.md</code>. See <a href="07-reviews.html">Your reviews</a>.</p></dd>
+
+</dl>
+
+<h2 id="missing">A term that is missing</h2>
+<p>If you meet a word in this guide, the README or a <code>p3</code> message that is not here and not explained where you met it, ask the Guide what it means, and tell me, so I can add it.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="19-troubleshooting.html"><span class="pager-label">Previous</span><span class="pager-title">When it breaks</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

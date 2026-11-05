@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Step 3: split the teach job (c3-split) - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html" class="current" aria-current="page">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>Step 3: split the teach job (c3-split)</h1>
+<p class="lede">In this step you split the teach job across subagents of your own design, such as a planner, a writer, a visual designer and a references finder, and measure the lesson they make against the lesson of <code>c2-review</code>. The tutor, quiz and grade jobs stay as they are.</p>
+<p class="meta">About 23 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>A lesson is the biggest job your tutor does, and it holds distinct kinds of work: planning to the minutes, writing, figures, sources. This step finds out whether giving each kind of work to a subagent of its own makes a better lesson, and at what price, measured on teach against <code>c2-review</code>.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>Add one subagent of the pipeline per quick round: run the live teach scenario in the <span class="tag builder">Builder</span> or a plain terminal, write your thoughts under the round in <code>reviews/c3-split.md</code> in the VS Code editor, then say to the <span class="tag builder">Builder</span> "Act on Round k of <span class="nw">reviews/c3-split.md.",</span> with k the round's number.</li>
+      <li>When the teach job is split across its subagents and you are happy with the lesson, snapshot it in the <span class="tag builder">Builder</span> or a plain terminal with <code>uv run p3 snapshot c3-split</code>, and start its full run in a <span class="tag plain">Plain terminal</span> with <code>uv run p3 bench --config c3-split</code>.</li>
+      <li>In the editor, write the major review (the lesson only) in <code>reviews/c3-split.md</code>, section 4 of <code>EVAL.md</code>, and the Purpose and Review of each new subagent in <code>reviews/components.md</code>; then commit and push, in a <span class="tag plain">Plain terminal</span> or through the Builder.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 next</code> lists 7 Step 3, <span class="nw">c3-split</span> under Done, and its Now line has moved on, to 8 Test topics or, if your topics are already in place, to 9 <code>final</code>.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="11-test-topics.html">Your two test topics</a>, then <a href="12-final.html">final: the guard, repeats and the ablation</a>. Whenever you are unsure what comes next, ask the <span class="tag guide">Guide</span>, or run <code>uv run p3 next</code> in a plain terminal.</p></dd>
+  </dl>
+</section>
+
+<h2 id="what">What splitting the teach job means</h2>
+<p>In <code>c2-review</code>, the teach skill does all of the lesson's work itself, in the main conversation, and then its reviewers read the draft. Splitting the job means handing parts of that work to subagents, with jobs you design: course planning, design, material writing, a visual and figure designer, a references finder, and so on. The teach skill becomes the part that starts them, hands each one its input, and puts the lesson together.</p>
+<p>A subagent is a separate Claude with its own instructions, its own tools, its own model if you choose one, and a fresh context that holds only what it is handed. So each part of the work can get exactly the instructions and tools it needs, and two parts can run at the same time. The price is that each subagent pays its own share of the fixed load every <code>claude -p</code> session carries, plus whatever it reads.</p>
+<p>The step starts from your tutor as <code>c2-review</code> left it, review loops and all, so that the split is the change you measure.</p>
+
+<h3 id="why-teach">Why only teach</h3>
+<p>Tutor, quiz and grade are not split. Teach is the job with parts: by the bench's reading-time estimate, a 30-minute lesson is about 4,500 words of visible text, with a plan, explanations, examples, figures and references. A tutor reply is one message, and a quiz or a set of grades is short.</p>
+<p>Keeping the other three jobs as <code>c2-review</code> left them also helps you read the results. The quiz, grade and tutor scenarios of your <code>c3-split</code> full run then come from the same skills and loops as those of <code>c2-review</code>, so any difference between the two configs in those jobs is the spread between runs. That tells you how large a teach difference has to be before it means anything.</p>
+
+<h2 id="pipelines">Example pipelines</h2>
+<p>The roles are your design. Here are two shapes to think with, a small one and a larger one. Neither is a requirement.</p>
+
+<h3 id="two-roles">Two roles: a planner and a writer</h3>
+<ul>
+  <li><strong>The planner</strong> reads the request (the objective and the minutes), <code>MISSION.md</code>, <code>NOTES.md</code>, <code>PREFERENCES.md</code> and the learning records, and writes a plan to <code>drafts/</code>: the one win the learner walks away with, the sections in order, a word budget for each at about 150 words a minute, and the example and practice each section uses.</li>
+  <li><strong>The writer</strong> reads the plan, <code>FORMATS.md</code> and the shipped lesson template, and writes the draft section by section to its budget, also in <code>drafts/</code>.</li>
+  <li><strong>The teach skill</strong> runs your <code>c2-review</code> reviewers on the draft, revises it, and writes <code>lessons/NNNN-&lt;slug&gt;.html</code> once.</li>
+</ul>
+<p>This is the cheapest way to find out whether a split pays. The length check is one place a plan should show: my baseline's lessons came in at a length ratio of 0.62 to 0.75, just above the floor of 0.6, and a word budget per section is how the shipped <code>LESSONS.md</code> says to hit the length.</p>
+
+<h3 id="four-roles">Four roles</h3>
+<div class="table-wrap">
+<table>
+  <caption>A larger pipeline: what each role receives and what it hands on.</caption>
+  <thead><tr><th>Role</th><th>Receives</th><th>Hands on</th></tr></thead>
+  <tbody>
+    <tr><td>Planner</td><td>the request; <code>MISSION.md</code>, <code>NOTES.md</code>, <code>PREFERENCES.md</code>; the learning records</td><td><code>drafts/plan.md</code>: the win, the sections, a word budget for each, the examples to use</td></tr>
+    <tr><td>Writer</td><td>the plan; <code>FORMATS.md</code>; the lesson template</td><td><code>drafts/lesson.html</code>: the full text, to the budget</td></tr>
+    <tr><td>Visual designer</td><td>the draft and the plan</td><td>figures and diagrams as inline SVG or files under <code>assets/</code>, nothing loaded from the web, since a lesson must be self-contained</td></tr>
+    <tr><td>References finder</td><td>the plan's claims and topics</td><td><code>drafts/sources.md</code>: high-trust sources, each one read and its link checked, with the claim it supports</td></tr>
+    <tr><td>The teach skill</td><td>each role's report</td><td>the assembled draft to the lesson reviewers from <code>c2-review</code>, then <code>lessons/NNNN-&lt;slug&gt;.html</code>, written once</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 775 270" role="img" aria-label="The teach skill in the main conversation starts four subagents in turn: a planner, which writes drafts/plan.md; a writer, which writes drafts/lesson.html; a visual designer, which writes drafts/figures; and a references finder, which writes drafts/sources.md. Each hands its work to the next. The assembled draft then goes to the lesson reviewers from c2-review, for at most N passes, and only then is lessons/NNNN-slug.html written, once.">
+      <defs>
+        <marker id="arr10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="15" y="15" width="744" height="46" rx="4" stroke-width="2"/>
+        <rect x="15" y="105" width="165" height="60" rx="4"/>
+        <rect x="208" y="105" width="165" height="60" rx="4"/>
+        <rect x="401" y="105" width="165" height="60" rx="4"/>
+        <rect x="594" y="105" width="165" height="60" rx="4"/>
+        <rect x="208" y="205" width="300" height="50" rx="4" stroke-dasharray="4 3"/>
+        <rect x="548" y="205" width="211" height="50" rx="4" stroke-width="2"/>
+        <line x1="97" y1="61" x2="97" y2="102" marker-end="url(#arr10)"/>
+        <line x1="290" y1="61" x2="290" y2="102" marker-end="url(#arr10)"/>
+        <line x1="483" y1="61" x2="483" y2="102" marker-end="url(#arr10)"/>
+        <line x1="676" y1="61" x2="676" y2="102" marker-end="url(#arr10)"/>
+        <line x1="180" y1="135" x2="205" y2="135" marker-end="url(#arr10)"/>
+        <line x1="373" y1="135" x2="398" y2="135" marker-end="url(#arr10)"/>
+        <line x1="566" y1="135" x2="591" y2="135" marker-end="url(#arr10)"/>
+        <path d="M676,165 V185 H358 V202" marker-end="url(#arr10)"/>
+        <line x1="508" y1="230" x2="545" y2="230" marker-end="url(#arr10)"/>
+      </g>
+      <g fill="currentColor" text-anchor="middle">
+        <text x="387" y="35" font-size="13" font-weight="700">The teach skill, in the main conversation</text>
+        <text x="387" y="52" font-size="11">starts each subagent with a task message, waits for its report, and writes the lesson at the end</text>
+        <text x="97" y="130" font-size="13" font-weight="700">Planner</text>
+        <text x="97" y="149" font-size="11">drafts/plan.md</text>
+        <text x="290" y="130" font-size="13" font-weight="700">Writer</text>
+        <text x="290" y="149" font-size="11">drafts/lesson.html</text>
+        <text x="483" y="130" font-size="13" font-weight="700">Visual designer</text>
+        <text x="483" y="149" font-size="11">drafts/figures/</text>
+        <text x="676" y="130" font-size="13" font-weight="700">References finder</text>
+        <text x="676" y="149" font-size="11">drafts/sources.md</text>
+        <text x="358" y="226" font-size="12" font-weight="700">Lesson reviewers, from c2-review</text>
+        <text x="358" y="243" font-size="11">findings, at most N passes</text>
+        <text x="653" y="226" font-size="12" font-weight="700">lessons/NNNN-&lt;slug&gt;.html</text>
+        <text x="653" y="243" font-size="11">written once, at the end</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption>The four-role pipeline from the table. The teach skill starts each subagent in turn (the arrows down), and each one hands its work to the next through a file in <code>drafts/</code> (the arrows across). The lesson reviewers then read the assembled draft, and only the last step writes into <code>lessons/</code>.</figcaption>
+</figure>
+
+<p>The visual designer and the references finder both work from the writer's draft, so they could run at the same time, which saves time but not tokens. If they do, have each one write its own file and let the teach skill merge them, because two subagents editing one draft at once can overwrite each other's work.</p>
+
+<h3 id="assemble">Who puts the lesson together</h3>
+<p>Decide who writes the lesson into <code>lessons/</code>: the teach skill at the end, or the last role. Whichever it is, three rules from the bench hold.</p>
+<ul>
+  <li><strong>Exactly one new lesson.</strong> The teach check expects exactly one new HTML file in <code>lessons/</code>, so a draft or a second version saved there turns a good run into a recorded failure. Keep every draft in <code>drafts/</code>; the bench keeps those files too, in the run's outputs, so you can read the plan and the sources beside the lesson.</li>
+  <li><strong>Write the lesson, do not copy it.</strong> In my own review-loop config, the teach session tried seven times to copy the finished draft into <code>lessons/</code> with a shell command, was denied each time, and then wrote the whole lesson out again. Have the last step write the file with its file-writing tool, which the bench allows inside the scenario's folder, or allow the narrow command you need in <code>tutor/.claude/settings.json</code>.</li>
+  <li><strong>The output contract.</strong> The lesson is a complete, self-contained HTML page with the two meta tags <code>p3-minutes</code> and <code>p3-objective</code>, as <code>tutor/FORMATS.md</code> says. The role that assembles it must know that, so tell it to read <code>FORMATS.md</code>.</li>
+</ul>
+
+<h2 id="files">Subagent files, and the frontmatter fields that matter</h2>
+<p>Subagents are Markdown files in <code>tutor/.claude/agents/</code>, one per subagent, and <code>tutor/.claude/agents/README.md</code> explains what goes in one, what the bench showed about each field, and where Claude Code's full reference is. An example, for the planner above:</p>
+<pre><code>---
+name: lesson-planner
+description: Plans one lesson to the minutes requested and writes the plan to drafts/plan.md. Use at the start of a teach request, before any writing.
+tools: Read, Glob, Grep, Write, WebSearch, WebFetch
+maxTurns: 30
+---
+
+You plan one lesson for the learner in this workspace.
+(The rest of the instructions: what to read, what the plan holds, where it goes, and what to report back when you are done.)</code></pre>
+<p>The frontmatter sits between two <code>---</code> lines, and the first one must be the file's first line; the Markdown after it is the subagent's instructions, its system prompt. Only <code>name</code> and <code>description</code> are required. Field names are case-sensitive camelCase, and Claude Code silently ignores a field it does not recognize, so a misspelled field fails without an error.</p>
+<div class="table-wrap">
+<table>
+  <caption>The fields that matter most for a pipeline, from <code>tutor/.claude/agents/README.md</code>.</caption>
+  <thead><tr><th>Field</th><th>What it does, and why it matters here</th></tr></thead>
+  <tbody>
+    <tr><td><code>name</code></td><td>Required. The subagent's id, such as <code>lesson-planner</code>: no <code>:</code>, unique in the folder. It is the heading of its inventory entry, and in <code>final</code> your guard hook receives it as <code>agent_type</code>. The file name does not have to match.</td></tr>
+    <tr><td><code>description</code></td><td>Required. When the main conversation should hand work to it: name the job and the moment.</td></tr>
+    <tr><td><code>tools</code></td><td>The tools it may use. Left out, it inherits every tool available to subagents, the Agent tool included, so it can start subagents of its own. Give each role the tools its job needs and no more.</td></tr>
+    <tr><td><code>model</code></td><td><code>sonnet</code>, <code>opus</code>, <code>haiku</code>, a full model id, or <code>inherit</code>. Left out, it runs on the main conversation's model.</td></tr>
+    <tr><td><code>maxTurns</code></td><td>The most turns it may take before it stops and returns what it has: a cap on how long one role can run, which helps the whole pipeline finish inside the scenario's limits.</td></tr>
+    <tr><td><code>skills</code></td><td>Skills whose full content is loaded into its context at startup. Without it, the subagent can still invoke skills itself.</td></tr>
+    <tr><td><code>omitClaudeMd</code></td><td><code>true</code> starts it without the <code>CLAUDE.md</code> files, for a subagent that gets everything from its task message.</td></tr>
+    <tr><td><code>hooks</code>, <code>permissionMode</code></td><td>No effect in the bench: hooks in a subagent's frontmatter do not run in its headless sessions, and a subagent started from the bench's session runs in that session's mode.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Two more facts shape how you write a role:</p>
+<ul>
+  <li><strong>What a subagent sees.</strong> Its own instructions, the task message the main conversation writes for it, the <code>CLAUDE.md</code> files (in the bench, only the tutor's), and the skills its <code>skills</code> field names. It does not see the main conversation's history, the skills it invoked or the files it read. So the task message names the files to read, such as <code>drafts/plan.md</code>, and the instructions say what to write and what to report back.</li>
+  <li><strong>What it may do.</strong> The bench passes the <code>permissions.allow</code> list in <code>tutor/.claude/settings.json</code> to Claude Code, together with Glob and Grep, and in a bench run that list is the only thing that allows a tool. It covers your subagents' tool calls too, and the Agent tool needs no entry. The shipped list allows <code>WebSearch</code> and <code>WebFetch</code>; a role that reaches for anything else that would need a prompt is denied, and <code>run.json</code> counts it as a permission denial.</li>
+</ul>
+<p>A subagent can also name its own model, so a role with a simple job could run on a cheaper one; if you want to explore that properly, the cheaper-tutor stretch is built for it (<a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a>).</p>
+
+<h2 id="limits">Nesting, time and turns</h2>
+<ul>
+  <li><strong>Nesting.</strong> A subagent with the Agent tool can start subagents of its own, up to three layers below the main conversation by default. A flat pipeline, in which the teach skill starts every role, keeps the order in one place and each role's work easy to find; an explicit <code>tools</code> list without the Agent tool keeps a role from starting more. <code>run.json</code> records, for each scenario, how many subagents started, how deeply they nested, and of which types.</li>
+  <li><strong>Time and turns.</strong> The teach scenario has 45 minutes and 200 turns, set in <code>bench/scenarios.json</code> and the same at every lesson length. The time limit is on the whole session, subagents included. My review-loop config's teach scenario took 9.8 minutes, and a split adds its subagents on top of the review loops. A scenario that reaches its limit is stopped and recorded as a timeout or an error, and that is a result about your tutor, so design the pipeline to finish well inside the limits, with a <code>maxTurns</code> on each role and a cap on the review passes.</li>
+  <li><strong>Waiting.</strong> A subagent runs in the background by default, and in the bench's <code>claude -p</code> sessions Claude waits for it when it judges it should or when it is told to. So the teach skill should say plainly to wait for each role's report before the next step starts.</li>
+  <li><strong>Cost.</strong> A split teach pipeline with three reviewers is the most expensive thing in this course so far. Try it on one live teach scenario before you run it in full, and check <code>/usage</code> before big runs.</li>
+</ul>
+<div class="watch"><span class="label">Watch out, for the length study</span>
+<p>The time limit does not grow with the lesson: a teach scenario has 45 minutes at every length, and the length study sends 60-minute lessons through your pipeline. If you are in 598E or chose the length study, keep that in mind as you design the split, and try one 60-minute run of <code>final</code> first, as <a href="16-stretch-and-598e.html#length-runs">the length study's runs</a> explains.</p>
+</div>
+
+<h2 id="rounds">Quick rounds: one subagent per round</h2>
+<p>You build this step in quick rounds, as in steps 1 and 2: you run the tutor, read the lesson it made, write a few sentences of thoughts in <code>reviews/c3-split.md</code>, and the Builder makes one change. <a href="07-reviews.html">Your reviews</a> explains quick rounds in general. Here the rule is one subagent of the pipeline per round, so the run before a round shows the lesson without that role and the run after it shows the lesson with it. A round that adds a role also changes the teach skill that calls it, and that is one change, of Kind <code>new subagent</code>. You need at least two complete rounds.</p>
+<p>Only teach changes in this step, so every round's run is a teach-only live run:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 bench --config live --only teach</pre>
+</div>
+<p>It goes to <code>bench/runs/_live/&lt;run-id&gt;/</code>, which git ignores. In my pilot a teach scenario with review loops took 4.96 million tokens, and a split adds more, so each round's run is a real cost; a few well-chosen rounds are better than many.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>One plan that works, with three roles. The roles and their order are yours.</caption>
+  <thead><tr><th>Round</th><th>The run at its start shows</th><th>The change the Builder makes</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Round">Round 1</td><td data-label="The run at its start shows">the lesson as <code>c2-review</code> makes it</td><td data-label="The change the Builder makes">new subagent: a planner</td></tr>
+    <tr><td data-label="Round">Round 2</td><td data-label="The run at its start shows">the lesson with the planner</td><td data-label="The change the Builder makes">new subagent: a writer</td></tr>
+    <tr><td data-label="Round">Round 3</td><td data-label="The run at its start shows">the lesson with the writer</td><td data-label="The change the Builder makes">new subagent: a visual designer</td></tr>
+    <tr><td data-label="Round">The full run</td><td data-label="The run at its start shows">the lesson with the visual designer</td><td data-label="The change the Builder makes">none: this is the snapshot's run</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For Round 1, if you have not changed <code>tutor/</code> since you snapshotted <code>c2-review</code>, the lesson of its full run already is the lesson without your first role, and your c2 major review has read it; you can name that run on Round 1's Run line.</p>
+<p>A round may also take a role out again, when the next run shows it did not pay. Its inventory entry stays, with <code>Kept in final: no, because</code> and what the next round showed, and section 4 of <code>EVAL.md</code> asks what you tried and took out. It is often the clearest example you will have of a change that did not pay.</p>
+
+<h3 id="one-round">One round, as an example</h3>
+<ol class="steps">
+  <li>
+    <p><strong>Read the lesson and the drafts.</strong> Open the lesson in <code>teach/outputs/lessons/</code> in your browser: right-click it in VS Code, choose "Reveal in File Explorer" (Windows) or "Reveal in Finder" (macOS), and double-click it. Read the pipeline's files in <code>teach/outputs/drafts/</code>, and look at the teach scenario in <code>run.json</code>: its <code>status</code>, its minutes, tokens and turns, its <code>subagents</code>, and its <code>permission_denials</code>.</p>
+  </li>
+  <li>
+    <p><strong>Write your thoughts in <code>reviews/c3-split.md</code>, in the editor.</strong> Under the round's Run line and <code>**My thoughts:**</code>, begin with whether the last change helped.</p>
+    <div class="student"><span class="label">Example: after a round that added a planner, in a student's words</span>
+<pre><code>### Round 2
+
+**Run:** bench/runs/_live/20261113-094500-agent-architecture-m30-r1, teach only
+
+**My thoughts:**
+
+The planner helped with length: its plan gave six sections a word budget each, and the lesson came to about 4,100 words, a length ratio of 0.91, where the c2-review lesson was 0.68.
+But the teach skill still writes the text itself, and sections 4 and 5 have no worked example although the plan asked for one in each.
+I want a writer subagent that writes each section from the plan, with its example, and hands the draft back for the reviewers.</code></pre>
+    </div>
+  </li>
+  <li>
+    <p><strong>Ask the Builder to act on it.</strong></p>
+    <div class="say builder">
+      <div class="say-head">Say to the Builder</div>
+      <pre>Act on Round 2 of <span class="nw">reviews/c3-split.md.</span></pre>
+      <p>It builds the one subagent, changes the teach skill to use it, writes the round's What changed (Kind, Files and Why), adds the subagent's inventory entry with the factual fields, and suggests the next run. It asks before starting any run.</p>
+    </div>
+  </li>
+  <li>
+    <p><strong>Add the next round,</strong> by copying the last one with its marker lines, and make its run with <code>--only teach</code>.</p>
+  </li>
+</ol>
+<div class="note"><span class="label">What p3 next says during the rounds</span>
+<p>The same as in steps 1 and 2, with <code>reviews/c3-split.md</code>: for an untouched round, run the live tutor and write what you noticed under Round k &gt; My thoughts; once your thoughts are written, "In the Builder window, say: Act on Round k of <span class="nw">reviews/c3-split.md.";</span> for anything else missing, "Finish Round k in <span class="nw">reviews/c3-split.md:"</span> and its first problem; and from two complete rounds on, "When the teach job is split across its subagents and you are happy with the tutor, snapshot it: uv run p3 snapshot <span class="nw">c3-split</span> (or add another round first)." Neither <code>p3 next</code> nor <code>p3 check</code> can see whether the split is done, so that part is yours to judge.</p>
+</div>
+
+<h2 id="snapshot">Snapshot</h2>
+<p>When you have at least two complete rounds, the teach job is split across its subagents, and you are happy with the lesson, look once more at the last live teach run's <code>run.json</code> for a timeout, a turn limit or a run of denials, and then freeze it:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 snapshot c3-split</pre>
+  <pre class="out">configs/c3-split/: ... config files, sha256:...
+Run it with: p3 bench --config c3-split</pre>
+</div>
+<p>The snapshot copies <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code>, every subagent file among them, into <code>configs/c3-split/</code>, with a hash in <code>SNAPSHOT.json</code>. Your learner files and <code>tutor/.claude/settings.local.json</code> are never part of it. <a href="05-tutor-and-configs.html">Page 05</a> explains snapshots in full.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>A snapshot is frozen once it has runs: a run's numbers have to belong to one exact tutor, and overwriting a snapshot that has runs makes <code>p3 check</code> fail. Run <code>uv run p3 check</code> right after the snapshot: it should show <code>config c3-split: the four skills</code>, and if anything is wrong, fix it and snapshot again with <code>--force</code> while there are still no runs.</p>
+</div>
+<p>Do your live tries for the major review right after the snapshot, while <code>tutor/</code> still matches it.</p>
+
+<h2 id="full-run">The full run</h2>
+<p>Although only teach changed, the step still needs one scored full run, all ten scenarios, because it is the run your major review reviews, <code>p3 check</code> looks for a full run of each step, and <code>p3 report</code> leaves <code>--only</code> runs out. Check <code>/usage</code> first, then start it in a plain terminal, a terminal tab with no Claude Code in it, in <code>work/p3-tutor</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c3-split</pre>
+</div>
+<p>It belongs in a plain terminal because it can take longer than Claude Code lets a foreground command run, ten minutes at most, and it must not stop when you close a Claude Code window. It names the run folder, <code>bench/runs/c3-split/&lt;run-id&gt;</code>, as it starts, and prints a summary table and the scores when it finishes. While it runs, do your live tries (below), and the pipeline's inventory entries, which <code>uv run p3 next</code> usually names on its Also line after "While it runs".</p>
+<div class="fail"><span class="label">If it fails</span>
+<p>A usage limit or a sign-in problem stops the run, and that repeat is set aside under <code>bench/runs/_live/_aborted/</code>; wait for the reset and run it again. A teach scenario that times out is a result about your pipeline: keep the run and report it. <a href="19-troubleshooting.html">When it breaks</a> covers both.</p>
+</div>
+
+<h2 id="major-review">The major review</h2>
+<p>The major review of <code>c3-split</code> covers the lesson only, on its four criteria: technical correctness and facts, pedagogy, alignment with the learning goal, and overall quality, each rated from 1 to 5 with written feedback and evidence. Its previous step is <code>c2-review</code>. Plan on about 45 minutes. You write all of it, in the editor, under <code>## Major review</code> in <code>reviews/c3-split.md</code>.</p>
+<ul>
+  <li><strong>The Run line.</strong> Replace the <code>TODO</code> in <code>**Run:** bench/runs/c3-split/TODO</code> with your run's id; <code>p3 check</code> accepts it only when it names a scored full run of <code>c3-split</code> on the shared topic.</li>
+  <li><strong>The outputs.</strong> The lesson in <code>teach/outputs/lessons/</code>, in your browser, and beside it the pipeline's files in <code>teach/outputs/drafts/</code> and the reviewers' records, so you can see what each role contributed.</li>
+  <li><strong>The ratings.</strong> Write each one as a whole number on its own line, <code>Rating: 4</code>, with the feedback below it, on the same scale as in steps 1 and 2, because <code>p3 report</code> puts your four Lesson ratings side by side across the ladder. <a href="07-reviews.html">Your reviews</a> explains the ratings and how I grade reviews.</li>
+  <li><strong>Compared with the previous step:</strong> the lesson of <code>c2-review</code>, criterion by criterion, with the cost beside the gain.</li>
+  <li><strong>What the next step should fix:</strong> <code>final</code> keeps what earned its place, so say which roles you think earned it and which did not.</li>
+</ul>
+
+<h3 id="mr-live">Live tries, with fork mode off</h3>
+<p>Your tutor waits for subagents, and in an interactive session it can do that only once fork mode is off, which it is not by default. If you have not done it in step 2, put this in <code>tutor/.claude/settings.local.json</code>, in the editor, then start <code>claude</code> again in <code>tutor/</code>:</p>
+<pre><code>{"env": {"CLAUDE_CODE_FORK_SUBAGENT": "0"}}</code></pre>
+<p>If the file already exists, add the <code>"env"</code> key beside what is there. The file is personal and never part of a config, which is the point: in <code>claude -p</code>, turning fork mode off makes nested subagents start in the background instead, so putting it in <code>tutor/.claude/settings.json</code> would change how your tutor runs in the bench. Then open a terminal in <code>work/p3-tutor/tutor</code>, start <code>claude</code> <span class="tag tutor">Your tutor</span>, ask for a lesson, and write what you did and saw under <code>**Live tries:**</code>.</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>/teach Give me a 15-minute lesson on how a team of agents divides up a task.</pre>
+  <p>A shorter lesson than the bench's 30 minutes is cheaper and still shows you how the pipeline behaves.</p>
+</div>
+<div class="note"><span class="label">Note</span>
+<p>Commit the review when you finish it. <code>p3 check</code> confirms that each major review was first committed complete after the run it reviews finished.</p>
+</div>
+
+<h2 id="eval">EVAL.md, section 4</h2>
+<p>Section 4 of <code>EVAL.md</code>, headed <code>## 4. Step 3: `c3-split` against `c2-review`</code>, has three parts, each ending in a marker line you replace with your own writing.</p>
+<ol>
+  <li><p><strong>What changed.</strong> Name the rounds and the inventory entries of the pipeline's subagents. Then the split: the roles, what each one receives and returns, what runs in order and what in parallel, and who puts the lesson together at the end. Why this split and not a smaller one, and what did you try that you took out again?</p></li>
+  <li><p><strong>Your review, the objective checks and the cost.</strong> Paste the tables as they are, with the run ids:</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+      <pre class="in">uv run p3 report --configs c2-review,c3-split</pre>
+    </div></li>
+  <li><p><strong>What the step bought and what it cost.</strong> What the split changed in the lesson: its structure, its figures, its references, its fit to you, and how your four Lesson ratings moved against those of <code>c2-review</code>. What it cost in tokens, minutes and subagents against <code>c2-review</code>, and how much of that was overhead rather than writing. Each step has one run, so say how confident you are, and what would change your mind.</p></li>
+</ol>
+<div class="why"><span class="label">Reading one run against one run</span>
+<p>Use the jobs you did not change. As long as you left them alone, the quiz, grade and tutor numbers of <code>c3-split</code> and <code>c2-review</code> come from the same skills and loops, so the gap between them is the spread between runs. A teach difference no larger than that gap is not one you can claim. For overhead, the teach cost table helps: output tokens include the lesson text the pipeline wrote, while input and cache tokens are mostly reading and each session's fixed load.</p>
+</div>
+<p>The prose is yours. The Guide can explain what a question is asking, and it will not write the answer.</p>
+
+<h2 id="inventory">The inventory: an entry for each new subagent</h2>
+<p>Each subagent of the pipeline gets an entry in <code>reviews/components.md</code>, headed with its <code>name</code> from the frontmatter, such as <code>### lesson-planner</code>, so that each role's reason for existing sits next to its evidence and a role that did not pay shows up as plainly as one that did. The Builder fills in Kind (<code>subagent</code>), Step added (<code>c3-split</code>) and With and without (the round that added it, such as <code>reviews/c3-split.md, Round 1 (without) and Round 2 (with)</code>); the last role's "with" is the step's full run. You check those, and you write:</p>
+<ul>
+  <li><strong>Purpose:</strong> why the tutor needs this role, and why it is a subagent rather than a step in the teach skill. A fresh context, tools of its own, a model of its own, or running beside another role are reasons; say which one applies, and whether the evidence bore it out.</li>
+  <li><strong>Review:</strong> the lesson with it against without it, with evidence: sections, quotes, the length ratio, the cost.</li>
+  <li><strong>Kept in final:</strong> later, once <code>final</code> is frozen; until then <code>p3 check</code> lists the entry as not complete, which is expected, and <code>p3 next</code> needs only the Purpose and the Review now.</li>
+</ul>
+<p>A role you added in a round and took out again before the snapshot keeps its entry, with the step whose round built it as Step added and <code>no, because</code> and what the next round showed as Kept in final. <code>p3 check</code> cannot see it, because no snapshot holds it, so keeping its entry is up to you. If a subagent of the snapshot has no entry yet, <code>p3 next</code> gives you the words for the Builder: "Add an entry to reviews/components.md for each component of <span class="nw">configs/c3-split/</span> that has none (...), with Kind, Step added, and With and without." <a href="14-write-up.html">The inventory and EVAL.md</a> explains the inventory in full.</p>
+
+<h3 id="minimums">The minimums</h3>
+<p>The minimums are counted over what you built across the ladder, in your snapshots other than <code>c0-baseline</code>, not over what <code>final</code> keeps, so dropping a component for a good reason never costs you. A component taken out before any snapshot keeps its entry but does not count.</p>
+<div class="table-wrap">
+<table>
+  <caption>From the README's "The component inventory".</caption>
+  <thead><tr><th>Section</th><th>Skills</th><th>Subagents</th></tr></thead>
+  <tbody>
+    <tr><td>498E</td><td>at least the four: <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code></td><td>at least five, for example three reviewers in <code>c2-review</code> and two roles in the <code>c3-split</code> pipeline</td></tr>
+    <tr><td>598E</td><td>at least six: the four and two of your own</td><td>at least eight</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For 598E, this step is a natural place to reach eight; <a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a> has the rest of the rider. <code>uv run p3 check</code> counts your components against your section's minimums and lists any without an entry.</p>
+
+<h2 id="commit">Commit and push</h2>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add configs bench/runs reviews EVAL.md
+git commit -m "c3-split: snapshot, full run and major review"
+git push</pre>
+</div>
+<p>Live runs stay out, because git ignores <code>bench/runs/_live/</code>. Commit <code>tutor/</code> too whenever you like, since it is part of what you hand in, or ask the Builder to commit for you. Then check that the <code>p3-check</code> run in your repo's Actions tab is green.</p>
+
+<h2 id="next">What comes next</h2>
+<p>Run <code>uv run p3 next</code>, or ask the Guide.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>I finished step 3. What is the one thing I should do next, and why?</pre>
+</div>
+<p>The next stage is 8 Test topics: two topics in <code>bench/own/</code>, each valid with no TODO, each committed and unchanged. If you wrote and committed their items in week 2, as the pace suggests, <code>p3 next</code> goes straight on to 9 <code>final</code>, where you keep what earned its place, add the guard, and make the runs of week 3. <a href="11-test-topics.html">Your two test topics</a> and <a href="12-final.html">final: the guard, repeats and the ablation</a> explain them.</p>
+<p>If something here fails, <a href="19-troubleshooting.html">When it breaks</a> has the usual causes. If anything on this page is unclear or seems wrong, tell me: that is a bug too. Office hours are Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, in CTLM 246L.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="09-step2-review-loops.html"><span class="pager-label">Previous</span><span class="pager-title">Step 2: review loops <span class="nw">(c2-review)</span></span></a>
+<a class="next" href="11-test-topics.html"><span class="pager-label">Next</span><span class="pager-title">Your two test topics</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

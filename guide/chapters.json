@@ -1,0 +1,23 @@
+[
+  {"file": "index.html", "part": "", "title": "Start here", "short": "Project 3 on one page: what you build, the map of the three weeks, and the windows you work in"},
+  {"file": "01-setup.html", "part": "Part I · Getting set up", "title": "Set up your repo", "short": "Make your copy of the template, clone it into work/, open it in VS Code, and get CI green"},
+  {"file": "02-two-windows.html", "part": "Part I · Getting set up", "title": "The Guide and the Builder", "short": "The two Claude Code windows you work in, what each one does, and what to say to each"},
+  {"file": "03-baseline.html", "part": "Part I · Getting set up", "title": "Run the baseline and read what it made", "short": "Your first bench run, where its outputs are, how to open them, and the three full runs"},
+  {"file": "04-preferences.html", "part": "Part I · Getting set up", "title": "Write your PREFERENCES.md", "short": "How you like to learn, in the file that makes every review and the blind comparison yours"},
+  {"file": "05-tutor-and-configs.html", "part": "Part II · How it works", "title": "Your tutor, configs and snapshots", "short": "What lives in tutor/, what a config and a snapshot are, skills and subagents, and the output contract"},
+  {"file": "06-the-bench.html", "part": "Part II · How it works", "title": "The bench: scenarios, scores and cost", "short": "What a run does, what each check and headline number means, and what a run costs"},
+  {"file": "07-reviews.html", "part": "Part II · How it works", "title": "Your reviews", "short": "Quick rounds and major reviews: where you type, what to write, how ratings work, and how they are graded"},
+  {"file": "08-step1-skills.html", "part": "Part III · The ladder", "title": "Step 1: four skills (c1-skills)", "short": "Write the teach, tutor, quiz and grade skills in quick rounds, then snapshot, run and review"},
+  {"file": "09-step2-review-loops.html", "part": "Part III · The ladder", "title": "Step 2: review loops (c2-review)", "short": "Reviewer subagents on teach, quiz and grade, with checklists from your own c1 review"},
+  {"file": "10-step3-split.html", "part": "Part III · The ladder", "title": "Step 3: split the teach job (c3-split)", "short": "A pipeline of subagents for the lesson alone, measured on teach"},
+  {"file": "11-test-topics.html", "part": "Part III · The ladder", "title": "Your two test topics", "short": "One topic from another Mines course and one life skill, written and committed before any run"},
+  {"file": "12-final.html", "part": "Part III · The ladder", "title": "final: the guard, repeats and the ablation", "short": "What earned its place, the hook that keeps the keys from the tutor, the runs, and your learning sessions"},
+  {"file": "13-blind-comparison.html", "part": "Part III · The ladder", "title": "The blind comparison", "short": "c0-baseline against final with the labels hidden, how to read the tally, and the reveal"},
+  {"file": "14-write-up.html", "part": "Part III · The ladder", "title": "The inventory and EVAL.md", "short": "Every component's purpose and evidence, and the write-up of what each step bought and cost"},
+  {"file": "15-hand-in.html", "part": "Part III · The ladder", "title": "Hand in", "short": "The video, the last check, the Canvas post, the deadline, and how the points are planned"},
+  {"file": "16-stretch-and-598e.html", "part": "Part IV · Reference", "title": "Stretch options and the 598E length study", "short": "The five stretch options, and the length study that 598E does and 498E may choose"},
+  {"file": "17-pace.html", "part": "Part IV · Reference", "title": "A pace that works", "short": "The three weeks, week by week, and how long each part takes"},
+  {"file": "18-commands-and-files.html", "part": "Part IV · Reference", "title": "Commands and files", "short": "Every p3 command and option, every file a run writes, and how to open each one"},
+  {"file": "19-troubleshooting.html", "part": "Part IV · Reference", "title": "When it breaks", "short": "Symptoms and fixes, from a missing claude to a review p3 check will not count"},
+  {"file": "20-glossary.html", "part": "Part IV · Reference", "title": "Glossary", "short": "Every term this guide uses, defined in a sentence or two"}
+]

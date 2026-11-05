@@ -1,0 +1,12 @@
+{
+  "quiz": "0001",
+  "learner": "Riley",
+  "answers": [
+    {"id": "q1", "response": "d"},
+    {"id": "q2", "response": "c"},
+    {"id": "q3", "response": "c"},
+    {"id": "q4", "response": "4. The model can only run one tool itself each time it's called, so it runs check_calendar, then search_manuals, then check_training_record, and the 4th call writes the answer"},
+    {"id": "q5", "response": "the result goes back in as the next input, kind of like a reply in a group chat, and then the model takes its next turn with that in front of it, so it can figure out what to do next"},
+    {"id": "q6", "response": "By the name. If it's called check_calendar it knows that's for the calendar"}
+  ]
+}

@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Step 1: four skills (c1-skills) - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html" class="current" aria-current="page">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>Step 1: four skills (c1-skills)</h1>
+<p class="lede">In this step you replace the baseline's one <code>teach</code> skill with four skills of your own, one for each job, build them in quick rounds, and then measure the result against <code>c0-baseline</code>. This page takes you from the first round to the commit.</p>
+<p class="meta">About 32 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>The baseline does all four jobs with one skill in one shot. This step finds out whether a skill for each job, written your way, does those jobs better, and what it costs. It is still one agent, so whatever changes comes from your skills and your <code>PREFERENCES.md</code>.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>Build the four skills in quick rounds, one skill per round: run the live tutor in the <span class="tag builder">Builder</span> or a plain terminal, write what you noticed under the round in <code>reviews/c1-skills.md</code> in the VS Code editor, then say to the <span class="tag builder">Builder</span> "Act on Round k of <span class="nw">reviews/c1-skills.md.",</span> with k the round's number.</li>
+      <li>When the four skills are in and you are happy with the tutor, snapshot it in the <span class="tag builder">Builder</span> or a plain terminal with <code>uv run p3 snapshot c1-skills</code>, and start its full run in a <span class="tag plain">Plain terminal</span> with <code>uv run p3 bench --config c1-skills</code>.</li>
+      <li>In the editor, write the major review in <code>reviews/c1-skills.md</code>, section 2 of <code>EVAL.md</code>, and the Purpose and Review of each skill in <code>reviews/components.md</code>; then commit and push, in a <span class="tag plain">Plain terminal</span> or through the Builder.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 next</code> lists 4 Step 1, <span class="nw">c1-skills</span> under Done, and its Now line has moved on to 5 Step 2, <span class="nw">c2-review.</span></p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="09-step2-review-loops.html">Step 2: review loops (<span class="nw">c2-review</span>)</a>. Whenever you are unsure what comes next, ask the <span class="tag guide">Guide</span>, or run <code>uv run p3 next</code> in a plain terminal.</p></dd>
+  </dl>
+</section>
+
+<h2 id="what">What this step is, and why it comes first</h2>
+<p>The tutor in the template does all four jobs (teach, tutor, quiz and grade) with one skill, <code>teach</code>, in one shot. In this step you write a skill for each job and rewrite <code>teach</code> so that it only teaches. How you write them is up to you.</p>
+<p>It comes first because every later step stands on it. Step 2 adds reviewer subagents and step 3 splits the lesson across subagents, and each step is measured against the one before it. If the skills underneath are weak, a reviewer spends its revise-and-review passes catching mistakes that a better skill would not have made, and you cannot tell what the machinery itself bought. So you first get what you can out of one agent with good instructions, and the later steps have to beat that. It is the question the README asks of the whole project: does your machinery beat a good, simpler system?</p>
+<p>This step also produces the raw material for step 2. The major review you write at the end of it becomes the checklists of your reviewers, which is why I ask you to be specific in it.</p>
+<p>It is still one agent, so it adds no subagents and none of their overhead. Whether four skills cost more or less than one is one of the things this step measures.</p>
+
+<h2 id="skills">The four skills: names, places, and how the bench starts them</h2>
+<p>A skill is a folder with a <code>SKILL.md</code> in it: a short frontmatter with its name and a description, then the instructions. It runs in the main conversation, inside the same single agent. Your four go here:</p>
+<ul>
+  <li><code>tutor/.claude/skills/teach/SKILL.md</code> (it exists; you rewrite it)</li>
+  <li><code>tutor/.claude/skills/tutor/SKILL.md</code></li>
+  <li><code>tutor/.claude/skills/quiz/SKILL.md</code></li>
+  <li><code>tutor/.claude/skills/grade/SKILL.md</code></li>
+</ul>
+<p>The four names are fixed because the bench starts each job by name: the quiz scenario starts with <code>/quiz</code>, the grade scenarios with <code>/grade</code>, and so on. A config without one of them sends that job to <code>/teach</code>, which is how <code>c0-baseline</code> does all four jobs with one skill. Nothing else about the skills is fixed. <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a> explains skills, configs and how the bench starts a job in full.</p>
+
+<h3 id="facts">Facts that shape how you write them</h3>
+<ul>
+  <li><strong>The request arrives as the skill's arguments.</strong> The bench sends <code>/quiz</code> followed by the rest of its request, which asks for a six-question quiz on objective O4 for this learner, with its key, written as <code>FORMATS.md</code> describes. The exact wording of every request is in <code>bench/scenarios.json</code>. Put <code>$ARGUMENTS</code> where the request belongs in your skill, as the shipped <code>teach</code> skill does under its heading "The request".</li>
+  <li><strong>The tutor answers in the chat.</strong> A tutor probe is one message, and the reply that is scored is the last message of the session. So the <code>tutor</code> skill writes its answer as its reply, never into a file, and writes any file it needs, such as a note in <code>NOTES.md</code>, before that reply.</li>
+  <li><strong>Every file a script reads follows the output contract</strong> in <code>tutor/FORMATS.md</code>: one lesson in <code>lessons/</code>, a quiz and its key in <code>quizzes/</code> and <code>keys/</code>, grades in <code>grades/</code>. <a href="05-tutor-and-configs.html">Page 05</a> covers the contract.</li>
+  <li><strong>Nobody is there to answer a question.</strong> Each scenario runs headless, so a skill should do what the request says and put any question for the learner at the end of its final message, as the shipped <code>teach</code> skill already says.</li>
+  <li><strong>The shipped skill has a guide for each job.</strong> <code>tutor/.claude/skills/teach/references/</code> holds <code>QUIZZES.md</code>, <code>GRADING.md</code> and <code>TUTORING.md</code>, among others. They are a good starting point for a new skill, which can read its guide where it is or keep its own copy in its own folder.</li>
+</ul>
+
+<h3 id="routing">Your own sessions route requests through tutor/CLAUDE.md</h3>
+<p>When you try your tutor yourself, in a terminal in <code>tutor/</code>, you can always start a job by name, such as <code>/quiz</code>. A plain request such as "quiz me on this lesson" goes wherever <code>tutor/CLAUDE.md</code> sends it, and that file ships saying to use the teach skill for every request; the teach skill's own description says the same. The bench does not depend on either, because each scenario names its skill, but your live tries do. So say in your thoughts that you want those lines changed, in the round that adds a skill or in the round that rewrites <code>teach</code>, so that the tutor you try is the tutor the bench runs.</p>
+
+<h3 id="reuse">Write skills you would reuse</h3>
+<p>P3 skills are meant to be reusable in P4, so write them to work on any topic, outside the bench as well as inside it. And never let a skill recognize a bench item: a config that treats a bench item specially gets no credit on that topic, and <code>p3 check</code> warns when a config file holds 40 or more characters copied from the shared topic. Your test topics later check exactly this, because you never tune on them.</p>
+<p>You may add any other skills you like, on any topic, and each one gets an inventory entry. 598E needs at least six skills across the ladder, the four and two of your own; <a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a> has the details.</p>
+
+<h2 id="rounds">Quick rounds</h2>
+<p>You build this step in quick rounds. In each one you run the tutor as it stands, read and try what it made, write a few sentences of thoughts in <code>reviews/c1-skills.md</code>, and the Builder makes one change to the tutor from them. <a href="07-reviews.html">Your reviews</a> explains quick rounds and who writes what in general; this section is how they go in step 1. You need at least two complete rounds, and this step usually takes four or more, at about 30 to 45 minutes each for the reading, the thoughts and the change.</p>
+
+<h3 id="plan">A plan of rounds</h3>
+<p>Add one new skill per round. Each new skill takes one job away from <code>/teach</code>, so the run at the start of a round shows that job done by <code>/teach</code>, and the run at the start of the next round shows it done by the new skill. That pair of runs is the skill's with-and-without, which its inventory entry asks for, and you get it at no extra cost. Add a round that rewrites <code>teach</code> itself, so that it only writes lessons, and the step comes to four rounds or more.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>One plan that works. The order is yours; the rule of one new skill per round is not.</caption>
+  <thead><tr><th>Round</th><th>The run at its start shows</th><th>The change the Builder makes</th></tr></thead>
+  <tbody>
+    <tr><td>Round 1</td><td>the tutor as it ships: every job in <code>/teach</code></td><td>new skill: <code>tutor</code></td></tr>
+    <tr><td>Round 2</td><td>the tutor skill (with); the quiz still in <code>/teach</code> (without)</td><td>new skill: <code>quiz</code></td></tr>
+    <tr><td>Round 3</td><td>the quiz skill (with); grading still in <code>/teach</code> (without)</td><td>new skill: <code>grade</code></td></tr>
+    <tr><td>Round 4</td><td>the grade skill (with); the shipped <code>teach</code> (without)</td><td>modified skill: <code>teach</code>, rewritten for lessons only</td></tr>
+    <tr><td>The full run</td><td>the rewritten <code>teach</code> (with)</td><td>none: this is the snapshot's run</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 730 190" role="img" aria-label="Five runs along the top and four rounds along the bottom. Each round sits between two runs: Run 1 shows the tutor as it ships, Round 1 adds the tutor skill, Run 2 shows it, Round 2 adds the quiz skill, and so on, until Round 4 rewrites teach and the full run after the snapshot shows it.">
+      <defs>
+        <marker id="arr08" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="10" y="20" width="110" height="50" rx="4"/>
+        <rect x="160" y="20" width="110" height="50" rx="4"/>
+        <rect x="310" y="20" width="110" height="50" rx="4"/>
+        <rect x="460" y="20" width="110" height="50" rx="4"/>
+        <rect x="610" y="20" width="110" height="50" rx="4" stroke-width="2"/>
+        <rect x="80" y="120" width="120" height="50" rx="4" stroke-dasharray="4 3"/>
+        <rect x="230" y="120" width="120" height="50" rx="4" stroke-dasharray="4 3"/>
+        <rect x="380" y="120" width="120" height="50" rx="4" stroke-dasharray="4 3"/>
+        <rect x="530" y="120" width="120" height="50" rx="4" stroke-dasharray="4 3"/>
+      </g>
+      <g stroke="currentColor" stroke-width="1.2">
+        <line x1="85" y1="70" x2="120" y2="117" marker-end="url(#arr08)"/>
+        <line x1="160" y1="120" x2="195" y2="73" marker-end="url(#arr08)"/>
+        <line x1="235" y1="70" x2="270" y2="117" marker-end="url(#arr08)"/>
+        <line x1="310" y1="120" x2="345" y2="73" marker-end="url(#arr08)"/>
+        <line x1="385" y1="70" x2="420" y2="117" marker-end="url(#arr08)"/>
+        <line x1="460" y1="120" x2="495" y2="73" marker-end="url(#arr08)"/>
+        <line x1="535" y1="70" x2="570" y2="117" marker-end="url(#arr08)"/>
+        <line x1="610" y1="120" x2="645" y2="73" marker-end="url(#arr08)"/>
+      </g>
+      <g fill="currentColor" text-anchor="middle">
+        <text x="65" y="41" font-size="13" font-weight="700">Run 1</text>
+        <text x="65" y="59" font-size="11">as it ships</text>
+        <text x="215" y="41" font-size="13" font-weight="700">Run 2</text>
+        <text x="215" y="59" font-size="11">+ tutor skill</text>
+        <text x="365" y="41" font-size="13" font-weight="700">Run 3</text>
+        <text x="365" y="59" font-size="11">+ quiz skill</text>
+        <text x="515" y="41" font-size="13" font-weight="700">Run 4</text>
+        <text x="515" y="59" font-size="11">+ grade skill</text>
+        <text x="665" y="41" font-size="13" font-weight="700">Full run</text>
+        <text x="665" y="59" font-size="11">+ new teach</text>
+        <text x="140" y="141" font-size="12" font-weight="700">Round 1</text>
+        <text x="140" y="159" font-size="11">new skill tutor</text>
+        <text x="290" y="141" font-size="12" font-weight="700">Round 2</text>
+        <text x="290" y="159" font-size="11">new skill quiz</text>
+        <text x="440" y="141" font-size="12" font-weight="700">Round 3</text>
+        <text x="440" y="159" font-size="11">new skill grade</text>
+        <text x="590" y="141" font-size="12" font-weight="700">Round 4</text>
+        <text x="590" y="159" font-size="11">rewrites teach</text>
+      </g>
+      <g fill="currentColor" font-size="11" font-style="italic">
+        <text x="243" y="98" text-anchor="end">without</text>
+        <text x="338" y="98">with</text>
+        <text x="638" y="98">snapshot</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption>The plan in the table, as runs (solid boxes) and changes (dashed boxes). Each change sits between two runs: the run before it shows the job without the new skill, and the run after it shows the job with it, as marked for Round 2. The full run, made after the snapshot, is the "with" of the last change.</figcaption>
+</figure>
+
+<p>A reason to start with <code>tutor</code>: most of the failures I saw in the baseline are in the tutor probes (<code>KNOWN-GAPS.md</code>, and <a href="03-baseline.html">Run the baseline and read what it made</a>). A reason to leave <code>teach</code> for last: once the other three skills exist, the rewritten <code>teach</code> has only lessons to write, and you can take out everything it no longer needs.</p>
+<p>More rounds are fine, each with one change. A round may change a skill you added earlier (Kind <code>modified skill</code>), or make another change the skills need, such as an allow rule in <code>tutor/.claude/settings.json</code> (Kind <code>other</code>). The four kinds are <code>modified skill</code>, <code>new skill</code>, <code>new subagent</code> and <code>other</code>, and in this step a round is never <code>new subagent</code>.</p>
+
+<h3 id="first-round">The first round can start from the tutor as it ships</h3>
+<p>When you start, <code>tutor/</code> still has the shipped <code>teach</code> skill, so the baseline's output is the output without your first change. You can name one of your baseline runs on Round 1's Run line and write about it, or make a fresh live run. The live run is the cleaner "without": it already has your <code>PREFERENCES.md</code>, as every run after it will, while your baseline runs have the neutral one.</p>
+
+<h3 id="one-round">One round, start to finish</h3>
+<p>Here is Round 2 of a typical step 1, after Round 1 added a <code>tutor</code> skill. A round moves across three places: a run (in the Builder or a plain terminal), your writing (in the VS Code editor), and the change (in the Builder).</p>
+
+<ol class="steps">
+  <li>
+    <p><strong>Run the tutor as it stands.</strong> <code>--config live</code> runs <code>tutor/</code> as it is right now and writes into <code>bench/runs/_live/</code>, which git ignores. <code>--quick</code> runs five scenarios (<code>teach</code>, <code>quiz</code>, <code>grade-s1</code>, <code>tutor-p01</code> and <code>tutor-p02</code>); <code>--only</code> runs just the scenarios you name. This run has two purposes: to show the tutor probes with Round 1's new skill, and to show the quiz before Round 2 changes it. So it names those three scenarios and leaves out the expensive teach scenario.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+      <pre class="in">uv run p3 bench --config live --only quiz,tutor-p01,tutor-p02</pre>
+      <pre class="out">p3 bench: config live (sha256:...), topic agent-architecture, 30-minute lesson, 3 scenarios x 1 repeat, model sonnet
+  claude ...; each scenario is a claude -p session on your Claude subscription
+  config live: results go to bench/runs/_live/, which is not committed; snapshot the tutor to keep a run
+
+repeat 1 of 1: bench/runs/_live/&lt;run-id&gt;
+  start  quiz
+  [1/3] quiz: ok, ... min, ... turns, ... tokens, ... files
+  ...</pre>
+    </div>
+    <p>It names the run folder as it starts, and prints a summary table and the scores when it finishes. If you would rather the Builder start it, ask:</p>
+    <div class="say builder">
+      <div class="say-head">Say to the Builder</div>
+      <pre>Run uv run p3 bench --config live --only <span class="nw">quiz,tutor-p01,tutor-p02</span> in the background.</pre>
+      <p>The Builder says how many sessions it will start and asks before it starts them, because each one draws on your Claude plan. Say yes, and it tells you when the run is done.</p>
+    </div>
+    <p>Use <code>--only</code> on its own, without <code>--quick</code>: <code>--quick</code> first narrows the run to its five scenarios, so <code>--quick --only tutor-p05</code> stops with "--only with --quick leaves no scenario". For scale, a quick run of the baseline was about 1.1 million tokens and 4 minutes in my pilot, most of it the teach scenario.</p>
+  </li>
+  <li>
+    <p><strong>Read and try what it made.</strong> Open <code>bench/runs/_live/&lt;run-id&gt;/</code> in the VS Code Explorer. The quiz is in <code>quiz/outputs/quizzes/</code> and its key in <code>quiz/outputs/keys/</code>: take the quiz yourself before you open the key. Each probe's reply is the <code>"result"</code> field of <code>tutor-p01/result.json</code> and <code>tutor-p02/result.json</code>. <code>score.json</code> holds what the checks found. When a run includes the teach scenario, open the lesson in <code>teach/outputs/lessons/</code> in your browser: right-click it in VS Code, choose "Reveal in File Explorer" (Windows) or "Reveal in Finder" (macOS), and double-click it. <a href="18-commands-and-files.html">Commands and files</a> lists every file a run writes.</p>
+    <p>When a round is about the tutor, also talk to it: open a terminal in <code>work/p3-tutor/tutor</code> and start <code>claude</code> there <span class="tag tutor">Your tutor</span>.</p>
+    <div class="say tutor">
+      <div class="say-head">Say to your tutor</div>
+      <pre>/tutor I keep mixing up an agent and a workflow. Can you explain the difference with an example from a senior design project?</pre>
+    </div>
+  </li>
+  <li>
+    <p><strong>Write your thoughts in <code>reviews/c1-skills.md</code>, in the editor.</strong> Open the file in VS Code, find <code>### Round 2</code>, and replace its markers: the Run line with the run folder and what kind of run it was, and the <code>TODO</code> under <code>**My thoughts:**</code> with a few sentences. Begin with whether the last round's change helped, because that sentence is the review of that change. Then say what worked, what did not, and what you want changed, with quotes and ids, because a live run is never committed and your thoughts are the only record of it that I see. Save the file.</p>
+    <div class="student"><span class="label">Example: a round's thoughts, in a student's words</span>
+<pre><code>### Round 2
+
+**Run:** bench/runs/_live/20261106-153012-agent-architecture-m30-r1, quiz, tutor-p01 and tutor-p02
+
+**My thoughts:**
+
+The tutor skill helped on tutor-p01: it still refuses the letter, and its hint now fits every option alike ("what would each option do if the model never stopped?"), where the baseline asked who controls when the repetition ends.
+tutor-p02 is fine too, and both replies are under 200 words.
+The quiz still comes from /teach: all six items are mcq, and in q3 the right option is the only one longer than a line, so it gives itself away.
+I want a quiz skill that mixes item types and keeps the options of an item the same length, and tutor/CLAUDE.md should send quiz requests to it.</code></pre>
+    </div>
+    <div class="watch"><span class="label">Watch out</span><p>Type your thoughts into the file, never into a chat for an agent to write. Your judgment is the measurement, and an agent's words in its place would measure the agent. Neither the Builder nor the Guide writes these parts for you; if you want help with wording, ask in the chat and type your own version in.</p></div>
+  </li>
+  <li>
+    <p><strong>Ask the Builder to act on the round.</strong></p>
+    <div class="say builder">
+      <div class="say-head">Say to the Builder</div>
+      <pre>Act on Round 2 of <span class="nw">reviews/c1-skills.md.</span></pre>
+      <p>It reads your thoughts, the round before, and the step's part of the README, then makes one change in <code>tutor/</code>.</p>
+    </div>
+    <p>If your thoughts ask for two changes, it makes the one that matters most and says which it left for a later round. Then it writes the round's <code>**What changed:**</code> under your thoughts, replacing the three marker lines, and adds the new skill's entry to <code>reviews/components.md</code> with the factual fields only (Kind, Step added, and With and without). It ends its reply with what it changed and suggests the cheapest run that shows the change, and it waits for you. What it writes looks like this:</p>
+<pre><code>**What changed:**
+
+- Kind: new skill
+- Files: tutor/.claude/skills/quiz/SKILL.md, tutor/CLAUDE.md
+- Why: Quizzes were still written by /teach with no rule on item types or option length; a quiz skill of its own mixes mcq, numeric and short items and keeps the options of an item the same length, as these thoughts ask, and tutor/CLAUDE.md now sends quiz requests to it.</code></pre>
+    <p>Read it, and look at the change itself in VS Code's Source Control view or with <code>git diff tutor/</code>. If it is not what you meant, tell the Builder now, before the next run, so the next run measures the change you wanted.</p>
+  </li>
+  <li>
+    <p><strong>Start the next round.</strong> Add <code>### Round 3</code> yourself by copying the last round with its marker lines, then make the run that shows Round 2's change: the quiz again (the "with" of the quiz skill) and the job Round 3 will change, such as <code>--only quiz,grade-s1</code>. The round you add looks like this before you fill it in:</p>
+<pre><code>### Round 3
+
+**Run:** TODO
+
+**My thoughts:**
+
+TODO
+
+**What changed:**
+
+- Kind: TODO
+- Files: TODO
+- Why: TODO</code></pre>
+  </li>
+</ol>
+
+<div class="watch"><span class="label">Watch out</span><p>Make each round's run cover two jobs: the one whose skill the last round added (its "with") and the one the next change will touch (its "without"). A run of the next job alone leaves the last change with no "with", and the inventory entry for it then has nothing to point at.</p></div>
+
+<h3 id="next-in-rounds">What p3 next tells you during the rounds</h3>
+<p><code>uv run p3 next</code> reads <code>reviews/c1-skills.md</code>, takes the first round that is not complete, and names the one thing to do for it. The Guide runs it for you when you ask what is next.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>What <code>p3 next</code> says for the rounds of step 1; k is the round it means.</caption>
+  <thead><tr><th>When</th><th>Next says</th></tr></thead>
+  <tbody>
+    <tr><td data-label="When">the round is untouched</td><td data-label="Next says">Run the live tutor (<code>uv run p3 bench --config live --quick</code>, or <code>--only</code> with the scenarios you are working on), then write what you noticed under Round k &gt; My thoughts in <code>reviews/c1-skills.md</code>.</td></tr>
+    <tr><td data-label="When">your thoughts are written, What changed is still markers</td><td data-label="Next says">In the Builder window, say: Act on Round k of <span class="nw">reviews/c1-skills.md.</span></td></tr>
+    <tr><td data-label="When">anything else in the round is missing</td><td data-label="Next says">Finish Round k in <code>reviews/c1-skills.md</code>: <em>the round's first problem</em>.</td></tr>
+    <tr><td data-label="When">every round is complete, fewer than two</td><td data-label="Next says">Add Round k to <code>reviews/c1-skills.md</code> by copying the last round with its marker lines.</td></tr>
+    <tr><td data-label="When">two or more complete, a required skill missing from <code>tutor/</code></td><td data-label="Next says">Add a round for the <em>job</em> skill: copy the last round of <code>reviews/c1-skills.md</code> with its marker lines, as Round k. It names the first one missing, in the order teach, tutor, quiz, grade.</td></tr>
+    <tr><td data-label="When">two or more complete, all four skills there</td><td data-label="Next says">When the four skills are in and you are happy with the tutor, snapshot it: <code>uv run p3 snapshot c1-skills</code> (or add another round first).</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="you-see"><span class="label">What you will see</span>
+<pre class="out">p3 next: 498E (C:\...\work\p3-tutor)
+
+Done:  1 Set up, 2 The baseline, 3 Your preferences
+Now:   4 Step 1, c1-skills: quick rounds (1 of at least 2 complete)
+Next:  In the Builder window, say: Act on Round 2 of reviews/c1-skills.md.
+Read:  guide/08-step1-skills.html#rounds
+Also:  the baseline's runs: 2 of 3 scored full runs (start the last one in a plain terminal)</pre>
+<p>The Also line lists work from an earlier stage that is not done yet, here the last of the baseline's three full runs.</p>
+</div>
+<p>When Next says "Finish Round k" and names a problem, <a href="07-reviews.html#check">What p3 check says about your reviews</a> lists the usual problems and their fixes.</p>
+
+<h2 id="look">What to look for in each job's output</h2>
+<p>A quick round does not need every criterion; write about what you noticed. These are the places I would look first, with what the baseline did in my runs (<code>KNOWN-GAPS.md</code>), so you know where there is room to improve and where a change could break something that worked. Cite your own runs, not mine.</p>
+
+<h3 id="look-lesson">The lesson</h3>
+<ul>
+  <li><strong>Length.</strong> The bench divides the lesson's visible words by 150 and compares that with the minutes asked for; 0.6 to 1.5 counts as on length. Asked for 30 minutes, the baseline wrote about 2,800 to 3,400 words, a ratio of 0.62 to 0.75, just above the floor. It also tried to count its words with a shell command that the baseline does not allow, so it could not check its own length. A plan with a word budget per section, as the shipped <code>LESSONS.md</code> describes, is one way out; an allow rule is another, and that is a round of Kind <code>other</code>.</li>
+  <li><strong>What the lesson promises.</strong> Figures, worked examples, practice with feedback, and citations to real sources. Are they there, and do they help?</li>
+  <li><strong>Fit.</strong> Does it read the way your <code>PREFERENCES.md</code> asks: your kind of example, your density, your tone?</li>
+  <li><strong>Facts.</strong> The baseline's lessons had every key fact right and asserted no misconception, so watch that a new skill does not lose that.</li>
+</ul>
+
+<h3 id="look-quiz">The quiz and its key</h3>
+<ul>
+  <li><strong>Take it first.</strong> Answer every item before you open the key, so you meet each stem the way a learner would.</li>
+  <li><strong>Each item.</strong> Is the stem complete on its own? Could it be read two ways? Does the right option stand out by its length or by a phrase it shares with the stem? Does each wrong option match a misconception the key names?</li>
+  <li><strong>The key.</strong> Is each rationale worth reading? <code>score.json</code> shows where the two solvers disagreed with your key (a likely wrong key) or with each other (a likely ambiguous item).</li>
+  <li><strong>What the baseline did.</strong> Its keys agreed with both solvers on every item, so on the shared topic these checks act as a floor: they catch a quiz skill that breaks something, and what a better skill buys shows up in your own reading.</li>
+</ul>
+
+<h3 id="look-grade">The grades and feedback</h3>
+<ul>
+  <li><strong>Where.</strong> <code>grade-s1/outputs/grades/</code> holds the grades of submission <code>s1</code> of quiz <code>0001</code>; a quick run has only <code>grade-s1</code>, and <code>--only grade-s1,grade-s2</code> runs both.</li>
+  <li><strong>The verdicts.</strong> The baseline matched every true verdict and named every true misconception in my runs, including two answers I made harder on purpose, s1 q6 and s2 q4. So the room is in the feedback, not the verdicts.</li>
+  <li><strong>The feedback.</strong> Does it say what was right, what was missing and why, and what to do next? Is it the length and tone your <code>PREFERENCES.md</code> asks for?</li>
+</ul>
+
+<h3 id="look-tutor">The tutor's replies</h3>
+<ul>
+  <li><strong>Where.</strong> The reply is the <code>"result"</code> field of each <code>tutor-pNN/result.json</code>. A quick run has only <code>tutor-p01</code> and <code>tutor-p02</code>; <code>--only <span class="nw">tutor-p03,</span><wbr><span class="nw">tutor-p04,</span><wbr><span class="nw">tutor-p05,</span><wbr>tutor-p06</code> runs the other four.</li>
+  <li><strong>Guardrails.</strong> <code>tutor-p01</code> asks outright for the answer to quiz <code>0001</code> q3, and <code>tutor-p02</code> asks for q2 with a claimed TA permission. On <code>tutor-p01</code> the baseline refused the letter in every run, but its hints still pointed at the keyed option, and the judge marked it not met; <code>tutor-p02</code> was met in two of three runs. A hint that applies to every option alike is the hardest guardrail in the project.</li>
+  <li><strong>Level and premises.</strong> <code>tutor-p03</code> states a misconception, <code>tutor-p04</code> rests on a false premise, and <code>tutor-p05</code> asks a novice's question far above their level; the baseline wrote out the formula <code>tutor-p05</code> asked for instead of steering to a step the learner could reach.</li>
+  <li><strong>Length and fit.</strong> <code>tutor-p06</code> asks for tool calling again with an everyday analogy, and the judge expects a reply of about 250 words; the baseline's replies ran 300 to 380 words in every run and failed on length alone. Across its three full runs, <code>tutor_behavior_met</code> was 0.33 to 0.50.</li>
+</ul>
+
+<h3 id="look-cost">The cost, and permission denials</h3>
+<p>The summary table at the end of a run gives each scenario's tokens, turns and minutes. <code>run.json</code> in the run folder also lists each scenario's <code>permission_denials</code>: a tool call the bench refused because <code>tutor/.claude/settings.json</code> does not allow it. A skill that keeps reaching for a tool it cannot use wastes turns and tokens, so either allow the narrow command it needs (a round of Kind <code>other</code>), or tell the skill how to finish without it.</p>
+
+<h2 id="no-subagents">No subagents in this step</h2>
+<p>No round in step 1 adds a subagent, and <code>configs/c1-skills/</code> must hold none. <code>p3 check</code> fails, even without <code>--final</code>, when <code>configs/c1-skills/</code> holds a subagent or a round in <code>reviews/c1-skills.md</code> is of Kind <code>new subagent</code>:</p>
+<div class="fail"><span class="label">If it fails</span>
+<p><code>FAIL  c1-skills adds a subagent, but c1 is still one agent (subagents arrive in c2-review and c3-split)</code></p>
+<p>The line under it names the file or the round, and says what to do. <a href="19-troubleshooting.html">When it breaks</a> has the details.</p>
+</div>
+<p>The reason is measurement. Step 1 measures what skills alone do in one agent. Subagents arrive in step 2, as reviewers, and in step 3, as the parts of the teach pipeline, and each of those steps is measured against the one before it. If a subagent crept into <code>c1-skills</code>, the difference between <code>c0-baseline</code> and <code>c1-skills</code> would mix skills with subagents, and the difference between <code>c1-skills</code> and <code>c2-review</code> would no longer show the whole price of the subagents. The Builder knows this rule and will not add one here.</p>
+<p>The file <code>tutor/.claude/agents/README.md</code> is fine: it has no frontmatter, so Claude Code treats it as documentation, and <code>p3 check</code> does not count it as a subagent.</p>
+
+<h2 id="snapshot">Snapshot</h2>
+<p>When you have at least two complete rounds, all four skills are in <code>tutor/</code>, and you are happy with the tutor, freeze it as <code>c1-skills</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 snapshot c1-skills</pre>
+  <pre class="out">configs/c1-skills/: ... config files, sha256:...
+Run it with: p3 bench --config c1-skills</pre>
+</div>
+<p>A snapshot copies the config, which is <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code>, into <code>configs/c1-skills/</code>, and records a hash of those files in <code>configs/c1-skills/SNAPSHOT.json</code>. Your learner files in <code>tutor/</code> and <code>tutor/.claude/settings.local.json</code> are never part of it. It makes no model call. <a href="05-tutor-and-configs.html">Page 05</a> explains configs and snapshots in full.</p>
+<div class="why"><span class="label">Why it is this way</span>
+<p>A run's numbers have to belong to one exact tutor. The bench runs the snapshot, not <code>tutor/</code>, and <code>p3 check</code> confirms that every committed run still matches the config it names. That is what lets you, and me, trust that the run you review is the tutor you describe.</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+<p>A snapshot is frozen once it has runs. <code>p3 snapshot</code> refuses to overwrite a name without <code>--force</code>, and overwriting one that has runs makes <code>p3 check</code> fail, because those runs no longer match their config. So run <code>uv run p3 check</code> right after the snapshot and before the full run: it should show <code>config c1-skills: the four skills</code>. If it says a skill is missing, such as <code>config c1-skills: no quiz skill</code>, add it, and snapshot again with <code>--force</code> while there are still no runs.</p>
+</div>
+<p>From here on, changes to <code>tutor/</code> no longer change <code>c1-skills</code>. Do your live tries for the major review right after the snapshot, while <code>tutor/</code> still matches it, and before you start building step 2.</p>
+
+<h2 id="full-run">The full run</h2>
+<p>A full run is the ten scenarios on the shared topic (teach, quiz, two grade scenarios and six tutor probes), each a real Claude Code session, plus their scoring. <code>c1-skills</code> needs one scored full run, because it is the run your major review reviews and the one <code>uv run p3 report</code> sets beside the baseline's three; quick and <code>--only</code> runs are left out of both. Start it in a plain terminal, a terminal tab with no Claude Code in it, in <code>work/p3-tutor</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c1-skills</pre>
+  <pre class="out">p3 bench: config c1-skills (sha256:...), topic agent-architecture, 30-minute lesson, 10 scenarios x 1 repeat, model sonnet
+  claude ...; each scenario is a claude -p session on your Claude subscription
+
+repeat 1 of 1: bench/runs/c1-skills/&lt;run-id&gt;
+  start  teach
+  ...</pre>
+</div>
+<p>It belongs in a plain terminal because a full run can take longer than Claude Code lets a foreground command run, ten minutes at most, and it must not stop when you close a Claude Code window. The teach scenario alone is allowed up to 45 minutes. Check <code>/usage</code> in a Claude Code window first, so you know the run fits in what your plan has left.</p>
+<p>While it runs, do your live tries (below): they need only <code>tutor/</code>, which still matches the snapshot. <code>uv run p3 next</code> names other work that needs no run on its Also line, after "While it runs", usually the inventory entries of the four skills (<a href="#inventory">The inventory</a> below).</p>
+<div class="fail"><span class="label">If it fails</span>
+<p>If the run stops at a usage limit or a sign-in problem, <code>p3 bench</code> sets that repeat aside under <code>bench/runs/_live/_aborted/</code>, because it measures nothing; wait for the reset and run it again. A scenario that times out or writes no lesson is different: that is a result about your tutor, so keep the run and report it. <a href="19-troubleshooting.html">When it breaks</a> covers both.</p>
+</div>
+
+<h2 id="major-review">The major review</h2>
+<p>The major review closes the step. It is the careful one: that run's outputs and your own live tries, all four jobs, criterion by criterion, each rated from 1 to 5 with written feedback and evidence, then a comparison with <code>c0-baseline</code> and what the next step should fix. Plan on about 2 hours. You write all of it, in the editor, under <code>## Major review</code> in <code>reviews/c1-skills.md</code>.</p>
+
+<h3 id="mr-run">The Run line and the outputs</h3>
+<p>Replace the <code>TODO</code> in <code>**Run:** bench/runs/c1-skills/TODO</code> with your run's id, so it reads, for example, <code>**Run:** bench/runs/c1-skills/<wbr>20261108-101500-agent-architecture-m30-r1</code>. <code>p3 check</code> accepts it only when it names a scored full run of <code>c1-skills</code> on the shared topic. Then read every output in that folder:</p>
+<ul>
+  <li>the lesson in <code>teach/outputs/lessons/</code>, in your browser;</li>
+  <li>the quiz and key in <code>quiz/outputs/quizzes/</code> and <code>quiz/outputs/keys/</code> (take it first);</li>
+  <li>the grades in <code>grade-s1/outputs/grades/</code> and <code>grade-s2/outputs/grades/</code>;</li>
+  <li>each tutor reply in <code>tutor-p01/result.json</code> to <code>tutor-p06/result.json</code>.</li>
+</ul>
+
+<h3 id="mr-live">Live tries</h3>
+<p>Open a terminal in <code>work/p3-tutor/tutor</code>, start <code>claude</code> <span class="tag tutor">Your tutor</span>, and use the tutor as a learner: ask for a short lesson, take a quiz, have your answers graded, ask it a question. The topic is yours: the shared topic makes it easy to set what you saw beside the run, and a topic you really want to learn tells you more about fit. Write what you did and what you saw under <code>**Live tries:**</code>.</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>/teach Give me a 10-minute lesson on how an agent decides when it is done.</pre>
+  <p>Then <code>/quiz</code> on that lesson, answer it in the chat, ask for it to be graded, and ask the tutor something you are unsure about.</p>
+</div>
+<p>The learner files these tries leave in <code>tutor/</code> (<code>MISSION.md</code>, <code>NOTES.md</code>, <code>lessons/</code> and the rest) are never part of a config, so you need not clear them.</p>
+
+<h3 id="mr-criteria">The criteria</h3>
+<p>The <code>c1-skills</code> review covers all four jobs, each under its own heading in the template, each criterion under its own <code>####</code> heading. Write each rating as a whole number on its own line, <code>Rating: 4</code>, with the feedback below it. <a href="07-reviews.html">Your reviews</a> explains what each rating means and how I grade reviews.</p>
+<div class="table-wrap">
+<table>
+  <caption>The criteria of the <code>c1-skills</code> major review, from <code>reviews/README.md</code>.</caption>
+  <thead><tr><th>Job</th><th>Criteria</th></tr></thead>
+  <tbody>
+    <tr><td>Lesson</td><td>technical correctness and facts; pedagogy; alignment with the learning goal; overall quality</td></tr>
+    <tr><td>Quiz</td><td>difficulty; coverage of the lesson's core; wording and possible misreadings; writing quality; alignment with the learning goal</td></tr>
+    <tr><td>Feedback</td><td>useful; explains enough; personalized to how I like things explained</td></tr>
+    <tr><td>Tutor</td><td>guardrails; personalization</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="mr-specific">Be specific: this review becomes step 2's checklists</h3>
+<p>What this review finds becomes the checklists of your reviewer subagents in step 2. A reviewer told "check that no stem can be read two ways, as q4 could in my c1 review" finds more than one told "review this quiz". So write each problem with the item id, the submission and item, the probe id or the quote that shows it, and say what a reviewer should check for.</p>
+<div class="student"><span class="label">Example: one criterion, in a student's words</span>
+<pre><code>#### Explains enough
+
+Rating: 3
+
+The feedback names the right misconception every time, but it often stops there.
+s1 q5 is marked partial with "Close, but think about who decides when to stop", which never says which half of my answer was right.
+s2 q4 has the right number for a wrong reason, and the feedback says "Right number, check your reasoning" without saying what was wrong with the reasoning.
+The grade reviewer in c2 should check that every partial or wrong verdict says what was right, what was missing, and why.</code></pre>
+</div>
+
+<h3 id="mr-close">Compared with the previous step, and what the next step should fix</h3>
+<p>The previous step of <code>c1-skills</code> is <code>c0-baseline</code>, so under <code>### Compared with the previous step</code> compare with your three baseline runs, job by job. One run of <code>c1-skills</code> against three of the baseline is thin, so when a difference is smaller than the spread between your baseline runs, say so. Under <code>### What the next step should fix</code>, write what step 2's reviewers should catch: that list is where their checklists start.</p>
+
+<div class="note"><span class="label">Note</span>
+<p>Commit the review when you finish it. <code>p3 check</code> confirms that each major review was first committed complete after the run it reviews finished, which is how your review is on record as written from that run.</p>
+</div>
+
+<h2 id="eval">EVAL.md, section 2</h2>
+<p>Section 2 of <code>EVAL.md</code>, headed <code>## 2. Step 1: `c1-skills` against `c0-baseline`</code>, is where you say what this step bought and what it cost. It has three parts, each ending in a marker line that you replace with your own writing.</p>
+<ol>
+  <li><p><strong>What changed.</strong> Name the rounds that built the step, such as <code>c1-skills</code> Rounds 1 to 4, and the inventory entries of the skills; the trail itself is already in <code>reviews/</code>, so do not retell it. Then say what you put in <code>PREFERENCES.md</code>, and anything about how the four skills work together that no single inventory entry says.</p></li>
+  <li><p><strong>Your review, the objective checks and the cost.</strong> Paste the tables from the report, as they are, and name the run ids:</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+      <pre class="in">uv run p3 report --configs c0-baseline,c1-skills</pre>
+    </div>
+    <p>It makes no model call. It prints the headline numbers per config (the mean, with the range in brackets), a cost table per job, and "Your ratings" from your major reviews, one column per step.</p></li>
+  <li><p><strong>What the step bought and what it cost.</strong> For each job: what your major review found against <code>c0-baseline</code>, whether the objective checks agree, and which you believe where they do not. What it cost per scenario, and whether the gain was worth it. And what one run of <code>c1-skills</code> against three of <code>c0-baseline</code> lets you claim, and what it does not.</p></li>
+</ol>
+<div class="why"><span class="label">Your skills and your preferences, together</span>
+<p><code>c0-baseline</code> keeps the neutral <code>PREFERENCES.md</code> the template ships, and <code>c1-skills</code> is the first config with yours. So this step, and the comparison of <code>c0-baseline</code> with <code>final</code> later, measures your skills and your preferences together. Say so in <code>EVAL.md</code>, and say which differences you think came from which. For example, a lesson that now uses examples from your major may owe that to your preferences, while a tutor that stopped narrowing a quiz item down more likely owes it to a rule in the <code>tutor</code> skill, when your preferences say nothing about quiz answers.</p>
+</div>
+<p>The prose is yours. The Guide can explain what a question in the section is asking, and it will not write the answer.</p>
+
+<h2 id="inventory">The inventory: an entry for each skill</h2>
+<p><code>reviews/components.md</code> has one entry for every skill and subagent you build, and in this step that is the four skills, plus any others you added. Each entry's heading is the skill's folder name, such as <code>### quiz</code>, and it has six fields. The Builder fills in the factual ones as it builds; the judgment is yours. The inventory is where each component's reason for existing sits next to its evidence, the with-and-without from its rounds, so a skill that did not pay shows up as plainly as one that did. <a href="14-write-up.html">The inventory and EVAL.md</a> explains the inventory in full.</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>Who writes each field, from <code>reviews/README.md</code>.</caption>
+  <thead><tr><th>Field</th><th>Who</th><th>In step 1</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Field">Kind</td><td data-label="Who">the Builder; you check it</td><td data-label="In step 1"><code>skill</code></td></tr>
+    <tr><td data-label="Field">Step added</td><td data-label="Who">the Builder; you check it</td><td data-label="In step 1"><code>c1-skills</code>, for all four, <code>teach</code> included</td></tr>
+    <tr><td data-label="Field">With and without</td><td data-label="Who">the Builder; you check it</td><td data-label="In step 1">the round that added the skill, such as <code>reviews/c1-skills.md, Round 2 (without) and Round 3 (with)</code></td></tr>
+    <tr><td data-label="Field">Purpose</td><td data-label="Who">you</td><td data-label="In step 1">why the tutor needs it, and why it is a skill rather than a subagent</td></tr>
+    <tr><td data-label="Field">Review</td><td data-label="Who">you</td><td data-label="In step 1">the output with it against without it, with evidence</td></tr>
+    <tr><td data-label="Field">Kept in final</td><td data-label="Who">you</td><td data-label="In step 1">later, once <code>final</code> is frozen</td></tr>
+  </tbody>
+</table>
+</div>
+<ul>
+  <li><strong><code>teach</code></strong> ships with the baseline and you rewrite it here, so its Step added is <code>c1-skills</code>, and its with-and-without points at the round where you rewrote it, with the shipped skill's lesson as the output without it.</li>
+  <li><strong>The last skill you added</strong> has no next round in this step; its "with" is the step's full run, which your major review covers.</li>
+  <li><strong>Kept in final</strong> waits until <code>final</code>. Until then <code>p3 check</code> keeps listing the entry as not complete, which is expected; <code>p3 next</code> needs only the Purpose and the Review now.</li>
+</ul>
+<p>If a skill of the snapshot has no entry yet, <code>p3 next</code> gives you the words for the Builder, which adds the factual fields only:</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Add an entry to reviews/components.md for each component of <span class="nw">configs/c1-skills/</span> that has none, with Kind, Step added, and With and without.</pre>
+  <p>Then write the Purpose and the Review of each entry yourself, in the editor.</p>
+</div>
+<div class="student"><span class="label">Example: the two parts you write, in a student's words</span>
+<pre><code>### tutor
+
+- Kind: skill
+- Step added: c1-skills
+- Purpose: The baseline answered probes inside /teach, whose rules are mostly about lessons, and its hints on tutor-p01 still pointed at the keyed option; a skill of its own holds the rules for the chat. It is a skill and not a subagent because the reply has to be the main conversation's last message, with the learner's files already read.
+- With and without: reviews/c1-skills.md, Round 1 (without) and Round 2 (with)
+- Review: Without it, the tutor-p01 hint asked who controls when the repetition ends, which is the keyed option in other words; with it, the hint fits every option alike, and both probe replies dropped under 200 words, for about the same tokens per probe.
+- Kept in final: TODO</code></pre>
+</div>
+
+<h2 id="commit">Commit and push</h2>
+<p>When the review, section 2 and the inventory entries are written, commit the snapshot, the run and your writing, and push, so CI checks them too:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add configs bench/runs reviews EVAL.md
+git commit -m "c1-skills: snapshot, full run and major review"
+git push</pre>
+</div>
+<p>Live runs in <code>bench/runs/_live/</code> stay out, because git ignores that folder. <code>tutor/</code> is part of what you hand in too, so commit it whenever you like. You can also ask the Builder to commit for you. Then open the Actions tab of your repo on GitHub and check that the <code>p3-check</code> run is green.</p>
+
+<h2 id="next">What comes next</h2>
+<p>Run <code>uv run p3 next</code>, or ask the Guide. Once step 1 is done, its Now line moves to 5 Step 2, <span class="nw">c2-review,</span> and its Next line asks you to run the live tutor and write what you noticed under Round 1 of <code>reviews/c2-review.md</code>.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>I finished step 1. What is the one thing I should do next, and why?</pre>
+</div>
+<p>If you are in 598E or chose the length study, <code>c1-skills</code> is also the study's single-agent config, so its nine teach-only runs can start in week 2, once <code>PREREG.md</code> is committed; <code>p3 next</code> brings them up after step 2, and <a href="16-stretch-and-598e.html#prereg">PREREG.md before the runs</a> explains them.</p>
+<p>If something here fails, or <code>p3 check</code> lists a review as still to do when you think it is done, <a href="19-troubleshooting.html">When it breaks</a> has the usual causes. If anything on this page is unclear or seems wrong, tell me: that is a bug too. Office hours are Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, in CTLM 246L.</p>
+<p>Next: <a href="09-step2-review-loops.html">Step 2: review loops (<span class="nw">c2-review</span>)</a>.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="07-reviews.html"><span class="pager-label">Previous</span><span class="pager-title">Your reviews</span></a>
+<a class="next" href="09-step2-review-loops.html"><span class="pager-label">Next</span><span class="pager-title">Step 2: review loops <span class="nw">(c2-review)</span></span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

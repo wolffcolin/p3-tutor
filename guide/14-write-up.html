@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The inventory and EVAL.md - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html" class="current" aria-current="page">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>The inventory and EVAL.md</h1>
+<p class="lede">The component inventory says, for every skill and subagent you built, why it exists and what it bought. EVAL.md sets your reviews beside the numbers and says what each step bought and what it cost. This page goes through both, field by field and section by section.</p>
+<p class="meta">About 42 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>These files are where your claims meet your evidence: each component's purpose and its with-and-without, each step's gain against its price, and, in your open review of the test topics, whether the gains held up where you never tuned.
+    I read the inventory and <code>EVAL.md</code> for one thing above all, whether each claim matches its evidence, and together they are 25 of the 150 points.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In VS Code's editor, once both runs on a test topic are in: your open review of that topic, under <code>## Test topics</code> in <code>reviews/final.md</code> (<a href="11-test-topics.html#open-review">The open review of each topic</a> says what goes there).</li>
+      <li>In VS Code's editor, finish <code>reviews/components.md</code>: your Purpose, Review and Kept in final for every skill and subagent, under the factual fields the Builder filled in.</li>
+      <li>In a plain terminal, run the <code>p3 report</code> command that each section of <code>EVAL.md</code> names, paste its tables, and write your own prose under each section in the editor; <code>uv run p3 check</code>, there or through the Guide, then lists what is left in all three files.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 check</code> prints <code>OK    reviews/final.md, test topics: a complete review of each (...)</code>, <code>OK    EVAL.md is written</code> and <code>OK    reviews/components.md: a complete entry for every skill and subagent in your snapshots (...)</code>, its <code>components built</code> line is <code>OK</code>, and <code>uv run p3 next</code> lists 11 The write-up under Done.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="15-hand-in.html">Hand in</a>: the video, the last check and the Canvas post.</p></dd>
+  </dl>
+</section>
+
+<div class="note"><span class="label">Words this page uses</span>
+<dl>
+  <dt>The Builder</dt>
+  <dd>The Claude Code window you start with plain <code>claude</code> in <code>work/p3-tutor</code>. It changes your tutor, runs the commands you ask for, and fills in the inventory's factual fields.</dd>
+  <dt>The Guide</dt>
+  <dd>The Claude Code window you start with <code>claude --agent p3-guide</code> in <code>work/p3-tutor</code>. It explains and says what comes next, and never changes a file.</dd>
+  <dt>A plain terminal</dt>
+  <dd>A terminal tab with no Claude Code in it.</dd>
+  <dt>Snapshot</dt>
+  <dd>A frozen copy of your tutor's config in <code>configs/&lt;name&gt;/</code>, such as <code>configs/c2-review/</code>, made with <code>uv run p3 snapshot &lt;name&gt;</code>.</dd>
+  <dt>Quick round and major review</dt>
+  <dd>A quick round is one run, your thoughts and one change, in a step's file in <code>reviews/</code>; a major review closes a step, criterion by criterion. <a href="07-reviews.html">Your reviews</a> explains both.</dd>
+  <dt>Full run and ablation</dt>
+  <dd>A full run is all of the bench's scenarios on a snapshot, ten on the shared topic. The ablation is <code>final-minus-&lt;x&gt;</code>, <code>final</code> with one component removed. The <a href="20-glossary.html">glossary</a> has the rest.</dd>
+</dl>
+</div>
+
+<h2 id="when">When you write each part</h2>
+<p>The write-up is not one job for the last days.
+Most of it is written at the end of each step, while what you saw is fresh, and <code>uv run p3 next</code> asks for each part when its time comes.</p>
+<div class="table-wrap">
+<table>
+  <caption>When each part of the write-up is written, and what it needs first.</caption>
+  <thead><tr><th>Part</th><th>When</th><th>What it needs first</th></tr></thead>
+  <tbody>
+    <tr><td>an inventory entry for each skill and subagent of a step, with its Purpose and Review</td><td>at the end of each step, after its major review</td><td>the step's snapshot, and the Builder's factual fields</td></tr>
+    <tr><td><code>EVAL.md</code> section 1, the baseline</td><td>week 1</td><td>the baseline's three scored full runs</td></tr>
+    <tr><td><code>EVAL.md</code> sections 2, 3 and 4</td><td>at the end of steps 1, 2 and 3, after each major review</td><td>the step's full run and its major review</td></tr>
+    <tr><td><code>EVAL.md</code> sections 5 to 9, 11 and 12</td><td>week 3, while <code>final</code>'s runs run and after they finish</td><td><code>final</code>'s runs, the ablation, the blind comparison, the test topics' runs</td></tr>
+    <tr><td>your open review of each test topic, under <code>## Test topics</code> in <code>reviews/final.md</code></td><td>week 3, once both runs on the topic are in</td><td>that topic's runs of <code>c0-baseline</code> and <code>final</code></td></tr>
+    <tr><td><code>EVAL.md</code> section 10, the judge check</td><td>after lecture 24, Thu Nov 19</td><td>scored runs to take ten judge decisions from</td></tr>
+    <tr><td>Kept in final, in every entry</td><td>once you snapshot <code>final</code></td><td><code>configs/final/</code></td></tr>
+    <tr><td><code>EVAL.md</code> section 13, the stretch</td><td>when your stretch is done</td><td>the stretch's evidence</td></tr>
+  </tbody>
+</table>
+</div>
+<p>In my estimate the inventory takes about 1 hour of your time, <code>EVAL.md</code> about 3 hours, and the judge check about half an hour.
+Each step page has short sections on what that step needs from both files, such as <a href="08-step1-skills.html#eval">step 1's EVAL.md section</a> and <a href="08-step1-skills.html#inventory">its inventory section</a>; this page explains both files in full.
+The open review of the test topics is part of this stage of <code>uv run p3 next</code> too, and <a href="11-test-topics.html#open-review">The open review of each topic</a> explains it: for each topic and each job, which config did better, with evidence from both runs, and, on the life-skill topic, what each config did with the probe that asks for personal advice.</p>
+
+<h2 id="inventory">The component inventory</h2>
+<p><code>reviews/components.md</code> has one entry for every skill and every subagent you built anywhere on the ladder, from <code>c1-skills</code> to <code>final</code>, kept or dropped.
+A <strong>component</strong> is a skill (a folder under <code>tutor/.claude/skills/</code> that holds a <code>SKILL.md</code>) or a subagent (a Markdown file under <code>tutor/.claude/agents/</code> whose frontmatter gives it a <code>name</code>).
+Hooks, settings, <code>tutor/CLAUDE.md</code> and <code>tutor/PREFERENCES.md</code> are not components and get no entry.</p>
+<p>The inventory replaces a separate design document.
+Why each component exists is asked at the component, next to its evidence, and <code>EVAL.md</code> holds the diagram of <code>final</code> as a whole.
+It is worth 10 of the 150 points: a purpose and a with-and-without review for every skill and subagent, with the minimums met.</p>
+
+<h3 id="entry">An entry, field by field</h3>
+<p>The template ships one empty entry at the bottom of <code>reviews/components.md</code>, and an example of a finished entry inside an HTML comment above it.
+Replace the empty entry with your first component, and copy it for each one after that.
+This is the empty entry:</p>
+<pre><code>### TODO: the component's name
+
+- Kind: TODO
+- Step added: TODO
+- Purpose: TODO
+- With and without: TODO
+- Review: TODO
+- Kept in final: TODO</code></pre>
+<p>And this is the finished example from the template's comment, for a quiz reviewer added in <code>c2-review</code>:</p>
+<pre><code>### quiz-reviewer
+
+- Kind: subagent
+- Step added: c2-review
+- Purpose: My c1 review found two quiz items that could be read two ways (q2 and q4) and one whose correct option repeated the stem; a reviewer with a fresh context reads the draft the way a learner will, which the quiz skill writing its own items cannot do, so it is a subagent and not a step in the skill.
+- With and without: reviews/c2-review.md, Round 1 (without) and Round 2 (with)
+- Review: Without it, q2 asked which design "is better" with no criterion; with it, every stem names its criterion and the reviewer's record shows two items flagged and fixed in one pass, for about 0.6M more tokens per quiz, which I think a quiz is worth, because a misread item teaches the wrong thing.
+- Kept in final: yes</code></pre>
+<p>A field may run over several lines; it ends where the next field's label starts.
+This is what each one holds.</p>
+<dl>
+  <dt>The heading, <code>### &lt;name&gt;</code></dt>
+  <dd><p>The component's name: the skill's folder name, such as <code>quiz</code>, or the subagent's <code>name</code> from its frontmatter, such as <code>quiz-reviewer</code>.
+  A subagent's file name does not have to match its <code>name</code>, so take the name from the frontmatter.
+  <code>p3 check</code> matches the heading to the components in your snapshots, ignoring case and spacing.</p></dd>
+
+  <dt><code>- Kind:</code></dt>
+  <dd><p><code>skill</code> or <code>subagent</code>.
+  The Builder may fill it in; <code>p3 check</code> compares it with your snapshots and says so when they disagree, as in "its entry says Kind skill, but configs/c2-review/ holds it as a subagent".</p></dd>
+
+  <dt><code>- Step added:</code></dt>
+  <dd><p>The step the component arrived in, by three rules:</p>
+  <ul>
+    <li>Normally, the first of your snapshots that holds it: <code>c1-skills</code>, <code>c2-review</code>, <code>c3-split</code> or <code>final</code>.</li>
+    <li>For <code>teach</code>, <code>c1-skills</code>. It ships with the baseline, but you rewrite it in step 1, and the baseline is not one of your snapshots.</li>
+    <li>For a component you built in a round and took out again before the step's snapshot, the step whose round built it.</li>
+  </ul>
+  <p>The Builder may fill it in, and you check it.
+  <code>p3 check</code> catches a step that does not match your snapshots, as in "quiz: Step added is c2-review, but it first appears in configs/c1-skills/".</p></dd>
+
+  <dt><code>- Purpose:</code></dt>
+  <dd><p>Yours.
+  Why the tutor needs this component, and why it is a skill or a subagent rather than the other.
+  The best purpose names what led to it: a finding of your review, with its round or criterion, as the example does with q2 and q4.</p>
+  <p>For the second half, it helps to remember what each kind is.
+  A skill is instructions the main conversation loads and follows, so it works with everything that conversation already has: the learner's request, the chat, the files already read.
+  For the four job skills the bench settles part of the answer, because it starts each job with <code>/teach</code>, <code>/tutor</code>, <code>/quiz</code> or <code>/grade</code>; say what the skill does in the main conversation that a subagent could not, such as the tutor answering in the chat, where the reply that gets scored is the session's final message.
+  A subagent is a separate Claude with its own system prompt, its own tools and a fresh context window, and it sees only the task message it is given and what it reads for itself.
+  That is why a reviewer is usually a subagent: it reads the draft the way the learner will, without the writer's reasoning to lean on.
+  A subagent also costs more, because every subagent pays a share of Claude Code's fixed load of instructions and tools again, plus whatever it reads.</p></dd>
+
+  <dt><code>- With and without:</code></dt>
+  <dd><p>Where the evidence is.
+  Usually that is the quick round that added the component: its Run line is the tutor without it, and the next round's Run line is the tutor with it, as in <code>reviews/c2-review.md, Round 1 (without) and Round 2 (with)</code>.
+  The Builder may fill it in, and you check it.
+  A few cases need care:</p>
+  <ul>
+    <li><strong>Added in the last round of a step.</strong>
+    There is no next round, so the "with" is the step's full run, which its major review reviews, as in <code>reviews/c1-skills.md, Round 4 (without) and the major review of c1-skills (with)</code>.</li>
+    <li><strong><code>teach</code>.</strong>
+    The round where you rewrote it, with the baseline's lesson as the output without it.</li>
+    <li><strong>Taken out again before a snapshot.</strong>
+    The rounds that added it and removed it.</li>
+    <li><strong>Two components added in one round.</strong>
+    A separate with-and-without check of each, and where it is, since the round alone cannot tell them apart.</li>
+  </ul></dd>
+
+  <dt><code>- Review:</code></dt>
+  <dd><p>Yours.
+  Your short review of the output with the component against the output without it, with evidence: a quote, an item id, a number that moved, and what it cost.
+  The example says what was wrong without it (q2's missing criterion), what changed with it (every stem names its criterion; two items flagged and fixed), the price (about 0.6M more tokens per quiz), and the judgment (worth it, and why).
+  If you saw no difference, say so; that is a result.</p>
+  <p>Live runs are not committed, so when a with-and-without rests on two live runs, copy the numbers you want to cite, such as tokens from the run's <code>run.json</code>, into your round's thoughts when you see them.</p></dd>
+
+  <dt><code>- Kept in final:</code></dt>
+  <dd><p>Yours.
+  <code>yes</code>, or <code>no, because</code> and the reason, such as what the evidence showed.
+  It must start with yes or no, and a no needs its reason.
+  Once <code>configs/final/</code> exists, <code>p3 check</code> compares this field with it, as in "Kept in final says yes, but configs/final/ does not hold it", so write it when you snapshot <code>final</code>.</p></dd>
+</dl>
+
+<h3 id="who-fills">Which fields the Builder fills, and which are yours</h3>
+<div class="table-wrap">
+<table>
+  <caption>Who writes each field of an inventory entry, from reviews/README.md and the root CLAUDE.md.</caption>
+  <thead><tr><th>Field</th><th>Who writes it</th></tr></thead>
+  <tbody>
+    <tr><td>the heading, Kind, Step added, With and without</td><td>the Builder may fill these in, when it acts on a round that adds or changes a component; you check them</td></tr>
+    <tr><td>Purpose, Review, Kept in final</td><td>you</td></tr>
+  </tbody>
+</table>
+</div>
+<p>When the Builder acts on a round that adds or changes a component, it adds or updates that component's entry with the factual fields only, and leaves Purpose, Review and Kept in final as markers for you.
+When a round removes a component, it leaves the entry in place for you to complete.
+It never writes or edits your three fields, even when asked to "finish the inventory".</p>
+<p>If an entry is missing, for example for a component built in a session where the Builder did not add one, ask the Builder for it:</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Add an entry for the tutor skill to reviews/components.md, with its factual fields only.</pre>
+  <p>At the end of a step, when entries are missing, <code>p3 next</code> gives you the words for all of them at once: "Add an entry to reviews/components.md for each component of configs/&lt;step&gt;/ that has none (...), with Kind, Step added, and With and without."</p>
+</div>
+<p>Write Purpose when the component arrives, because you know then why you wanted it, and Review once the next round's run shows the tutor with it.
+<code>p3 next</code> asks, at the end of each step, for an entry for each component of the step's snapshot with Purpose and Review written.</p>
+
+<h3 id="dropped">Dropped components stay</h3>
+<p>Every component you built keeps its entry, whether <code>final</code> kept it or not, because a component that did not pay is evidence too.</p>
+<ul>
+  <li><strong>A component <code>final</code> dropped</strong>, such as a reviewer from <code>c2-review</code> you left out of <code>final</code>, keeps its entry with <code>Kept in final: no, because</code> and the reason.
+  It still counts toward the minimums, because a snapshot holds it.</li>
+  <li><strong>A component you built in a round and took out before any snapshot</strong> gets an entry too.
+  Its Step added is the step whose round built it, its With and without names the rounds that added and removed it, and its Kept in final is <code>no, because</code> and what the next round showed.
+  <code>p3 check</code> cannot see such a component, because no snapshot holds it, so keeping its entry is up to you, and it does not count toward the minimums.</li>
+</ul>
+<p>The second kind is often your best example of a change that did not pay, which <code>EVAL.md</code> section 11 asks for.</p>
+<div class="student"><span class="label">Example: an entry for a component taken out again, made up, in a student's words</span>
+<pre><code>### references-finder
+
+- Kind: subagent
+- Step added: c3-split
+- Purpose: My c2 lesson had two references, both to the same tutorial; a subagent with web search and a fresh context could look for sources while the writer drafts, which a step in the teach skill would do in the same long context.
+- With and without: reviews/c3-split.md, Round 2 (without; this round added it) and Round 3 (with; this round removed it)
+- Review: With it the lesson had six links instead of two, but two of the six were dead and three pointed at pages far above a novice; the teach scenario took about 1.4M more tokens. Not worth it for this learner.
+- Kept in final: no, because Round 3's run showed more links but not better ones, at a real cost.</code></pre>
+</div>
+
+<h3 id="minimums">The minimums</h3>
+<p>The minimums are counted over what you built across the ladder, not over what <code>final</code> keeps, so dropping a component for a good reason never costs you.</p>
+<div class="table-wrap">
+<table>
+  <caption>The minimums, from README.md. The four skills' names are fixed so the bench can start each job with /teach, /tutor, /quiz or /grade.</caption>
+  <thead><tr><th>Section</th><th>Skills</th><th>Subagents</th></tr></thead>
+  <tbody>
+    <tr><td>498E</td><td>at least the four: <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code></td><td>at least five, for example three reviewers in <code>c2-review</code> and two roles in the <code>c3-split</code> pipeline</td></tr>
+    <tr><td>598E</td><td>at least six: the four and two of your own</td><td>at least eight</td></tr>
+  </tbody>
+</table>
+</div>
+<ul>
+  <li>A component counts when it appears in one of your snapshots: any folder under <code>configs/</code> other than <code>c0-baseline</code>, which includes <code>final-minus-&lt;x&gt;</code> and any snapshot of your own.</li>
+  <li>A component taken out before any snapshot keeps its entry but does not count.</li>
+  <li>A Markdown file under <code>.claude/agents/</code> counts as a subagent only when it has frontmatter with a <code>name</code>, opening on its first line, which is also what Claude Code needs to load it.
+  A checklist file that a subagent reads is fine there; <code>p3 check</code> notes it as documentation with a warning and does not count it.</li>
+  <li><code>p3 check</code> reads your section from <code>p3.json</code>, so make sure <code>section</code> says <code>"498E"</code> or <code>"598E"</code>.</li>
+</ul>
+
+<h3 id="inventory-check">What p3 check checks</h3>
+<p><code>uv run p3 check</code> compares the inventory with the skills and subagents in your snapshots.
+It lists:</p>
+<ul>
+  <li>every component in a snapshot (other than <code>c0-baseline</code>) that has no entry, or whose entry is not complete;</li>
+  <li>a Kind, a Step added or a Kept in final that your snapshots contradict;</li>
+  <li>two entries for the same component;</li>
+  <li>the template's empty entry, if you leave it: "fill it in for one component, or delete it";</li>
+  <li>and, on a line of its own, how many skills and subagents your snapshots hold against your section's minimums.</li>
+</ul>
+<p>With a first snapshot of <code>c1-skills</code> that still has no <code>tutor</code> skill, and two slips in the <code>quiz</code> entry, its inventory lines look like this:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 check</pre>
+  <pre class="out">  TODO  reviews/components.md: not complete (6 problems); every skill and subagent in a snapshot other than c0-baseline needs a complete entry
+          grade (skill, in configs/c1-skills/): no entry; add ### grade with its six fields
+          quiz: Purpose is still TODO
+          quiz: Review is still TODO
+          quiz: Kept in final is 'maybe'; start it with yes or no (no, because ...)
+          quiz: Step added is c2-review, but it first appears in configs/c1-skills/
+          teach (skill, in configs/c1-skills/): no entry; add ### teach with its six fields
+  TODO  components built: 3 skills and 0 subagents across your snapshots other than c0-baseline (498E needs at least 4 skills, teach, tutor, quiz and grade among them, and 5 subagents)
+          skills: grade, quiz, teach
+          required skills not in a snapshot yet: tutor</pre>
+</div>
+<p>Every <code>###</code> heading in <code>components.md</code> that holds one of the six field lines is an entry.
+A <code>###</code> section of your own notes with none of them is fine.
+Save the file as UTF-8, as VS Code does by default; <a href="07-reviews.html#check">Your reviews</a> says how to fix a file that a command saved as UTF-16.</p>
+
+<h3 id="guard-entry">The guard has no entry</h3>
+<p>The guard you add in <code>final</code> is a hook, not a skill or a subagent, so it has no entry, and neither does the script it runs.
+<code>EVAL.md</code> section 7 covers it, including why it is a hook.
+<a href="12-final.html#guard">final: the guard, repeats and the ablation</a> is where you build it.</p>
+
+<h2 id="eval">EVAL.md, section by section</h2>
+<p><code>EVAL.md</code> is the report on what each step of your architecture bought and what it cost.
+I read it for one thing above all: whether each claim matches its evidence, including the steps that did not pay.
+A step you measured carefully and then dropped is as good a result as a step that won.
+It is worth 15 of the 150 points: the trade-offs, the judge check, your open reviews against your blind picks, and the change that did not pay.</p>
+<p>Three kinds of material go in it.</p>
+<ul>
+  <li><strong>Tables pasted from commands</strong>: <code>uv run p3 report</code> for the objective checks, the cost and your ratings, and <code>uv run p3 compare --reveal &lt;session-id&gt;</code> for each blind comparison.
+  Paste them as they are, and name the run ids or the session id next to each one, so I can find them in <code>bench/runs/</code> and <code>bench/compare/</code>.</li>
+  <li><strong>Pointers into <code>reviews/</code></strong>: name the round, such as <code>c2-review</code> Round 3, or the criterion, such as the <code>c1-skills</code> review's Wording and possible misreadings, rather than retelling it.
+  The trail from thoughts to change to outcome is already in <code>reviews/</code>.</li>
+  <li><strong>Your prose.</strong>
+  It is yours alone: the Builder never writes it, and the Guide can explain what a section asks but never drafts an answer.
+  If you want help with wording, ask in a chat and type your own version.</li>
+</ul>
+<p><code>EVAL.md</code> starts with a short list, "Words used below", that defines Your ratings, a round, a pass, a tally, the p-value, could tell and cost; read it once before you start.
+Each section ends with a marker line that starts with <code>TODO</code>.
+Replace each one with your writing.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p><code>p3 check</code> counts every line of <code>EVAL.md</code> that holds the word TODO, wherever it is, even inside a table or a code block you pasted.
+That is stricter than in <code>reviews/</code>, where a TODO in code is a quote.
+So leave no TODO anywhere in <code>EVAL.md</code>; until then <code>p3 check</code> prints a line such as <code>TODO  EVAL.md: 30 TODO markers left (lines 31, 38, 49, ...)</code>, and once they are gone, <code>OK    EVAL.md is written</code>.</p>
+</div>
+
+<h3 id="paste">How to paste a table</h3>
+<p>Run the command in a plain terminal, select its output from the first <code>##</code> line to the end, and paste it into <code>EVAL.md</code> in the editor, at the section's marker.
+The tables are Markdown, so they show as tables on GitHub.
+<code>p3 report</code> makes no model call, so it costs nothing to run again.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c0-baseline,c1-skills</pre>
+  <pre class="out">## Results on agent-architecture
+
+Scored full runs (quick runs and --only runs left out); each cell is the mean over the runs, with the range in brackets.
+
+### Quality
+
+| config | runs | teach facts | teach misconc. | length ratio | dead links | key agreement | wrong keys | ambiguous items | verdict agreement | false wrong | misconc. hit | leaks | behavior met |
+...
+### Cost: teach
+...
+### Cost: all jobs
+...
+## Your ratings
+...</pre>
+</div>
+<ul>
+  <li>Each cell is the mean over the config's scored full runs, with the range in brackets, and <code>n=</code> when fewer runs could be scored on that check; <a href="#repeats">Reading repeats</a> says how to read them.</li>
+  <li>Quick runs and <code>--only</code> runs are left out, and so are the live runs of your quick rounds.</li>
+  <li>Every report of the shared topic's full runs ends with "Your ratings", with all four step columns whatever <code>--configs</code> says.
+  That is expected; paste it as it is.</li>
+  <li>Do not send the output to a file with Windows PowerShell's <code>&gt;</code>, which writes UTF-16; copy it from the terminal instead.</li>
+</ul>
+
+<h3 id="eval-1">1. The baseline, <span class="nw">c0-baseline</span></h3>
+<p><strong>When:</strong> week 1, once the baseline's three full runs are scored.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c0-baseline</pre>
+</div>
+<p>Paste the table and name the three run ids, which are the folder names of the full runs under <code>bench/runs/c0-baseline/</code> (your quick run from setup is there too, and the report leaves it out).
+Then answer what the section asks: what the baseline did well and where it fell short, for each of the four jobs; which of the gaps in <code>KNOWN-GAPS.md</code> you saw in your own runs, and whether you found one that is not listed; and which number moved the most from one run to the next.</p>
+<p><strong>How far the numbers go:</strong> this section sets your yardstick.
+The baseline's ranges are the only measure of run-to-run spread you have until <code>final</code>'s repeats, and steps 1 to 3 are measured on one run each, so say what that spread means for a step measured once.
+Cite your runs, not mine; <code>KNOWN-GAPS.md</code> is what I saw.</p>
+
+<h3 id="eval-2">2. Step 1: <span class="nw">c1-skills</span> against <span class="nw">c0-baseline</span></h3>
+<p><strong>When:</strong> at the end of step 1, after its major review; <code>p3 next</code> asks for this section with no TODO before it moves you to step 2.</p>
+<p><strong>What changed.</strong>
+Name the rounds that built the step, such as <code>c1-skills</code> Rounds 1 to 4, and the inventory entries of the skills they added, without retelling them.
+Then what you put in <code>PREFERENCES.md</code>, and anything about how the four skills work together that no single entry says.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c0-baseline,c1-skills</pre>
+</div>
+<p><strong>What the step bought and what it cost.</strong>
+For each job, what your major review found against <code>c0-baseline</code>, and whether the objective checks agree; where they disagree, which you believe and why; what the step cost per scenario; and whether the gain was worth it.</p>
+<p><strong>How far the numbers go:</strong> one run of <code>c1-skills</code> against three of <code>c0-baseline</code>.
+A <code>c1-skills</code> value inside the baseline's range is not a difference you can claim, and one outside it is a hint, not a result, because you do not know <code>c1-skills</code>'s own spread.
+And <code>c1-skills</code> is the first config with your <code>PREFERENCES.md</code>, while <code>c0-baseline</code> keeps the neutral one, so this step measures your skills and your preferences together.
+Say so, and say which differences you think came from which, and why.</p>
+
+<h3 id="eval-3">3. Step 2: <span class="nw">c2-review</span> against <span class="nw">c1-skills</span></h3>
+<p><strong>When:</strong> at the end of step 2, after its major review.</p>
+<p><strong>What changed.</strong>
+The rounds and the reviewers' inventory entries, as in step 1.
+Then the design of each loop, for teach, quiz and grade: who reviews; what is on each reviewer's checklist, and which items came from your <code>c1-skills</code> major review; how each reviewer gets a fresh context; how many passes a loop may run and what ends it early; and what each loop records.
+(A <strong>pass</strong> is one revise-and-review iteration inside a loop, never a quick round.)
+Then one design choice you could have made the other way, such as one reviewer against several, a cap of one pass against three, or a reviewer that edits against one that only reports, and why you chose as you did.</p>
+<p><strong>The loops as they ran.</strong>
+For teach, quiz and grade: how many passes ran in your bench run, what the reviewers flagged, and whether the revisions moved anything you can point at.
+The loops' records in the run's outputs are the evidence; name the files, such as <code>quiz/outputs/review-records/NNNN-quiz.md</code> in the run's folder if you used the folder <a href="09-step2-review-loops.html#records">step 2</a> suggests.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c1-skills,c2-review</pre>
+</div>
+<p><strong>What the step bought and what it cost.</strong>
+Did the problems your <code>c1-skills</code> review found go away, and which ratings moved?
+Which loop earned its cost, and which did not?
+If a loop ran several passes and the final output was no better than the first draft, say so, because that is the finding.</p>
+<p><strong>How far the numbers go:</strong> in my baseline runs, the objective checks for the quiz and the grades were already at their best, so on the shared topic they act as floors that catch a step that breaks something.
+A review loop on quiz or grade has little room to raise them, and what it buys shows up in your own reviews and in its cost.
+Say so plainly if that is what you find; it is a real result.</p>
+
+<h3 id="eval-4">4. Step 3: <span class="nw">c3-split</span> against <span class="nw">c2-review</span></h3>
+<p><strong>When:</strong> at the end of step 3, after its major review.</p>
+<p><strong>What changed.</strong>
+The rounds and the pipeline's inventory entries.
+Then the split: the roles you split the teach job into, what each one receives and returns, what runs in order and what in parallel, and who puts the lesson together at the end.
+Why this split and not a smaller one, and what you tried and took out again.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c2-review,c3-split</pre>
+</div>
+<p><strong>What the step bought and what it cost.</strong>
+What the split changed in the lesson (its structure, its figures, its references, its fit to you) and how your four Lesson ratings moved against <code>c2-review</code>'s.
+What it cost in tokens, minutes and subagents against <code>c2-review</code>, and how much of that was overhead rather than writing.
+The teach scenario's entry in the run's <code>run.json</code> gives its tokens, turns and subagents, and its trace, <code>teach/trace.jsonl.gz</code>, holds every subagent's messages, if you want to see where the work went.</p>
+<p><strong>How far the numbers go:</strong> each step has one run, so say how confident you are, and what would change your mind.</p>
+
+<h3 id="eval-5">5. final against <span class="nw">c0-baseline</span>, with repeats</h3>
+<p><strong>When:</strong> week 3, once <code>final</code> has its three scored full runs.</p>
+<p><strong>What went into final.</strong>
+First the diagram of <code>final</code>; <a href="#diagram">The diagram of final</a> below says what goes in it.
+Then what you kept from each step, what you dropped, and why, pointing at the inventory entries rather than repeating them.
+Then, if <code>final</code> had to get cheaper tomorrow, which component you would cut first and which last, and what you expect the tutor to lose.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs c0-baseline,final</pre>
+</div>
+<p><strong>What the repeats let you claim.</strong>
+For each headline number: is the difference between the two configs larger than the spread between runs of the same config?
+Where the ranges overlap, write "not distinguishable with three runs", and do not rank the two by their means.
+Then the overall cost: how many times more tokens and minutes per scenario <code>final</code> takes, and for which jobs it is worth it, by your review and by the numbers.</p>
+<p><strong>How far the numbers go:</strong> three runs of each, the most repeats the project asks for; <a href="#repeats">Reading repeats</a> walks through an example.
+Like step 1, this comparison measures your skills and your preferences together, because <code>c0-baseline</code> keeps the neutral <code>PREFERENCES.md</code> and <code>final</code> has yours.</p>
+
+<h3 id="eval-6">6. The ablation</h3>
+<p><strong>When:</strong> after the full run of your <code>final-minus-&lt;x&gt;</code> snapshot, which is <code>final</code> with one component removed.
+<a href="12-final.html#ablation">final: the guard, repeats and the ablation</a> says how to make it.</p>
+<p>The section asks what you expected to happen before you ran it.
+A prediction written after you saw the result is not a prediction, so write it into this section, and commit it, before you start the ablation's run.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --configs final,final-minus-&lt;x&gt;</pre>
+</div>
+<p>Use your ablation's real name in place of <code>final-minus-&lt;x&gt;</code>, such as <code>final-minus-quiz-review</code>.
+Then say what changed, in quality and in cost, and what you saw in its outputs that the numbers do not show.</p>
+<p><strong>How far the numbers go:</strong> one run against three.
+If the ablation's value sits inside <code>final</code>'s range, one run cannot say the component matters; if it sits well outside, that is a hint worth stating as a hint.</p>
+
+<h3 id="eval-7">7. The guard</h3>
+<p><strong>When:</strong> week 3, once <code>final</code> has run and you have a trace that shows the guard at work in the bench.
+<a href="12-final.html#guard">final: the guard, repeats and the ablation</a> is where you build and test it; this section is where you report it.</p>
+<p>It asks for:</p>
+<ul>
+  <li>what the guard blocks and what it allows, and how it tells the grader from the main conversation;</li>
+  <li>why it is a PreToolUse hook in <code>tutor/.claude/settings.json</code>, and not a permission deny rule, a hook in a subagent's frontmatter, a subagent's <code>tools</code> list, or an instruction in a skill;</li>
+  <li>what changed elsewhere in the tutor because of it, such as grading handed to a subagent the guard allows;</li>
+  <li>the result of running its tests, pasted, and the cases they cover: the main conversation reading <code>keys/</code> with each of Read, Grep, Glob, Bash and PowerShell, the grader reading them, and the reads that must still work;</li>
+  <li>the bench evidence: the run id and scenario of a trace where the hook allowed the grader's read of <code>keys/</code> or blocked the main conversation's, since a hook that fails to start lets every call through (or, when its entry sets <code>"onFailure": "block"</code>, blocks every call, the grader's too; <a href="12-final.html#guard">final: the guard, repeats and the ablation</a> explains);</li>
+  <li><code>tutor_leaks</code> for <code>final</code> against <code>c0-baseline</code>, and any denial of the guard you found in a trace;</li>
+  <li>the gap you know of: one way the main conversation could still reach a key, or a case your tests do not cover, and why you accepted it or how you closed it.</li>
+</ul>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">python -m unittest discover -s tests -t .</pre>
+</div>
+<p>That runs every test in <code>tests/</code>, the course's and yours, and none of them calls Claude; on macOS and Linux, use <code>python3</code>.
+To run only your guard's file, name it, as in <code>python -m unittest tests.test_guard</code>.</p>
+<p><strong>How far the numbers go:</strong> in my runs, the baseline tutor never opened <code>keys/</code> in any of its twenty probe sessions, so the guard is insurance, and it will probably not move <code>tutor_leaks</code> on the shared topic.
+Show that it works with its tests and a trace, and do not credit it with a change in the leak count it cannot cause.</p>
+
+<h3 id="eval-8">8. The blind comparison</h3>
+<p><strong>When:</strong> after you have revealed all four sessions of <code>c0-baseline</code> against <code>final</code>, which you start only once the major review of <code>final</code> is committed.</p>
+<p>Paste the four reveals, teach, quiz, grade and tutor, each with its session id.
+<code>uv run p3 compare --list</code> lists your sessions, and running <code>--reveal</code> again on a finished session prints its reveal again, for copying.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 compare --reveal &lt;session-id&gt;</pre>
+</div>
+<p><strong>Your open reviews against your blind picks</strong> is the heart of this section; <a href="#open-vs-blind">its own part of this page</a> walks through it.</p>
+<p><strong>A second blind comparison.</strong>
+For 498E it is optional: if you made one, say which configs and job, why you chose it, paste its reveal, and say whether it agreed with your open reviews.
+For 598E, and for 498E with the length-study stretch, the length study's three comparisons are your second; say so here, and write them up in section 13.
+If you made no second comparison, say so in one line.</p>
+<p><strong>How far the numbers go:</strong> with three teach or three quiz pairs, no tally can reach a small p-value (even 3 of 3 has a p-value of 0.25), so for those jobs your reasons and the objective checks carry the weight.
+With the 18 tutor pairs, 14 of 18 non-tie picks for one config gives about 0.03, and with the 36 grade pairs, 25 of 36 gives about 0.03.
+But the 36 grade pairs come from twelve grading sessions, six for each config, so they say less than 36 separate sessions would.
+<a href="13-blind-comparison.html">The blind comparison</a> explains the tally in full.</p>
+
+<h3 id="eval-9">9. The test topics</h3>
+<p><strong>When:</strong> week 3, after the four test-topic runs (<code>c0-baseline</code> and <code>final</code>, once each on both topics) and your open review of them at the end of <code>reviews/final.md</code>.</p>
+<p><strong>The two topics.</strong>
+Name each topic and its id, why you chose it, and the commit in which you committed its items, before its first run.
+<code>git log --oneline -- bench/own/&lt;id&gt;</code> lists a topic's commits, and each run's <code>run.json</code> records the topic's commit.
+If you fixed a real mistake in a topic after its runs, by the procedure in <code>bench/own/README.md</code>, list the run ids you deleted, what you changed and why.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --topic &lt;id&gt; --configs c0-baseline,final</pre>
+</div>
+<p><strong>Results.</strong>
+For each topic, paste that report and sum up your open review of the topic in two or three sentences.
+A report of a test topic has no "Your ratings" table, because your major reviews review the shared topic; that is expected.</p>
+<p><strong>Did the architecture still pay off?</strong>
+Compare each topic with the shared topic: did <code>final</code> win where it won before, and did it fail somewhere new?
+Was there anything about the topic, its kind of knowledge or its learner, that explains the difference?
+On the life-skill topic, did both configs stay inside general knowledge when your probe asked for personal advice?</p>
+<p><strong>Your learning sessions against the bench.</strong>
+Did the bench predict what you saw in your three sessions?
+Which failure from your sessions would a check or a review of a bench run have caught, and which could no fixed test have caught?
+Would you use this tutor again for something you need to learn, and what would it need first?</p>
+<p><strong>How far the numbers go:</strong> one run of each config on each topic.
+That is a held-out check of whether the architecture carries over to a topic you never tuned on, not a measure of spread, so say "one run each" where it matters.</p>
+
+<h3 id="eval-10">10. The judge check</h3>
+<p><strong>When:</strong> after lecture 24 (Thu Nov 19), which is about judges.
+Ten of the judge's decisions, labeled by you before you look at its verdicts, then the agreement and what it means; <a href="#judge-check">The judge check</a> below has the steps.</p>
+
+<h3 id="eval-11">11. A change that did not pay off</h3>
+<p><strong>When:</strong> week 3.
+At least one change, anywhere in the project, that cost tokens, time or complexity and did not buy a difference you could see or measure; <a href="#did-not-pay">A change that did not pay off</a> below says where to look.</p>
+
+<h3 id="eval-12">12. The trade-offs</h3>
+<p><strong>When:</strong> week 3, last of the big sections, because it looks at the whole ladder.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 report --reviews
+uv run p3 report --configs c0-baseline,c1-skills,c2-review,c3-split,final</pre>
+</div>
+<p>Paste your ratings across the whole ladder and the cost of each step, then answer the three questions; <a href="#trade-offs">The trade-offs</a> below has advice.</p>
+
+<h3 id="eval-13">13. The stretch</h3>
+<p><strong>When:</strong> when your stretch is done.
+For 598E this is the length study, the rider, with <code>PREREG.md</code> beside it.
+Cover the five things the section lists: the option's name; what you did and the files that hold it; the evidence, the reviews, blind comparisons, objective checks and cost it rests on, pasted or named; what that evidence lets you claim and what it does not; and one thing you would do next, with the result that would tell you it worked.
+For the length study, <code>uv run p3 report --configs <span class="nw">c1-skills,final</span> --teach-only</code> gives every cell's numbers.
+<a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a> explains each option and the study, and <code>p3.json</code>'s <code>stretch</code> must name the one you did.</p>
+
+<h2 id="repeats">Reading repeats</h2>
+<p>Lecture 23 (Tue Nov 17) is about repeats with intervals, and my pace for week 3 (<a href="17-pace.html#week-3">A pace that works</a>) asks you to read your repeats the way it does.
+Until then, and as the floor for every comparison in <code>EVAL.md</code>, the rule is the one section 5 states: compare the difference between two configs with the spread within each config.</p>
+<p><strong>What a cell says.</strong>
+<code>0.44 (0.33-0.50)</code> is the mean over a config's scored full runs, then the lowest and the highest run in brackets.
+A cell with no brackets is a single run, or runs that all gave the same value; the <code>runs</code> column says which.
+<code>n=2</code> in the brackets means only two of the runs could be scored on that check, and a dash means none could.</p>
+<p><strong>An example, made up, on the scale my baseline showed.</strong>
+In my three baseline runs, <code>tutor_behavior_met</code> was 0.33 to 0.50.
+Suppose your report shows:</p>
+<div class="table-wrap">
+<table class="stack">
+  <caption>A made-up behavior met column, with three runs of each config, and what each reading lets you claim.</caption>
+  <thead><tr><th>Config</th><th class="num">runs</th><th class="num">behavior met</th><th>What you can claim</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Config"><code>c0-baseline</code></td><td class="num" data-label="runs">3</td><td class="num" data-label="behavior met">0.44 (0.33-0.50)</td><td data-label="What you can claim">the yardstick</td></tr>
+    <tr><td data-label="Config"><code>final</code>, first case</td><td class="num" data-label="runs">3</td><td class="num" data-label="behavior met">0.61 (0.50-0.67)</td><td data-label="What you can claim">the ranges meet at 0.50: not distinguishable with three runs, though the mean is higher</td></tr>
+    <tr><td data-label="Config"><code>final</code>, second case</td><td class="num" data-label="runs">3</td><td class="num" data-label="behavior met">0.78 (0.67-0.83)</td><td data-label="What you can claim">every <code>final</code> run is above every baseline run: a difference you can state, for these runs on this topic</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Two more things to keep in mind when you read a share.</p>
+<ul>
+  <li><strong>Shares on a few items move in big steps.</strong>
+  <code>tutor_behavior_met</code> is a share of six probes, so a run can only score 0, 0.17, 0.33, 0.50, 0.67, 0.83 or 1, and one probe changing its verdict moves it by 0.17.
+  The same is true of a six-item quiz.
+  A difference of 0.17 between two single runs can be one reply.</li>
+  <li><strong>A single run has no spread of its own.</strong>
+  Steps 1 to 3 and the ablation are measured once.
+  Set each single run against the range of the config it is compared with where that config has repeats: <code>c0-baseline</code>'s for <code>c1-skills</code>, <code>final</code>'s for the ablation.
+  For <code>c2-review</code> against <code>c1-skills</code> and <code>c3-split</code> against <code>c2-review</code>, one run against one, the baseline's and <code>final</code>'s ranges are the best guide you have to how much a number moves by chance.</li>
+</ul>
+<p>Read the cost tables the same way: tokens and minutes vary from run to run too, and the tables show their ranges.
+If you use an interval from lecture 23, say how you computed it.</p>
+
+<h2 id="judge-check">The judge check</h2>
+<p>The judge is a fixed prompt in <code>bench/judge/</code> and a pinned model (<code>claude-sonnet-5-5</code>), used only for what a script cannot check: whether the lesson's key facts are present and correct, whether it asserts a listed misconception, its fit to the learner's level, and whether a tutor reply did what the probe expected.
+Several of your headline numbers rest on it, and a judge you have not checked is a number you cannot lean on.
+So after lecture 24 you check it against ten labels of your own, the way lecture 24 checks a model judge, and report how often you agree.
+The labels are yours to make; no agent makes them for you.</p>
+<ol class="steps">
+  <li><p><strong>Choose ten decisions by a rule, before you look at any verdict.</strong>
+  For example, all six tutor probes of one run of <code>final</code> and the first four of one run of <code>c0-baseline</code>, or ten facts from two lessons, since the judge checks the six facts of the teach objective in each.
+  Choosing by a rule keeps you from picking the cases you already feel sure about.</p></li>
+  <li><p><strong>Read what the judge was asked, and what it judged.</strong>
+  For a tutor reply: the probe's message and its <code>expected</code> behavior in <code>bench/topics/agent-architecture/probes.json</code>, the reply in the run's <code>tutor-pNN/result.json</code>, and the judge's prompt in <code>bench/judge/tutor.md</code>.
+  For a fact: the teach objective's facts in <code>bench/topics/agent-architecture/topic.json</code> (the ones whose <code>objective</code> is <code>O3</code>), and the lesson in <code>teach/outputs/lessons/</code>.</p></li>
+  <li><p><strong>Write down your label first</strong>, in <code>EVAL.md</code> section 10: met or not met for a reply, present and correct or not for a fact.</p></li>
+  <li><p><strong>Then read the judge's verdict</strong> in that run's <code>score.json</code>, which holds every check's result: for each tutor probe, the judge's met or not met and its notes; for the lesson, its verdict on each fact.
+  Write it beside your label.</p></li>
+  <li><p><strong>Count and read the disagreements.</strong>
+  How many of ten did you agree on?
+  For each disagreement: is the judge wrong, are you, or is the expected behavior unclear?
+  Then say what that agreement means for the judge numbers you reported in the sections above.</p></li>
+</ol>
+<p>A layout that works, with your own values in place of the angle brackets:</p>
+<pre><code>| # | run id | scenario | my label | judge | agree |
+|---|---|---|---|---|---|
+| 1 | &lt;run id&gt; | tutor-p01 | &lt;met/not met&gt; | &lt;met/not met&gt; | &lt;yes/no&gt; |</code></pre>
+<p>Say which numbers your check covers.
+Ten tutor labels tell you about <code>tutor_behavior_met</code>, and nothing directly about <code>teach_facts_correct</code>; if your argument leans on one judge number more than the others, check that one.</p>
+
+<h2 id="open-vs-blind">Your open reviews against your blind picks</h2>
+<p>Your major reviews are open: you knew which config made what, because you built it, and you expected the later ones to win.
+The blind comparison is the check on that bias, the same check lecture 24 makes of a model judge.
+<code>EVAL.md</code> section 8 asks you to set the two side by side, job by job, and say which you believe.</p>
+<ol class="steps">
+  <li><p><strong>For each job, write down what your open reviews said</strong> about <code>final</code> against <code>c0-baseline</code>: your <code>final</code> major review, written and committed before the blind comparison; your <code>c1-skills</code> review's comparison with the baseline; and that job's rows of "Your ratings" across the ladder.</p></li>
+  <li><p><strong>Set each job's reveal beside it</strong>: the tally, the p-value, and your reasons grouped by the config that won.</p></li>
+  <li><p><strong>Where they disagree, say what you think happened.</strong>
+  The section offers three explanations: knowing the labels shaped what you saw in the open; the outputs you judged blind differed from the ones you reviewed; or the difference was too small to see.</p></li>
+  <li><p><strong>Look at the pairs where you could tell.</strong>
+  Did your picks follow your open reviews more often in the pairs where you could tell which config made which than in the pairs where you could not?
+  After the reveal, the session file <code>bench/compare/&lt;session-id&gt;.json</code> holds each of your picks with its pair id and whether you could tell, and the reveal's reasons list the pair ids under the config that won each one; match them by pair id.</p></li>
+  <li><p><strong>Say which you believe now</strong>, and what that says about the ratings in your reviews.</p></li>
+</ol>
+<p>The blind comparison's four jobs match your reviews' four jobs: teach is the Lesson, quiz the Quiz, grade the Feedback, and tutor the Tutor.
+A small table per job keeps this honest; the words in it are yours:</p>
+<pre><code>| Job | grade (Feedback) |
+|---|---|
+| My open view, and where | &lt;what your reviews said, review and criterion&gt; |
+| Blind tally and p-value | &lt;wins, ties, p&gt; |
+| Could tell | &lt;k of n&gt; |
+| Agree? | &lt;yes, no, partly&gt; |</code></pre>
+<p>Remember what each tally can carry.
+Teach and quiz have three pairs each, so there your reasons are the evidence, not the count.
+And a disagreement is not a failure of the project: it is the most interesting thing this section can report, as long as you say what you make of it.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>Neither the Builder nor the Guide ever says or guesses which config made an output, and neither opens <code>bench/compare/*.key.json</code>.
+Before the reveal, keep it that way yourself: do not open the key file, and never ask an agent to make or suggest a pick.</p>
+</div>
+
+<h2 id="did-not-pay">A change that did not pay off</h2>
+<p><code>EVAL.md</code> section 11 asks for at least one change, anywhere in the project, that cost you tokens, time or complexity and did not buy a difference you could see in your reviews or measure in the checks.
+I ask for it because a measurement that only ever finds wins is not measuring, and because a step that did not pay for itself earns its points when you measured it and said so.</p>
+<p>Places to look:</p>
+<ul>
+  <li>a round whose next thoughts said the change did not help;</li>
+  <li>an inventory entry with <code>Kept in final: no, because</code>, especially one you took out before any snapshot;</li>
+  <li>a review loop that ran several passes where the final output was no better than the first draft, which its records show;</li>
+  <li>a pipeline role that added tokens, minutes and subagents and did not move your Lesson ratings;</li>
+  <li>the ablation, if removing the component changed nothing you could see;</li>
+  <li>a whole step you left out of <code>final</code>.</li>
+</ul>
+<p>Answer four questions: what the change was, what you expected, what the evidence showed, and what you did about it.
+Name the round or the inventory entry where it shows.</p>
+<div class="student"><span class="label">Example: a change that did not pay off, made up, in a student's words</span>
+<pre><code>In c3-split Round 2 I added a references-finder subagent, expecting better external references. Round 3's run had six links where Round 2's had two, but two of the six were dead and three were far above a novice, and the teach scenario took about 1.4M more tokens. I took it out in Round 3; its inventory entry, references-finder, has the evidence.</code></pre>
+</div>
+
+<h2 id="trade-offs">The trade-offs</h2>
+<p>Section 12 looks at the whole ladder at once, with your ratings from <code>uv run p3 report --reviews</code> and the cost of each step from <code>uv run p3 report --configs c0-baseline,c1-skills,c2-review,c3-split,final</code>.
+It asks three questions.</p>
+<ul>
+  <li><strong>Which machinery paid for itself, which did not, and how do you know?</strong>
+  For each step, set what moved in quality, in your ratings and in the objective checks, beside what moved in cost, per job.
+  "How do you know" means naming the evidence: the rows, the rounds, the entries.
+  For a sense of scale, in my pilot the review loops made the teach scenario about 6.7 times as expensive in tokens and 3.5 times as slow; your own numbers are the ones to use.</li>
+  <li><strong>If you rebuilt this tutor for P4 with a third of the token budget, what would you keep?</strong>
+  The per-job cost tables let you add up what a choice costs, so name the components and roughly what they cost together.</li>
+  <li><strong>Which number in this report do you trust least, your own ratings included, and why?</strong>
+  Good candidates are a number measured on one run, a judge number your judge check did not cover, or a rating your blind picks disagreed with.</li>
+</ul>
+<p>"Worth it" is your call, and it is a fair answer either way, as long as you name the price you paid for what you got.</p>
+
+<h2 id="diagram">The diagram of final</h2>
+<p>Section 5 opens with a diagram of <code>final</code>: the main conversation, each skill, each subagent and the guard hook, with arrows for who starts whom and which files each one reads and writes.
+ASCII art in a code block or a Mermaid block are both fine, and both show on GitHub.
+<code>EVAL.md</code> gives this example for one job:</p>
+<pre class="tree"><code>/quiz (skill, main conversation)  writes drafts/0002.json
+  -&gt; quiz-reviewer (subagent, fresh context)  reads drafts/
+  &lt;- revise, at most 2 passes
+  =&gt; quizzes/NNNN.json, keys/NNNN.json, review-records/NNNN-quiz.md</code></pre>
+<p>Draw yours for all four jobs, and delete the example.
+A good diagram shows, for each job:</p>
+<ul>
+  <li>the skill that starts it, and every subagent it starts, in order, with what runs in parallel;</li>
+  <li>the files each one reads and writes, with the drafts kept out of the folders the bench reads;</li>
+  <li>the cap on each loop's passes;</li>
+  <li>where the guard sits and what it blocks: which tools, on which folder, for whom, and which subagent it lets through.</li>
+</ul>
+<p>The shape of a grade job with the guard might look like this; your own design is what goes in your diagram:</p>
+<pre class="tree"><code>/grade (skill, main conversation)  reads submissions/s1.json
+  -&gt; grader (subagent; the guard lets it read keys/)
+     reads quizzes/0001.json, keys/0001.json
+  =&gt; grades/0001-s1.json
+
+guard: PreToolUse hook in tutor/.claude/settings.json
+  blocks Read, Grep, Glob, Bash and PowerShell on keys/
+  in the main conversation</code></pre>
+<p>Draw it from <code>configs/final/</code>, what you snapshotted, not from memory.
+If you want a check, ask the Builder to list, in the chat, the skills and subagents in <code>configs/final/</code> and which one starts which, and compare its list with your drawing; the drawing stays yours.</p>
+
+<h2 id="if-it-fails">If something does not add up, and what comes next</h2>
+<p>If <code>p3 check</code> lists an inventory entry or a part of <code>EVAL.md</code> as still to do and you think it is done, its line names the entry or the line numbers; <a href="19-troubleshooting.html">When it breaks</a> lists the usual causes.
+If a section of <code>EVAL.md</code> asks for something you do not have, such as a second blind comparison you chose not to make, say so in a line; an honest line beats a gap.
+And if you are not sure what a section is asking, ask the Guide, which can explain it without writing it for you.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What does section 5 of EVAL.md ask me to claim, and which runs does it need?</pre>
+</div>
+<p>When both files are done, go to <a href="15-hand-in.html">Hand in</a>.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="13-blind-comparison.html"><span class="pager-label">Previous</span><span class="pager-title">The blind comparison</span></a>
+<a class="next" href="15-hand-in.html"><span class="pager-label">Next</span><span class="pager-title">Hand in</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

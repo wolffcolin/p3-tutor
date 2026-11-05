@@ -1,0 +1,21 @@
+{
+  "name": "c0-baseline",
+  "hash": "sha256:3727de8ebe2e5331f2d9ccfd57b54b5f969ef6ca0e181c1f994201ad3ebde8f5",
+  "created_at": "2026-11-03T05:27:33Z",
+  "files": [
+    ".claude/agents/README.md",
+    ".claude/settings.json",
+    ".claude/skills/teach/SKILL.md",
+    ".claude/skills/teach/references/GLOSSARY-FORMAT.md",
+    ".claude/skills/teach/references/GRADING.md",
+    ".claude/skills/teach/references/LEARNING-RECORD-FORMAT.md",
+    ".claude/skills/teach/references/LESSONS.md",
+    ".claude/skills/teach/references/MISSION-FORMAT.md",
+    ".claude/skills/teach/references/QUIZZES.md",
+    ".claude/skills/teach/references/RESOURCES-FORMAT.md",
+    ".claude/skills/teach/references/TUTORING.md",
+    ".claude/skills/teach/references/lesson-template.html",
+    "CLAUDE.md",
+    "PREFERENCES.md"
+  ]
+}

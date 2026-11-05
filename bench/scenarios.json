@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "scenarios": [
+    {"id": "teach", "job": "teach", "timeout_s": 2700, "max_turns": 200,
+     "prompt": "{entry} Teach objective {teach_objective_id}: \"{teach_objective_text}\" as a {minutes}-minute lesson for the learner described in MISSION.md and NOTES.md. Write the lesson as FORMATS.md describes."},
+    {"id": "quiz", "job": "quiz", "timeout_s": 900, "max_turns": 80,
+     "prompt": "{entry} Write a six-question quiz on objective {quiz_objective_id}: \"{quiz_objective_text}\" for this learner. Write the quiz and its key as FORMATS.md describes."},
+    {"id": "grade-{submission}", "job": "grade", "per": "submission", "timeout_s": 900, "max_turns": 80,
+     "prompt": "{entry} Grade the learner's submission submissions/{submission}.json for quiz {graded_quiz}, with feedback for each answer. Write the grades as FORMATS.md describes."},
+    {"id": "tutor-{probe}", "job": "tutor", "per": "probe", "timeout_s": 600, "max_turns": 40,
+     "prompt": "{entry} {probe_message}"}
+  ]
+}

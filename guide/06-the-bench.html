@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The bench: scenarios, scores and cost - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html" class="current" aria-current="page">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part II · How it works</p>
+<h1>The bench: scenarios, scores and cost</h1>
+<p class="lede">The bench runs every config through the same scenarios from the same starting state, scores the outputs with fixed checks, and records what each scenario cost.
+This page follows one run from start to finish: what each scenario does, what every number it prints means and what it cannot tell you, where the files land and how to open them, and what a run costs on your Claude plan.</p>
+<p class="meta">About 30 minutes to read.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#one-scenario">What one scenario does</a>: one <code>claude -p</code> session in a fresh folder outside your repo, holding your config, the topic's starting workspace and <code>FORMATS.md</code>; every file it writes is kept.</li>
+    <li><a href="#shared-topic">The shared topic</a>: a fixed novice and five objectives; the bench teaches O3, quizzes on O4, grades two submissions and sends six tutor probes.</li>
+    <li><a href="#scenarios">The scenarios</a>: ten in a full run and five in a quick run, each with a time and a turn limit.</li>
+    <li><a href="#checks">The checks</a> and <a href="#headline-numbers">the headline numbers</a>: twelve numbers and the cost, what each one means, and what it cannot see.</li>
+    <li><a href="#failed-jobs">A job that failed counts against the config</a>, and a timeout is a result.</li>
+    <li><a href="#run-folder">What a run leaves behind</a>, and <a href="#open-files">how to open each file</a>.</li>
+    <li><a href="#cost">What runs cost</a>: about 1.85 million tokens for a baseline full run in my pilot, several times that with review loops.</li>
+    <li><a href="#usage-limit">A usage limit in the middle of a run</a>: <code>p3 bench</code> stops by itself and sets the repeat aside.</li>
+  </ul>
+</section>
+
+<h2 id="one-scenario">What one scenario does</h2>
+<p>A scenario is one request to your tutor, such as "teach this lesson" or one learner message, and a run is a set of scenarios.
+When you run <code>uv run p3 bench --config c1-skills</code>, the bench works through the run's scenarios one at a time (or several at a time with <code>--jobs N</code>), and it does the same six things for each.</p>
+
+<ol class="steps">
+  <li><p><strong>It makes a fresh folder</strong> in your system's temporary folder, outside your repo.</p></li>
+  <li><p><strong>It copies three things into it:</strong> the config's files (from <code>configs/c1-skills/</code>, or from <code>tutor/</code> for <code>--config live</code>), every file of the topic's starting workspace (for the shared topic, <code>bench/topics/agent-architecture/workspace/</code>), and <code>bench/FORMATS.md</code>, as <code>FORMATS.md</code>.
+  It notes a fingerprint of every file it copied.</p></li>
+  <li><p><strong>It starts one headless Claude Code session in that folder</strong>, <code>claude -p</code>, with the scenario's request, its turn limit, and the config's model and allow list, and waits until the session ends or reaches the scenario's time limit.</p></li>
+  <li><p><strong>It keeps what the session made.</strong>
+  Every file the session created or changed is copied into the run folder, under <code>&lt;scenario&gt;/outputs/</code>, at the same path it had in the scenario folder; the rest of the folder is thrown away.
+  It also saves the session's whole trace, its last result line, and anything Claude Code printed to stderr.</p></li>
+  <li><p><strong>It deletes the scenario folder.</strong>
+  With <code>--keep</code> it keeps the folder and prints where it is, so you can look inside; a later <code>p3 bench</code> deletes kept folders more than a day old.</p></li>
+  <li><p><strong>When every scenario of a repeat is done</strong>, it writes <code>run.json</code>, prints a summary table, and scores the run, which writes <code>score.json</code> (unless you added <code>--no-score</code>).</p></li>
+</ol>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 760 250" role="img" aria-label="One scenario. The config, the topic's workspace and FORMATS.md are copied from your repo into a fresh folder outside it. claude -p runs there with one request. The new and changed files are copied into the run folder with result.json and trace.jsonl.gz, then p3 score, with the judge and two solvers, writes score.json.">
+      <defs>
+        <marker id="arrow-06" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <rect x="20" y="30" width="200" height="120" rx="4" fill="none" stroke="currentColor"/>
+      <text x="120" y="54" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">your repo</text>
+      <text x="34" y="80" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">configs/&lt;name&gt;/</text>
+      <text x="34" y="100" fill="currentColor" font-size="11">the topic's workspace/</text>
+      <text x="34" y="120" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">bench/FORMATS.md</text>
+
+      <line x1="220" y1="90" x2="286" y2="90" stroke="currentColor" marker-end="url(#arrow-06)"/>
+      <text x="253" y="82" text-anchor="middle" fill="currentColor" font-size="11">copy</text>
+
+      <rect x="290" y="30" width="200" height="120" rx="4" fill="none" stroke="currentColor"/>
+      <text x="390" y="54" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">a fresh folder</text>
+      <text x="390" y="78" text-anchor="middle" fill="currentColor" font-size="11">outside your repo</text>
+      <text x="390" y="102" text-anchor="middle" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">claude -p "/teach ..."</text>
+      <text x="390" y="126" text-anchor="middle" fill="currentColor" font-size="11">one session, then deleted</text>
+
+      <line x1="490" y1="90" x2="556" y2="90" stroke="currentColor" marker-end="url(#arrow-06)"/>
+      <text x="523" y="82" text-anchor="middle" fill="currentColor" font-size="11">keep</text>
+
+      <rect x="560" y="30" width="180" height="120" rx="4" fill="none" stroke="currentColor"/>
+      <text x="650" y="54" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">the run folder</text>
+      <text x="574" y="80" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">&lt;scenario&gt;/outputs/</text>
+      <text x="574" y="100" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">result.json</text>
+      <text x="574" y="120" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">trace.jsonl.gz</text>
+      <text x="574" y="140" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">run.json</text>
+
+      <line x1="650" y1="150" x2="650" y2="186" stroke="currentColor" marker-end="url(#arrow-06)"/>
+      <text x="660" y="173" fill="currentColor" font-size="11">p3 score</text>
+
+      <rect x="560" y="190" width="180" height="44" rx="4" fill="none" stroke="currentColor"/>
+      <text x="650" y="217" text-anchor="middle" fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">score.json</text>
+
+      <rect x="290" y="190" width="200" height="44" rx="4" fill="none" stroke="currentColor" stroke-dasharray="5 4"/>
+      <text x="390" y="208" text-anchor="middle" fill="currentColor" font-size="11">the judge and two solvers</text>
+      <text x="390" y="224" text-anchor="middle" fill="currentColor" font-size="11">(claude -p calls, no tools)</text>
+      <line x1="490" y1="212" x2="556" y2="212" stroke="currentColor" stroke-dasharray="5 4" marker-end="url(#arrow-06)"/>
+    </svg>
+  </div>
+  <figcaption>One scenario. Only files the session created or changed are kept, at their own paths under <code>outputs/</code>; <code>run.json</code> is written once per repeat, after its last scenario. Scoring adds a few model calls of its own, which also draw on your plan.</figcaption>
+</figure>
+
+<p>You never type the Claude Code command yourself; <code>p3 bench</code> does.
+It looks like this, with the parts in angle brackets filled in for each scenario:</p>
+<pre><code>claude -p "&lt;request&gt;"
+  --output-format stream-json
+  --verbose
+  --no-session-persistence
+  --setting-sources project,local
+  --permission-mode acceptEdits
+  --max-turns &lt;limit&gt;
+  --model &lt;model&gt;
+  --allowedTools Glob Grep &lt;your allow list&gt;</code></pre>
+<p>Read it as a description of what your tutor gets: the settings in the scenario folder (your <code>tutor/.claude/settings.json</code>) and none of your own user settings, file edits inside the folder without asking, the turn limit, the model your config names (<code>sonnet</code> by default), and exactly the tools on your allow list plus <code>Glob</code> and <code>Grep</code>.
+<a href="05-tutor-and-configs.html#settings">tutor/.claude/settings.json</a> explains the allow list and why anything else is denied.</p>
+
+<div class="why"><span class="label">Why a fresh folder outside your repo</span>
+<p>So every config faces the same test from the same starting state, and no tutor can reach <code>bench/</code>, where the true grades and the judge's prompts are.
+It also keeps your repo's <code>CLAUDE.md</code>, the Builder's rules, out of the tutor's session, so a run measures your tutor and nothing you use to develop it.</p>
+</div>
+
+<div class="watch"><span class="label">Watch out</span>
+<p><strong>A <code>CLAUDE.md</code> in your home folder reaches every scenario on Windows.</strong>
+Claude Code reads the <code>CLAUDE.md</code> of every folder above the one it starts in, and on Windows the temporary folder is inside your home folder.
+<code>p3 bench</code> warns when it finds one: "warning: &lt;path&gt; sits in a folder above the scenario folders, so Claude Code reads it in every scenario and it shapes your results; move it or rename it before you make runs you will commit".
+It also records the file in <code>run.json</code>, as <code>ancestor_memory</code>.</p>
+<p><strong>An API key in your shell is left out on purpose.</strong>
+If you see "removed ANTHROPIC_API_KEY so the bench uses your Claude subscription", that is <code>p3</code> protecting your plan: in headless mode an API key would silently replace your subscription sign-in.
+<a href="19-troubleshooting.html">When it breaks</a> has more.</p>
+</div>
+
+<p><code>--config live</code> runs <code>tutor/</code> as it stands and writes to <code>bench/runs/_live/</code>, which git ignores, and <code>p3 bench</code> says so in its first lines: "config live: results go to bench/runs/_live/, which is not committed; snapshot the tutor to keep a run".
+That is the run you make in a quick round.</p>
+
+<h2 id="shared-topic">The shared topic</h2>
+<p>The shared development topic is agent architecture: a generic introduction I wrote for a fixed novice, an engineering junior who has used a chatbot and written some Python but never built an agent, and who wants to build an assistant for a senior design project.
+I wrote it, so my knowledge is the ground truth, not the model's, and it is not a copy of this course's lectures.</p>
+<p>It has five objectives: O1 the agent loop, O2 tools and tool calling, O3 context and memory, O4 workflows and agents, and O5 multi-agent systems.
+For each objective it lists the facts a lesson must get right, and it also holds six misconceptions a novice has, a starting workspace, the true grades of two learner submissions, and six tutor probes.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>What each scenario takes from the shared topic.</caption>
+  <thead><tr><th>Scenario</th><th>What it asks for</th><th>What it is scored against</th></tr></thead>
+  <tbody>
+    <tr><td><code>teach</code></td><td>a 30-minute lesson on O3</td><td>O3's facts and the six misconceptions (the judge), the length, the links</td></tr>
+    <tr><td><code>quiz</code></td><td>a six-question quiz with its key on O4</td><td>the contract, and two solvers that answer without the key</td></tr>
+    <tr><td><code>grade-s1</code>, <code>grade-s2</code></td><td>grades and feedback on one of two learner submissions to the six-item quiz <code>0001</code>, which is on O1 and O2</td><td>my true grades for every answer</td></tr>
+    <tr><td><code>tutor-p01</code> to <code>tutor-p06</code></td><td>a reply to one learner message, a probe</td><td>the leak check, and what the probe expects (the judge)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The starting workspace, copied into every scenario, is a learner after two short sessions: <code>MISSION.md</code> and <code>NOTES.md</code> (why they are learning and what they know), two learning records, quiz <code>0001</code> with its key <code>keys/0001.json</code>, and the two submissions <code>s1.json</code> and <code>s2.json</code>.
+It holds no lesson, so in the quiz scenario "the lesson's core" means the objective's text and what <code>MISSION.md</code> and <code>NOTES.md</code> say the learner needs.
+It does hold a key, in every scenario, so a tutor that can read the key can hand out an answer; that is what the guard in <code>final</code> is for (<a href="12-final.html#guard">The guard</a>).</p>
+<p>The probes test the hard parts of tutoring.
+Two ask for the answer to quiz <code>0001</code> q3 or q2, one of them claiming a TA said it was fine; others rest on a misconception or a false premise, or ask a question far above the learner's level, and some set a length for the reply.
+<code>KNOWN-GAPS.md</code> describes what the baseline did with them.
+You can read the whole topic in <code>bench/topics/agent-architecture/</code>: <code>topic.json</code> (the objectives, facts and misconceptions), <code>grading.json</code> (the true grades), <code>probes.json</code> (each probe and what it expects) and <code>workspace/</code>.</p>
+
+<div class="watch"><span class="label">Watch out</span>
+<p>You tune your tutor on this topic and only this topic, and your two test topics are the held-out check (<a href="11-test-topics.html">Your two test topics</a>).
+The bench is public, so a config that recognizes a bench item by its text and treats it specially gets no credit on that topic, and <code>p3 check</code> warns when a config file holds 40 or more characters copied from the shared topic.
+Write your skills for any learner and any topic, not for these items.</p>
+</div>
+
+<h2 id="scenarios">The scenarios and their limits</h2>
+<p>The scenarios and their requests come from <code>bench/scenarios.json</code>, which is fixed; <a href="05-tutor-and-configs.html#how-the-bench-starts">How the bench starts each job</a> shows the exact wording.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The ten scenarios of a full run on the shared topic, with their limits from <code>bench/scenarios.json</code>.</caption>
+  <thead><tr><th>Scenario</th><th>Job</th><th class="num">Time limit</th><th class="num">Turn limit</th><th>In <code>--quick</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>teach</code></td><td>teach</td><td class="num">45 min</td><td class="num">200</td><td>yes</td></tr>
+    <tr><td><code>quiz</code></td><td>quiz</td><td class="num">15 min</td><td class="num">80</td><td>yes</td></tr>
+    <tr><td><code>grade-s1</code></td><td>grade</td><td class="num">15 min</td><td class="num">80</td><td>yes</td></tr>
+    <tr><td><code>grade-s2</code></td><td>grade</td><td class="num">15 min</td><td class="num">80</td><td>no</td></tr>
+    <tr><td><code>tutor-p01</code>, <code>tutor-p02</code></td><td>tutor</td><td class="num">10 min each</td><td class="num">40 each</td><td>yes</td></tr>
+    <tr><td><code>tutor-p03</code> to <code>tutor-p06</code></td><td>tutor</td><td class="num">10 min each</td><td class="num">40 each</td><td>no</td></tr>
+  </tbody>
+</table>
+</div>
+
+<ul>
+  <li><strong>A full run</strong> is these ten scenarios, once.
+  <code>--repeats N</code> makes N full runs, one after another, each with its own run folder.</li>
+  <li><strong>A quick run</strong>, <code>--quick</code>, is the five scenarios marked yes, once; it ignores <code>--repeats</code> and says so.</li>
+  <li><strong><code>--only</code></strong> runs the scenarios you list by id, separated by commas, such as <code>--only quiz</code> or <code>--only grade-s1,tutor-p03</code>.
+  An id that does not exist stops the bench before anything runs, with the list of real ids.
+  A run made with <code>--only</code> is not a full run, so <code>p3 report</code>, <code>p3 compare</code> and <code>p3 check</code> leave it out, except for the length study's <code>--only teach</code> runs.</li>
+</ul>
+
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 bench --config live --only quiz</pre>
+</div>
+<p>That is one scenario, the cheapest way to see what a change to your quiz skill did.
+<a href="18-commands-and-files.html#p3-bench">Commands and files</a> lists every option of <code>p3 bench</code>.</p>
+
+<h3 id="limits">What a timeout means</h3>
+<p>The limits are the same at every lesson length.
+A scenario that reaches its time limit or its turn limit is stopped and recorded as a timeout or an error, and that is a result about your tutor: the job failed, and it counts against the config (<a href="#failed-jobs">below</a>).
+Keep such a run and report it; do not delete it.
+The usual way to reach a limit is a review loop with no cap on its passes, or a pipeline with too many steps, so design both to finish well inside the limits, and try a new one on a quick teach scenario first.</p>
+
+<h2 id="checks">The objective checks</h2>
+<p>Much of a tutor's quality is personal fit, which no script can measure, so your reviews carry the quality judgment.
+The fixed checks are there to catch what taste cannot: a wrong fact, a wrong answer key, a quiz answer given away.
+Some are plain scripts, and a few ask a model, because a script cannot tell whether a lesson states a fact correctly.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The checks on each job.</caption>
+  <thead><tr><th>Job</th><th>Checked by a script</th><th>Checked by a model</th></tr></thead>
+  <tbody>
+    <tr><td>Teach</td><td>exactly one new lesson; self-contained HTML (no remote script or stylesheet; a remote image is a warning); the two meta tags; the length estimate; every external link fetched, where 404 or 410 counts as dead</td><td>the judge: which of the objective's facts the lesson states and states correctly, which listed misconceptions it asserts, and how well its level fits the learner</td></tr>
+    <tr><td>Quiz</td><td>the new quiz and its key follow the contract; every item is tagged with an objective that exists</td><td>two solvers answer the items without the key</td></tr>
+    <tr><td>Grade</td><td>each verdict against my true grade; how often a right answer is marked otherwise; whether the right misconception is named; feedback present on every item</td><td>none</td></tr>
+    <tr><td>Tutor</td><td>the leak check: the key's answer to the quiz item a probe asks about, searched for in the reply</td><td>the judge: whether the reply did what the probe expected</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="length-check">The length check is a rough reading-time estimate</h3>
+<p>The scorer drops everything inside <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code>, counts the lesson's visible words, divides by 150 words a minute, and compares that with the minutes requested.
+A ratio from 0.6 to 1.5 counts as on length, so for a 30-minute lesson, 4,500 words estimate to 30 minutes, and anything from 2,700 to 6,750 words fits.
+A lesson with a good interactive exercise and few words reads as short, because the estimate cannot tell how long an exercise takes, so treat the ratio as a warning light and not a verdict.
+In my baseline runs the lessons came in at a ratio of 0.62 to 0.75, just above the floor, and in three of four runs the teach session tried to count its words with a shell command the baseline does not allow, so it had no way to check its own length.</p>
+
+<h3 id="judge">The judge</h3>
+<p>The judge is a fixed prompt in <code>bench/judge/</code> (<code>teach.md</code> for lessons and <code>tutor.md</code> for replies) and a pinned model, <code>claude-sonnet-5-5</code>, called with no tools.
+It is used only for what a script cannot check: whether the key facts are present and correct, whether a listed misconception is asserted, the lesson's fit to the learner's level, and whether a tutor reply did what the probe expected.
+It is a model, so it can be wrong in ways that repeat.
+After lecture 24, on Thursday, November 19, you check it against ten labels of your own and report how often you agree, because a judge you have not checked is a number you cannot lean on (<a href="14-write-up.html">The inventory and EVAL.md</a>).</p>
+
+<h3 id="solvers">The solvers, and what their disagreement means</h3>
+<p>The solvers are two models, <code>claude-sonnet-5-5</code> and <code>claude-haiku-5-5</code>, that answer your quiz without seeing your key.
+Their answers are then set beside your key.</p>
+<ul>
+  <li><strong>Both solvers agree with each other and not with your key:</strong> the key is probably wrong.</li>
+  <li><strong>The solvers disagree with each other:</strong> the item is probably ambiguous; two careful readers took it two ways.</li>
+  <li><strong>Key agreement</strong> is the share of the items that can be scored where the Sonnet solver's answer matches your key.</li>
+</ul>
+<p>An example, made up for this page, of a four-item quiz:</p>
+<div class="table-wrap">
+<table>
+  <caption>An example of how the solvers' answers become flags. Key agreement here is 3 of 4, or 0.75, because the Sonnet solver matches the key on q1, q3 and q4.</caption>
+  <thead><tr><th>Item</th><th>Your key</th><th>Sonnet solver</th><th>Haiku solver</th><th>What the bench concludes</th></tr></thead>
+  <tbody>
+    <tr><td>q1</td><td>b</td><td>b</td><td>b</td><td>agreement; nothing flagged</td></tr>
+    <tr><td>q2</td><td>c</td><td>a</td><td>a</td><td>a likely wrong key (<code>quiz_wrong_key</code> counts it)</td></tr>
+    <tr><td>q3</td><td>a</td><td>a</td><td>d</td><td>a likely ambiguous item (<code>quiz_ambiguous</code> counts it)</td></tr>
+    <tr><td>q4 (<code>short</code>)</td><td>the program</td><td>The program</td><td>the program</td><td>agreement; case and spacing are ignored</td></tr>
+  </tbody>
+</table>
+</div>
+<p>"Likely" is the honest word.
+Two models can share a mistake, and an item one of them misreads can still be a fair item, so treat each flag as the first place to look in your review, and then read the item yourself.
+One trap is in your own hands: a solver's answer to a <code>short</code> item counts only when it equals the key's <code>answer</code> or one of its <code>accepted</code> forms, ignoring case and spacing, so a right answer in other words looks like a disagreement.
+Give every <code>short</code> item the other wordings a right answer could take.</p>
+
+<h2 id="headline-numbers">The headline numbers</h2>
+<p>Scoring boils each run down to twelve headline numbers and the cost.
+<code>p3 bench</code> prints them after each run, <code>p3 report</code> puts them in tables for <code>EVAL.md</code>, and the reveal of a blind comparison shows the ones for its job.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Each headline number, per run, with what it can and cannot tell you. A dash in any table means unknown: no part of the run could be scored on that check.</caption>
+  <thead><tr><th>Number</th><th>What it is</th><th>Better</th><th>What it can and cannot tell you</th></tr></thead>
+  <tbody>
+    <tr><td><code>teach_facts_correct</code></td><td>the share (0 to 1) of the teach objective's facts that the judge found in the lesson, present and correct</td><td>higher</td><td>catches a missing or wrong fact; says nothing about whether the lesson teaches well</td></tr>
+    <tr><td><code>teach_misconceptions</code></td><td>how many of the topic's misconceptions the judge found the lesson asserting, a count</td><td>0</td><td>catches a lesson that teaches a known wrong idea, but only the listed ones</td></tr>
+    <tr><td><code>teach_length_ratio</code></td><td>the rough reading-time estimate over the minutes requested</td><td>0.6 to 1.5</td><td>a warning light: it cannot time an exercise or judge density</td></tr>
+    <tr><td><code>teach_dead_links</code></td><td>how many of the lesson's links answered 404 or 410, a count</td><td>0</td><td>only 404 and 410 count as dead; unknown with <code>--offline</code>, or when this Python cannot verify web certificates</td></tr>
+    <tr><td><code>quiz_key_agreement</code></td><td>the share of the items that can be scored where the Sonnet solver's answer matches your key</td><td>higher</td><td>one model agreeing with you; a <code>short</code> item without its accepted forms can pull it down</td></tr>
+    <tr><td><code>quiz_wrong_key</code></td><td>how many items both solvers answered alike and differently from your key, the likely wrong keys</td><td>0</td><td>likely, not certain; read each one</td></tr>
+    <tr><td><code>quiz_ambiguous</code></td><td>how many items the two solvers answered differently, the likely ambiguous items</td><td>0</td><td>a pointer to an item to reread, often a stem that can be read two ways</td></tr>
+    <tr><td><code>grade_verdict_agreement</code></td><td>the share of graded answers whose verdict matches the true grade</td><td>higher</td><td>whether the verdicts are right; nothing about whether the feedback helps, which your Feedback criteria judge</td></tr>
+    <tr><td><code>grade_false_wrong</code></td><td>of the answers whose true verdict is correct, the share graded partial or wrong</td><td>lower</td><td>the grader's most common failure: a right answer in unusual words, or reached by an unusual route</td></tr>
+    <tr><td><code>grade_misconception_hit</code></td><td>of the answers with a true misconception, the share where the grade names the same one</td><td>higher</td><td>whether the grader sees why a learner went wrong, by id only</td></tr>
+    <tr><td><code>tutor_leaks</code></td><td>how many replies gave away the answer to the quiz item a probe asks about, counted over the probes that got a reply</td><td>0</td><td>finds the answer when the reply states it; cannot see a hint that points at the keyed option without naming it</td></tr>
+    <tr><td><code>tutor_behavior_met</code></td><td>the share of probes whose reply did what the probe expected, in the judge's view</td><td>higher</td><td>the judge's reading of each probe's expectation, including a length the probe sets</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The cost comes beside them: total tokens, output tokens, minutes, subagents and the list-price equivalent, per job and in total (<a href="#cost">What runs cost</a>).</p>
+
+<p>Read them with what my own baseline runs showed, from <code>KNOWN-GAPS.md</code>.</p>
+<ul>
+  <li><strong>On the shared topic, the teach facts, quiz and grade checks act as floors.</strong>
+  The baseline had every key fact present and correct, its keys agreed with both solvers on every item, and its grades matched every true verdict in all three runs.
+  So these numbers catch a step that breaks something, and a review loop on quiz or grade has little room to raise them; what it buys shows up in your own reviews of its output and in its cost.
+  If that is what you find, say so plainly; it is a real result.</li>
+  <li><strong>The leak check and the judge can disagree, and both are telling you something.</strong>
+  In every baseline run, the tutor refused to give the letter for <code>tutor-p01</code> while its hints still pointed at the keyed option: the leak check found no leak, because no letter or option text appeared, and the judge marked the probe not met.</li>
+  <li><strong><code>tutor_behavior_met</code> was 0.33 to 0.50</strong> across the baseline's three full runs, partly because replies ran past the length a probe set.</li>
+</ul>
+
+<p><code>p3 report</code> shows each number as the mean over a config's scored full runs, with the range in brackets.
+With one full run of a step, there is no range, only that run, which is why <code>EVAL.md</code> asks you which number moved most across your three baseline runs, and what that spread means for a step measured once.</p>
+
+<h2 id="failed-jobs">A job that failed counts against the config</h2>
+<p>A scenario that times out, stops on an error, or simply does not write its file still gets scored, and the failure counts against the config.</p>
+<ul>
+  <li>a missing lesson scores 0 facts;</li>
+  <li>a missing quiz or key scores 0 key agreement;</li>
+  <li>a missing grades file disagrees on every answer;</li>
+  <li>a probe with no reply is not met, and it is left out of the leak count, because there is no reply to search.</li>
+</ul>
+<p>If a failed job simply dropped out of the numbers, a tutor that crashed on its hard cases would look better than one that tried them and got them half right.
+Two lessons count as a failure too, since the teach check expects exactly one new lesson, which is why drafts belong in a folder such as <code>drafts/</code>.
+Keep a run like that, and report it.
+The one exception is a failure outside your tutor, such as a usage limit or a sign-in problem, which measures nothing; <code>p3 bench</code> handles that by itself (<a href="#usage-limit">below</a>).</p>
+
+<h2 id="run-folder">What a run leaves behind</h2>
+<p>A run of config <code>c1-skills</code> writes <code>bench/runs/c1-skills/&lt;run-id&gt;/</code>, and a run of <code>--config live</code> writes <code>bench/runs/_live/&lt;run-id&gt;/</code>.
+The run id is the time the repeat started, in UTC, then the topic, the lesson minutes and the repeat: <code>20261105-141502-agent-architecture-m30-r1</code> is repeat 1 of a 30-minute run on the shared topic, started at 14:15:02 UTC on November 5.
+A full run's folder looks like this:</p>
+<pre class="tree"><code>bench/runs/c1-skills/20261105-141502-agent-architecture-m30-r1/
+  run.json
+  score.json
+  teach/
+    outputs/lessons/0001-&lt;slug&gt;.html
+    result.json
+    trace.jsonl.gz
+  quiz/
+    outputs/quizzes/0002.json
+    outputs/keys/0002.json
+    result.json
+    trace.jsonl.gz
+  grade-s1/
+    outputs/grades/0001-s1.json
+    ...
+  grade-s2/ ...
+  tutor-p01/
+    result.json
+    trace.jsonl.gz
+  ...
+  tutor-p06/ ...</code></pre>
+<p><code>outputs/</code> holds every file the scenario wrote or changed, so it may also hold a changed <code>NOTES.md</code>, a new learning record, your loop's records in a folder such as <code>review-records/</code>, or files under <code>assets/</code>.
+A tutor scenario often has no <code>outputs/</code> at all, because its reply is its result.
+<code>stderr.txt</code> appears in a scenario's folder only when Claude Code printed something there.</p>
+
+<div class="table-wrap">
+<table class="stack">
+  <caption>The files of a run.</caption>
+  <thead><tr><th>File</th><th>What it holds</th></tr></thead>
+  <tbody>
+    <tr><td data-label="File"><code>run.json</code></td><td data-label="What it holds">the config and its hash, the topic and its hash and commit, the Claude Code version, the model, and per scenario its status, duration, turns, tokens, subagents, web use and permission denials</td></tr>
+    <tr><td data-label="File"><code>score.json</code></td><td data-label="What it holds">every check's result, the headline numbers, and what the scoring itself cost</td></tr>
+    <tr><td data-label="File"><code>&lt;scenario&gt;/outputs/</code></td><td data-label="What it holds">every file the scenario wrote or changed, at its own path</td></tr>
+    <tr><td data-label="File"><code>&lt;scenario&gt;/result.json</code></td><td data-label="What it holds">the final result line, including the tutor's reply</td></tr>
+    <tr><td data-label="File"><code>&lt;scenario&gt;/trace.jsonl.gz</code></td><td data-label="What it holds">the whole stream of the session, gzipped, including every subagent's messages</td></tr>
+    <tr><td data-label="File"><code>&lt;scenario&gt;/stderr.txt</code></td><td data-label="What it holds">anything Claude Code printed to stderr, when there was something</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Commit your runs: they are the evidence, and <code>p3 check</code> confirms that each one points at a config whose hash still matches.
+Runs of <code>--config live</code> are never committed, so the only record of what you saw in a quick round is what you quote in its thoughts.</p>
+
+<h3 id="open-files">How to open each file</h3>
+<p>Start by finding the run id: <code>ls bench/runs/c1-skills/</code> lists them, oldest first, and <code>p3 bench</code> prints each run's folder as its repeat starts.
+In a terminal, the Tab key completes a long path for you.</p>
+<h4>The lesson, <code>teach/outputs/lessons/0001-&lt;slug&gt;.html</code>: in your browser</h4>
+<p>In VS Code's Explorer, right-click the file and choose "Reveal in File Explorer" (Windows) or "Reveal in Finder" (macOS), then double-click it.
+Or from a terminal in <code>work/p3-tutor</code>:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">start bench/runs/c1-skills/&lt;run-id&gt;/teach/outputs/lessons/0001-&lt;slug&gt;.html</pre>
+</div>
+<p>That is for Windows, in Git Bash or PowerShell; on macOS, use <code>open</code> in place of <code>start</code>.
+A stylesheet or image under <code>assets/</code> was kept at its own path beside <code>lessons/</code>, so the lesson looks the way the tutor made it.</p>
+
+<h4>The quiz, the key and the grades: in VS Code</h4>
+<p><code>quiz/outputs/quizzes/0002.json</code> and <code>quiz/outputs/keys/0002.json</code>, and <code>grade-s1/outputs/grades/0001-s1.json</code> and its <code>grade-s2</code> twin.
+Take the quiz yourself before you open the key; that is the fastest way to find an item that can be read two ways.</p>
+
+<h4>A tutor reply, <code>tutor-pNN/result.json</code>: in VS Code</h4>
+<p>The reply is the text under <code>"result"</code>.
+<code>"is_error"</code> says whether the session ended in an error, and <code>"num_turns"</code> how many turns it took.
+The probe the reply answers is in <code>bench/topics/agent-architecture/probes.json</code>, under its id.</p>
+
+<h4><code>run.json</code>: in VS Code</h4>
+<p>At the top: the config and its hash, the topic, the minutes, whether it was a quick run, the model, the tools the run allowed (<code>allowed_tools</code>), which command started each job (<code>entries</code>), and any <code>ancestor_memory</code>.
+Then one entry per scenario under <code>"scenarios"</code>: <code>status</code> (<code>ok</code>, <code>timeout</code> or <code>error</code>), <code>duration_ms</code>, <code>num_turns</code>, <code>tokens</code> (input, output, cache reads and cache writes), <code>cost_usd_list</code>, <code>web_searches</code> and <code>web_fetches</code>, <code>subagents</code> (how many started, how deeply they nested, and of which types), <code>permission_denials</code> (the name of each tool that was denied), and <code>outputs</code>, the files it wrote.
+This is the first file to read when a scenario went wrong.</p>
+
+<h4><code>score.json</code>: in VS Code</h4>
+<p><code>"summary"</code> holds the headline numbers and the cost per job; <code>"jobs"</code> holds every check in detail, such as the item ids the solvers flagged under <code>likely_wrong_key</code> and <code>likely_ambiguous</code>, or each probe's leak and judge result; <code>"scoring_cost"</code> and <code>"warnings"</code> close it.</p>
+
+<h4 id="trace"><code>trace.jsonl.gz</code>: with gzip, or ask the Builder</h4>
+<p>The trace is the whole session as Claude Code streamed it, one JSON object per line, gzipped: the session's start, every message the model wrote with every tool call it made, every tool result it got back, every subagent's messages, and the final result line.
+It is where you find out what a session actually did: which files it read, which command was denied and what it tried next, or whether your guard's message came back.
+It opens with any gzip tool.
+In Git Bash, or a terminal on macOS or Linux, this pages through it (press <kbd>q</kbd> to quit):</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">gzip -dc bench/runs/c1-skills/&lt;run-id&gt;/teach/trace.jsonl.gz | less</pre>
+</div>
+<p>The lines are long JSON, so for a real question it is easier to let Claude Code read the trace for you.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Read bench/runs/c1-skills/&lt;run-id&gt;/teach/trace.jsonl.gz and tell me which tool calls were denied, and what the session did after each one.</pre>
+  <p>Reading a trace draws on your plan, and a long teach trace is big, so look in <code>run.json</code> first and open a trace when <code>run.json</code> cannot answer the question.</p>
+</div>
+
+<h4><code>stderr.txt</code>: in VS Code</h4>
+<p>Plain text, present only when Claude Code printed something to stderr; read it when a scenario's status is <code>error</code>.</p>
+
+<div class="watch"><span class="label">Watch out</span>
+<p>On Windows, a run folder deep inside a long path can push a lesson's path past Windows' 260-character limit, and <code>p3 bench</code> warns before it starts: "the run folders here are N characters long, so a scenario's files may pass Windows' 260-character path limit and fail to copy or to commit".
+Its fix is to clone the repo to a shorter path and run <code>git config core.longpaths true</code>; <a href="19-troubleshooting.html">When it breaks</a> has the details.</p>
+</div>
+
+<h2 id="cost">What runs cost</h2>
+<p>Everything that runs <code>claude</code> draws on your own Claude plan: the scenarios, and the scoring calls after them (the judge and the two solvers).
+Comparing costs nothing, and neither does <code>p3 next</code>, <code>p3 check</code>, <code>p3 report</code> or <code>p3 snapshot</code>.
+You never need an API key, because the bench uses your Claude Code sign-in.</p>
+
+<p>Every <code>claude -p</code> call carries a fixed load before it does any work: in my checks, 24,000 to 49,000 input tokens, almost all of them cached reads of Claude Code's own instructions and tools.
+Every subagent pays a share of that again, plus whatever it reads, which is why fan-out is what drains a weekly limit.
+A split teach pipeline with three reviewers is the most expensive thing in this course so far, and that is why the repeats are limited to <code>c0-baseline</code> and <code>final</code>.</p>
+
+<p>These are my pilot's numbers, with Claude Code 2.1.314 and Sonnet: the baseline averaged over three full runs, and one full run of a review-loop config of my own (four skills, with reviewers on teach, quiz and grade, at most two passes each).</p>
+<div class="table-wrap">
+<table>
+  <caption>What my pilot's runs cost, per scenario and per full run.</caption>
+  <thead><tr><th>Scenario</th><th><code>c0-baseline</code></th><th class="num">minutes</th><th>review loops</th><th class="num">minutes</th></tr></thead>
+  <tbody>
+    <tr><td><code>teach</code></td><td>744k tokens (28k output)</td><td class="num">2.8</td><td>4.96M tokens (109k output), 5 subagents</td><td class="num">9.8</td></tr>
+    <tr><td><code>quiz</code></td><td>161k tokens (5k output)</td><td class="num">0.6</td><td>747k tokens (30k output), 2 subagents</td><td class="num">3.6</td></tr>
+    <tr><td>each <code>grade</code></td><td>160k tokens (3k output)</td><td class="num">0.45</td><td>311k tokens (9k output), 1 subagent</td><td class="num">1.05</td></tr>
+    <tr><td>each tutor probe</td><td>about 105k tokens (1.5k output)</td><td class="num">0.25</td><td>about the same, no review loop</td><td class="num">0.25</td></tr>
+    <tr><td><strong>full run</strong></td><td><strong>1.85M tokens (49k output), $1.75</strong></td><td class="num"><strong>5.8</strong></td><td><strong>6.99M tokens (167k output), $4.48</strong></td><td class="num"><strong>17.1</strong></td></tr>
+    <tr><td>scoring a full run</td><td>about 57k tokens, $0.19</td><td class="num">under 1</td><td>the same</td><td class="num">under 1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>How to read it:</p>
+<ul>
+  <li><strong>The minutes are summed over a run's scenarios</strong>, which is about how long a run takes with the default <code>--jobs 1</code>.
+  <code>--jobs N</code> runs up to N scenarios of a repeat at once, which saves time but not tokens.
+  The baseline's three full runs, with their scoring, took about 20 to 25 minutes in my pilot.</li>
+  <li><strong>A quick run</strong> of the baseline was 1.1M tokens and about 4 minutes; a quick run of my review-loop config would be about 6 million, nearly all of it the teach scenario.</li>
+  <li><strong>The token column grows faster than the dollar column.</strong>
+  Most of these tokens are cached reads of Claude Code's own instructions and tools, which cost far less than new input or output, so the list price grows more slowly than the token count.</li>
+  <li><strong>The dollar figure is a list-price equivalent</strong>, the number Claude Code reports, not what you pay on a subscription.
+  On your plan, the cost is your usage limit.</li>
+  <li><strong>Review loops are not free.</strong>
+  They made my teach scenario about 6.7 times as expensive in tokens and 3.5 times as slow, and a split teach pipeline adds more on top.
+  If your <code>final</code> costs about what my review-loop config did, its three runs are about 21 million tokens, and with the ablation and the test topics' runs that puts roughly 45 million tokens into week 3, which is why the pace starts <code>final</code>'s runs first (<a href="17-pace.html">A pace that works</a>).</li>
+</ul>
+
+<div class="table-wrap">
+<table>
+  <caption>The runs the project needs, from the README.</caption>
+  <thead><tr><th>What</th><th>Runs</th></tr></thead>
+  <tbody>
+    <tr><td>The ladder, on the shared topic</td><td><code>c0-baseline</code> 3, <code>c1-skills</code> 1, <code>c2-review</code> 1, <code>c3-split</code> 1, <code>final</code> 3, each <code>final-minus-&lt;x&gt;</code> 1: at least 10 full runs</td></tr>
+    <tr><td>The quick rounds</td><td>at least two per step, and at least three in <code>c2-review</code> (one reviewer per round, for teach, quiz and grade), each a quick run or an <code>--only</code> run of <code>--config live</code>: with one new component per round, about 9 for 498E and about 14 for 598E</td></tr>
+    <tr><td>The test topics</td><td><code>c0-baseline</code> and <code>final</code>, once each on both topics: 4 full runs</td></tr>
+    <tr><td>The length study (598E, or the stretch)</td><td>18 teach-only runs</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="watch"><span class="label">Watch out, 598E</span>
+<p>Your architecture is larger than mine: at least eight subagents, where my review-loop config had six and took 7 million tokens per full run.
+A 598E <code>final</code> may well take 10 to 15 million tokens per full run, and you run it three times, on top of the ablation, the test topics and the length study's eighteen teach-only runs.
+Spread what can be spread, check <code>/usage</code> before each big run, and try every new subagent on an <code>--only</code> run before a full one (<a href="16-stretch-and-598e.html#cost-warning">the 598E cost warning</a>).</p>
+</div>
+
+<h3 id="habits">Habits that keep the cost down</h3>
+<ul>
+  <li>Iterate on <code>--config live --quick</code>, and on <code>--only</code> with the one scenario you are changing: a round about the quiz needs <code>--only quiz</code>, not a teach scenario as well.</li>
+  <li>Make full runs only of snapshots you mean to keep.</li>
+  <li>Spread the full runs over several days where you can.</li>
+  <li>Try a review loop or a split pipeline on one quick teach scenario before you run it in full.</li>
+  <li>Before a big run, type <code>/usage</code> in any Claude Code window, the Builder for example, to see how much of your plan is left and when it resets.</li>
+</ul>
+
+<h2 id="usage-limit">A usage limit in the middle of a run</h2>
+<p><code>p3 bench</code> stops at the first scenario that reports a usage limit, a sign-in problem or an API outage.
+It stops every scenario still running and starts no new one, because each of them would fail the same way.
+That repeat says nothing about your tutor, so it is not saved as a run.</p>
+<ul>
+  <li><strong>The stopped repeat</strong> goes to <code>bench/runs/_live/_aborted/&lt;config&gt;/&lt;run-id&gt;/</code>, which git ignores, without a <code>run.json</code>, so nothing counts it.</li>
+  <li><strong>The repeats after it</strong> do not run, and <strong>the repeats before it</strong> are complete and kept.</li>
+  <li><strong>If the limit comes while a run is being scored</strong>, the run keeps its <code>run.json</code> with no <code>score.json</code>, and <code>p3 report</code>, <code>p3 compare</code> and <code>p3 check</code> ignore it until you score it.</li>
+</ul>
+<p>The message says all of this.
+Here a limit stopped repeat 2 of a <code>--repeats 3</code> run, and your own paths take the place of the ones in angle brackets:</p>
+<pre><code>p3 bench: Claude stopped working in scenario &lt;id&gt;: &lt;Claude Code's own words&gt;.
+Nothing in repeat 2 measures your tutor, so it was not saved as a run: its files are set aside in bench/runs/_live/_aborted/&lt;config&gt;/&lt;run-id&gt;, which git ignores.
+Repeat 3 did not run.
+The repeats before it are complete and kept: bench/runs/&lt;config&gt;/&lt;run-id&gt;.
+Wait until Claude works again (for a usage limit, /usage in Claude Code shows when it resets; for a sign-in problem, run claude once and sign in), then run the bench again.</code></pre>
+<p>What to do:</p>
+<ol class="steps">
+  <li><p><strong>Wait for the reset.</strong> <code>/usage</code> in a Claude Code window shows when it comes.
+  In the meantime, do the work that needs no Claude: your test topics, your reviews of runs you already have, the blind comparison once its runs exist, and the write-up.</p></li>
+  <li><p><strong>Run only what is missing.</strong>
+  If you asked for <code>--repeats 3</code> and repeat 2 was stopped, repeat 1 is kept, so the command for the rest is <code>--repeats 2</code>; <code>uv run p3 next</code> and <code>uv run p3 check</code> both count your scored full runs for you.</p></li>
+  <li><p><strong>Score a run that was stopped while scoring</strong>, once Claude works again:</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">uv run p3 score bench/runs/&lt;config&gt;/&lt;run-id&gt;</pre>
+  </div></li>
+</ol>
+
+<div class="fail"><span class="label">If a run stops for another reason</span>
+<p>A run that stops partway, because you pressed Ctrl-C or its terminal closed, leaves a folder without <code>run.json</code>.
+With Ctrl-C, <code>p3 bench</code> kills every <code>claude</code> it started and says "Stopped. bench/runs/&lt;config&gt;/&lt;run-id&gt; is incomplete (no run.json); delete it."
+Delete that folder rather than commit it, because <code>p3 check</code> fails on a run folder without <code>run.json</code>.
+A bench that is still running has no <code>run.json</code> yet either, so <code>p3 check</code> fails on it too; <code>p3 next</code> names it as a bench still running until 90 minutes after its folder last changed, so let a run in your plain terminal finish before you delete anything (<a href="19-troubleshooting.html#stopped-run">You stopped a run</a>).
+That is why full runs go in a plain terminal of their own, where closing a Claude Code window cannot stop them.</p>
+<p>If you ever find a committed run whose <code>result.json</code> files say Claude was not working, delete that run too, because it measures nothing.
+A scenario that failed for any other reason, such as a timeout or a lesson that was never written, is a result: keep it and report it.</p>
+</div>
+
+<h2 id="next">Where to go next</h2>
+<p>For anything that breaks during a run, from a missing <code>claude</code> to a scorer that cannot check links, see <a href="19-troubleshooting.html">When it breaks</a>.
+Next, <a href="07-reviews.html">Your reviews</a> is where the numbers on this page meet your own judgment: what to write after each run, and how it is graded.
+When you have a run of your own, the Guide can walk you through it.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Walk me through my latest run: which scenarios failed or were slow, and what its headline numbers mean.</pre>
+  <p>The Guide reads that run's <code>run.json</code> and <code>score.json</code> and explains them; it makes no run of its own.</p>
+</div>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="05-tutor-and-configs.html"><span class="pager-label">Previous</span><span class="pager-title">Your tutor, configs and snapshots</span></a>
+<a class="next" href="07-reviews.html"><span class="pager-label">Next</span><span class="pager-title">Your reviews</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

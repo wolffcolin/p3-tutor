@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Guide and the Builder - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html" class="current" aria-current="page">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part I · Getting set up</p>
+<h1>The Guide and the Builder</h1>
+<p class="lede">You work on P3 through two Claude Code windows with separate jobs: the Guide explains and tells you the one next thing, and the Builder changes your tutor. This page shows how to start each one, what to say to each, what each will not do, and where the other two terminals, a plain terminal for long runs and your tutor's own window, fit in.</p>
+<p class="meta">About 24 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>In P2 one agent both guided you and built for you, and many of you found that confusing. Here each window has one job, so you always know which one to ask: the Guide to understand, the Builder to change something.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In the VS Code window of <code>work/p3-tutor</code>, open a terminal (<strong>Terminal &gt; New Terminal</strong>) and start the <span class="tag guide">Guide</span> in it: <code>claude --agent p3-guide</code>.</li>
+      <li>In that terminal, if Claude Code asks whether you trust this folder, press the down arrow to <strong>Yes, I trust this folder</strong>, then Enter; the highlighted choice is "No, exit".</li>
+      <li>Open a second terminal (the split button in the terminal panel, or <strong>Terminal &gt; New Terminal</strong>) and start the <span class="tag builder">Builder</span> in it: <code>claude</code>.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p>One window's header shows <code>@p3-guide</code>, and that window has told you your next step, with the reason for it. The other window runs plain <code>claude</code> and is waiting for you.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="03-baseline.html">Run the baseline and read what it made</a>, or ask the Guide what's next.</p></dd>
+  </dl>
+</section>
+
+<h2 id="at-a-glance">The windows at a glance</h2>
+<p>All four live in the one VS Code window you opened on <a href="01-setup.html#open-in-vs-code">Set up your repo</a>, with <code>work/p3-tutor</code> as its folder, each in a terminal of its own.</p>
+<div class="table-wrap">
+<table>
+  <caption>The four terminals of P3. The Guide and the Builder run all the time; the other two you open when you need them.</caption>
+  <thead><tr><th>Window</th><th>What it does</th><th>What it never does</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><span class="tag guide">Guide</span><br>Start it with <code>claude --agent p3-guide</code>, in a terminal in <code>work/p3-tutor</code></td>
+      <td>explains the project and each step, says why the project asks for it, and names the one next thing to do and the window that does it; it reads your repo and runs read-only commands such as <code>uv run p3 next</code></td>
+      <td>changes a file, starts a bench run, or writes, rates or rewords any part of your reviews</td>
+    </tr>
+    <tr>
+      <td><span class="tag builder">Builder</span><br>Start it with <code>claude</code>, in a second terminal in <code>work/p3-tutor</code></td>
+      <td>changes your tutor in <code>tutor/</code>, one change per round; writes the What changed part of each round and the inventory's factual fields; runs the <code>p3</code> commands you ask for, and asks before any bench run</td>
+      <td>plans the project, writes your parts of <code>reviews/</code>, or makes a full run in its own window</td>
+    </tr>
+    <tr>
+      <td><span class="tag plain">Plain terminal</span><br>Start it with a third terminal in <code>work/p3-tutor</code>, with no Claude Code in it (Git Bash on Windows)</td>
+      <td>runs the full bench runs, from about 6 minutes for one run of the baseline to an hour or more for three repeats of a larger config, and any command you want to type yourself</td>
+      <td>anything you did not type</td>
+    </tr>
+    <tr>
+      <td><span class="tag tutor">Your tutor</span><br>Start it with <code>claude</code>, in a terminal in <code>work/p3-tutor/tutor</code></td>
+      <td>is the tutor you built, for learning with it: live tries in a major review, and the three learning sessions in <code>final</code></td>
+      <td>building: changes to the tutor go through the Builder, in quick rounds</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="why-two">Why two Claude Code windows and not one</h2>
+<p>In Project 2 one agent did everything: it told you what to do next, and then it did it.
+Many of you told me that it asked you to do a lot of things without saying why, that long lists of steps were overwhelming, and that it was hard to tell when it was teaching you and when it was building for you.
+So P3 splits those jobs between two sessions of Claude Code with different instructions.</p>
+<ul>
+  <li><strong>The Guide</strong> is a Claude Code session started as a custom agent, <code>p3-guide</code>, whose whole instructions are in <code>.claude/agents/p3-guide.md</code>. Its first rule is one thing at a time: each reply gives one next action, or two that belong together, with the reason first, and then it waits for you.</li>
+  <li><strong>The Builder</strong> is plain Claude Code at the repo's root, with Claude Code's own instructions plus the repo's <code>CLAUDE.md</code>, which holds the rules written for it: one thing per request and one change per round, never your words, ask before any run, and for "what next" questions, send you to the Guide.</li>
+</ul>
+<p>The cost is one more terminal to keep open, and a habit to learn: ask the Guide when you want to understand, and the Builder when you want something changed.
+If after a few days this split feels wrong for how you work, tell me; I would rather adjust it than have you keep working in a way that does not suit you.</p>
+
+<h2 id="start-the-guide">Start the Guide</h2>
+<ol class="steps">
+  <li><p><strong>Open a terminal in the VS Code window of <code>work/p3-tutor</code></strong>, with <strong>Terminal &gt; New Terminal</strong>.
+  Its prompt should show a path that ends in <code>p3-tutor</code>; if you are not sure, <code>pwd</code> prints the whole path.</p></li>
+  <li><p><strong>Start the Guide.</strong></p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a new terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">claude --agent p3-guide</pre>
+  </div></li>
+  <li><p><strong>Answer the trust question, if it comes.</strong> The first time Claude Code starts in this folder it asks whether you trust it, and the highlighted choice is "No, exit"; <a href="#trust">The trust question</a> below shows what to press.</p></li>
+  <li><p><strong>Look at the header.</strong> Claude Code's startup header shows <code>@p3-guide</code>, which tells you this window is the Guide and not the Builder.</p></li>
+  <li><p><strong>Watch the first message send itself.</strong> Without your typing anything, the question "Where am I in Project 3, and what is the one thing I should do next?" appears as the first message, because the Guide is set up to ask it on your behalf as soon as it starts.</p></li>
+  <li><p><strong>Read its reply.</strong> The Guide runs <code>uv run p3 next</code>, which you see it do in the window, and answers from what that command prints.</p></li>
+</ol>
+<p>Its first reply says in a sentence who it is, then gives one next thing with the reason for it, and then hands that thing to the right place.
+Right after setup, that next thing is the baseline's first run, which is the next page of this guide.
+Later in the project, a first reply looks something like this.</p>
+<pre><code>I'm the Guide: I explain the project and point the way, and the Builder window is the one that changes your tutor.
+
+You have finished Round 1 of c1-skills and written your thoughts for Round 2, so the next thing is for the Builder to make the one change those thoughts ask for. Keeping it to one change means your next run shows exactly what that change did.
+
+Say to the Builder:
+
+    Act on Round 2 of reviews/c1-skills.md.
+
+There is more in guide/08-step1-skills.html, under Rounds.</code></pre>
+<p>That is an example, and the Guide's words will differ, but its shape stays the same.
+When it hands you something to do, it uses one of four forms, and they match the boxes in this guide:</p>
+<ul>
+  <li><strong>"Say to the Builder:"</strong> and one sentence you can paste into the Builder's window, naming the file and the round.</li>
+  <li><strong>"Run in a plain terminal in work/p3-tutor:"</strong> and the exact command.</li>
+  <li><strong>For your own writing</strong>: the file, the heading to write under, and what kind of thing goes there, but never the words themselves.</li>
+  <li><strong>For your tutor</strong>: "Open a terminal in <span class="nw">work/p3-tutor/tutor</span> and start claude there", and what to try in it.</li>
+</ul>
+<p>When an idea is new, the Guide may end with one short question to check that it landed, or offer to go deeper.
+Answering helps it set the level of the next explanation, and saying "skip" is fine.
+When you have done the thing, come back to the Guide and say so; it runs <code>uv run p3 next</code> again before it says what follows, because the repo has changed.</p>
+
+<h2 id="trust">The trust question, and its "No, exit" default</h2>
+<p>The first time Claude Code starts in a folder, it may ask:</p>
+<div class="you-see"><span class="label">What you will see</span>
+  <p>"Quick safety check: Is this a project you created or one you trust?", with the choice "No, exit" highlighted.</p>
+</div>
+<p>Press the down arrow to move to <strong>Yes, I trust this folder</strong>, then press Enter.
+If you press Enter straight away, which is easy to do by habit, Claude Code exits; nothing is harmed, and you start it again with the same command.</p>
+<div class="why"><span class="label">Why it asks, and why yes is right here</span>
+  <p>A project folder can hold settings, hooks and instructions that run on your machine, so Claude Code asks before it uses a folder for the first time.
+  This is your own repo, made from the course template, so trusting it is right.
+  It also matters for the Guide: the guard that keeps the Guide read-only is a hook, and the Guide's hooks run only once you have trusted the folder.</p>
+</div>
+<p>The Guide and the Builder both start in <code>work/p3-tutor</code>, so you answer once for both.
+You may see the question again the first time you start <code>claude</code> in <code>tutor/</code>; answer it the same way.</p>
+<p>When the session starts, Claude Code also tells you its permission mode.
+Recent versions start in Auto mode by default, so most read-only commands run without asking you first.
+That is fine for both windows: the Guide's limits come from its guard and not from prompts, and the Builder's rule to ask you before any bench run comes from the repo's <code>CLAUDE.md</code>.</p>
+
+<h2 id="start-the-builder">Start the Builder</h2>
+<ol class="steps">
+  <li><p><strong>Open a second terminal.</strong> Click the split button in the terminal panel's toolbar to put it beside the Guide, or use <strong>Terminal &gt; New Terminal</strong> for a new tab.
+  It starts in <code>work/p3-tutor</code>, like the first.</p></li>
+  <li><p><strong>Start Claude Code with no agent.</strong></p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a second terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">claude</pre>
+  </div></li>
+  <li><p><strong>Check the header.</strong> It has no <code>@p3-guide</code> in it, so this is the Builder. It waits for you; it sends no first message.</p></li>
+</ol>
+<p>You do not need to tell the Builder anything before your first request.
+Because it starts at the repo's root, Claude Code reads the repo's <code>CLAUDE.md</code> by itself before your first message, and that file holds the Builder's rules.
+Every Claude Code session at the root that was not started with <code>--agent p3-guide</code> is a Builder, so if you close it, any new <code>claude</code> in this folder is a Builder again.</p>
+<div class="note"><span class="label">The Claude Code panel</span>
+  <p>If you prefer the Claude Code panel in VS Code for the Builder, it works the same way, as long as this VS Code window has <code>work/p3-tutor</code> open as its folder.
+  The Guide needs a terminal, because the panel cannot start a session as an agent with <code>--agent</code>.</p>
+</div>
+
+<h2 id="say-to-the-guide">What to say to the Guide</h2>
+<p>Ask the Guide anything about what you are doing, why, or what comes next.
+It reads the page of this guide for the step you are on, and the README, before it explains, and it tells you which page and section it used.
+Here are requests that work well.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What's next?</pre>
+  <p>It runs <code>uv run p3 next</code> and gives you one next thing, the reason for it, and the window or command that does it. Say this whenever you come back to the project or finish something.</p>
+</div>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Why does the project ask me to add only one component per round?</pre>
+  <p>Any "why does the project ask for this" question. It answers from the guide and the README, in a few sentences, with the page to read for more.</p>
+</div>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What does the criterion "Wording and possible misreadings" ask me to look for?</pre>
+  <p>It explains the criterion and what good evidence for it looks like, such as item ids and quotes. It does not write your feedback, and it does not rate anything.</p>
+</div>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Explain this line of p3 check: TODO  reviews/c1-skills.md, quick rounds: 0 of the 2 complete rounds needed</pre>
+  <p>Paste any line from <code>p3 check</code>, <code>p3 next</code> or a bench run's summary that you do not understand. It reads the files the line names before it answers.</p>
+</div>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>How much is left before I can snapshot c1-skills?</pre>
+  <p>It tells you how many things are left and which one is next, and not a list of all of them, so you can keep your attention on one thing.</p>
+</div>
+<p>If you ask the Guide for the whole plan, it gives you its shape in two or three sentences, points you to <a href="index.html#the-map">the map</a>, and comes back to the next step.
+If you have been stuck for a while, say so; it will make the next step smaller, and it will mention office hours.</p>
+
+<h2 id="say-to-the-builder">What to say to the Builder</h2>
+<p>Ask the Builder to change something, run something, or explain a change it made.
+Give it one thing per message: when you ask for several, it does the first, says in a sentence what it left, and waits.</p>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Act on Round 2 of reviews/c1-skills.md.</pre>
+  <p>The request you will use most. It reads your thoughts in that round (and the round before), makes one change to the tutor in <code>tutor/</code>, writes the round's What changed (the Kind, the Files and the Why) under your thoughts, and for a new component fills in the inventory's factual fields. Then it tells you what it changed and suggests the cheapest run that shows it.</p>
+</div>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Run the cheapest run that shows this change.</pre>
+  <p>It names the command, such as <code>uv run p3 bench <span class="nw">--config live</span> <span class="nw">--only quiz</span></code> for a change to the quiz skill, says how many sessions it will start, and waits for your yes before it starts the run in the background. A full run it never starts itself: it gives you the command for a plain terminal.</p>
+</div>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Snapshot the tutor as c1-skills.</pre>
+  <p>It runs <code>uv run p3 snapshot c1-skills</code>, which freezes the tutor's config under that name. Ask for this only when the step holds what it must, for <code>c1-skills</code> the four skills, and you are happy with it, because a snapshot is frozen once it has runs.</p>
+</div>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>What exactly did you change in the grade skill, and why?</pre>
+  <p>A question about a change it made is the Builder's to answer, with the lines it changed.</p>
+</div>
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Commit configs/, bench/runs/ and reviews/, and push.</pre>
+  <p>It commits and pushes for you. It commits your reviews as you wrote them; it never edits your words to do it.</p>
+</div>
+
+<h2 id="will-not-do">What each window will not do, and why</h2>
+
+<h3 id="guide-never-writes">The Guide never changes a file</h3>
+<p>The Guide has four tools: reading a file, finding files, searching in files, and a shell.
+The first three only read; the shell could write, so a <em>guard</em> checks it: a hook, a small script that Claude Code runs before each of the Guide's tool calls, which lets through only read-only commands such as <code>uv run p3 next</code>, <code>uv run p3 check</code>, <code>uv run p3 report</code>, <code>git status</code> and <code>cat</code>, and blocks everything else, including <code>p3 bench</code>, <code>p3 score</code> and <code>p3 snapshot</code>.
+When the Guide reaches for something outside its list, the guard blocks the call, and the Guide reads the guard's message and tells you who runs it instead, with the exact words for the Builder or the exact command for a plain terminal.
+You may see the guard's message in the Guide's window, for example:</p>
+<pre><code>p3-guide guard: the Guide only reads, so it cannot run this: p3 bench is not one of the Guide's read-only commands (next, check, report, compare --list). Tell the student who runs it instead: ...</code></pre>
+<p>That message means the guard is working, not that something broke.</p>
+<p>Why read-only?
+So you can ask the Guide anything without worrying that it changes your tutor or your reviews.
+So that only one window ever changes the tutor, and only when you ask, which keeps each round's evidence clean.
+And because a guide that also builds is exactly what confused you in P2.
+The guard also keeps the Guide out of a blind comparison's key file, and its instructions keep it from making or suggesting blind picks, because those picks have to be yours.</p>
+
+<h3 id="builder-never-plans">The Builder does not plan the project</h3>
+<p>Ask the Builder what comes next in the project, or why the project asks for something, and it answers in one sentence that the Guide window is the place for that, with the words to use, such as "Ask the Guide: what do I do after this round?"
+It is not being unhelpful: a building agent that also hands out plans is how you got lists of ten things at once in P2.
+A question about the change it just made is still the Builder's to answer.
+Each of its replies ends with what it changed and at most one next action, usually the cheapest run that shows the change, and then it waits.</p>
+
+<h3 id="neither-writes-reviews">Neither one writes your reviews</h3>
+<p>Your reviews are the measurement in this project.
+A script can check that a fact is present or that a key agrees with two solvers, but only you can say whether a lesson worked for you, and if an agent wrote those words, the review would measure the agent instead of you.
+So neither window writes, drafts, rewords or tidies your parts: the Run lines, your thoughts, your live tries, every rating and its feedback, the comparisons with the previous step, what the next step should fix, your learning sessions, your test-topic reviews, and each inventory entry's Purpose, Review and Kept in final.
+The Builder writes only the What changed part of each round, and the inventory's Kind, Step added, and With and without, which you then check.</p>
+<p>You can still get help.
+The Guide can explain what a criterion means, ask you a question that helps you notice something, and show what good evidence looks like.
+The Builder can offer wording in the chat when you ask for it.
+Either way, you type your own version into the file.</p>
+
+<h2 id="where-you-type">Where your own words go: the file, in the editor</h2>
+<p>This is the one rule of the windows that matters most: <strong>your reviews go in the review file, in the editor, never in a chat.</strong>
+The review files are Markdown files in <code>reviews/</code>, and each one ships with the headings already in place and a marker line, <code>TODO</code>, where each of your parts goes.</p>
+<p>For the first quick round of step 1, for example, you open <code>reviews/c1-skills.md</code> in VS Code (Explorer, then <code>reviews</code>, then <code>c1-skills.md</code>), find <code>## Quick rounds</code>, then <code>### Round 1</code>, and replace the <code>TODO</code> after <code>**Run:**</code> with the folder of the run you looked at, and the <code>TODO</code> under <code>**My thoughts:**</code> with your own words.
+You leave <code>**What changed:**</code> as it is, for the Builder.
+A round from a student's file, with both parts written, looks like this:</p>
+<pre><code>### Round 2
+
+**Run:** bench/runs/_live/20261105-141502-agent-architecture-m30-r1, a quick run
+
+**My thoughts:**
+
+The new quiz skill helped: the six items now mix mcq, numeric and short, where the quiz in Round 1 was six mcq items.
+But q4 asks for "the best design" without saying best for what, and I could argue for two of its options.
+The feedback on s1 q5 marks it partial, which is right, but it only says "You are close, think about why", and it never says that my answer gave the what and missed the why.
+I want feedback that says which part of an answer was right, which part was missing, and one thing to reread.
+
+**What changed:**
+
+- Kind: new skill
+- Files: tutor/.claude/skills/grade/SKILL.md
+- Why: Grading still ran inside /teach with no rule for feedback; a grade skill of its own names what was right, what was missing and one thing to reread for every item, as these thoughts ask.</code></pre>
+<p>The Run line and My thoughts are the student's; What changed is the Builder's.
+The full example is in <code>reviews/README.md</code>, and <a href="07-reviews.html">Your reviews</a> explains every part of every review.</p>
+<div class="why"><span class="label">Why the file and never the chat</span>
+  <p>A chat is not part of your repo: <code>p3 check</code> cannot count what you typed there, and I never see it.
+  If you type a review into a chat and ask an agent to put it in the file, the words in the file came through an agent, which is the one thing the reviews must never do.
+  And the Builder's job starts from the file: "Act on Round 2 of <span class="nw">reviews/c1-skills.md"</span> makes it read your words exactly where you wrote them.</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+  <p>Keep every heading exactly as it is, because <code>p3 check</code> finds each part of a review by its heading.
+  Write your text in place of the marker line, and delete the marker.
+  Save the file as UTF-8, which VS Code does by default.</p>
+</div>
+
+<h2 id="a-quick-round">One quick round, across the windows</h2>
+<p>A <em>quick round</em> is how you build each step: you run the tutor as it stands, read and try what it made, write what you think, and the Builder makes one change from what you wrote.
+This is how one round moves across the windows.</p>
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 16 760 214" role="img" aria-label="One quick round as a loop of four boxes. 1, a quick run: uv run p3 bench --config live --quick, started by the Builder after your yes, or by you in a plain terminal. 2, you read and try what it made: the lesson, the quiz and the tutor's replies, in bench/runs/_live/. 3, you, in the editor: under Round k you write the Run line and My thoughts in reviews/c1-skills.md. 4, the Builder: you say Act on Round k; it makes one change in tutor/ and writes What changed under your thoughts. An arrow returns from the Builder to the run: round k plus 1 starts with a new run, and your next thoughts begin by saying whether the change helped.">
+      <defs>
+        <marker id="round-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+
+      <rect x="10" y="30" width="170" height="130" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-plain)"/>
+      <text x="95" y="52" text-anchor="middle" font-size="12" font-weight="700" style="fill: var(--win-plain)">1 · A quick run</text>
+      <text x="95" y="76" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">uv run p3 bench</text>
+      <text x="95" y="93" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">--config live --quick</text>
+      <text x="95" y="113" text-anchor="middle" fill="currentColor" font-size="12">started by the Builder</text>
+      <text x="95" y="130" text-anchor="middle" fill="currentColor" font-size="12">after your yes, or by</text>
+      <text x="95" y="147" text-anchor="middle" fill="currentColor" font-size="12">you in a plain terminal</text>
+
+      <rect x="200" y="30" width="170" height="130" rx="4" fill="none" stroke-width="2" stroke="currentColor"/>
+      <text x="285" y="52" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700">2 · You read and try</text>
+      <text x="285" y="76" text-anchor="middle" fill="currentColor" font-size="12">open the lesson, take</text>
+      <text x="285" y="93" text-anchor="middle" fill="currentColor" font-size="12">the quiz, and read the</text>
+      <text x="285" y="110" text-anchor="middle" fill="currentColor" font-size="12">tutor's replies, in</text>
+      <text x="285" y="130" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">bench/runs/_live/</text>
+
+      <rect x="390" y="30" width="170" height="130" rx="4" fill="none" stroke-width="2" stroke="currentColor"/>
+      <text x="475" y="52" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700">3 · You, in the editor</text>
+      <text x="475" y="76" text-anchor="middle" fill="currentColor" font-size="12">under Round k, write</text>
+      <text x="475" y="93" text-anchor="middle" fill="currentColor" font-size="12">the Run line and</text>
+      <text x="475" y="110" text-anchor="middle" fill="currentColor" font-size="12">My thoughts in</text>
+      <text x="475" y="130" text-anchor="middle" fill="currentColor" font-size="11" style="font-family: var(--font-mono)">reviews/c1-skills.md</text>
+
+      <rect x="580" y="30" width="170" height="130" rx="4" fill="none" stroke-width="2" style="stroke: var(--win-builder)"/>
+      <text x="665" y="52" text-anchor="middle" font-size="12" font-weight="700" style="fill: var(--win-builder)">4 · The Builder</text>
+      <text x="665" y="76" text-anchor="middle" fill="currentColor" font-size="12">you say: Act on Round</text>
+      <text x="665" y="93" text-anchor="middle" fill="currentColor" font-size="12">k; it makes one change</text>
+      <text x="665" y="110" text-anchor="middle" fill="currentColor" font-size="12">in tutor/ and writes</text>
+      <text x="665" y="127" text-anchor="middle" fill="currentColor" font-size="12">What changed under</text>
+      <text x="665" y="144" text-anchor="middle" fill="currentColor" font-size="12">your thoughts</text>
+
+      <line x1="180" y1="95" x2="198" y2="95" stroke="currentColor" marker-end="url(#round-arrow)"/>
+      <line x1="370" y1="95" x2="388" y2="95" stroke="currentColor" marker-end="url(#round-arrow)"/>
+      <line x1="560" y1="95" x2="578" y2="95" stroke="currentColor" marker-end="url(#round-arrow)"/>
+      <path d="M665 160 L665 188 L95 188 L95 163" fill="none" stroke="currentColor" marker-end="url(#round-arrow)"/>
+      <text x="380" y="212" text-anchor="middle" fill="currentColor" font-size="12">Round k+1 starts with a new run, and your next thoughts begin by saying whether the change helped</text>
+    </svg>
+  </div>
+  <figcaption>One quick round. The Guide is not part of the loop: you ask it whenever you want to know what comes next or why.</figcaption>
+</figure>
+<ol class="steps">
+  <li><p><strong>A run of the tutor as it stands.</strong> Ask the Builder for the cheapest run that shows what you are working on, or run it yourself:</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+    <pre class="in">uv run p3 bench --config live --quick</pre>
+  </div>
+  <p><code>--config live</code> runs <code>tutor/</code> as it is right now, and <code>--quick</code> runs five of the ten scenarios once; add <code>--only quiz</code> (or any list of scenario ids) instead of <code>--quick</code> to rerun just the part you are working on, which costs less. Live runs go to <code>bench/runs/_live/</code>, which git ignores.</p></li>
+  <li><p><strong>Read and try what it made</strong>, in your browser and the editor: the lesson under <code>teach/outputs/lessons/</code> in the run's folder, the quiz (take it yourself before you look at the key), the feedback on the graded answers, and the tutor's replies in each probe's <code>result.json</code>.</p></li>
+  <li><p><strong>Write the round, in the editor.</strong> In <code>reviews/c1-skills.md</code>, under the round's <code>**Run:**</code>, the run's folder, and under <code>**My thoughts:**</code>, a few sentences: what worked, what did not, and what you want changed, with quotes, because live runs are not committed and your thoughts are the only record of them. From Round 2 on, begin your thoughts with whether the last change helped. The file ships with Rounds 1 and 2; from Round 3 on, add each round yourself by copying the last one with its marker lines.</p></li>
+  <li><p><strong>Hand it to the Builder.</strong></p>
+  <div class="say builder">
+    <div class="say-head">Say to the Builder</div>
+    <pre>Act on Round 1 of reviews/c1-skills.md.</pre>
+  </div>
+  <p>It makes one change and writes What changed under your thoughts. The next round's run then shows the tutor with that change, so the run before the round is the tutor without it and the run after is the tutor with it.</p></li>
+</ol>
+<p><a href="08-step1-skills.html#rounds">Step 1, under Rounds</a>, walks through the rounds of the first step in full, and <a href="07-reviews.html">Your reviews</a> explains why the rounds work this way.</p>
+
+<h2 id="plain-terminal">The plain terminal, for full runs</h2>
+<p>A <em>full run</em> runs all ten scenarios of the bench on a snapshot once (teach, quiz, the two grade scenarios and the six tutor probes) and then scores them.
+In my pilot one full run took about 6 minutes for the baseline and about 17 for a config with review loops, at the default <code>--jobs 1</code>; the baseline's three full runs together took about 20 to 25 minutes, and three repeats of a larger config can take an hour or more.
+The teach scenario alone may run up to 45 minutes.
+A run can last longer than a Claude Code window allows: Claude Code stops a command it runs in the foreground after ten minutes at most, and a run a Claude Code window started stops when that window closes.
+So full runs go in a third terminal with no Claude Code in it, where nothing stops them but you.</p>
+<p>Open it the same way as the others, with <strong>Terminal &gt; New Terminal</strong> in the VS Code window of <code>work/p3-tutor</code>; on Windows, choose Git Bash, as in P2.
+When a full run is next, the Guide or the Builder gives you the exact command, for example:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c1-skills</pre>
+</div>
+<p>Start it, and keep working in the other windows: the reading and writing of the project goes on while a run goes, and that is how the three weeks fit.
+The run prints a summary table when it finishes.</p>
+<div class="watch"><span class="label">Watch out</span>
+  <p>A terminal inside VS Code ends when you quit VS Code, so keep VS Code open, and your computer awake, until the run prints its summary table.
+  If you stop a run halfway, its folder in <code>bench/runs/</code> has no <code>run.json</code>; delete that folder rather than commit it.
+  A run that reaches your usage limit stops by itself and sets that repeat aside; <a href="19-troubleshooting.html">When it breaks</a> says what to do next.</p>
+</div>
+
+<h2 id="your-tutor">Your tutor's window</h2>
+<p>When you learn with your tutor, as a real learner would, you start Claude Code inside <code>tutor/</code>, where the tutor's own <code>CLAUDE.md</code>, skills and settings are.
+You do this for the live tries of each major review, for the three learning sessions in <code>final</code>, and in a quick round whose thoughts are about the tutor job, when you want to talk to it.</p>
+<p>In VS Code's Explorer, right-click the <code>tutor</code> folder and choose <strong>Open in Integrated Terminal</strong>, or open a new terminal and type <code>cd tutor</code>.
+Then start Claude Code there:</p>
+<div class="cmd">
+  <div class="cmd-head"><span>Run in a terminal in <span class="nw">work/p3-tutor/tutor</span></span></div>
+  <pre class="in">claude</pre>
+</div>
+<p>Then ask it for what you need as a learner, in your own words, for example:</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>Teach me a 10-minute lesson on how an agent decides when to stop.</pre>
+</div>
+<p>The files it writes as you learn, such as <code>MISSION.md</code>, <code>NOTES.md</code> and <code>lessons/</code>, stay in <code>tutor/</code> and are never part of a config.
+From <code>c2-review</code> on, your tutor waits for subagents, and in your own sessions it can do that only once <a href="20-glossary.html#fork-mode">fork mode</a>, a Claude Code setting that is on by default, is off; the last section of <code>tutor/.claude/agents/README.md</code> shows the one setting that turns it off, in a personal file that never reaches the bench.
+Close the window with <code>/exit</code> when you are done, and change the tutor afterwards through the Builder, in a round, never from inside the tutor's window.</p>
+<div class="note"><span class="label">Note</span>
+  <p>Claude Code also reads the <code>CLAUDE.md</code> of every folder above the one it starts in, so a session in <code>tutor/</code> sees the repo's root <code>CLAUDE.md</code> too, and, inside the course repo, the course's own; the root one tells a session in <code>tutor/</code> to follow <code>tutor/CLAUDE.md</code> instead.
+  If a learning session ever acts more like a course assistant than your tutor, that is why, and you can learn from a copy of <code>tutor/</code> outside the course repo instead.
+  The bench never has this problem, because it runs each scenario in a fresh folder outside your repo.</p>
+</div>
+
+<h2 id="tab-names">Name the tabs</h2>
+<p>With three or four terminals open it is easy to type into the wrong one.
+Right-click each terminal's tab and choose <strong>Rename</strong>, and name them "Guide", "Builder" and "Runs" (and "Tutor" when you open one).
+You can also drag a terminal's tab into the editor area, to keep the Guide beside the review file you are writing.</p>
+
+<h2 id="closing">When you close a window</h2>
+<p>Close a Claude Code window with <code>/exit</code>, or by closing its terminal.
+Nothing is lost: the state of your project lives in your repo's files, your tutor, your reviews, your snapshots and your runs, and none of it lives in a chat.
+To carry on, start a new window with the same command in a terminal in <code>work/p3-tutor</code>.
+A new Guide sends its first question again and runs <code>uv run p3 next</code>, so it knows where you are without being told.
+A new Builder reads your round from the file when you say "Act on Round k of ...", so it needs no history either.
+Closing the Guide or the Builder does not stop a run in the plain terminal.</p>
+
+<h2 id="mistakes">Common mistakes</h2>
+<div class="table-wrap">
+<table>
+  <caption>The mistakes I expect to see most, what they lead to, and the fix.</caption>
+  <thead><tr><th>Mistake</th><th>What happens</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>Asking the Builder what is next, or why the project asks for something</td><td>It answers in one sentence that this is the Guide's job, with the words to use</td><td>Ask the Guide; the Builder is for changes and runs</td></tr>
+    <tr><td>Typing a review into a chat</td><td>The words are not in the file, so <code>p3 check</code> cannot count them, and an agent that copies them in has written your part</td><td>Write in <code>reviews/</code> in the editor, under the template's headings, then say "Act on Round k of ..."</td></tr>
+    <tr><td>Starting <code>claude</code> at the course repo's root</td><td>You get the course assistant, without the P3 repo's Builder rules and without the Guide</td><td>Close it, go to the VS Code window of <code>work/p3-tutor</code>, and start again there</td></tr>
+    <tr><td>Starting the Guide in <code>tutor/</code> or another folder</td><td>The Guide sees it is not at the repo's root, the folder with <code>p3.json</code>, and tells you to close it and start again</td><td>Start it in a terminal whose prompt ends in <code>p3-tutor</code></td></tr>
+    <tr><td>Pressing Enter on the trust question</td><td>"No, exit" is highlighted, so Claude Code exits</td><td>Start it again, press the down arrow to "Yes, I trust this folder", then Enter</td></tr>
+    <tr><td>Asking for a full run in a Claude Code window</td><td>The Builder gives you the command for a plain terminal instead, because a long run in its window would be cut off</td><td>Paste the command into the plain terminal</td></tr>
+    <tr><td>Changing the tutor from inside your tutor's window</td><td>The change has no round, so there is no review before it and no record of what changed</td><td>Note what you want changed, and make the change through the Builder in a round</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="cost">What the windows cost</h2>
+<p>Both Claude Code windows use your own Claude plan, the same as every other Claude Code session you run.
+The Guide's use is light: it reads a few files and gives short replies.
+The Builder's use is moderate: it reads and writes a skill or a subagent per round.
+What really costs is the bench: every scenario is a full Claude Code session, plus the scoring after it, and a full run of the baseline was about 1.85 million tokens in my pilot.
+<code>p3 next</code>, <code>p3 check</code>, <code>p3 report</code> and <code>p3 snapshot</code> cost nothing, because they call no model.
+Type <code>/usage</code> in either Claude Code window to see how much of your plan is left, and check it before a big run; <a href="06-the-bench.html">The bench</a> has the cost of each kind of run.</p>
+
+<h2 id="next">What comes next</h2>
+<p>With the Guide and the Builder running, ask the Guide what's next.
+It will point you at your first run of the baseline, the tutor as it ships, which <a href="03-baseline.html">Run the baseline and read what it made</a> explains.
+If a window will not start or behaves oddly, <a href="19-troubleshooting.html">When it breaks</a> lists the usual causes.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="01-setup.html"><span class="pager-label">Previous</span><span class="pager-title">Set up your repo</span></a>
+<a class="next" href="03-baseline.html"><span class="pager-label">Next</span><span class="pager-title">Run the baseline and read what it made</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

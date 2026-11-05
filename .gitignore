@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+# uv run writes a lock file the first time; p3 has no dependencies, so there is nothing to lock
+uv.lock
+
+# Live runs of tutor/ (p3 bench --config live) are for trying things out and are never committed
+bench/runs/_live/
+
+# Operating systems
+.DS_Store
+Thumbs.db
+
+# Claude Code's personal settings (the tools you approved in your own sessions); never part of a config, and not for a public repo
+**/.claude/settings.local.json

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The blind comparison - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html" class="current" aria-current="page">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>The blind comparison</h1>
+<p class="lede">At the end of the ladder you judge <code>c0-baseline</code> against <code>final</code> without knowing which made what, one job at a time, and then you set your open reviews beside your blind picks. This page covers why, how a session works, how many pairs you get, how to read the tally, and what the reveal shows.</p>
+<p class="meta">About 17 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>You built the later configs and you expect them to win, and that expectation can shape what you see. Judging the two with the labels hidden, once, is the check on your own bias, the same check lecture 24 gives a model judge.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In a <span class="tag plain">Plain terminal</span>, once <code>final</code>'s three runs are scored and its major review is committed: <code>uv run p3 compare c0-baseline final --job teach</code>, and answer every pair on the page that opens.</li>
+      <li>In the same terminal, the same for <code>--job quiz</code>, <code>--job grade</code> and <code>--job tutor</code>: four sessions, about an hour in all.</li>
+      <li>In the same terminal: <code>uv run p3 compare --reveal &lt;session-id&gt;</code> for each session, then commit both files of each.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 check</code> shows <code>compare c0-baseline / final, teach on agent-architecture: complete (&lt;session-id&gt;)</code>, and the same for quiz, grade and tutor, and <code>uv run p3 compare --list</code> shows all four as revealed.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="14-write-up.html">The inventory and EVAL.md</a>, where section 8 sets your blind picks beside your open reviews.</p></dd>
+  </dl>
+</section>
+
+<h2 id="why-blind">Why blind, and why only once</h2>
+<p>Your reviews are open: you know which config made what, because you built it. You built the later configs, you know which one has the review loops, and you expect it to win. That expectation leaks into what you see, without your meaning it to, which is why medical trials hide which pill is which, and why lecture 24 checks a model judge for bias before trusting it. In this project you are the judge, so you get the same check.</p>
+<p>At the end you judge <code>c0-baseline</code> against <code>final</code> with the labels hidden, and then you set your open reviews beside your blind picks. Where they agree, your reviews have earned some trust. Where they disagree, knowing which was which may have shaped what you saw, and <code>EVAL.md</code> asks you which you believe.</p>
+<p>It stays rare because a blind session costs real reading time, and your major reviews already carry the judgment at each step. So it is once for most of you, with a second only where the table below says so.</p>
+<p>There is also a reason the comparison is between the two ends of the ladder: <code>c0-baseline</code> is the system you were given and <code>final</code> is the one you stand behind, so the comparison asks the question the whole project asks, whether your machinery beats a good simpler system.</p>
+
+<h2 id="which">Which comparisons</h2>
+<div class="table-wrap">
+<table>
+  <caption>The whole list, from the README. Every comparison is on the shared topic, agent architecture.</caption>
+  <thead><tr><th>Comparison</th><th>Who</th><th>Jobs</th><th>Pairs</th></tr></thead>
+  <tbody>
+    <tr><td><code>c0-baseline</code> against <code>final</code></td><td>everyone; required</td><td>teach, quiz, grade, tutor</td><td>3, 3, 36, 18</td></tr>
+    <tr><td>a second comparison of your choice</td><td>498E; optional</td><td>your choice</td><td>from the runs you have</td></tr>
+    <tr><td><code>c1-skills</code> against <code>final</code>, teach only, at 10, 30 and 60 minutes</td><td>598E, and 498E with the length-study stretch; this is your second, and it is required</td><td>teach</td><td>3 at each length</td></tr>
+  </tbody>
+</table>
+</div>
+<p>There is no comparison at each step, and none on the test topics, because your major reviews and your open test-topic reviews cover those. The required comparison is the one <code>p3 check --final</code> looks for, and for the length study it also looks for the three teach comparisons.</p>
+<p><strong>The optional second, for 498E.</strong> A good one is the step you are least sure paid off, such as <code>c1-skills</code> against <code>c2-review</code> on grade. Its pairs come from the runs you already have, and with one full run of each config a teach or a quiz comparison is a single pair, a grade comparison 12 pairs and a tutor comparison six, so choose a job with enough pairs to say something. If you take the cheaper-tutor stretch, a blind comparison there counts as your optional second.</p>
+<p><strong>The length study, for 598E and the stretch.</strong> Its three comparisons are your second, and there is no other on top. They work the same way as below, with <code>--teach-only</code> and <code>--minutes</code>, for example <code>uv run p3 compare c1-skills final --job teach --teach-only --minutes 10</code>; <a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a> covers them.</p>
+
+<h2 id="before">Before you start</h2>
+<ul>
+  <li><strong>All three runs of <code>final</code> are scored.</strong> The pairs come from the two configs' scored full runs, matched by repeat order, oldest first, so a session holds as many pairs of runs as the config with fewer runs has. Start with two runs of <code>final</code> and the session has two pairs of runs, not three, and a session cannot grow later. <code>uv run p3 check</code> shows <code>runs of final: 3 scored full runs</code> when they are ready, and the baseline's three runs are there from week 1.</li>
+  <li><strong>The major review of <code>final</code> is written and committed.</strong> Your open judgment goes on record before your blind one, so the comparison in <code>EVAL.md</code> section 8 compares two judgments made apart. <a href="12-final.html#major-review">The major review of final</a> says why in full.</li>
+  <li><strong>You have an hour you can give it.</strong> Not all at once: each session saves every answer, and you can stop and come back.</li>
+</ul>
+<p>The comparison makes no model call: the pairs come from runs you already have, so comparing costs time and no tokens.</p>
+
+<h2 id="how">How a session works</h2>
+<ol class="steps">
+  <li>
+    <p><strong>Start it yourself, in a plain terminal.</strong> The picks must be yours, so neither Claude Code window runs this command, and it keeps a small web server going while you answer, which belongs in a terminal of its own. One session is one job.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+      <pre class="in">uv run p3 compare c0-baseline final --job teach</pre>
+      <pre class="out">p3 compare: session 20261121-150212-teach, teach on agent-architecture, 3 pairs from 3 pairs of runs
+  which config is on which side is in bench/compare/20261121-150212-teach.key.json; do not open it before the reveal
+  the comparison page: http://127.0.0.1:51734/
+  each answer is saved when you submit it; stop with Ctrl-C and continue later with p3 compare --resume 20261121-150212-teach</pre>
+    </div>
+    <p>The session id is the time it started, in UTC, and the job, such as <code>20261121-150212-teach</code>; your id and port will differ. For each pair, the command decides at random which config goes on the left, from a secret seed it keeps in the key file. The commands it prints leave out <code>uv run</code>; type it in front, as everywhere in P3.</p>
+  </li>
+  <li>
+    <p><strong>Answer the pairs on the local page.</strong> The page opens in your browser at the address it printed, which is on your own machine and nowhere else; if no browser opens by itself, copy the address into one. It shows one pair at a time, labelled only "Left" and "Right", with "Pair k of n". Lessons show side by side in frames, and quizzes, grades and tutor replies as readable text. A line above each pair says what you are looking at, such as "One learner answer, graded twice. Compare the verdicts and the feedback."</p>
+  </li>
+  <li>
+    <p><strong>For each pair, answer three questions</strong>, then press Save and next:</p>
+    <ul>
+      <li><strong>Which fits you better?</strong> Left, Tie or Right.</li>
+      <li><strong>Why, in one sentence.</strong> Required.</li>
+      <li><strong>Could you tell which config made which?</strong> Yes or No.</li>
+    </ul>
+    <p>"Judging a pair" below says how to answer each one well.</p>
+  </li>
+  <li>
+    <p><strong>Stop when you like.</strong> Each answer is saved as you submit it, so closing the browser loses nothing. You can go back with "Previous pair", and saving a pair again replaces its answer. To stop the session, press Ctrl-C in the terminal; to pick it up again, resume it, and to see your sessions, list them.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+      <pre class="in">uv run p3 compare --resume 20261121-150212-teach
+uv run p3 compare --list</pre>
+    </div>
+    <p><code>--list</code> shows each session's job, configs, how many pairs have a pick, and its status: <code>open</code>, <code>complete</code> or <code>revealed</code>.</p>
+  </li>
+  <li>
+    <p><strong>When every pair is done, reveal it.</strong> When you save the last pair the page says "All 3 pairs are answered", the server stops by itself, and the terminal prints the reveal command.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+      <pre class="in">uv run p3 compare --reveal 20261121-150212-teach</pre>
+    </div>
+    <p>The reveal refuses a session that is not finished, because revealing early would end the blinding. Once a session is revealed its picks are final; you can print the reveal again with the same command at any time.</p>
+  </li>
+  <li>
+    <p><strong>Commit both files it wrote.</strong> Each session writes two: <code>bench/compare/&lt;session-id&gt;.json</code>, with the pairs, your picks and, after the reveal, the result, and <code>bench/compare/&lt;session-id&gt;.key.json</code>, with which config was on which side. <code>p3 check</code> needs both.</p>
+    <div class="cmd">
+      <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+      <pre class="in">git add bench/compare/
+git commit -m "Blind comparison, teach"
+git push</pre>
+    </div>
+  </li>
+</ol>
+<p>Then the same for quiz, grade and tutor, each its own session with its own id. The order of the four is up to you.</p>
+
+<h2 id="pairs">What a pair is, and how many you get</h2>
+<div class="table-wrap">
+<table class="stack">
+  <caption>For <code>c0-baseline</code> against <code>final</code>, with three pairs of runs. The times are my estimate of reading and judging.</caption>
+  <thead><tr><th>Job</th><th>One pair is</th><th class="num">Per pair of runs</th><th class="num">Pairs</th><th>About how long</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Job">teach</td><td data-label="One pair is">the two lessons from one pair of runs</td><td class="num" data-label="Per pair of runs">1</td><td class="num" data-label="Pairs">3</td><td data-label="About how long">about 5 minutes a pair</td></tr>
+    <tr><td data-label="Job">quiz</td><td data-label="One pair is">the two quizzes, each with its key</td><td class="num" data-label="Per pair of runs">1</td><td class="num" data-label="Pairs">3</td><td data-label="About how long">a few minutes a pair</td></tr>
+    <tr><td data-label="Job">grade</td><td data-label="One pair is">one learner answer, then each version's verdict and feedback</td><td class="num" data-label="Per pair of runs">12</td><td class="num" data-label="Pairs">36</td><td data-label="About how long">under a minute a pair</td></tr>
+    <tr><td data-label="Job">tutor</td><td data-label="One pair is">one probe's message, then each version's reply</td><td class="num" data-label="Per pair of runs">6</td><td class="num" data-label="Pairs">18</td><td data-label="About how long">under a minute a pair</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A grade pair is one answer: six items in each of two submissions make 12 per pair of runs. A tutor pair is one of the six probes. With three pairs of runs that makes 3 teach pairs, 3 quiz pairs, 36 grade pairs and 18 tutor pairs, so plan on about an hour for the four sessions.</p>
+
+<h2 id="judging">Judging a pair</h2>
+<h3 id="judging-fit">Which fits you better</h3>
+<p>The question is which one fits you, as the learner your <code>PREFERENCES.md</code> describes, and not which one looks more impressive. On the shared topic you are not the novice it was written for, so judge each pair by whether it would have fit you as a learner when you were new to agents. Read both sides before you decide; for a lesson, skim both all the way through.</p>
+<p>A tie is an honest answer when you cannot prefer one, and ties are set aside when the tally is read. So do not force a pick you do not believe, and do not reach for Tie to avoid a hard one either: each tie is a pick that cannot count toward either side.</p>
+
+<h3 id="judging-why">Why, in one sentence</h3>
+<p>The reason is required, and it matters more than it looks: the reveal lists your reasons grouped by the config that won, and with only three teach or quiz pairs your reasons carry the weight that the tally cannot. Make it about what you saw, specific enough that you could find it again.</p>
+<div class="student"><span class="label">Example: reasons, in a student's words</span>
+<p>"Left's feedback on this answer says which half was missing and what to reread; Right only says I am close."</p>
+<p>"Right refuses and then asks me what each option would do to the loop, which helps; Left refuses and stops."</p>
+</div>
+<p>"Left is better" says nothing a reader can check, and neither does "more detailed".</p>
+
+<h3 id="judging-tell">Could you tell which config made which</h3>
+<p>Say Yes when something in the pair made you believe you knew which config made which side, such as a look your split pipeline gives every lesson, or a phrase your skill always uses; say No otherwise. It is not a test you pass or fail. It records how well the blinding held, and <code>EVAL.md</code> section 8 asks whether your picks followed your open reviews more often in the pairs where you could tell.</p>
+
+<h2 id="key">Never open the key file before the reveal</h2>
+<p>The key file, <code>bench/compare/&lt;session-id&gt;.key.json</code>, says which config was on which side of every pair. The page never reads it, and neither should you, until you have revealed the session. Opening it ends the blinding, and the session would then measure nothing.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>The key file sits beside the session file in VS Code's file explorer, and a single click opens it in a preview tab; clicking it in the Source Control panel shows its contents too. Stay out of <code>bench/compare/</code> in the editor until you have revealed, and commit from a plain terminal with <code>git add bench/compare/</code>, as above. If you open a key by mistake, tell me, and say so in <code>EVAL.md</code>.</p>
+</div>
+<p>Neither window will open it for you. The Builder's rules in the root <code>CLAUDE.md</code> tell it never to open a blind key, and the Guide's guard blocks it from reading one.</p>
+
+<h2 id="tally">Reading the tally</h2>
+<p>Ties are set aside, and the question is whether one config won more of the rest than chance would give it. If the two versions were equally good, your picks would be coin flips, and a coin flipped ten times does not land five and five every time. So what a tally means depends on how many picks it has.</p>
+<p>With 10 picks, a version that is no better still wins 8 or more about 5% of the time by luck alone, so 8 of 10 is suggestive; it wins 9 or more about 1% of the time, so 9 of 10 is strong; and 6 of 10 says nothing at all. The reveal prints the exact two-sided sign-test p-value, which counts either config winning that often, and that doubles those chances.</p>
+<div class="table-wrap">
+<table>
+  <caption>The two-sided sign-test p-values the reveal prints, for picks that were not ties. Smaller means less likely by chance alone.</caption>
+  <thead><tr><th>Job</th><th>Non-tie picks for one config</th><th class="num">p-value</th></tr></thead>
+  <tbody>
+    <tr><td>any, with 10 picks</td><td>8 of 10</td><td class="num">about 0.11</td></tr>
+    <tr><td>any, with 10 picks</td><td>9 of 10</td><td class="num">about 0.02</td></tr>
+    <tr><td>tutor, 18 pairs</td><td>13 of 18</td><td class="num">about 0.10</td></tr>
+    <tr><td>tutor, 18 pairs</td><td>14 of 18</td><td class="num">about 0.03</td></tr>
+    <tr><td>grade, 36 pairs</td><td>25 of 36</td><td class="num">about 0.03</td></tr>
+    <tr><td>teach or quiz, 3 pairs</td><td>3 of 3</td><td class="num">0.25</td></tr>
+  </tbody>
+</table>
+</div>
+<p>With three teach or quiz pairs, no tally can reach those numbers, since even 3 of 3 has a p-value of 0.25. So for those two jobs your reasons and the objective checks carry the weight, and the reveal says so. Lecture 23 adds the intervals.</p>
+<p>A p-value is the chance of a split at least this lopsided if the two configs were equally good. It is not the chance that <code>final</code> is better, and a large one does not show the two are the same; it shows only that your picks cannot tell them apart.</p>
+
+<h2 id="limits">The limits</h2>
+<ul>
+  <li><strong>Blinding fails when the versions look obviously different.</strong> A split pipeline's lessons may have a look you recognize at once, which is why every pick asks whether you could tell, and why the reveal reports how often you could.</li>
+  <li><strong>Preference is not learning.</strong> A lesson you enjoy is not always one you learn more from, which is why the objective checks sit beside the picks.</li>
+  <li><strong>On the shared topic you are not the novice.</strong> Judge each pair by whether it would have fit you as a learner when you were new to agents.</li>
+  <li><strong>The results are one person's taste, and that is the point.</strong> They are yours, made with your <code>PREFERENCES.md</code>, and they are not averaged across the class.</li>
+  <li><strong>Pairs from one run are not independent.</strong> The 36 grade pairs come from twelve grading sessions, six for each config, so they say less than 36 separate sessions would.</li>
+</ul>
+
+<h2 id="reveal">The reveal: quality first, then cost</h2>
+<p>The reveal prints, in this order: the tally (wins for each config, and ties), the sign-test p-value with a line on reading it, the share of pairs where you could tell, your reasons grouped by the config that won, then the objective checks for the job as means over the session's runs, and only then a cost table for the job: mean tokens, output tokens, minutes and subagents per scenario for each config.</p>
+<div class="why"><span class="label">Why it is this way</span>
+<p>The order is deliberate. You decide what the quality difference is before you know its price, and then you decide whether it was worth it. Seen the other way round, the price could color how you read the quality.</p>
+</div>
+<p>It prints Markdown, ready to paste into <code>EVAL.md</code> section 8 with its session id, and it also writes the result into the session file. This is what the first part looks like, with made-up picks:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 compare --reveal 20261121-160540-tutor</pre>
+  <pre class="out">## Blind comparison 20261121-160540-tutor
+
+Job tutor on agent-architecture, `c0-baseline` against `final`: 18 pairs from 3 pairs of full runs at 30 minutes.
+
+### Tally
+
+`c0-baseline` won 4, `final` won 12, and 2 were ties.
+
+### Sign test
+
+12 of the 16 non-tie picks went to `final`; the exact two-sided sign-test p-value is 0.08.
+With 10 pairs, 8 or more is suggestive and 9 or more strong.
+The p-value is the chance of a split at least this lopsided if the two configs were equally good.
+
+### Could you tell
+
+You could tell which config made which in 5 of 18 pairs (28%).
+
+### Reasons, by the config that won
+
+`c0-baseline` won (4):
+
+- pair 006, tutor-p06: Shorter, and the analogy fits in one paragraph.
+...
+
+### Objective checks (tutor)
+...
+
+### Cost per tutor scenario
+...</pre>
+</div>
+<p>Read it as a whole: 12 of 16 here is not strong on its own, the reasons say what the difference was, and the objective checks and the cost then say whether it held up and what it took.</p>
+
+<h2 id="terminal">If a browser is awkward: --terminal</h2>
+<p>Add <code>--terminal</code> to start or resume a session without the local page. It writes each pair as one side-by-side HTML file in a temporary folder and prints its path; open that file in a browser, read the pair, and answer the three questions in the terminal: <code>l</code>, <code>r</code> or <code>t</code>, then your reason, then <code>y</code> or <code>n</code>. Every answer is saved as you give it, and Ctrl-C stops the session.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 compare c0-baseline final --job grade --terminal</pre>
+</div>
+<p>If the page's port is taken or blocked, <code>--port P</code> picks another.</p>
+
+<h2 id="windows">What the Guide and the Builder will do</h2>
+<p>Both windows will explain how the tool works: what a pair is, what the three questions ask, how to resume a session, how to read the tally. Neither will help you pick. Before the reveal, the Guide talks about how the comparison works and never about the outputs in it, and neither window makes or suggests a pick or a reason, or guesses which config made an output. That is the point of the comparison: your picks are the measurement, and a pick an agent nudged would measure the agent.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>How do I read the tally of my tutor session, and what does the p-value tell me?</pre>
+  <p>A good question after the reveal. Before it, ask about the tool, not about what you are looking at.</p>
+</div>
+
+<h2 id="after">After the reveal</h2>
+<p>Paste the four reveals into <code>EVAL.md</code> section 8, each with its session id, and then write the part only you can write: for each job, what your open reviews said about <code>final</code> against <code>c0-baseline</code>, whether the blind tally and your reasons agreed with them, what you think happened where they disagree, and which you believe now. <a href="14-write-up.html">The inventory and EVAL.md</a> covers that section.</p>
+
+<h2 id="if-it-fails">If it fails</h2>
+<ul>
+  <li><strong><code>nothing to compare</code>.</strong> One config has no scored full run on the topic at that lesson length, and the message says which, and why: not run yet, run with <code>--no-score</code> (score it with <code>uv run p3 score &lt;run-dir&gt;</code>), or runs at another length (add <code>--minutes M</code>).</li>
+  <li><strong><code>live runs are not committed and cannot be compared</code>.</strong> A comparison is between two snapshots; snapshot the tutor and bench the snapshot.</li>
+  <li><strong>Quick runs and <code>--only</code> runs are left out.</strong> A session pairs full runs only. <code>--quick</code> pairs quick runs instead, which is for trying the tool out, and <code>p3 check</code> does not count such a session.</li>
+  <li><strong>No browser opened.</strong> Copy the printed address into one, or use <code>--terminal</code>.</li>
+</ul>
+<p><a href="19-troubleshooting.html">When it breaks</a> has more. If something about the comparison seems wrong, tell me before you work around it.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="12-final.html"><span class="pager-label">Previous</span><span class="pager-title">final: the guard, repeats and the ablation</span></a>
+<a class="next" href="14-write-up.html"><span class="pager-label">Next</span><span class="pager-title">The inventory and EVAL.md</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

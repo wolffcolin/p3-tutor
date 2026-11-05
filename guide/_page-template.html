@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PAGE TITLE - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part III · The ladder</p>
+<h1>Page title as a plain name</h1>
+<p class="lede">One or two sentences that say what this page gives you.</p>
+<p class="meta">About 10 minutes to read.</p>
+
+<!-- Every step page opens with the short path: why the step exists, what to do, how you know it is
+     done, and where to go next. Keep Do to three actions at most; the detail goes below. -->
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>Why this step exists, in one or two sentences, with its cost when it has one.</p></dd>
+    <dt>Do</dt>
+    <dd><ol><li>The first action, with the window it happens in.</li><li>The second.</li></ol></dd>
+    <dt>Done when</dt>
+    <dd><p>What you can see when it is done, such as a line of <code>uv run p3 next</code>.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="index.html">The next page</a>, or ask the Guide.</p></dd>
+  </dl>
+</section>
+
+<h2 id="a-section">A section heading</h2>
+<!-- Inline code needs no extra markup: book.js keeps names such as c1-skills, --only and p3-tutor whole
+     and lets long code break only at spaces, slashes and commas. In running text or a heading, a name
+     with a hyphen goes in <span class="nw"> so it does not break at the hyphen. -->
+<p>Running text in full sentences to "you". Name a window with a tag: <span class="tag guide">Guide</span>, <span class="tag builder">Builder</span>, <span class="tag tutor">Your tutor</span>, <span class="tag plain">Plain terminal</span>. Use <code>inline code</code> for commands, paths and identifiers.</p>
+
+<!-- The exact words to type into a window. The head says which window; the words go in the pre. -->
+<div class="say builder">
+  <div class="say-head">Say to the Builder</div>
+  <pre>Act on Round 2 of reviews/c1-skills.md.</pre>
+  <p>What happens next, or why these words, in a sentence.</p>
+</div>
+
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What does the major review of c1-skills ask me for?</pre>
+</div>
+
+<!-- A command and what it prints. A path in the head goes in code, so the uppercase label keeps its
+     case. The command scrolls inside its box; what it prints wraps like a terminal, each line's
+     continuation under its text. Output whose columns matter, such as a table, is a pre class="out cols". -->
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config c0-baseline --repeats 3</pre>
+  <pre class="out">What it prints, copied from a real run, trimmed with ... where it is long.</pre>
+</div>
+
+<!-- Example text (a reply, a review entry, a JSON file) is a plain pre, and wraps at every width.
+     A file tree or a drawing whose columns matter is a pre class="tree", and scrolls instead. -->
+<pre>{"teach_objective": "O2", "message": "A long line of example text wraps inside its box."}</pre>
+<pre class="tree">bench/runs/c1-skills/&lt;run-id&gt;/
+  run.json        what ran
+  score.json      the objective checks</pre>
+
+<ol class="steps">
+  <li><p><strong>A real sequence step.</strong> Use numbered steps only when the order matters.</p></li>
+  <li><p>The next step.</p></li>
+</ol>
+
+<div class="you-see"><span class="label">What you will see</span><p>The expected output or result.</p></div>
+<div class="watch"><span class="label">Watch out</span><p>A trap, a cost, or a common mistake.</p></div>
+<div class="fail"><span class="label">If it fails</span><p>The exact message and the fix.</p></div>
+<div class="why"><span class="label">Why it is this way</span><p>The reason behind a rule.</p></div>
+<div class="note"><span class="label">Note</span><p>Anything else worth setting apart.</p></div>
+
+<!-- A table with a column of prose turns into one card per row at phone width (book.js); a table of
+     short values keeps its columns and scrolls. class="stack" or class="keep-cols" on the table decides
+     it by hand. The caption shows under the box, like a figure's. -->
+<div class="table-wrap">
+<table>
+  <caption>What the table shows, and where the numbers come from.</caption>
+  <thead><tr><th>Scenario</th><th class="num">Tokens</th></tr></thead>
+  <tbody><tr><td><code>teach</code></td><td class="num">744k</td></tr></tbody>
+</table>
+</div>
+
+<!-- Draw a diagram 640 to 800 units wide with labels of 11 units or more; a desktop column shows it
+     640 px wide, and a phone keeps that size and scrolls. -->
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 640 120" role="img" aria-label="Describe the diagram">
+      <rect x="10" y="30" width="160" height="60" rx="4" fill="none" stroke="currentColor"/>
+      <text x="90" y="65" text-anchor="middle" fill="currentColor" font-size="14">a box</text>
+    </svg>
+  </div>
+  <figcaption>What the diagram shows.</figcaption>
+</figure>
+
+</article>
+<!-- pager:start -->
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

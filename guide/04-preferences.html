@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Write your PREFERENCES.md - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html" class="current" aria-current="page">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part I · Getting set up</p>
+<h1>Write your PREFERENCES.md</h1>
+<p class="lede">One short file, <code>tutor/PREFERENCES.md</code>, tells your tutor how you like to learn. This page says why it matters so much in this project, how to answer each of its five headings so the tutor can act on them, and what changing it later means for your measurements.</p>
+<p class="meta">About 16 minutes to read.</p>
+
+<section class="path" aria-labelledby="short-path">
+  <h2 id="short-path">The short path</h2>
+  <dl>
+    <dt>Why</dt>
+    <dd><p>Much of a tutor's quality is how well it fits its learner, and in this project the learner whose fit counts is you: your reviews and your blind picks judge the tutor against what this file says.
+It is part of your tutor's config, so every snapshot from <code>c1-skills</code> on carries it, and every bench scenario reads it.</p></dd>
+    <dt>Do</dt>
+    <dd><ol>
+      <li>In the VS Code editor, open <code>tutor/PREFERENCES.md</code> and replace the neutral answer under each of its five headings with how you really like to learn, in your own words. About 30 minutes.</li>
+      <li>Save it, and check with <code>uv run p3 next</code> in a <span class="tag plain">Plain terminal</span>, or ask the <span class="tag guide">Guide</span> where you are.</li>
+      <li>Commit it, in a <span class="tag plain">Plain terminal</span> or by asking the <span class="tag builder">Builder</span>.</li>
+    </ol></dd>
+    <dt>Done when</dt>
+    <dd><p><code>uv run p3 next</code> lists <code>3 Your preferences</code> under Done. It counts the stage done once your file differs from <code>configs/c0-baseline/PREFERENCES.md</code>, the neutral copy, apart from line endings.</p></dd>
+    <dt>Then</dt>
+    <dd><p><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>, to see how the tutor and its config fit together before you build, or straight to <a href="08-step1-skills.html">Step 1: four skills</a>.</p></dd>
+  </dl>
+</section>
+
+<h2 id="why-it-matters">Why this file matters</h2>
+<p>A script can tell whether a lesson states the right facts, whether a quiz key is right, and whether the tutor gave an answer away.
+It cannot tell whether a lesson works for you, and much of a tutor's quality is exactly that: personal fit.
+So in this project you are the judge, and this file is where you say, in advance, what a good fit means for you.</p>
+<p>It then shows up everywhere your judgment does.</p>
+<ul>
+  <li><strong>Your major reviews.</strong>
+    The Feedback criterion "Personalized to how I like things explained" asks whether the feedback follows your <code>PREFERENCES.md</code>: your kind of example, your length, your tone.
+    The Tutor criterion "Personalization" asks whether it talks the way you like to be talked to.
+    And when you rate a lesson's pedagogy or its overall quality, you judge it as the learner this file describes.</li>
+  <li><strong>Your blind picks.</strong>
+    In the blind comparison of <code>c0-baseline</code> against <code>final</code>, every pair asks which version fits you better.
+    The results are one person's taste, made with your <code>PREFERENCES.md</code>, and they are not averaged across the class; that is the point of them.</li>
+  <li><strong>Your tutor itself.</strong>
+    The file is part of the config, the set of files that decides how the tutor behaves (<code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code>).
+    <code>uv run p3 snapshot</code> copies it into every snapshot, and the bench copies the snapshot into every scenario's fresh folder, so your tutor reads your file in every run, on every topic.</li>
+</ul>
+<p>A file that says what you mean makes all of that yours.
+A file left neutral, or written in a hurry, leaves you judging a tutor that was never told who you are.</p>
+<div class="why"><span class="label">Why the first week</span>
+<p><code>c1-skills</code> is the first snapshot that carries your file, and every step after it inherits the file.
+Write it now and mean it, so that every step from step 1 on is built and judged against the same learner.
+Changing it later is possible, and the last section of this page says what that costs.</p>
+</div>
+
+<h2 id="knows-vs-likes">How you like to learn, not what you know</h2>
+<p>Who the learner is splits in two in this project.
+A topic says what the learner knows: on the shared topic, <code>agent-architecture</code>, that is a fixed novice, an engineering junior who has written some Python and used a chatbot but never built an agent, described in the topic's own <code>MISSION.md</code> and <code>NOTES.md</code>.
+Your <code>PREFERENCES.md</code> says how the learner likes to learn, and it is yours on every topic: how you like things explained, the examples you relate to, how long and dense you like it, how you like feedback, and how you like to be talked to.</p>
+<p>So write about how you learn, and leave out what you already know.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p>A line such as "I already know how agents work, so skip the basics" gives your tutor two different learners on the shared topic: the topic's novice, and you.
+The bench's judge rates each lesson's fit to the topic's learner, so a tutor that follows your line there writes for the wrong person.
+What a learner knows belongs in <code>NOTES.md</code>: the topic's own in the bench, and the one your tutor keeps in <code>tutor/</code> in your own sessions. How you like to learn belongs here.</p>
+</div>
+<p>On the shared topic you are not the novice, and that is fine.
+Your preferences still apply to how the lesson explains, the examples it picks, its density, its feedback and its tone, and when you judge it you ask whether it would have fit you when you were new to agents.</p>
+
+<h2 id="neutral-baseline">Why <span class="nw">c0-baseline</span> keeps the neutral file</h2>
+<p><code>c0-baseline</code> is the tutor exactly as it ships, and you run it on the first day, before you have written this file.
+Its snapshot, <code>configs/c0-baseline/</code>, holds the neutral <code>PREFERENCES.md</code> the template ships, and it keeps it: a snapshot is a fixed record, and overwriting one that has runs makes <code>p3 check</code> fail, because those runs would no longer match their config.</p>
+<p>That means <code>c1-skills</code> is the first config with your preferences, and step 1 changes two things at once: your four skills and your preferences.
+The same holds for every later comparison with the baseline, including the blind comparison of <code>c0-baseline</code> against <code>final</code>.
+A difference you see could come from either.</p>
+<p>The README asks you to say so in <code>EVAL.md</code>: in section 2, that step 1 measures your skills and your preferences together, and which differences you think came from which.
+You cannot separate them with the runs the project asks for, but you can reason about them, and your reasons are worth writing down.</p>
+<div class="student"><span class="label">Example: reasoning about which change caused what, in a student's words</span>
+<p>"The c1-skills feedback uses kitchen examples and is about half as long as the baseline's. That is most likely my preferences, since my grade skill says nothing about examples or length.
+Its quiz mixes mcq, numeric and short items where the baseline's were all mcq. That is the quiz skill: my preferences say nothing about item types."</p>
+</div>
+
+<h2 id="the-headings">The five headings, and how to answer each</h2>
+<p>The template file has five headings.
+Under each one is a question in a comment, <code>&lt;!-- ... --&gt;</code>, which a Markdown viewer does not display, and a neutral default answer.
+Keep the five headings as they are, replace each default with your own answer, and delete the question once you have answered it; the comment at the top of the file asks for exactly that.
+The first section of the file as it ships:</p>
+<pre>## How I like things explained
+
+&lt;!-- Big picture first, or a concrete example first? Analogies, diagrams, math, code, stories? --&gt;
+Start with a concrete example, then give the general idea.
+Define each new term the first time it appears.</pre>
+<p>And the same section once a student has answered it (an example; yours will say something else):</p>
+<pre>## How I like things explained
+
+Give me the big picture in two or three sentences first, then one worked example with real numbers.
+A diagram of how the parts connect helps me more than a paragraph about it.
+Skip derivations unless I ask for one; show the formula and say what each term means.</pre>
+<p>What makes an answer useful is the same under every heading: it says something specific enough that you could check a lesson, a grade or a reply against it.
+"Clear" and "engaging" cannot be checked; "a worked example before the general rule" can, by you in a review and by your tutor while it writes.
+The rest of this section takes the headings one at a time, each with a vague answer and a useful one, both examples.</p>
+
+<h3 id="explained">How I like things explained</h3>
+<p>The question: big picture first, or a concrete example first? Analogies, diagrams, math, code, stories?
+Your tutor uses this answer to choose the order and the kind of explanation in every lesson and every reply.
+A useful answer names an order and the forms that work for you, and the ones that do not.</p>
+<div class="student"><span class="label">Example</span>
+<p><strong>Vague:</strong> "I like clear explanations."</p>
+<p><strong>Useful:</strong> "Concrete example first, then the rule. Analogies help me if the lesson says where they stop working. I learn code by reading a short working example and changing one line, not from a description of it."</p>
+</div>
+
+<h3 id="examples">Examples I relate to</h3>
+<p>The question: your major, your hobbies, your job, sports, games, cooking, whatever makes an example click for you.
+Your tutor uses this answer to choose what its examples and analogies are about.
+A useful answer names two or three areas, and it can name one that does not work for you.</p>
+<div class="student"><span class="label">Example</span>
+<p><strong>Vague:</strong> "Real-world examples."</p>
+<p><strong>Useful:</strong> "I'm in mechanical engineering, so machines, sensors and motors work for me. I cook a lot, and kitchen analogies stick. Sports examples do nothing for me."</p>
+</div>
+
+<h3 id="length-density">How long and how dense</h3>
+<p>The question: short and dense, or roomy with more worked examples? Bullet points or paragraphs?
+Your tutor uses this answer to choose how much to put into each paragraph, each reply and each piece of feedback.
+A useful answer says how long a paragraph or a reply should be and how many worked examples you want, in words you could count.</p>
+<div class="student"><span class="label">Example</span>
+<p><strong>Vague:</strong> "Not too long."</p>
+<p><strong>Useful:</strong> "Paragraphs of three or four sentences. Bullet lists only for steps I have to follow in order. In a lesson, two worked examples done slowly beat five quick ones. In a chat, a few short paragraphs, then stop and let me ask."</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+<p>Write about density, not about a lesson's total length.
+Every teach request in the bench names the lesson's minutes, and the length check compares the lesson's visible words with that request, at 150 words a minute, counting 0.6 to 1.5 times the request as on length.
+A line such as "keep everything short" works against that, and in my runs the baseline's lessons already came in short, at a ratio of 0.62 to 0.75 (<code>KNOWN-GAPS.md</code>).</p>
+</div>
+
+<h3 id="feedback">How I like feedback</h3>
+<p>The question: blunt or gentle? Just the fix, or the reasoning too? How much praise?
+Your tutor uses this answer for the feedback on every graded answer, which your major reviews judge on three criteria: useful (does it say what to do next?), explains enough (does it say why, without burying it?), and personalized to how you like things explained.
+A useful answer says what should come first, what each piece of feedback must contain, and how much praise you want.</p>
+<div class="student"><span class="label">Example</span>
+<p><strong>Vague:</strong> "Be nice and helpful."</p>
+<p><strong>Useful:</strong> "Start with the verdict: right, partly right or wrong. Then say which part of my answer was right and which part was missing, and why the missing part matters. Give me one thing to reread or try, not a list. Skip praise on every answer; one line when I really got something is enough."</p>
+</div>
+
+<h3 id="talked-to">How I like to be talked to</h3>
+<p>The question: casual or formal? Questions back to make me think, or straight answers?
+Your tutor uses this answer for its tone in a conversation, which your major reviews judge under Tutor, Personalization.
+A useful answer says the tone, whether you want questions back, and anything that puts you off.</p>
+<div class="student"><span class="label">Example</span>
+<p><strong>Vague:</strong> "Friendly."</p>
+<p><strong>Useful:</strong> "Casual is fine. Answer my question first, then ask me one question back to check I got it. If I'm wrong, say so in the first sentence. Don't open with 'Great question'."</p>
+</div>
+<div class="watch"><span class="label">Watch out</span>
+<p>Your preferences shape how the tutor talks, not what it may give away.
+If you like straight answers, say so for explanations, and do not write anything that asks the tutor to hand over quiz answers: keeping them to itself is a guardrail the tutor probes test, and your Tutor review rates it.</p>
+</div>
+
+<h2 id="public">Keep personal details out</h2>
+<p>Your repo is public, and so is its history: a line you commit and later delete is still there for anyone who looks.
+So write about how you learn, not about who you are.</p>
+<ul>
+  <li><strong>Fine:</strong> how you like things explained, your major, a hobby or a kind of example that works for you, how you like feedback.</li>
+  <li><strong>Leave out:</strong> your name or anyone else's, your health, your family, your grades, contact details, anything about another person, and anything else you would not put on a public web page.</li>
+</ul>
+<p>A preference needs no reason behind it: "kitchen analogies stick" works without saying why.
+The same rule holds for the learner files your sessions with the tutor leave in <code>tutor/</code>, such as <code>MISSION.md</code> and <code>NOTES.md</code>.</p>
+
+<h2 id="how-the-tutor-uses-it">How your tutor uses it</h2>
+<ul>
+  <li><strong>It reads the file before every job.</strong>
+    <code>tutor/CLAUDE.md</code> tells the tutor to read the learner's files, <code>PREFERENCES.md</code> among them, before it answers anything, and the shipped <code>teach</code> skill reads it before any job, because, in the skill's words, it says how to teach this learner: the kind of explanation, the examples, the length and density, the feedback and the tone.</li>
+  <li><strong>It never edits it.</strong>
+    <code>tutor/CLAUDE.md</code> says the file belongs to the tutor's author, and the teach skill keeps it as the learner's to edit.
+    When you tell the tutor something new in a chat, such as "shorter answers, please", it notes that in <code>NOTES.md</code>.</li>
+  <li><strong>Only the file reaches the bench.</strong>
+    <code>NOTES.md</code> is a learner file, and learner files are never part of a config, so what you said in a chat never reaches a snapshot or a run.
+    A preference you want measured goes in <code>PREFERENCES.md</code>.</li>
+  <li><strong>The bench's requests never mention it.</strong>
+    The tutor uses your preferences only because its instructions tell it to read them.
+    When you write your own four skills in step 1, keep that: a <code>grade</code> skill that never opens <code>PREFERENCES.md</code> cannot personalize its feedback, and your Feedback review will show it.</li>
+</ul>
+
+<h2 id="who-writes-it">Who writes it</h2>
+<p>You do, in the VS Code editor.
+The root <code>CLAUDE.md</code> tells the Builder that <code>tutor/PREFERENCES.md</code> is yours to write, like <code>EVAL.md</code> and your parts of <code>reviews/</code>, and the tutor itself never edits it.
+The Guide can explain what a heading is for, or ask you a question that helps you notice how you learn, and it never changes a file.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>What is the "How I like feedback" heading in tutor/PREFERENCES.md for, and where do my reviews use it?</pre>
+</div>
+<p>The reason it has to be your own words: your reviews and your blind picks judge the tutor against this file.
+If an agent wrote it, it would describe the learner the agent guessed at, and your measurements would be about that learner instead of you.</p>
+<p>When you have saved it, check where you are:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 next</pre>
+</div>
+<div class="you-see"><span class="label">What you will see</span>
+<p><code>3 Your preferences</code> on the Done line, and on the Now line the stage that still has work in it, with the one next thing to do on the Next line.
+If the baseline's full runs are still going, Done lists <code>2 The baseline</code> too and Now moves on to step 1, because a stage whose only items left are long runs does not hold you back; the Also line names the baseline's runs until all three are scored.</p>
+</div>
+<p>Then commit it:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add tutor/PREFERENCES.md
+git commit -m "Write my PREFERENCES.md"
+git push</pre>
+</div>
+<p>If you want to see how it reads to your tutor, try it: open a terminal in <code>work/p3-tutor/tutor</code>, start <code>claude</code> there, and ask a short question.
+That session is your tutor, the shipped teach skill now reading your preferences, and it uses a little of your plan.
+The learner files it creates stay in <code>tutor/</code>, and they are never part of a config.
+<a href="02-two-windows.html">The Guide and the Builder</a> says what to answer if Claude Code asks whether you trust the folder.</p>
+<div class="say tutor">
+  <div class="say-head">Say to your tutor</div>
+  <pre>What is a context window?</pre>
+  <p>The question says nothing about length or style on purpose, so your file decides them. Read the reply against your five answers; if it misses one, make that answer more specific. The tutor may also ask you why you are learning this, because the teach skill ties everything to the learner's mission and writes it in <code>MISSION.md</code> when there is none.</p>
+</div>
+
+<h2 id="changing-it">Changing it later</h2>
+<p>You can change your preferences at any time, but because the file is part of the config, a change to it is a change to your tutor.
+A snapshot taken before the change keeps the old version; the next snapshot you take carries the new one.
+A snapshot with runs is frozen: <code>p3 snapshot</code> refuses to overwrite a name without <code>--force</code>, and overwriting one that has runs makes <code>p3 check</code> fail.
+So a change of preferences always reaches your committed runs in a snapshot under a new name, usually the next step's.</p>
+<p>That step then measures your new preferences along with its new architecture, exactly as <code>c1-skills</code> does, so:</p>
+<ul>
+  <li>Change it at the start of a step if you can, and on its own: make a run before it and a run after it, with nothing else changed in between, so you can see what it did.</li>
+  <li>Say in <code>EVAL.md</code> which snapshot first carries the new version, and which differences you think came from it.</li>
+  <li>Never snapshot <code>c0-baseline</code> again: it keeps the neutral file, and its runs depend on it.</li>
+  <li>Do not change it during your three learning sessions with <code>final</code>; note what you would change instead, so that all three are sessions with the version you measured.</li>
+</ul>
+<p>The personalization-swap stretch does this on purpose: a second <code>PREFERENCES.md</code> for a learner unlike you, snapshotted with <code>final</code> under a second name, to show that the tutor changes as the profile asks and stays correct (<a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a>).</p>
+
+<h2 id="if-it-fails">If p3 next still shows Your preferences</h2>
+<ul>
+  <li><strong>The file is not saved.</strong> VS Code marks an unsaved tab with a dot; save with Ctrl+S (Cmd+S on macOS).</li>
+  <li><strong>You edited the wrong copy.</strong> Edit <code>tutor/PREFERENCES.md</code>, never <code>configs/c0-baseline/PREFERENCES.md</code>. A snapshot is written only by <code>p3 snapshot</code>, and editing one by hand makes it stop matching its hash, which <code>p3 check</code> reports as a failure, and <code>p3 next</code> then shows that failure instead of the stage; <code>git restore configs/c0-baseline</code> puts it back.</li>
+  <li><strong>Save it as UTF-8 in any case.</strong> An encoding does not hold <code>p3 next</code> back, but <code>uv run p3 snapshot</code> refuses a file in <code>tutor/</code> saved in a Windows "ANSI" encoding. VS Code saves UTF-8 by default. Do not write the file with Windows PowerShell's <code>&gt;</code> or <code>Out-File</code>, which write UTF-16.</li>
+</ul>
+<p>For anything else, <a href="19-troubleshooting.html">When it breaks</a> has the symptoms and fixes, or ask the Guide.
+Next: <a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a>, or <a href="08-step1-skills.html">Step 1: four skills</a> if you would rather start building.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="03-baseline.html"><span class="pager-label">Previous</span><span class="pager-title">Run the baseline and read what it made</span></a>
+<a class="next" href="05-tutor-and-configs.html"><span class="pager-label">Next</span><span class="pager-title">Your tutor, configs and snapshots</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run p3 next*)",
+      "Bash(uv run p3 check*)",
+      "Bash(uv run p3 report*)",
+      "Bash(python -m p3 next*)",
+      "Bash(python -m p3 check*)",
+      "Bash(python -m p3 report*)",
+      "Bash(python3 -m p3 next*)",
+      "Bash(python3 -m p3 check*)",
+      "Bash(python3 -m p3 report*)",
+      "Bash(py -m p3 next*)",
+      "Bash(py -m p3 check*)",
+      "Bash(py -m p3 report*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)"
+    ],
+    "deny": [
+      "Agent(p3-guide)"
+    ]
+  }
+}

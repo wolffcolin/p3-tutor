@@ -1,0 +1,46 @@
+{
+  "id": "0001",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "d",
+      "rationale": "An agent repeats a cycle: the model chooses an action (a tool call), the program carries it out, and the result is fed back for the next step, until a stopping condition is met. A longer prompt (a) or a bigger model (c) changes what one call can do, not the structure of the system, and memory of earlier conversations (b) is neither automatic nor what defines an agent.",
+      "distractors": {"a": "M1", "b": "M3"}
+    },
+    {
+      "id": "q2",
+      "answer": "c",
+      "rationale": "When the model decides to use a tool, its output is a structured request that names the tool and its arguments; the program around the model then runs check_calendar and sends the result back. The model never opens the booking system itself (a) or runs the tool's code (d), and it is the model, not the program, that decides to call the tool (b).",
+      "distractors": {"a": "M4", "d": "M4"}
+    },
+    {
+      "id": "q3",
+      "answer": "b",
+      "rationale": "The agent is repeating itself with the same failing feedback, so more steps add nothing; the safeguard is a stopping condition, such as a step limit, that ends the loop and hands the problem back to a person. All 40 steps already fit in the context, so a larger window (a) does not help, a stronger instruction (d) does not stop a loop, and believing it will get there eventually (c) is the misconception that an agent needs no stopping condition.",
+      "distractors": {"c": "M6"}
+    },
+    {
+      "id": "q4",
+      "answer": 4,
+      "tolerance": 0,
+      "rationale": "Each model call ends with either one tool request or the final answer. The three tool requests take three calls, and the final answer takes a fourth: 3 + 1 = 4. Equivalently, the model is called once for each input it receives: the question and the three tool results. The three tool runs are done by the program and are not model calls. Answering 1, as if the model ran the three tools itself inside one call, shows the misconception that the model runs the tools itself (M4)."
+    },
+    {
+      "id": "q5",
+      "answer": "It sends the result back to the model as part of its next input and calls the model again, so the model can use the result to decide its next step or write its final answer.",
+      "accepted": [
+        "It adds the tool result to the model's context and calls the model again, so the model can decide what to do next.",
+        "It returns the result to the model as a new message, so the model can continue the task with it."
+      ],
+      "rationale": "Full credit needs both parts: what happens (the result goes back to the model, into its next input) and why (so the model can use it to choose its next step or write the answer). Giving only one of the two is partial. Saying that the program shows the result to the user instead, or that the model already has the result, is wrong."
+    },
+    {
+      "id": "q6",
+      "answer": "From the tool descriptions the program gives it: each tool's name, what it does and the parameters it takes; it picks the tool whose description fits what it needs to do.",
+      "accepted": [
+        "It reads the tool descriptions it is given (name, purpose and parameters) and chooses the one that matches the request."
+      ],
+      "rationale": "Full credit: the model chooses from the descriptions it is given, at least the tool's name and what it does; mentioning the parameters is good but not required. Naming only the tool's name is partial, because the model relies on the whole description and a name alone can mislead. Saying that the model reads, tests or runs the tool's code is wrong; running it is the misconception that the model runs tools itself (M4)."
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+# template-ci: tests the template itself on every operating system the class uses.
+# It runs only in the course's template repository; in a copy made with "Use this template" the
+# jobs are skipped, and p3-check.yml is the workflow that checks your work.
+# No job calls Claude: the tests use tests/fake_claude.py in its place.
+
+name: template-ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: template-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # is_template keeps this running if the template repository is renamed (its name is provisional).
+    if: github.event.repository.is_template || github.repository == 'Mines-Coding-with-AI-Agents/P3-tutor'
+    name: test (${{ matrix.os }}, Python ${{ matrix.python }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-latest is Apple Silicon. macos-13, the old Intel image, has been retired;
+        # macos-15-intel is GitHub's x64 Mac runner (P2's template-ci checked this on 2026-10-04).
+        os: [ubuntu-latest, windows-latest, macos-latest, macos-15-intel]
+        # The two ends of requires-python (>=3.11) that the class is likely to have.
+        python: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      # Full history, as in p3-check.yml.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Run the unit tests
+        run: python -m unittest discover -s tests -t .
+
+      - name: Run p3 check on the fresh template
+        run: python -m p3 check
+
+  lint:
+    if: github.event.repository.is_template || github.repository == 'Mines-Coding-with-AI-Agents/P3-tutor'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Lint p3/, tests/, the guide's build script and the Guide's guard (the rules are in pyproject.toml)
+        run: |
+          python -m pip install --quiet ruff==0.17.3
+          ruff check p3 tests guide .claude/hooks
+
+      # A student's tutor/ moves on from c0-baseline, so only the template checks this.
+      - name: configs/c0-baseline is the shipped tutor/
+        run: |
+          python -c "
+          import sys
+          from pathlib import Path
+          from p3 import util
+          if util.config_hash(Path('tutor')) != util.load_snapshot('c0-baseline', Path('.'))['hash']:
+              sys.exit('configs/c0-baseline/ differs from tutor/: run python -m p3 snapshot c0-baseline --force and commit it')
+          "
+
+      - name: No em dash or en dash anywhere in the template
+        shell: bash
+        run: |
+          em=$(printf '\342\200\224')
+          en=$(printf '\342\200\223')
+          if LC_ALL=C grep -rlI -F -e "$em" -e "$en" --exclude-dir=.git .; then
+            echo "The files above contain an em dash or an en dash; write a plain hyphen or rephrase."
+            exit 1
+          fi
+
+  # The release gate: this job stays red until the pilot's results replace every PILOT-PENDING line
+  # (README.md's measured costs, KNOWN-GAPS.md's gaps) and the release date replaces
+  # RELEASE-DATE-PENDING (README.md's header). Students must never get the placeholders, and
+  # a TODO in the brief would read as work of theirs.
+  release-ready:
+    if: github.event.repository.is_template || github.repository == 'Mines-Coding-with-AI-Agents/P3-tutor'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: No pilot or release-date placeholder and no TODO left in the instructor's files
+        shell: bash
+        run: |
+          if grep -n -e "PILOT-PENDING" -e "RELEASE-DATE-PENDING" README.md KNOWN-GAPS.md CLAUDE.md; then
+            echo "Fill in the lines above (the pilot's results, the release date) before the template is released."
+            exit 1
+          fi
+          if grep -n "TODO" README.md; then
+            echo "README.md must hold no TODO: students read a TODO as a marker for their own words."
+            exit 1
+          fi
+          if grep -n "TODO" reviews/README.md; then
+            echo "reviews/README.md must hold no TODO: it tells students that every TODO in reviews/ marks a place for their own words."
+            exit 1
+          fi

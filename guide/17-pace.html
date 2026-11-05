@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A pace that works - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html" class="current" aria-current="page">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part IV · Reference</p>
+<h1>A pace that works</h1>
+<p class="lede">The three weeks of Project 3 as I would pace them: what to do in each week and why in that order, the lectures that arrive while you work, how many hours each part takes, and why week 3 starts with the runs of <code>final</code>.</p>
+<p class="meta">About 16 minutes to read.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#how-to-use">How to use this page</a>, and <a href="#at-a-glance">the three weeks at a glance</a></li>
+    <li><a href="#week-1">Week 1</a>, <a href="#week-2">week 2</a> and <a href="#week-3">week 3</a>, each with what to do and the lectures that land in it</li>
+    <li><a href="#why-this-order">Why this order</a>: long runs early, and the reading and writing while they run</li>
+    <li><a href="#lectures">The lectures</a> 20 to 24, and what each one adds to the project</li>
+    <li><a href="#hours">How long it takes</a>, for 498E and for 598E</li>
+    <li><a href="#week-3-tokens">The token load in week 3</a>, and <a href="#falling-behind">what to do if you fall behind</a></li>
+  </ul>
+</section>
+
+<h2 id="how-to-use">How to use this page</h2>
+<p>There are no checkpoints in Project 3, and nothing is checked on the dates below.
+Everything is due once, on Tuesday, November 24, at 11:59 pm.
+This page is the pace I would keep, so you can plan the three weeks around your other courses.</p>
+<p>This page answers "when"; <code>uv run p3 next</code> answers "what now".
+On any day, it says where you are on the project's map and the one next thing to do, with the guide page that explains it, and the Guide runs it for you whenever you ask.
+The map on <a href="index.html#the-map">Start here</a> has the same twelve stages, each marked with the week I would do it in.</p>
+<p>The whole plan rests on one fact: a bench run goes on by itself in a plain terminal, a terminal with no Claude Code in it, while you do something else.
+In my pilot one full run took about 6 minutes for the baseline and about 17 for a config with review loops, plus its scoring; the baseline's three repeats took about 20 to 25 minutes, and three repeats of a larger config can take an hour or more; almost none of that is your time.
+So start long runs as early as you can, and do your reading and writing while they run.</p>
+
+<h2 id="at-a-glance">The three weeks at a glance</h2>
+<div class="table-wrap">
+<table>
+  <caption>The pace I would keep. Long runs go in a plain terminal; the counts are full runs on the shared topic unless the row says otherwise. Lecture dates are the course schedule.</caption>
+  <thead><tr><th>Week</th><th>You build, read and write</th><th>Long runs to start</th><th>Lectures</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1</strong><br>from the day P3 is released through <span class="nw">Mon Nov 9</span></td><td>setup; the baseline's outputs and <code>KNOWN-GAPS.md</code>; <code>PREFERENCES.md</code>; the four skills in quick rounds; the <code>c1-skills</code> major review</td><td><code>c0-baseline</code> three times, on the first day; then <code>c1-skills</code> once</td><td><span class="nw">20, Thu Nov 5</span></td></tr>
+    <tr><td><strong>2</strong><br><span class="nw">Tue Nov 10</span> to <span class="nw">Mon Nov 16</span></td><td>review loops (<code>c2-review</code>) in quick rounds and their major review; the teach split (<code>c3-split</code>) in quick rounds and its major review; your two test topics' items, committed</td><td><code>c2-review</code> once; <code>c3-split</code> once; for the length study, nine teach-only runs of <code>c1-skills</code></td><td><span class="nw">21, Tue Nov 10;</span> <span class="nw">22, Thu Nov 12</span></td></tr>
+    <tr><td><strong>3</strong><br><span class="nw">Tue Nov 17</span> to <span class="nw">Tue Nov 24</span></td><td><code>final</code> with the guard; three learning sessions and the <code>final</code> major review; the blind comparison; the test topics' open review; the judge check; the inventory; <code>EVAL.md</code>; the video</td><td><code>final</code> three times; the ablation once; <code>c0-baseline</code> and <code>final</code> on both test topics, four runs; for the length study, nine teach-only runs of <code>final</code>; in any order</td><td><span class="nw">23, Tue Nov 17;</span> <span class="nw">24, Thu Nov 19</span></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The P4 proposal is due Friday, November 6, at 11:59 pm, inside week 1, and P3 is due Tuesday, November 24, at 11:59 pm, two days before Thanksgiving.</p>
+
+<h2 id="week-1">Week 1: set up, the baseline and step 1</h2>
+<p>From the day P3 is released through Monday, November 9.
+On the map, that is stages 1 to 4.</p>
+<ul>
+  <li><strong>On the first day:</strong> set up your repo (<a href="01-setup.html">Set up your repo</a>), open the Guide and the Builder (<a href="02-two-windows.html">The Guide and the Builder</a>), make the quick run of <code>c0-baseline</code>, and start its three full runs (<a href="03-baseline.html">Run the baseline</a>).
+    Setup is the step with the most ways to go wrong, and I would like it behind you while there is plenty of time.</li>
+  <li><strong>While the baseline runs:</strong> read its quick run's outputs, <code>KNOWN-GAPS.md</code> and <code>reviews/README.md</code>, and write your <code>PREFERENCES.md</code> (<a href="04-preferences.html">Write your PREFERENCES.md</a>).
+    None of that needs a run, and the full runs use the snapshot in <code>configs/c0-baseline/</code>, so you can work in <code>tutor/</code> while they go.</li>
+  <li><strong>Then step 1</strong> (<a href="08-step1-skills.html">Step 1: four skills</a>): build the <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code> skills in quick rounds, usually four rounds or more; snapshot <code>c1-skills</code>; make its full run; write its major review; then its section of <code>EVAL.md</code> and its entries in <code>reviews/components.md</code>.</li>
+</ul>
+<p>The P4 proposal, due Friday, November 6, competes with this week.
+So start the baseline's runs on the first day, when they cost you a few minutes of attention, and do most of the rounds once the proposal is in, over the weekend and on Monday.</p>
+<p>Try to finish the <code>c1-skills</code> major review this week.
+It is what week 2 is built from: the problems it names, with their item ids and quotes, become the checklists of your reviewers in step 2.</p>
+
+<h2 id="week-2">Week 2: review loops, the split and your test topics</h2>
+<p>Tuesday, November 10, to Monday, November 16.
+On the map, that is stages 5 to 8.</p>
+<ul>
+  <li><strong>Step 2</strong> (<a href="09-step2-review-loops.html">Step 2: review loops</a>): reviewer subagents on teach, quiz and grade, added one per quick round, so at least three rounds, with checklists drawn from your <code>c1-skills</code> review; then the snapshot, the full run and the major review.</li>
+  <li><strong>Step 3</strong> (<a href="10-step3-split.html">Step 3: split the teach job</a>): the teach job split across subagents of your design, in quick rounds, then the snapshot, the full run and the major review, which covers the lesson only.</li>
+  <li><strong>Your test topics</strong> (<a href="11-test-topics.html">Your two test topics</a>): write the items of both topics and commit them.
+    They take about 1.75 hours each, they need no run, and they must be committed before their first run, which comes in week 3 once <code>final</code> is frozen.
+    That makes them good work for the time a step's full run takes.</li>
+  <li><strong>598E, and 498E with the length-study stretch</strong> (<a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a>): commit <code>PREREG.md</code>, then make the study's nine teach-only runs of <code>c1-skills</code> this week, since they need only <code>c1-skills</code>.
+    <code>PREREG.md</code> has to be committed before the first of the study's eighteen teach-only runs, because git history is what proves the order.</li>
+</ul>
+<p>Lecture 21 (Tuesday, November 10) brings the Agent SDK, and lecture 22 (Thursday, November 12) construct validity; <a href="#lectures">The lectures</a> below says what each adds.
+If you are in 498E and taking a stretch other than the length study, pick it early and try a small piece of it first, because most options draw on your Claude plan.</p>
+
+<h2 id="week-3">Week 3: final, its runs, and the writing</h2>
+<p>Tuesday, November 17, to Tuesday, November 24.
+On the map, that is stages 9 to 12.</p>
+<ol class="steps">
+  <li><p><strong>Freeze <code>final</code> with the guard, as early in the week as you can</strong> (<a href="12-final.html#guard">final: the guard</a>).
+    <code>final</code> is what earned its place, plus a guard hook that keeps the answer keys from the tutor's main conversation, with its tests, and usually a grader subagent with a quick round of its own.
+    Snapshot it, and commit <code>tutor/</code>.</p></li>
+  <li><p><strong>Start the runs that need it</strong> (<a href="12-final.html#runs">final: the runs</a>). <code>uv run p3 next</code> lists its three repeats, then the ablation, a <code>final-minus-&lt;x&gt;</code> snapshot (<code>final</code> with one component removed) and its one run, then the runs of <code>c0-baseline</code> and <code>final</code> on both test topics.
+    Every one of them runs a frozen snapshot, so their order does not matter, as long as you bring <code>tutor/</code> back with <code>git restore tutor/</code> after the ablation's snapshot and before your learning sessions.
+    For the length study, also the nine teach-only runs of <code>final</code>; try one 60-minute run first, because a teach scenario has 45 minutes at every length.</p></li>
+  <li><p><strong>Do the reading and writing while they run.</strong>
+    Your three learning sessions with <code>final</code> and its major review; the blind comparison against <code>c0-baseline</code>, once <code>final</code>'s three runs are scored; the open review of your test topics, once their runs are in; the repeats, read the way lecture 23 (Tuesday, November 17) reads them; the judge check, after lecture 24 (Thursday, November 19); the component inventory; <code>EVAL.md</code>; and the video.</p></li>
+</ol>
+<div class="watch"><span class="label">Watch out</span>
+<p><strong>Hold the learning sessions on <code>final</code> as you snapshotted it.</strong>
+The ablation means taking one component out of <code>tutor/</code> to snapshot it; <code>git restore tutor/</code> brings <code>final</code> back, and all three sessions should be with <code>final</code>.</p>
+<p><strong>Write and commit the major review of <code>final</code> before you start the blind comparison,</strong> so your open judgment is on record before your blind one.</p>
+</div>
+<p>The deadline is two days before Thanksgiving, so plan to be done before the holiday traffic starts.
+Before you post on Canvas, run <code>uv run p3 check --final</code> and push your last commit (<a href="15-hand-in.html">Hand in</a>).</p>
+
+<h2 id="why-this-order">Why this order</h2>
+<ul>
+  <li><strong>Long runs first.</strong>
+    A long run takes from a few minutes to more than an hour on the clock, and only a few minutes of your attention.
+    A run started early leaves room for what can go wrong: a usage limit, a scenario that fails, a run you have to repeat.
+    A run started on the last day leaves none.</li>
+  <li><strong>Reading and writing while runs go.</strong>
+    Most of your hours go to reading outputs, trying the tutor and writing about it, and much of that needs no new run.
+    The blind comparison, <code>p3 report</code>, <code>p3 check</code> and <code>p3 snapshot</code> cost no tokens at all; the comparison's pairs come from runs you already have.</li>
+  <li><strong>Each step is built on the one before.</strong>
+    Your <code>c2-review</code> reviewers' checklists come from your <code>c1-skills</code> review; <code>c3-split</code> is measured against <code>c2-review</code>; <code>final</code> keeps what earned its place, which you only know once all three steps are measured.</li>
+  <li><strong>Test topics in week 2.</strong>
+    A test topic is committed before any run on it, so its items are on record before any result and nobody, you included, tunes the tutor to it.
+    Its runs wait for <code>final</code>, so writing the items in week 2 means they are ready on the first day of week 3.</li>
+  <li><strong>In week 3, the runs the most work depends on come first.</strong>
+    The blind comparison needs three scored runs of <code>final</code>, and its major review reviews one of them; the test topics' open review needs their runs; the ablation is needed for one section of <code>EVAL.md</code>.</li>
+</ul>
+
+<h2 id="lectures">The lectures that land during the project</h2>
+<p>P3 uses what lectures 15 to 19 taught: skills, MCP, hooks, workflows and agents, and multi-agent systems.
+Lectures 20 to 24 arrive while you work on it, and each one adds something you use before the deadline.</p>
+<div class="table-wrap">
+<table>
+  <caption>Lectures 20 to 24 and where each one shows up in P3.</caption>
+  <thead><tr><th>Lecture</th><th>Topic</th><th>What it adds to P3</th></tr></thead>
+  <tbody>
+    <tr><td><span class="nw">20, Thu Nov 5</span></td><td>the agent loop, built from scratch</td><td>What every bench scenario is: a model in a loop with tools, turn by turn, which is what a scenario's turns and its trace record. Many of you will have an <code>ANTHROPIC_API_KEY</code> set in your shell after it; <code>p3</code> removes it from every <code>claude</code> it starts and says so, so the bench keeps using your subscription.</td></tr>
+    <tr><td><span class="nw">21, Tue Nov 10</span></td><td>the Agent SDK</td><td>Stretch option 5: the grader ported to the Agent SDK and measured against your Claude Code grader, in quality and in cost.</td></tr>
+    <tr><td><span class="nw">22, Thu Nov 12</span></td><td>construct validity</td><td>Whether a number measures what you mean by it. That is the question behind what your numbers let you claim in <code>EVAL.md</code>: the length ratio is a rough reading-time estimate, and a blind pick measures preference, which is not the same as learning. The length study names its threats to validity from it.</td></tr>
+    <tr><td><span class="nw">23, Tue Nov 17</span></td><td>repeats and intervals</td><td>How to read repeats: whether a difference between <code>final</code> and <code>c0-baseline</code>, three runs each, is larger than the spread between runs of the same config, in section 5 of <code>EVAL.md</code>, and the intervals that help where a blind tally of three teach or quiz pairs can say little.</td></tr>
+    <tr><td><span class="nw">24, Thu Nov 19</span></td><td>judges</td><td>How to check a model judge before you trust it: your judge check against ten labels of your own, in section 10 of <code>EVAL.md</code>; judges' bias toward longer outputs, which is why the length study never compares across lengths; and the idea behind your blind comparison, which checks your own bias as the lecture checks a judge's.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="hours">How long it takes</h2>
+<p>These are my estimates of your own time, not of the time the runs take; a run goes on in the background while you do something else.
+The "When" column places each part in the pace above.</p>
+<div class="table-wrap">
+<table>
+  <caption>Hours for 498E, my estimate of your own time.</caption>
+  <thead><tr><th>Part</th><th class="num">Hours, 498E</th><th>When</th></tr></thead>
+  <tbody>
+    <tr><td>Setup, the baseline's runs, and reading its outputs and <code>KNOWN-GAPS.md</code></td><td class="num">1.5</td><td>week 1, the first day</td></tr>
+    <tr><td><code>PREFERENCES.md</code></td><td class="num">0.5</td><td>week 1</td></tr>
+    <tr><td>Quick rounds: about nine across <code>c1-skills</code>, <code>c2-review</code> and <code>c3-split</code>, at 30 to 45 minutes each for the reading, the thoughts and the change</td><td class="num">6</td><td>weeks 1 and 2</td></tr>
+    <tr><td>The four major reviews: about 2 hours for <code>c1-skills</code>, 1.75 for <code>c2-review</code>, 0.75 for <code>c3-split</code> and 1.5 for <code>final</code></td><td class="num">6</td><td>one at the end of each step, weeks 1 to 3</td></tr>
+    <tr><td>The guard and its tests, the grader subagent it needs and its quick round, the repeats and the ablation</td><td class="num">3</td><td>week 3, at its start</td></tr>
+    <tr><td>Three learning sessions, about an hour each with the write-up</td><td class="num">3</td><td>week 3</td></tr>
+    <tr><td>Two test topics: writing their items, about 1.75 hours each, then the open review of their runs, about 45 minutes each</td><td class="num">5</td><td>items in week 2, review in week 3</td></tr>
+    <tr><td>The blind comparison</td><td class="num">1</td><td>week 3</td></tr>
+    <tr><td>The judge check</td><td class="num">0.5</td><td>week 3, after lecture 24</td></tr>
+    <tr><td>The component inventory</td><td class="num">1</td><td>each step's entries as you go, finished in week 3</td></tr>
+    <tr><td><code>EVAL.md</code></td><td class="num">3</td><td>each step's section as you go, the rest in week 3</td></tr>
+    <tr><td>The video</td><td class="num">1.5</td><td>week 3</td></tr>
+    <tr><td><strong>Total</strong></td><td class="num"><strong>about 32</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>A stretch adds about 4 to 6 hours on top, so about 36 to 38 hours in all, and an A needs one: complete core work and the video without a stretch is 175 of 200 points, which is 87.5%.</p>
+<p>For 598E the architecture is larger: at least six skills and eight subagents, with one new component per round, so about 14 quick rounds instead of 9 and a longer inventory.</p>
+<div class="table-wrap">
+<table>
+  <caption>Hours for 598E, my estimate of your own time.</caption>
+  <thead><tr><th>Part</th><th class="num">Hours, 598E</th></tr></thead>
+  <tbody>
+    <tr><td>The core work: everything in the 498E table, with about 14 quick rounds instead of 9 and a longer inventory</td><td class="num">about 36</td></tr>
+    <tr><td>The length study, the 598E rider</td><td class="num">4 to 6</td></tr>
+    <tr><td><strong>Total</strong></td><td class="num"><strong>about 40 to 42</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>In both sections the reviews are most of that time, and they are the part of the project that only you can do.</p>
+
+<h2 id="week-3-tokens">The token load in week 3</h2>
+<p>Every bench scenario draws on your own Claude plan, and on a subscription the cost is your usage limit, not dollars.
+Week 3 is when you are most likely to reach that limit.</p>
+<p>Every <code>claude -p</code> call carries a fixed load before it does any work: in my checks, 24,000 to 49,000 input tokens, almost all of them cached reads of Claude Code's own instructions and tools.
+Every subagent pays a share of that load again, plus whatever it reads, so a tutor with many subagents uses up a weekly limit much faster than one without.
+In my pilot a full run of the baseline was 1.85 million tokens, and a full run of my review-loop config (four skills, with reviewers on teach, quiz and grade, at most two passes each) was 6.99 million.
+If your <code>final</code> costs about what my review-loop config did, its three runs are about 21 million tokens, and with the ablation and the test topics' runs that puts roughly 45 million tokens into week 3.
+That is why week 3 starts with <code>final</code>'s runs: almost every token the project spends that week goes to them, everything else that week depends on them, and starting them first leaves you time if a usage limit arrives late in the week.</p>
+<div class="watch"><span class="label">598E, plan for the cost</span>
+<p>Your architecture is larger than my review-loop config, at least eight subagents where mine had six, and a 598E <code>final</code> may well take 10 to 15 million tokens per full run.
+You run it three times, on top of the ablation, the test topics and the length study's nine teach-only runs of <code>final</code>, three of them 60-minute lessons through your pipeline.
+Spread what can be spread: the baseline's runs in week 1, the length study's <code>c1-skills</code> runs in week 2 once <code>PREREG.md</code> is committed, and <code>final</code>'s runs as early in week 3 as you can.</p>
+</div>
+<p>Some habits that keep the cost down, all through the project:</p>
+<ul>
+  <li>Check <code>/usage</code> in a Claude Code window before each big run.</li>
+  <li>Iterate on <code>uv run p3 bench --config live --quick</code>, and on <code>--only</code> with the one scenario you are changing: a round about the quiz needs <code>--only quiz</code>, not a teach scenario as well.</li>
+  <li>Try every new subagent, review loop or pipeline on an <code>--only</code> run before a full one.</li>
+  <li>Make full runs only of snapshots you mean to keep, and spread them over several days where you can.</li>
+</ul>
+<div class="fail"><span class="label">If a usage limit stops a run</span>
+<p><code>p3 bench</code> stops at the first scenario that reports a usage limit, sets that repeat aside under <code>bench/runs/_live/_aborted/</code>, which git ignores, and keeps the repeats before it.
+Wait for the reset (<code>/usage</code> shows when) and run what is missing.
+In the meantime, do the work that needs no Claude: your test topics, your reviews of runs you already have, the blind comparison once its runs exist, and the write-up.
+<a href="19-troubleshooting.html">When it breaks</a> has the details.</p>
+</div>
+
+<h2 id="falling-behind">If you fall behind</h2>
+<p>If you are well past the hours above by the end of week 2, come and talk to me early, while there is still time to plan around it.
+Office hours are on Tuesday and Thursday, 9 to 10 am and 2 to 3 pm, in CTLM 246L, or send me a message on Canvas.
+It is much easier to find a plan together in week 2 than on the last weekend.</p>
+<p>Late work loses 20%, and nothing is accepted more than a week late (<a href="15-hand-in.html">Hand in</a> has the rules).
+And if something on this page seems wrong or unclear, tell me, because I would rather fix it than have you guess.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="16-stretch-and-598e.html"><span class="pager-label">Previous</span><span class="pager-title">Stretch options and the 598E length study</span></a>
+<a class="next" href="18-commands-and-files.html"><span class="pager-label">Next</span><span class="pager-title">Commands and files</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

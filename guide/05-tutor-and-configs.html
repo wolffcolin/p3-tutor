@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your tutor, configs and snapshots - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html" class="current" aria-current="page">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part II · How it works</p>
+<h1>Your tutor, configs and snapshots</h1>
+<p class="lede">Your tutor is one folder, <code>tutor/</code>.
+This page says which of its files make up the tutor and which belong to the learner, how a snapshot freezes one version of it so that a run's numbers belong to one exact tutor, what skills and subagents are and where they go, and the few fixed rules that let one script score every student's tutor.</p>
+<p class="meta">About 29 minutes to read.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#whats-in-tutor">What is in tutor/</a>: the config is <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code>; every other file in <code>tutor/</code> belongs to the learner.</li>
+    <li><a href="#own-folder">Why the tutor has a folder of its own</a>: you develop at the root and learn inside <code>tutor/</code>, so the two never share a <code>CLAUDE.md</code>.</li>
+    <li><a href="#config">A config</a> and <a href="#snapshot">a snapshot</a>: <code>uv run p3 snapshot &lt;name&gt;</code> freezes the config under a name with a hash, and a snapshot with runs is never changed again.</li>
+    <li><a href="#ladder">The ladder of configs</a>, from <code>c0-baseline</code> to <code>final</code> and the ablation.</li>
+    <li><a href="#output-contract">The output contract</a>: the files your tutor writes must match <code>bench/FORMATS.md</code>, and everything else about it is yours.</li>
+    <li><a href="#skills-and-subagents">Skills and subagents</a>: what each is, where its file goes, and which to use when.</li>
+    <li><a href="#how-the-bench-starts">How the bench starts each job</a>: with <code>/teach</code>, <code>/tutor</code>, <code>/quiz</code> or <code>/grade</code>, and the request as the skill's arguments.</li>
+    <li><a href="#settings">tutor/.claude/settings.json</a>: the allow list, the model, and where hooks go.</li>
+    <li><a href="#who-owns-what">Who owns what</a> in your repo.</li>
+  </ul>
+</section>
+
+<h2 id="whats-in-tutor">What is in tutor/</h2>
+<p>Your tutor is the folder <code>tutor/</code> in your repo, and it does four jobs: it teaches (a lesson), tutors (a reply in the chat), quizzes (a quiz with its answer key) and grades (verdicts and feedback on a learner's answers).
+The files in that folder are of two kinds.
+The <strong>config</strong> decides how the tutor behaves; you write it, usually by asking the <span class="tag builder">Builder</span> for one change at a time.
+The <strong>learner files</strong> are what one learner's sessions leave behind; the tutor writes them as it works.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The files in <code>tutor/</code>, and which of them are part of a config.</caption>
+  <thead><tr><th>Path in <code>tutor/</code></th><th>What it is</th><th>Part of the config?</th></tr></thead>
+  <tbody>
+    <tr><td><code>CLAUDE.md</code></td><td>the tutor's own instructions, read in every session started in <code>tutor/</code> and in every bench scenario</td><td>yes</td></tr>
+    <tr><td><code>PREFERENCES.md</code></td><td>how you like to learn, in your words; the tutor reads it before every job (<a href="04-preferences.html">Write your PREFERENCES.md</a>)</td><td>yes</td></tr>
+    <tr><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code>, and any files beside it</td><td>the skills; the shipped <code>teach</code> skill keeps nine guides in <code>references/</code> next to its <code>SKILL.md</code></td><td>yes</td></tr>
+    <tr><td><code>.claude/agents/&lt;name&gt;.md</code></td><td>the subagents, one file each; the <code>README.md</code> there is documentation, not a subagent</td><td>yes</td></tr>
+    <tr><td><code>.claude/settings.json</code></td><td>the tutor's allow list, its model, and its hooks</td><td>yes</td></tr>
+    <tr><td>anything else under <code>.claude/</code>, such as a hook's script</td><td>whatever the config needs, for example the guard script you write in <code>final</code></td><td>yes</td></tr>
+    <tr><td><code>.claude/settings.local.json</code></td><td>the personal file Claude Code writes when you approve a tool in a session of your own; git ignores it</td><td>no, never</td></tr>
+    <tr><td><code>FORMATS.md</code></td><td>an identical copy of <code>bench/FORMATS.md</code>, the output contract, for your live sessions; the bench brings its own copy</td><td>no, and never edit it</td></tr>
+    <tr><td><code>MISSION.md</code>, <code>NOTES.md</code>, <code>lessons/</code>, <code>quizzes/</code>, <code>keys/</code>, <code>submissions/</code>, <code>grades/</code>, <code>learning-records/</code>, <code>assets/</code>, <code>cheatsheets/</code> and the like</td><td>learner files: they appear as you learn with the tutor in live tries and learning sessions</td><td>no, never</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The rule is short.
+A config is <code>tutor/CLAUDE.md</code>, <code>tutor/PREFERENCES.md</code> and everything under <code>tutor/.claude/</code> except <code>settings.local.json</code>.
+Nothing else in <code>tutor/</code> is ever part of a config, whatever its name.
+So anything the tutor needs in order to work, such as a permission or a hook, goes in <code>tutor/.claude/settings.json</code>, never in <code>settings.local.json</code>.</p>
+
+<div class="why"><span class="label">Why it is this way</span>
+<p>Every bench scenario starts from the same learner: the topic's starting workspace, copied fresh each time.
+If the learner files from your live tries were part of a config, one config would start with a learner who had already seen three lessons and another with a learner who had seen none, and a comparison of the two would measure the learner, not the tutor.</p>
+</div>
+
+<p>On a fresh copy of the template, <code>tutor/</code> holds <code>CLAUDE.md</code>, <code>PREFERENCES.md</code>, <code>FORMATS.md</code> and a <code>.claude/</code> folder with one skill, <code>teach</code> (its <code>SKILL.md</code> and nine guides in <code>references/</code>), the <code>README.md</code> of <code>agents/</code>, and <code>settings.json</code>.
+That is the 14 files that <code>uv run p3 check</code> reports for <code>configs/c0-baseline/</code>, because <code>FORMATS.md</code> is not part of a config.</p>
+
+<div class="watch"><span class="label">Watch out</span>
+<p>Git does not ignore the learner files, so committing <code>tutor/</code> commits them, and your repo is public, history included.
+Keep personal details out of <code>MISSION.md</code>, <code>NOTES.md</code> and everything else your sessions leave in <code>tutor/</code>.</p>
+</div>
+
+<h2 id="own-folder">Why the tutor has a folder of its own</h2>
+<p>You develop the tutor from the root of your repo, <code>work/p3-tutor</code>, and you learn with it by starting Claude Code inside <code>tutor/</code>.
+That way the tutor's <code>CLAUDE.md</code> is never the one you develop with, and the Builder's rules are never the tutor's.
+Three kinds of Claude Code session touch this repo, and each has its own instructions.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The sessions, where each starts, and which instructions it follows. <a href="02-two-windows.html">The Guide and the Builder</a> explains the windows.</caption>
+  <thead><tr><th>Session, and how you start it</th><th>Its instructions</th><th>What it does here</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tag guide">Guide</span><br><code>claude --agent p3-guide</code> in <code>work/p3-tutor</code></td><td><code>.claude/agents/p3-guide.md</code></td><td>explains and points the way; never changes a file</td></tr>
+    <tr><td><span class="tag builder">Builder</span><br><code>claude</code> in <code>work/p3-tutor</code></td><td>the root <code>CLAUDE.md</code></td><td>changes the files in <code>tutor/</code>, one change per round, and runs <code>p3</code> commands you ask for</td></tr>
+    <tr><td><span class="tag tutor">Your tutor</span><br><code>claude</code> in <code>work/p3-tutor/tutor</code></td><td><code>tutor/CLAUDE.md</code></td><td>teaches you, in live tries and in your learning sessions</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="cmd">
+  <div class="cmd-head">Run in a new terminal in <code>work/p3-tutor</code>, to learn with your tutor</div>
+  <pre class="in">cd tutor
+claude</pre>
+</div>
+
+<p>Claude Code also reads the <code>CLAUDE.md</code> of every folder above the one it starts in.
+So a session in <code>tutor/</code> sees the root <code>CLAUDE.md</code> as well, and, inside the course repo, the course's own <code>CLAUDE.md</code>.
+The root <code>CLAUDE.md</code> expects this: its first section tells a session started inside <code>tutor/</code> that it is the tutor, and that it should ignore the root file and follow <code>tutor/CLAUDE.md</code>.
+If one of your live sessions ever acts more like a course assistant than like your tutor, that is why; the README's "Start here" suggests learning from a copy of <code>tutor/</code> outside the course repo if it keeps happening.</p>
+
+<p>The bench avoids all of this, because it runs each scenario in a fresh folder outside your repo, where the tutor's <code>CLAUDE.md</code> is the only one in the folder.
+On Windows the temporary folder is inside your home folder, so a <code>CLAUDE.md</code> in your home folder itself would still reach every scenario; <code>p3 bench</code> warns when it finds one, and <a href="06-the-bench.html#one-scenario">The bench</a> says what to do.</p>
+
+<p>One more consequence: skills and subagents in the root <code>.claude/</code> also load in a session you start in <code>tutor/</code>, but never in a bench run.
+So everything about how your tutor behaves belongs inside <code>tutor/</code>, where both your live sessions and the bench see it.
+The root <code>.claude/</code> holds the Guide's agent, and a session in <code>tutor/</code> can see it, which is why <code>tutor/.claude/settings.json</code> ships with a line that stops your tutor from handing work to the Guide (<a href="#settings">below</a>).</p>
+
+<h3 id="tutor-claude-md">tutor/CLAUDE.md</h3>
+<p>This file tells Claude that it is the learner's tutor in this folder: read the learner's files before answering, use the teach skill for every request, follow <code>FORMATS.md</code> exactly, work only inside this folder, and never edit <code>PREFERENCES.md</code>, <code>FORMATS.md</code> or anything under <code>.claude/</code>.
+It is part of your config, so you may change it like any other part, through the Builder, and every snapshot keeps it.
+One line in it describes the baseline: "Use the teach skill (<code>/teach</code>) for every request: lessons, questions, quizzes and grading."
+The bench names the skill in every request it sends, so that line matters less there, but your own sessions in <code>tutor/</code> read it, so when your skills change, check that this file still describes your tutor.</p>
+
+<h2 id="config">A config</h2>
+<p>A config is one complete version of the tutor's setup: the config files above, as they are at one moment.
+Every config has a name, and the bench runs two kinds.</p>
+<dl>
+  <dt><code>live</code></dt>
+  <dd><p><code>tutor/</code> exactly as it is right now, uncommitted changes and all.
+  <code>uv run p3 bench --config live</code> writes its runs to <code>bench/runs/_live/</code>, which git ignores.
+  You use it in quick rounds, to see what a change did before you keep it.</p></dd>
+  <dt>a snapshot, such as <code>c1-skills</code></dt>
+  <dd><p>a frozen copy of the config in <code>configs/&lt;name&gt;/</code>, made with <code>uv run p3 snapshot &lt;name&gt;</code>.
+  <code>uv run p3 bench --config c1-skills</code> writes its runs to <code>bench/runs/c1-skills/</code>, and you commit them.</p></dd>
+</dl>
+<p>A name uses lowercase letters, digits and hyphens, starts with a letter or a digit, and is at most 41 characters long; <code>live</code> is taken.
+The ladder's names (<a href="#ladder">below</a>) are fixed, because <code>p3 check</code> and <code>p3 report</code> look for them by name.</p>
+
+<h2 id="snapshot">A snapshot</h2>
+<p><code>p3 snapshot</code> copies the config files from <code>tutor/</code> into <code>configs/&lt;name&gt;/</code>, computes a hash of them, and records it in <code>configs/&lt;name&gt;/SNAPSHOT.json</code>.
+It reads nothing but <code>tutor/</code>, it calls no model, and it costs nothing.
+You take one at the end of each step, when you are happy with the tutor, and the bench then runs that snapshot by name.</p>
+
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 snapshot c1-skills</pre>
+  <pre class="out">configs/c1-skills/: &lt;N&gt; config files, sha256:&lt;64 hexadecimal digits&gt;
+Run it with: p3 bench --config c1-skills</pre>
+</div>
+
+<p><code>SNAPSHOT.json</code> holds four things: the name, the hash, the time the snapshot was taken, and the list of files.
+The shipped baseline's looks like this, shortened:</p>
+<pre><code>{
+  "name": "c0-baseline",
+  "hash": "sha256:&lt;64 hexadecimal digits&gt;",
+  "created_at": "&lt;when it was taken, in UTC&gt;",
+  "files": [
+    ".claude/agents/README.md",
+    ".claude/settings.json",
+    ".claude/skills/teach/SKILL.md",
+    ".claude/skills/teach/references/GLOSSARY-FORMAT.md",
+    ...
+    "CLAUDE.md",
+    "PREFERENCES.md"
+  ]
+}</code></pre>
+
+<p>The hash is a SHA-256 fingerprint of the config's files and their contents: change one character in one file and the hash changes.
+<code>p3</code> computes it with line endings ignored, so a Windows checkout with its own line endings does not break it.
+Three things check it.</p>
+<ul>
+  <li><strong><code>p3 bench</code></strong> recomputes the hash before it runs a snapshot, and refuses one whose files no longer match: "configs/c1-skills/ no longer matches its SNAPSHOT.json ... A snapshot is a fixed record; change tutor/ instead and take a new snapshot".</li>
+  <li><strong>Every run</strong> records the hash of the config it ran in its <code>run.json</code>, as <code>config_hash</code>, so each run points at one exact tutor.</li>
+  <li><strong><code>p3 check</code></strong>, on your machine and in CI on every push, confirms that every snapshot still matches its <code>SNAPSHOT.json</code> and that every run's hash matches its snapshot.</li>
+</ul>
+
+<figure>
+  <div class="diagram">
+    <svg viewBox="0 0 760 240" role="img" aria-label="tutor/ is the live config. p3 snapshot copies it into configs/c1-skills/, a frozen snapshot, and p3 bench on that snapshot writes runs you commit to bench/runs/c1-skills/. p3 bench --config live runs tutor/ directly and writes tries that git ignores to bench/runs/_live/.">
+      <defs>
+        <marker id="arrow-05" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <rect x="20" y="20" width="150" height="200" rx="4" fill="none" stroke="currentColor"/>
+      <text x="95" y="108" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600" font-family="IBM Plex Mono, monospace">tutor/</text>
+      <text x="95" y="128" text-anchor="middle" fill="currentColor" font-size="11">the live config,</text>
+      <text x="95" y="144" text-anchor="middle" fill="currentColor" font-size="11">which the Builder edits</text>
+
+      <rect x="300" y="20" width="180" height="100" rx="4" fill="none" stroke="currentColor"/>
+      <text x="390" y="47" text-anchor="middle" fill="currentColor" font-size="12" font-family="IBM Plex Mono, monospace">configs/c1-skills/</text>
+      <text x="390" y="67" text-anchor="middle" fill="currentColor" font-size="11">a frozen snapshot</text>
+      <text x="390" y="90" text-anchor="middle" fill="currentColor" font-size="11">SNAPSHOT.json: name, hash,</text>
+      <text x="390" y="106" text-anchor="middle" fill="currentColor" font-size="11">time and files</text>
+
+      <rect x="580" y="20" width="160" height="64" rx="4" fill="none" stroke="currentColor"/>
+      <text x="660" y="47" text-anchor="middle" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">bench/runs/c1-skills/</text>
+      <text x="660" y="67" text-anchor="middle" fill="currentColor" font-size="11">runs you commit</text>
+
+      <rect x="580" y="156" width="160" height="64" rx="4" fill="none" stroke="currentColor"/>
+      <text x="660" y="183" text-anchor="middle" fill="currentColor" font-size="11" font-family="IBM Plex Mono, monospace">bench/runs/_live/</text>
+      <text x="660" y="203" text-anchor="middle" fill="currentColor" font-size="11">tries git ignores</text>
+
+      <line x1="170" y1="52" x2="296" y2="52" stroke="currentColor" marker-end="url(#arrow-05)"/>
+      <text x="233" y="44" text-anchor="middle" fill="currentColor" font-size="11">p3 snapshot</text>
+      <line x1="480" y1="52" x2="576" y2="52" stroke="currentColor" marker-end="url(#arrow-05)"/>
+      <text x="528" y="44" text-anchor="middle" fill="currentColor" font-size="11">p3 bench</text>
+      <line x1="170" y1="188" x2="576" y2="188" stroke="currentColor" stroke-dasharray="5 4" marker-end="url(#arrow-05)"/>
+      <text x="373" y="180" text-anchor="middle" fill="currentColor" font-size="11">p3 bench --config live</text>
+    </svg>
+  </div>
+  <figcaption>From <code>tutor/</code> to a run. The top row is the record: <code>uv run p3 snapshot c1-skills</code>, then <code>uv run p3 bench --config c1-skills</code>, and both folders are committed. The dashed path is a quick round's try, <code>uv run p3 bench --config live --quick</code>, which leaves nothing in git.</figcaption>
+</figure>
+
+<h3 id="not-tags">Why snapshots, and not git tags</h3>
+<p>I use snapshots rather than git tags because git does not push tags by default, and a run must always point at a config I can read.
+A snapshot is plain files in a folder you commit, so the tutor that made a run sits right beside the run, in every clone of your repo, including the one I grade.</p>
+
+<h3 id="frozen">A snapshot is frozen once it has runs</h3>
+<p>As soon as a snapshot has one run, quick or full, it is the record of what made that run, and it must never change again.
+<code>p3 snapshot</code> protects you from doing it by accident: it refuses to overwrite a name that exists, and a second snapshot under the same name prints this.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 snapshot c1-skills</pre>
+  <pre class="out">p3 snapshot: configs/c1-skills/ already exists; pick a new name, or add --force to replace it (runs made with the old snapshot will no longer match it)</pre>
+</div>
+<p><code>--force</code> deletes the old snapshot and takes a new one in its place.
+That is fine, and it is what <code>--force</code> is for, when the snapshot has no runs yet: you snapshot <code>c1-skills</code>, notice a typo in a skill before you start its full run, fix it in <code>tutor/</code>, and snapshot again with <code>--force</code>.
+Once the snapshot has a run, <code>--force</code> breaks the record, and <code>p3 check</code> fails, in CI too, with a line like this:</p>
+<pre><code>FAIL  bench/runs/c1-skills/: 1 run out of 1 do not match configs/c1-skills/
+        bench/runs/c1-skills/&lt;run-id&gt; was made with another version of c1-skills than configs/c1-skills/ holds; restore that snapshot from git, or delete this run</code></pre>
+<p>If that happens, restore the old snapshot from git, which works if you committed it with its run (the Builder can do it: ask it to restore <code>configs/c1-skills/</code> exactly as your last commit has it), and put your change somewhere else.
+On the ladder, a change you want after a step's full run usually belongs to the next step.
+After <code>final</code>, snapshot the changed tutor under a new name, because <code>final</code> and its runs stay as they are.
+Do not delete a run to make the check pass: a run is evidence, and the README's ground rules ask you never to delete one because you did not like its numbers.</p>
+
+<div class="watch"><span class="label">Watch out</span>
+<p><strong>Never snapshot over <code>c0-baseline</code>.</strong>
+It ships with the template, it is the baseline every step is measured against, and its three full runs point at it.
+<code>tutor/</code> stops matching it the moment you change anything, which is expected.</p>
+<p><strong>Never edit a file in <code>configs/</code> by hand.</strong>
+Change <code>tutor/</code> and take a snapshot.</p>
+<p><strong><code>p3 snapshot</code> refuses a file that is not UTF-8</strong>, and names it, because a file saved in a Windows "ANSI" encoding would stop matching its own hash in a fresh checkout.
+Save the file as UTF-8 (VS Code shows the encoding in its status bar) and snapshot again.</p>
+</div>
+
+<p>Commit <code>configs/</code> together with the runs it made and your reviews, as each step's last action; the step pages (<a href="08-step1-skills.html#snapshot">Step 1</a>, for example) say when.</p>
+
+<h2 id="ladder">The ladder of configs</h2>
+<p>Everyone builds the same kinds of architecture, in the same order, so that the class's results can be compared; what each piece does and how you build it is yours.
+Each rung of the ladder is a snapshot with a fixed name.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The architecture ladder, from the README. "Full runs" counts the full bench runs each config needs on the shared topic.</caption>
+  <thead><tr><th>Config</th><th>What it adds</th><th class="num">Full runs</th><th>Page</th></tr></thead>
+  <tbody>
+    <tr><td><code>c0-baseline</code></td><td>nothing, as shipped: one <code>teach</code> skill does all four jobs in one shot</td><td class="num">3</td><td><a href="03-baseline.html">The baseline</a></td></tr>
+    <tr><td><code>c1-skills</code></td><td>the four skills <code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code>, plus any others you like; still one agent</td><td class="num">1</td><td><a href="08-step1-skills.html">Step 1</a></td></tr>
+    <tr><td><code>c2-review</code></td><td>review loops on teach, quiz and grade, with the reviewers as subagents</td><td class="num">1</td><td><a href="09-step2-review-loops.html">Step 2</a></td></tr>
+    <tr><td><code>c3-split</code></td><td>the teach job split across subagents (a planner, a designer, a writer, a visual designer, a references finder, and so on)</td><td class="num">1</td><td><a href="10-step3-split.html">Step 3</a></td></tr>
+    <tr><td><code>final</code></td><td>what earned its place (a step that did not pay may be dropped), plus a guard hook that keeps the answer keys from the tutor</td><td class="num">3</td><td><a href="12-final.html">final</a></td></tr>
+    <tr><td><code>final-minus-&lt;x&gt;</code></td><td><code>final</code> with one component removed, the ablation; you need at least one</td><td class="num">1</td><td><a href="12-final.html#ablation">The ablation</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Each step is measured against the one before it, in quality (your major review and the objective checks) and in cost (tokens, turns, subagents and time).
+An ablation names what it removes, for example <code>final-minus-quiz-review</code> or <code>final-minus-planner</code>.
+Only <code>c0-baseline</code> and <code>final</code> get three runs, because those two carry the project's main comparison and a split pipeline with reviewers is expensive to repeat.</p>
+<p><code>c0-baseline</code> keeps the neutral <code>PREFERENCES.md</code> the template ships, and <code>c1-skills</code> is the first config with yours.
+So step 1, and the comparison of <code>c0-baseline</code> with <code>final</code>, measure your skills and your preferences together, and <code>EVAL.md</code> asks you to say which differences you think came from which.</p>
+
+<h2 id="output-contract">The output contract</h2>
+<p>How your tutor works is yours, with one exception: the files it writes for the bench to read must match <code>bench/FORMATS.md</code> exactly, down to the file names, the numbering and the JSON keys.
+That file is the contract, with a complete example of every JSON file, and <code>tutor/FORMATS.md</code> is an identical copy for your tutor to follow in live sessions.
+Read it once before step 1, because every skill you write has to produce these files.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The outputs the bench reads, each in a sentence. <code>bench/FORMATS.md</code> has the full rules and examples.</caption>
+  <thead><tr><th>Output</th><th>File</th><th>In a sentence</th></tr></thead>
+  <tbody>
+    <tr><td>Lesson</td><td><code>lessons/NNNN-&lt;slug&gt;.html</code></td><td>a complete, self-contained HTML page with two meta tags, <code>p3-minutes</code> and <code>p3-objective</code>, its CSS and scripts inline or under <code>assets/</code>, no remote scripts or stylesheets, and ordinary links to outside references welcome.</td></tr>
+    <tr><td>Quiz</td><td><code>quizzes/NNNN.json</code></td><td>the items, each with an id, a type (<code>mcq</code>, <code>numeric</code> or <code>short</code>), the objective it serves, the stem, and options for <code>mcq</code>, and never an answer.</td></tr>
+    <tr><td>Key</td><td><code>keys/NNNN.json</code></td><td>for each item the answer, other accepted forms, a rationale, and the misconception behind each wrong option, under the quiz's own number.</td></tr>
+    <tr><td>Grades</td><td><code>grades/NNNN-sN.json</code></td><td>for each item a verdict (<code>correct</code>, <code>partial</code> or <code>wrong</code>), the misconception id if one applies, and feedback that is never empty, plus a summary to the learner.</td></tr>
+    <tr><td>Learning record</td><td><code>learning-records/NNNN-&lt;slug&gt;.md</code></td><td>one thing the learner has shown they understand, in the teach skill's format.</td></tr>
+    <tr><td>Tutor reply</td><td>the session's last message</td><td>for a message from the learner, the reply is the final message of the session, so it comes after every file the tutor writes.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>A few rules from the contract catch people out, so here they are in one place.</p>
+<ul>
+  <li><strong>Numbering.</strong> A new file takes the next four-digit number after the highest one in its folder, or <code>0001</code> in an empty folder; a key takes its quiz's number, and a grades file is named after the quiz and the submission.
+  On the shared topic the starting workspace already holds quiz <code>0001</code> with its key and no lesson, so the bench's new quiz is <code>quizzes/0002.json</code> with <code>keys/0002.json</code>, the lesson is <code>lessons/0001-&lt;slug&gt;.html</code>, and the grades for submission <code>s1</code> go in <code>grades/0001-s1.json</code>.</li>
+  <li><strong>Never change an existing quiz, key or submission.</strong> A quiz that needs fixing becomes a new quiz.</li>
+  <li><strong>One new lesson per teach request.</strong> The teach check expects exactly one new lesson in <code>lessons/</code>, so a draft saved there turns a good run into a recorded failure. Keep drafts in a folder of your own, such as <code>drafts/</code>.</li>
+  <li><strong>Ids are shared.</strong> Objective ids (<code>O1</code>, <code>O2</code>, ...) and misconception ids (<code>M1</code>, ...) come from the request and the learner's files, and the tutor never invents a new id for something that already has one.</li>
+</ul>
+
+<div class="why"><span class="label">Why it is this way</span>
+<p>The contract is what lets one script score every student's tutor.
+Forty tutors built forty different ways can all be checked by the same scorer, and compared on the same numbers, only because they all write the same files in the same shape.
+The cost is a little freedom over file names, and nothing over how the tutor gets there.</p>
+</div>
+
+<p>Never change <code>bench/FORMATS.md</code> or <code>tutor/FORMATS.md</code>.
+The first is hash-checked, and <code>p3 check</code> fails when the second differs from it.
+If you think the contract has a bug, tell me, and I will fix it for everyone.</p>
+
+<h2 id="skills-and-subagents">Skills and subagents</h2>
+<p>Your tutor grows from one skill to several skills, then to skills that start subagents.
+You met both in lectures 15 to 19; this section is what you need of them for P3.</p>
+
+<h3 id="skill">A skill</h3>
+<p>A skill is a folder, <code>tutor/.claude/skills/&lt;name&gt;/</code>, with a <code>SKILL.md</code> in it.
+The file opens with frontmatter between two <code>---</code> lines, and the Markdown after it is the skill's instructions.
+The shipped <code>teach</code> skill's frontmatter shows the fields that matter here:</p>
+<pre><code>---
+name: teach
+description: Teach, tutor, quiz and grade the learner in this workspace - ...; use it for every request from the learner here.
+argument-hint: "What would you like to learn, or what should I do?"
+---</code></pre>
+<p><code>description</code> says what the skill does and when to use it, and <code>argument-hint</code> is the hint shown after its name when you type <code>/teach</code>.
+A skill runs inside the conversation that invokes it.
+When the bench sends <code>/quiz</code> with a request, Claude Code loads the quiz skill's instructions into that session, which already holds the request and can read the learner's files.
+A skill folder may hold more files beside <code>SKILL.md</code>, as <code>teach</code> does with its guides in <code>references/</code>, which its instructions reach as <code>${CLAUDE_SKILL_DIR}/references/</code>.</p>
+
+<h3 id="subagent">A subagent</h3>
+<p>A subagent is one Markdown file, <code>tutor/.claude/agents/&lt;name&gt;.md</code>.
+It is a separate Claude with its own system prompt (the file's Markdown body), its own tools and a fresh context window.
+The main conversation starts one with the Agent tool and a task message it writes, and gets back one report.
+A subagent does not see the main conversation's history, the skills it already invoked or the files it already read, so the task message has to carry what the subagent needs, or say which files to read.</p>
+<p>This is the example from <code>tutor/.claude/agents/README.md</code>:</p>
+<pre><code>---
+name: quiz-reviewer
+description: Reviews a draft quiz and its key for one objective and returns numbered findings. Use after drafting a quiz, before finishing.
+tools: Read, Glob, Grep
+model: sonnet
+maxTurns: 20
+---
+
+You review one quiz and its key against the objective it serves.
+(The rest of the system prompt: what to check, how to report, when to stop.)</code></pre>
+<ul>
+  <li><strong>The first <code>---</code> must be the file's first line</strong>, and only <code>name</code> and <code>description</code> are required.</li>
+  <li><strong>Field names are case-sensitive camelCase</strong>, and Claude Code silently ignores a field it does not recognize, so a misspelled field fails without an error.</li>
+  <li><strong>A file without such frontmatter is documentation.</strong> Claude Code does not load it, and <code>p3 check</code> notes it as documentation and does not count it as a subagent; a checklist file a reviewer reads is fine there.</li>
+  <li><strong>Without a <code>tools</code> list</strong>, a subagent inherits every tool, the Agent tool included, so it can start subagents of its own; give a reviewer an explicit list.</li>
+  <li><strong><code>model</code></strong> lets a subagent run on a model of its own, such as <code>haiku</code>; left out, it runs on the main conversation's model.</li>
+</ul>
+<p><code>tutor/.claude/agents/README.md</code> has every field, what I saw the bench do with them, and the link to the Claude Code documentation on subagents (a reference page; read the part on frontmatter fields when you write your first one).</p>
+
+<h3 id="skill-or-subagent">Which one to use</h3>
+<p>The component inventory asks you this for every component you build: why it is a skill or a subagent rather than the other.
+These are the questions I would ask.</p>
+<div class="table-wrap">
+<table>
+  <caption>When a skill fits, and when a subagent fits.</caption>
+  <thead><tr><th>A skill fits when</th><th>A subagent fits when</th></tr></thead>
+  <tbody>
+    <tr><td>the work needs what the conversation already has: the request, the learner's files it read, the draft it just wrote</td><td>the work is better done without the writer's reasoning to lean on, such as a reviewer that reads a draft the way the learner will</td></tr>
+    <tr><td>one set of instructions carries the job from start to end, such as how to write a quiz and its key</td><td>part of the job needs instructions and tools of its own, such as a planner, a writer and a references finder in the <code>c3-split</code> pipeline</td></tr>
+    <tr><td>you want it cheap: a skill adds only its instructions to a session that is running anyway</td><td>something must stay out of the main conversation, such as the answer keys in <code>final</code>, which only a grader subagent may read</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The cost is real.
+Every <code>claude -p</code> call carries a fixed load before it does any work, 24,000 to 49,000 input tokens in my checks, almost all of them cached reads of Claude Code's own instructions and tools.
+Every subagent pays a share of that again, plus whatever it reads, which is why fan-out is what drains a weekly limit (<a href="06-the-bench.html#cost">What runs cost</a> has the numbers).</p>
+
+<h3 id="when-they-arrive">When each arrives on the ladder</h3>
+<ul>
+  <li><strong><code>c1-skills</code>: skills only.</strong> The four skills, and any others you want, but no subagent.
+  <code>p3 check</code> fails, even without <code>--final</code>, when <code>configs/c1-skills/</code> holds a subagent or a round in <code>reviews/c1-skills.md</code> is of Kind <code>new subagent</code>, because step 1 is still one agent and its numbers have to show what skills alone do.</li>
+  <li><strong><code>c2-review</code>: reviewer subagents</strong> on teach, quiz and grade, one per quick round.</li>
+  <li><strong><code>c3-split</code>: the teach pipeline</strong>, its subagents one per quick round.</li>
+  <li><strong><code>final</code>: usually a grader subagent</strong>, because once the guard keeps <code>keys/</code> from the main conversation, grading has to happen in a subagent the guard allows (<a href="12-final.html#guard">The guard</a>).</li>
+</ul>
+<div class="note"><span class="label">Note</span>
+<p>In a bench run, a subagent the main conversation starts runs in the background by default, and Claude waits for it when it judges it should or when it is told to, so a skill that needs a reviewer's report should say to wait for the report before going on.
+In your own sessions in <code>tutor/</code>, Claude can wait for a subagent only once <a href="20-glossary.html#fork-mode">fork mode</a>, a Claude Code setting that is on by default, is off; the last section of <code>tutor/.claude/agents/README.md</code> says how, in <code>tutor/.claude/settings.local.json</code>, which never reaches the bench.</p>
+</div>
+
+<h2 id="how-the-bench-starts">How the bench starts each job</h2>
+<p>The bench starts every job with a slash command: <code>/teach</code>, <code>/tutor</code>, <code>/quiz</code> or <code>/grade</code>, when the config has that skill, and <code>/teach</code> when it does not.
+That is why these four skill names are fixed, and it is how <code>c0-baseline</code> does all four jobs with its one skill.</p>
+
+<div class="table-wrap">
+<table class="stack">
+  <caption>Which command starts each job.</caption>
+  <thead><tr><th>Job</th><th>Its scenarios</th><th>Starts with</th><th>When the config has no such skill</th></tr></thead>
+  <tbody>
+    <tr><td>teach</td><td><code>teach</code></td><td><code>/teach</code></td><td>none: every config needs its <code>teach</code> skill</td></tr>
+    <tr><td>tutor</td><td><code>tutor-p01</code> to <code>tutor-p06</code></td><td><code>/tutor</code></td><td><code>/teach</code></td></tr>
+    <tr><td>quiz</td><td><code>quiz</code></td><td><code>/quiz</code></td><td><code>/teach</code></td></tr>
+    <tr><td>grade</td><td><code>grade-s1</code>, <code>grade-s2</code></td><td><code>/grade</code></td><td><code>/teach</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The bench looks for exactly <code>.claude/skills/&lt;job&gt;/SKILL.md</code> in the config.
+A skill in a folder called <code>quizzes/</code> or <code>grader/</code> is not found, and that job quietly goes to <code>/teach</code>.
+Every <code>run.json</code> records which command each job started with, under <code>entries</code>, so look there after the first run of a new skill.</p>
+
+<p>The text after the command is the request.
+Its exact wording, for every scenario, is in <code>bench/scenarios.json</code>; these are its four templates, where <code>{entry}</code> is the command and the bench fills in the rest from the topic:</p>
+<pre><code>{entry} Teach objective {teach_objective_id}: "{teach_objective_text}" as a {minutes}-minute lesson for the learner described in MISSION.md and NOTES.md. Write the lesson as FORMATS.md describes.
+
+{entry} Write a six-question quiz on objective {quiz_objective_id}: "{quiz_objective_text}" for this learner. Write the quiz and its key as FORMATS.md describes.
+
+{entry} Grade the learner's submission submissions/{submission}.json for quiz {graded_quiz}, with feedback for each answer. Write the grades as FORMATS.md describes.
+
+{entry} {probe_message}</code></pre>
+<p>So with a grade skill, the scenario <code>grade-s1</code> on the shared topic sends this, as one message:</p>
+<pre><code>/grade Grade the learner's submission submissions/s1.json for quiz 0001, with feedback for each answer. Write the grades as FORMATS.md describes.</code></pre>
+<p>Everything after the skill's name reaches the skill as its arguments.
+In the shipped <code>teach</code> skill, <code>$ARGUMENTS</code> under its heading "The request" is where that text lands, which is how one skill can tell a request for a lesson from a request to grade.
+Your own skills can use it the same way.</p>
+
+<p>Two facts about the bench shape how you write these skills.</p>
+<ul>
+  <li><strong>A tutor probe is one message, and the final message is scored.</strong>
+  The request is the probe's message alone, after <code>/tutor</code>, and nothing comes after it.
+  The reply that gets scored is the session's final message, so your <code>tutor</code> skill must answer in the chat, not in a file, and write any file it wants to (a note in <code>NOTES.md</code>, a learning record) before its reply, never after it.</li>
+  <li><strong>No one is there to answer a question.</strong>
+  Each request runs headless and ends when the session ends, so a skill that stops to ask the learner something has ended its job.
+  The shipped <code>teach</code> skill says what to do: a request that says what to do gets done now, and any question for the learner goes at the end of the final message.</li>
+</ul>
+
+<h2 id="settings">tutor/.claude/settings.json</h2>
+<p>This is the tutor's settings file, and it is part of your config.
+The template ships it like this:</p>
+<pre><code>{
+  "permissions": {
+    "allow": ["WebSearch", "WebFetch"],
+    "deny": ["Agent(p3-guide)"]
+  }
+}</code></pre>
+<dl>
+  <dt><code>permissions.allow</code>: the only tools a bench run may use without asking</dt>
+  <dd><p>The bench passes this list to Claude Code as <code>--allowedTools</code>, and always adds <code>Glob</code> and <code>Grep</code> to it, because on macOS, Linux and WSL Claude Code leaves those two out unless they are named, and every config should be able to search its workspace the same way on every system.
+  A fresh folder ignores a project's own allow rules, and in a bench run there is no one to approve anything, so any other tool call that would need a permission prompt is denied, and <code>run.json</code> lists it, scenario by scenario, under <code>permission_denials</code>.
+  The bench runs with <code>--permission-mode acceptEdits</code>, so writing and editing files inside the scenario folder needs no rule.
+  The Agent tool, which starts a subagent, needs no rule either, and the allow list covers your subagents' tool calls too.</p>
+  <p>In my pilot, the baseline's teach session tried to count its lesson's words with a shell command, which the baseline does not allow, so it had no way to check its own length.
+  If your tutor needs a command, allow the narrow one it needs, in the same form as the rules in the root <code>.claude/settings.json</code> (such as <code>"Bash(git status*)"</code>), or tell the skill how to finish without it, and try it with <code>--config live</code> before you snapshot.</p></dd>
+  <dt><code>permissions.deny</code>: keep this line</dt>
+  <dd><p>Claude Code finds project agents by walking up to the root of the repository, so a session you start in <code>tutor/</code> can see the Guide's agent at the root.
+  <code>Agent(p3-guide)</code> in the deny list keeps your tutor from ever handing work to the Guide.
+  Leave it in, and keep it when you add rules of your own.</p></dd>
+  <dt><code>model</code>: the tutor's model</dt>
+  <dd><p>The key <code>"model"</code> sets the model the tutor's main conversation runs on; without it, which is how the template ships, the bench uses <code>sonnet</code>.
+  A subagent can name its own model in its frontmatter, which is one road to the cheaper-tutor stretch (<a href="16-stretch-and-598e.html#cheaper-tutor">A cheaper tutor</a>).</p></dd>
+  <dt><code>hooks</code>: here, never in a subagent's frontmatter</dt>
+  <dd><p>The bench runs every scenario with <code>claude -p</code> in a fresh folder that was never trusted.
+  A hook in a subagent's frontmatter runs only once a folder's trust question has been answered yes, so in the bench it silently does nothing, while a hook in this file does fire there.
+  Put every hook here, and keep any script a hook runs under <code>tutor/.claude/</code> too (for example in <code>tutor/.claude/hooks/</code>), so it is part of the config and is copied into every scenario folder.
+  You add your first hook in <code>final</code>; <a href="12-final.html#guard">The guard</a> explains it.</p></dd>
+</dl>
+
+<div class="watch"><span class="label">Watch out</span>
+<p><strong>A tool you approve in your own session is not approved in the bench.</strong>
+When you approve a tool at a permission prompt in a session in <code>tutor/</code>, Claude Code writes the rule to <code>tutor/.claude/settings.local.json</code>, which is never part of a config and never reaches the bench.
+So a live session that works is no proof that a bench run will; a <code>--config live</code> run is.</p>
+<p><strong>Two different guards.</strong>
+The root <code>.claude/</code> holds the Guide's guard, which keeps the Guide read-only and belongs to the course.
+Your tutor's guard, which you build in <code>final</code>, lives in <code>tutor/.claude/settings.json</code> and is yours.</p>
+</div>
+
+<h2 id="who-owns-what">Who owns what</h2>
+<p>The rule behind the layout is simple: I own everything that runs the measurement, and you own everything that decides how the tutor behaves.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Your repo and who owns each part, from the README, with the course's files for the two windows and this guide added.</caption>
+  <thead><tr><th>Path</th><th>What it is</th><th>Whose</th></tr></thead>
+  <tbody>
+    <tr><td><code>tutor/</code></td><td>the tutor: <code>CLAUDE.md</code>, <code>PREFERENCES.md</code>, <code>FORMATS.md</code> and <code>.claude/</code> (skills, agents, settings)</td><td>yours, except <code>tutor/FORMATS.md</code>, which stays a copy of <code>bench/FORMATS.md</code></td></tr>
+    <tr><td><code>configs/</code></td><td>snapshots of the tutor; <code>c0-baseline</code> ships, and you add the rest with <code>p3 snapshot</code></td><td>yours, written by <code>p3</code></td></tr>
+    <tr><td><code>bench/FORMATS.md</code>, <code>bench/scenarios.json</code>, <code>bench/judge/</code>, <code>bench/topics/</code></td><td>the output contract, the scenarios, the judge prompts and the shared topic</td><td>mine, hash-checked</td></tr>
+    <tr><td><code>bench/own/</code></td><td>your two test topics</td><td>yours</td></tr>
+    <tr><td><code>bench/runs/</code>, <code>bench/compare/</code></td><td>your committed runs and blind comparisons</td><td>written by <code>p3</code></td></tr>
+    <tr><td><code>reviews/</code></td><td>your quick rounds and major reviews, your learning sessions, your test-topic reviews, and the component inventory</td><td>yours; the Builder writes only what it changed in each round and the inventory's factual fields</td></tr>
+    <tr><td><code>p3/</code></td><td>the runner, the scorer, the comparison tool, the check and <code>p3 next</code></td><td>mine, hash-checked</td></tr>
+    <tr><td><code>tests/</code></td><td>the tests of <code>p3</code> and of the Guide's guard, and the place for your own guard's tests</td><td>mine, plus the tests you add</td></tr>
+    <tr><td><code>EVAL.md</code>, <code>PREREG.md</code></td><td>your write-up</td><td>yours</td></tr>
+    <tr><td><code>KNOWN-GAPS.md</code></td><td>failures I saw when I ran the baseline, each with the run that shows it</td><td>mine</td></tr>
+    <tr><td><code>p3.json</code></td><td>your section and your stretch</td><td>yours</td></tr>
+    <tr><td><code>README.md</code></td><td>the brief</td><td>mine</td></tr>
+    <tr><td><code>CLAUDE.md</code></td><td>the two roles, and the Builder's rules, including what it must never write for you</td><td>mine</td></tr>
+    <tr><td><code>.claude/</code> at the root</td><td>the Guide's agent (<code>agents/p3-guide.md</code>), its guard (<code>hooks/</code>) and the root <code>settings.json</code></td><td>mine</td></tr>
+    <tr><td><code>guide/</code></td><td>this guide</td><td>mine</td></tr>
+    <tr><td><code>.github/workflows/</code></td><td>the CI check, <code>p3-check</code></td><td>mine</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>"Mine, hash-checked" means <code>p3/bench.sha256</code> pins those files, and <code>p3 check</code> fails, in CI as on your machine, when one of them changes; restore it with <code>git restore</code>.
+<code>configs/</code>, <code>bench/runs/</code> and <code>bench/compare/</code> are yours only through the <code>p3</code> commands that write them, so never edit them by hand.
+If you think one of my files has a bug, show me the evidence, and I will fix it for everyone.
+<a href="18-commands-and-files.html#repo-files">Commands and files</a> lists every file in the repo, the small ones too.</p>
+
+<h2 id="next">If something goes wrong, and where to go next</h2>
+<p>A snapshot that will not take, a run that will not start, a <code>p3 check</code> line you do not understand: <a href="19-troubleshooting.html">When it breaks</a> has the symptoms and the fixes, and every <code>p3</code> message names the file to look at.
+Next, <a href="06-the-bench.html">The bench</a> follows one of these configs through a run: what each scenario does, what every number means, and what it costs.
+If an idea on this page did not land, the Guide can explain it with your own repo as the example.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>Using my repo, show me what is in my tutor's config right now, and which snapshots I have.</pre>
+  <p>The Guide reads <code>tutor/</code> and <code>configs/</code> and explains what it finds; it changes nothing.</p>
+</div>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="04-preferences.html"><span class="pager-label">Previous</span><span class="pager-title">Write your PREFERENCES.md</span></a>
+<a class="next" href="06-the-bench.html"><span class="pager-label">Next</span><span class="pager-title">The bench: scenarios, scores and cost</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>

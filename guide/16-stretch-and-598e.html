@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stretch options and the 598E length study - P3 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="book" href="index.html">P3 Guide</a>
+    <span class="where">CSCI 498E/598E · Project 3, a tutoring agent</span>
+  </div>
+</header>
+
+<div class="layout">
+<!-- nav:start -->
+<nav class="toc" aria-label="Chapters">
+<details class="toc-box" open>
+<summary>Chapters</summary>
+<ol class="toc-list">
+<li><a href="index.html">Start here</a></li>
+<li class="toc-part">Part I · Getting set up</li>
+<li><a href="01-setup.html">Set up your repo</a></li>
+<li><a href="02-two-windows.html">The Guide and the Builder</a></li>
+<li><a href="03-baseline.html">Run the baseline and read what it made</a></li>
+<li><a href="04-preferences.html">Write your PREFERENCES.md</a></li>
+<li class="toc-part">Part II · How it works</li>
+<li><a href="05-tutor-and-configs.html">Your tutor, configs and snapshots</a></li>
+<li><a href="06-the-bench.html">The bench: scenarios, scores and cost</a></li>
+<li><a href="07-reviews.html">Your reviews</a></li>
+<li class="toc-part">Part III · The ladder</li>
+<li><a href="08-step1-skills.html">Step 1: four skills <span class="nw">(c1-skills)</span></a></li>
+<li><a href="09-step2-review-loops.html">Step 2: review loops <span class="nw">(c2-review)</span></a></li>
+<li><a href="10-step3-split.html">Step 3: split the teach job <span class="nw">(c3-split)</span></a></li>
+<li><a href="11-test-topics.html">Your two test topics</a></li>
+<li><a href="12-final.html">final: the guard, repeats and the ablation</a></li>
+<li><a href="13-blind-comparison.html">The blind comparison</a></li>
+<li><a href="14-write-up.html">The inventory and EVAL.md</a></li>
+<li><a href="15-hand-in.html">Hand in</a></li>
+<li class="toc-part">Part IV · Reference</li>
+<li><a href="16-stretch-and-598e.html" class="current" aria-current="page">Stretch options and the 598E length study</a></li>
+<li><a href="17-pace.html">A pace that works</a></li>
+<li><a href="18-commands-and-files.html">Commands and files</a></li>
+<li><a href="19-troubleshooting.html">When it breaks</a></li>
+<li><a href="20-glossary.html">Glossary</a></li>
+</ol>
+</details>
+</nav>
+<!-- nav:end -->
+
+<main>
+<article class="chapter">
+
+<p class="eyebrow">Part IV · Reference</p>
+<h1>Stretch options and the 598E length study</h1>
+<p class="lede">The stretch is 25 of the 150 points. This page explains the rule, each of the five options in detail, and the length study, which 598E does as its required rider and any 498E student may choose.</p>
+<p class="meta">About 25 minutes to read in full; the length study is the second half.</p>
+
+<section class="summary" aria-labelledby="on-this-page">
+  <h2 id="on-this-page">On this page</h2>
+  <ul>
+    <li><a href="#rule">The stretch rule</a>: who does what, <code>p3.json</code>, where the write-up goes</li>
+    <li><a href="#options">The five options</a>, and one section on each: <a href="#personalization-swap">personalization swap</a>, <a href="#cheaper-tutor">a cheaper tutor</a>, <a href="#mcp-server">an MCP server</a>, <a href="#agent-sdk-grader">the grader on the Agent SDK</a></li>
+    <li><a href="#length-study">The length study</a>: <a href="#prereg">PREREG.md before the runs</a>, <a href="#length-runs">the eighteen runs</a>, <a href="#length-comparisons">the three blind comparisons</a>, <a href="#length-accuracy">length accuracy</a>, <a href="#cost-length">cost against length</a>, <a href="#threats">threats to validity</a></li>
+    <li><a href="#rider-598e">What else the rider changes for 598E</a>: the larger architecture and the cost warning</li>
+  </ul>
+</section>
+
+<h2 id="rule">The stretch rule</h2>
+<p>The stretch is 25 of the 150 points for the project.</p>
+<ul>
+  <li><strong>498E:</strong> one of the five options below, your choice.</li>
+  <li><strong>598E:</strong> the rider, the length study, which is required. You do not do the other options: doing one as well adds no points, because the project is capped at 150.</li>
+</ul>
+<p>Three practical rules go with it.</p>
+<ol>
+  <li><p><strong>Say which one you chose in <code>p3.json</code>.</strong> Set <code>stretch</code> to the option's id, so I know which one you did. For the length study it also switches on that study's checks in <code>p3 check --final</code>. <code>p3.json</code> is yours, so edit it yourself in VS Code or ask the Builder to.</p>
+<pre><code>{
+  "section": "498E",
+  "stretch": "personalization-swap"
+}</code></pre>
+<p>For 598E, set <code>section</code> to <code>"598E"</code> and <code>stretch</code> to <code>"length-study"</code>. <code>uv run p3 check</code> then prints <code>p3.json: section 598E, stretch length-study</code> on its first OK line, which is how you know it read the file.</p></li>
+  <li><p><strong>Write it up in the last section of <code>EVAL.md</code></strong>, <code>## 13. The stretch</code>, which asks for five things: the option's name; what you did and the files that hold it; the evidence (the reviews, the blind comparisons, the objective checks and the cost it rests on, pasted or named); what that evidence lets you claim and what it does not; and one thing you would do next, with the result that would tell you it worked. The prose there is yours, as in the rest of <code>EVAL.md</code>.</p></li>
+  <li><p><strong>Pick early, and try a small piece first.</strong> Most of the options draw on your Claude plan, and a stretch is worth doing properly and not worth doing in the last hour. Plan about 4 to 6 hours on top of the core work.</p></li>
+</ol>
+
+<div class="why"><span class="label">What the stretch means for your grade</span>
+<p>The core work is 125 of the 150 points, so complete core work with the video and no stretch is 175 of 200, which is 87.5%. So in this project an A needs a stretch, and I would rather you know that now than find out later.</p>
+</div>
+
+<h2 id="options">The five options</h2>
+<div class="table-wrap">
+<table>
+  <caption>The ids go in <code>p3.json</code> exactly as written. From the README's "One stretch".</caption>
+  <thead><tr><th>Id</th><th>Option</th><th>What it asks</th></tr></thead>
+  <tbody>
+    <tr><td><code>length-study</code></td><td>1. The length study</td><td>whether splitting the teach job matters more as lessons get longer; required for 598E</td></tr>
+    <tr><td><code>personalization-swap</code></td><td>2. Personalization swap</td><td>whether lesson, quiz and feedback change as a second learner profile intends, and stay correct</td></tr>
+    <tr><td><code>cheaper-tutor</code></td><td>3. A cheaper tutor</td><td>whether you can keep the quality with Haiku subagents or fewer calls</td></tr>
+    <tr><td><code>mcp-server</code></td><td>4. An MCP server the tutor uses</td><td>whether a server of your own, such as a review scheduler or a progress store, earns its place</td></tr>
+    <tr><td><code>agent-sdk-grader</code></td><td>5. The grader ported to the Agent SDK</td><td>how a grader written with the Agent SDK compares with your Claude Code grader</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Options 2, 3 and 5 build on <code>final</code>, so you can only finish them once <code>final</code> is frozen and has its three runs. Option 4 needs a conversation with me first. The length study's first half needs only <code>c1-skills</code>, so it starts in week 2.</p>
+<p>If you are unsure which to choose, the Guide can walk you through what each one involves in your repo.</p>
+<div class="say guide">
+  <div class="say-head">Say to the Guide</div>
+  <pre>I am choosing a stretch. What would the personalization swap and the cheaper tutor each involve in my repo, and what does each draw on my plan?</pre>
+</div>
+
+<h3 id="length-study-option">1. The length study</h3>
+<p>The length study is the 598E rider, described in full in <a href="#length-study">its own section below</a>. In 498E, set <code>stretch</code> to <code>"length-study"</code>, and <code>p3 check --final</code> checks its runs and <code>PREREG.md</code> exactly as it does for 598E. Its three blind comparisons are then your second blind comparison, as they are for 598E. Your component minimums stay 498E's; only 598E has the larger architecture.</p>
+
+<h3 id="personalization-swap">2. Personalization swap</h3>
+<p><strong>The question:</strong> with two learner profiles on the same topic, do the lesson, the quiz and the feedback change as each profile intends, and do they stay correct?</p>
+<p><code>tutor/PREFERENCES.md</code> is part of every config, so a second profile is a second config: <code>final</code> with only that file changed. You write a <code>PREFERENCES.md</code> for a learner unlike you, snapshot it under a second name, run both, and show both halves of the answer.</p>
+<ol class="steps">
+  <li><p><strong>Start from <code>final</code>, frozen and committed.</strong> Its three runs should be done, and <code>git status</code> should show nothing changed under <code>tutor/</code>, so you can come back to it.</p></li>
+  <li><p><strong>Write the second profile yourself.</strong> Edit <code>tutor/PREFERENCES.md</code> in VS Code, keeping its five headings, for a learner who differs from you in ways you can check in the outputs: someone who wants the big picture before any example, say, or who wants blunt one-line feedback where you like the reasoning. This file is yours to write, as your own profile was; neither window writes it for you. Leave everything else in <code>tutor/</code> as <code>final</code> has it, so the profile is the only difference.</p></li>
+  <li><p><strong>Snapshot it under a second name</strong>, then put your own profile back.</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+    <pre class="in">uv run p3 snapshot final-swap
+git restore tutor/PREFERENCES.md</pre>
+  </div>
+  <p><code>final-swap</code> is an example; any name of lowercase letters, digits and hyphens works, except one that starts with <code>final-minus-</code>, because <code>p3 check</code> treats every such config as an ablation and asks for its full run.</p></li>
+  <li><p><strong>Run it on the shared topic.</strong> <code>final</code> already has its three runs.</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">uv run p3 bench --config final-swap</pre>
+  </div>
+  <p>With one run, you can say whether each objective check of the swap falls inside <code>final</code>'s range over its three runs. With three, add <code>--repeats 3</code>, and you can compare the two ranges, which is a stronger claim and costs three times as much.</p></li>
+  <li><p><strong>Show the first half: the changes match the profile.</strong> Read the swap's lesson, quiz and grades beside <code>final</code>'s, and say, with quotes, where each one changed the way the second profile asks and where it did not.</p></li>
+  <li><p><strong>Show the second half: the objective checks hold.</strong> A profile that asks for shorter lessons should not cost facts or key agreement.</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+    <pre class="in">uv run p3 report --configs final,final-swap</pre>
+  </div></li>
+</ol>
+<div class="watch"><span class="label">Watch out</span>
+<p>Put your own <code>PREFERENCES.md</code> back before any learning session or live try, since those are sessions with <code>final</code>. And keep personal details out of both profiles: the snapshot is in your public repo.</p>
+</div>
+
+<h3 id="cheaper-tutor">3. A cheaper tutor</h3>
+<p><strong>The question:</strong> can you keep <code>final</code>'s quality for less, with Haiku subagents or fewer calls? You judge it by a major review of the cheaper config and by the objective checks.</p>
+<ol class="steps">
+  <li><p><strong>Make the cheaper version from <code>final</code>.</strong> A subagent can name its own model in its frontmatter, as <code>model: haiku</code>, which is the simplest change; fewer review passes, a merged pair of subagents or a skill that does a subagent's job are others. Ask the Builder for one change at a time, as in a quick round, and try each one on <code>--config live</code> with <code>--only</code> and the scenarios it touches before you snapshot.</p>
+  <div class="say builder">
+    <div class="say-head">Say to the Builder</div>
+    <pre>For the cheaper-tutor stretch, set model: haiku in the frontmatter of tutor/.claude/agents/quiz-reviewer.md, and change nothing else.</pre>
+    <p>Name your own subagent; <code>quiz-reviewer</code> is an example.</p>
+  </div></li>
+  <li><p><strong>Snapshot it and run it as many times as <code>final</code></strong>, three, so both sides of the comparison have repeats.</p>
+  <div class="cmd">
+    <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+    <pre class="in">uv run p3 snapshot cheaper
+uv run p3 bench --config cheaper --repeats 3</pre>
+  </div>
+  <p>Again, any name works except one starting with <code>final-minus-</code>. Once the snapshot exists, run <code>git restore tutor/</code> to bring <code>tutor/</code> back to <code>final</code> as you committed it, so your learning sessions and live tries stay sessions with <code>final</code>.</p></li>
+  <li><p><strong>Write a major review of the cheaper config</strong> in the same form as your others, in a file of its own such as <code>reviews/cheaper-tutor.md</code>: copy the major review's headings from <code>reviews/final.md</code>, rate every criterion from 1 to 5 with feedback and evidence, and compare it with your review of <code>final</code>.</p></li>
+  <li><p><strong>Set the numbers beside it:</strong> <code>uv run p3 report --configs final,cheaper</code> gives the objective checks and the cost of both.</p></li>
+</ol>
+<p>A blind comparison of the cheaper config against <code>final</code> is welcome, such as <code>uv run p3 compare final cheaper --job quiz</code>, and it counts as your optional second blind comparison.</p>
+<div class="watch"><span class="label">Watch out</span>
+<p><code>p3 check</code> and <code>p3 report</code> read only the four step files in <code>reviews/</code>, so they never see <code>reviews/cheaper-tutor.md</code>: no TODO line will tell you a criterion is missing there, and its ratings do not appear in "Your ratings". Check it against the form of your other reviews yourself.</p>
+<p><code>p3 check</code> does read every snapshot, though, so a new skill or subagent in the cheaper config, such as a merged pair of subagents, is a component like any other and needs its entry in <code>reviews/components.md</code>.</p>
+</div>
+
+<h3 id="mcp-server">4. An MCP server the tutor uses</h3>
+<p><strong>The question:</strong> does a server of your own, such as a review scheduler or a progress store, earn its place in the tutor, measured the way the rest of P3 measures things? Lecture 16 covered MCP.</p>
+<p><strong>Ask me before you start this one</strong>, so we agree on how the bench's scenarios start your server. Every scenario runs in a fresh folder outside your repo, holding only the config, the topic's starting workspace and <code>FORMATS.md</code>, so how your server gets started there has to be settled before you build. Bring a short plan to office hours or send it to me on Canvas: what the server does, which jobs use it, and what you expect it to change in the outputs or the cost.</p>
+
+<h3 id="agent-sdk-grader">5. The grader ported to the Agent SDK</h3>
+<p><strong>The question:</strong> how does a grader written with the Agent SDK (lecture 21, Tuesday, November 10) compare with your Claude Code grader, in quality and in cost?</p>
+<ul>
+  <li><strong>Keep the SDK code outside <code>p3/</code> and <code>bench/</code></strong>, for example in <code>sdk/</code>. Those two folders hold the course's measurement, and <code>p3 check</code> fails when a file under <code>p3/</code>, <code>bench/judge/</code> or <code>bench/topics/</code> is added or changed.</li>
+  <li><strong>Have it write grades in the <code>FORMATS.md</code> format</strong>, as <code>grades/NNNN-sN.json</code>, so its output can be set beside your Claude Code grader's item by item.</li>
+  <li><strong>Compare the two on the same submissions.</strong> The shared topic's two submissions for quiz <code>0001</code> are in <code>bench/topics/agent-architecture/workspace/submissions/</code>, and their true grades are in <code>bench/topics/agent-architecture/grading.json</code>; your test topics have their own. Read them; do not edit them. Compare verdicts against the true grades and whether each names the right misconception, as the bench's grade checks do, then the feedback by your own reading, and the tokens and time each one spent.</li>
+</ul>
+<div class="watch"><span class="label">Watch out</span>
+<p>The Agent SDK runs on your Claude subscription with no API key (lecture 21), so this option needs none either. Your repo is public, history included. Never commit an API key or a token, in the SDK code or anywhere else.</p>
+</div>
+
+<h2 id="length-study">The length study</h2>
+<p>This is the 598E rider, and option 1 for 498E. It asks one question:</p>
+<div class="note"><span class="label">The question</span><p>Does splitting up the teach job matter more as lessons get longer, and does quality fall faster with length for a single agent than for the split pipeline?</p></div>
+<p>The ladder measures every step on a 30-minute lesson. A single agent writing 10 minutes of material and a pipeline doing the same may look alike, while at 60 minutes one context has to hold a plan, many sections and its own earlier text, which is where a split might pay. The study tests that on your own two configs: <code>c1-skills</code>, the last single-agent step, and <code>final</code>.</p>
+<p>In <code>p3.json</code>, 598E sets <code>section</code> to <code>"598E"</code> and <code>stretch</code> to <code>"length-study"</code>; a 498E student choosing it sets <code>stretch</code> to <code>"length-study"</code>. Either way <code>p3 check --final</code> then looks for the study's runs, its three comparisons and <code>PREREG.md</code>. I estimate it at 4 to 6 extra hours of your time.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>The design is fixed: eighteen teach-only runs on the shared topic, three in each cell.</caption>
+  <thead><tr><th></th><th class="num"><code>c1-skills</code></th><th class="num"><code>final</code></th></tr></thead>
+  <tbody>
+    <tr><td>10 minutes</td><td class="num">3 runs</td><td class="num">3 runs</td></tr>
+    <tr><td>30 minutes</td><td class="num">3 runs</td><td class="num">3 runs</td></tr>
+    <tr><td>60 minutes</td><td class="num">3 runs</td><td class="num">3 runs</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The study happens in this order, and the order is part of what is checked:</p>
+<ol class="steps">
+  <li><p><strong>Write and commit <code>PREREG.md</code></strong>, sections 1 to 4, before any of the study's runs. Week 2, once <code>c1-skills</code> is snapshotted, is a good time.</p></li>
+  <li><p><strong>Make the nine <code>c1-skills</code> runs</strong>, which need only <code>c1-skills</code>. Week 2.</p></li>
+  <li><p><strong>Make the nine <code>final</code> runs</strong>, once <code>final</code> is frozen. Week 3.</p></li>
+  <li><p><strong>Make the three blind comparisons</strong>, one per length, and then read the report. Week 3.</p></li>
+  <li><p><strong>Write the outcome</strong> in section 5 of <code>PREREG.md</code> and the write-up in section 13 of <code>EVAL.md</code>.</p></li>
+</ol>
+<p><code>uv run p3 next</code> follows the same order: stage 6, "The length study, part 1", covers <code>PREREG.md</code> and the <code>c1-skills</code> runs, and points here; the <code>final</code> runs are part of stage 9, and the comparisons part of stage 10.</p>
+
+<h2 id="prereg">PREREG.md, before the runs</h2>
+<p>A pre-registration is a claim you write down, with the analysis that will judge it, before you can see the answer. Its value is that the claim can be wrong in a way anyone can check, and that you cannot bend it afterwards to fit the numbers. You did one in P2; this one has the same purpose. A clear "no difference as large as the one I cared about" scores as well as a confirmation, so you have no reason to hedge.</p>
+
+<h3 id="prereg-what">What to write</h3>
+<p><code>PREREG.md</code> ships in your repo with six sections and a TODO marker line in each one that needs your words. Before the runs you fill in sections 1 to 4, in your own words; neither the Guide nor the Builder writes them.</p>
+<div class="table-wrap">
+<table>
+  <caption>The sections of <code>PREREG.md</code>. The file itself explains each one with an example.</caption>
+  <thead><tr><th>Section</th><th>What goes there</th><th>When</th></tr></thead>
+  <tbody>
+    <tr><td>1. Hypothesis</td><td>One or two sentences: as the length grows from 10 to 60 minutes, which config loses more quality, in which measure, and why you expect it. Something you could be wrong about.</td><td>before the runs</td></tr>
+    <tr><td>2. The smallest difference that matters</td><td>One primary measure, chosen now so you cannot pick the better one afterwards, and Δ (delta), the smallest difference in it that would matter to a learner, with the reason for that size.</td><td>before the runs</td></tr>
+    <tr><td>3. The measures</td><td>Each measure you will report and how you compute it: at least your primary measure per cell, the blind comparison at each length, length accuracy, and cost against length.</td><td>before the runs</td></tr>
+    <tr><td>4. The analysis</td><td>The rule that turns your numbers into "supported", "contradicted", "no difference as large as Δ" or "inconclusive", which you may tighten but not loosen, and the threats to validity you will report.</td><td>before the runs</td></tr>
+    <tr><td>5. Outcome</td><td>What each measure showed, which row of your rule it is, and what you would do next.</td><td>after the runs and comparisons</td></tr>
+    <tr><td>6. Amendments</td><td>Dated entries only, one per change, each saying what changed and why.</td><td>only if something must change</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="student"><span class="label">An example hypothesis, from PREREG.md</span>
+<p>"The single-agent <code>c1-skills</code> loses more than <code>final</code> as lessons get longer, because one context writing a 60-minute lesson drifts from the plan, so its <code>teach_facts_correct</code> falls further from 10 to 60 minutes, and <code>final</code> wins more of the blind pairs at 60 minutes than at 10."</p>
+</div>
+
+<h3 id="prereg-power">Know what three runs can show before you choose Δ</h3>
+<p>Choose a Δ that is large enough to matter and large enough for three runs to see. There are three blind teach pairs at each length, and even 3 of 3 for one config has a two-sided sign-test <span class="nw">p-value</span> of 0.25, so no single length can settle a preference on its own. Across all three lengths there are nine pairs: 8 of 9 gives a <span class="nw">p-value</span> of about 0.04, and 7 of 9 about 0.18. An objective measure such as <code>teach_facts_correct</code> gives three numbers per cell, and you can see a difference only when it is larger than the spread between the three runs. A Δ of one fact in ten, on a measure whose three runs already spread by two in ten, is a Δ the study cannot see.</p>
+
+<h3 id="prereg-order">Why the order is proved by git</h3>
+<p>Commit sections 1 to 4 <strong>before the first of the eighteen runs</strong>. Git history is how I know the order, and it is also how <code>p3 check --final</code> knows it: it finds the first commit of <code>PREREG.md</code> in which sections 1 to 4 hold no TODO marker, and compares that commit's time with the start time recorded in the <code>run.json</code> of the study's first teach-only run. When the commit came first, you see a line like this:</p>
+<pre>OK    PREREG.md: sections 1 to 4
+      committed at 2026-11-11T21:04:10Z
+      (3f2a91c0d7e4), before the first
+      length-study run
+      (2026-11-12T15:30:02Z)</pre>
+<p>When it came after, the line says so with both times in it, as a TODO line in <code>p3 check</code> and a FAIL in <code>p3 check --final</code>. A later commit cannot repair the order, because the run's start time is in the run and the commit's time is in git. If it happens to you, <code>p3 next</code> says what to do: delete the length-study runs made before that commit and make them again, which costs those runs a second time. So write it, commit it, push it, and only then start the first run.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">git add PREREG.md
+git commit -m "Pre-register the length study"
+git push</pre>
+</div>
+<p>After that commit, do not edit sections 1 to 4. If something must change, add a dated entry in section 6 and leave the original as it was. If sections 1 to 4 change after the commit, <code>p3 check</code> warns that they have changed since that commit. Section 5 you write at the end.</p>
+
+<div class="watch"><span class="label">Watch out: a "trial" run counts</span>
+<p>Any scored run of <code>c1-skills</code> or <code>final</code> made with <code>--only teach</code> on the shared topic at 10, 30 or 60 minutes is a length-study run to <code>p3 check</code>, including one you meant as a trial. So commit <code>PREREG.md</code> before any such run. A trial on <code>--config live</code> is safe, because live runs go to <code>bench/runs/_live/</code> and belong to no config.</p>
+</div>
+
+<h2 id="length-runs">The eighteen runs</h2>
+<p>Each cell is three teach-only runs of one config at one length, made with <code>--only teach</code> and <code>--minutes</code>. Run them in a plain terminal, because each teach scenario can take up to 45 minutes and must not stop when a Claude Code window closes.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code>: week 2, once <code>PREREG.md</code> is committed</div>
+  <pre class="in">uv run p3 bench --config c1-skills --only teach --minutes 10 --repeats 3
+uv run p3 bench --config c1-skills --only teach --minutes 30 --repeats 3
+uv run p3 bench --config c1-skills --only teach --minutes 60 --repeats 3</pre>
+</div>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code>: week 3, once <code>final</code> is frozen</div>
+  <pre class="in">uv run p3 bench --config final --only teach --minutes 10 --repeats 3
+uv run p3 bench --config final --only teach --minutes 30 --repeats 3
+uv run p3 bench --config final --only teach --minutes 60 --repeats 3</pre>
+</div>
+<p>Each command runs the teach scenario three times, one after another, and scores the runs. Commit the runs as they finish, as you do the ladder's.</p>
+
+<h3 id="time-limit">The time limit does not grow with the lesson</h3>
+<p>A teach scenario has 45 minutes and 200 turns at every length, set in <code>bench/scenarios.json</code>. A 60-minute lesson through your multi-agent pipeline is the run most likely to reach that limit, and a scenario that reaches it is stopped and recorded as a timeout, which is a result about your tutor: keep it and report it. So start the 60-minute cell of <code>final</code> with one run and see whether its pipeline finishes in time:</p>
+<div class="cmd">
+  <div class="cmd-head">Run in a plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 bench --config final --only teach --minutes 60</pre>
+</div>
+<p>If it finishes well inside the limit, run the other two with <code>--repeats 2</code>. That first run is one of the three, because <code>p3 check</code> counts every scored teach-only run in the cell. If it comes close to the limit or times out, that is a finding about your pipeline at length, and it belongs in your write-up; <code>final</code> is frozen, so the study measures it as it is, and you still make the other two runs.</p>
+
+<h3 id="teach-only">Why these are kept apart from the ladder's runs</h3>
+<p>A run made with <code>--only</code> is not a full run, so <code>p3 report</code>, <code>p3 compare</code> and <code>p3 check</code> leave it out of the ladder. The study's runs are the one exception: <code>--only teach</code> runs are the length study's, and the <code>--teach-only</code> option shows them in <code>p3 report</code> and pairs them in <code>p3 compare</code>. That keeps the two sets apart in both directions: the study's runs never count as a step's full run, and the ladder's 30-minute full runs never slip into the study's 30-minute cell.</p>
+
+<h2 id="length-comparisons">The three blind comparisons</h2>
+<p>Once all eighteen runs are scored, compare <code>c1-skills</code> with <code>final</code> blind, <strong>within each length, never across</strong>. Never compare a 10-minute lesson with a 60-minute one, because judges also favor longer outputs (lecture 24), and you are the judge here.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in your own plain terminal in <code>work/p3-tutor</code></div>
+  <pre class="in">uv run p3 compare c1-skills final --job teach --teach-only --minutes 10
+uv run p3 compare c1-skills final --job teach --teach-only --minutes 30
+uv run p3 compare c1-skills final --job teach --teach-only --minutes 60</pre>
+</div>
+<p>Each one pairs only the study's teach-only runs at that length, three pairs each. <code>--teach-only</code> matters most at 30 minutes, where the ladder's full runs of <code>c1-skills</code> and <code>final</code> hold a 30-minute lesson too; it keeps them out, so every length gets exactly the study's three pairs. Run them yourself, because the picks must be yours: no agent makes a pick, suggests one, or says which config made a lesson. <a href="13-blind-comparison.html">The blind comparison</a> explains how a session works, how to resume one and how to reveal it.</p>
+<p>These three sessions are your second blind comparison of the project, beside <code>c0-baseline</code> against <code>final</code>, and you make no other on top. In <code>EVAL.md</code>, section 8's "A second blind comparison" says so in a line and points to section 13.</p>
+<p>The question for the study is whether <code>final</code>'s win rate grows with length: <code>final</code>'s share of the non-tie picks at 10, at 30 and at 60 minutes, side by side. With three pairs per length, read that as a direction, with your reasons, rather than as proof at any one length.</p>
+
+<h2 id="length-accuracy">Length accuracy</h2>
+<p>Check the actual length against the requested length, because a "60-minute" lesson that is really 35 minutes confounds the whole comparison: you would be comparing a 35-minute lesson with whatever the other config wrote.</p>
+<div class="cmd">
+  <div class="cmd-head">Run in the Builder, or a plain terminal</div>
+  <pre class="in">uv run p3 report --configs c1-skills,final --teach-only</pre>
+</div>
+<p>That gives every cell's numbers, one row per config and length. The length measure is <code>teach_length_ratio</code>: the lesson's visible words divided by 150 words a minute, over the minutes requested. A ratio from 0.6 to 1.5 counts as on length. It is a rough reading-time estimate, and a lesson with a good interactive exercise and few words reads as short, so treat it as a warning light and not a verdict. For a sense of scale, the baseline's 30-minute lessons in my runs came in at 0.62 to 0.75, just above the floor (<code>KNOWN-GAPS.md</code> has the details).</p>
+<p>Section 3 of <code>PREREG.md</code> asks you to say, before the runs, what you will do with a cell whose lessons miss their length. Decide that before you see which cell it is.</p>
+
+<h2 id="cost-length">Cost against length</h2>
+<p>For each config, compute the tokens per minute of lesson, and ask whether <code>final</code>'s overhead grows in step with the length or faster. Say in <code>PREREG.md</code> whether you divide by the minutes requested or by the estimated minutes, since a lesson that runs short looks cheap per requested minute.</p>
+<div class="note"><span class="label">The arithmetic, with made-up numbers</span>
+<p>These numbers are invented, only to show the calculation. Say <code>c1-skills</code> averages 1 million tokens at 10 minutes and 2 million at 60, and <code>final</code> averages 3 million at 10 and 16 million at 60.</p>
+<p>Per requested minute, <code>c1-skills</code> goes from 100,000 tokens to about 33,000, and <code>final</code> from 300,000 to about 267,000.</p>
+<p>One way to define the pipeline's overhead is <code>final</code>'s tokens minus <code>c1-skills</code>' at the same length: here 2 million at 10 minutes and 14 million at 60. That is seven times as much for a lesson six times as long, so in this made-up case the overhead grows faster than the length. Say in <code>PREREG.md</code> which definition you will use. Your own numbers come from the cost columns of the <code>--teach-only</code> report.</p>
+</div>
+
+<h2 id="threats">Threats to validity</h2>
+<p>Name these in section 4 of <code>PREREG.md</code> before the runs, say which one worries you most for your hypothesis, and report on each in the outcome (lecture 22 covers threats to validity).</p>
+<ul>
+  <li><strong>Blinding failures.</strong> A pipeline's lessons may have a look you recognize at once. Each reveal reports how often you could tell which config made which; report that share at each length.</li>
+  <li><strong>Judge bias toward longer outputs</strong> (lecture 24). It is why you never compare across lengths, and it affects any judge-scored measure you choose.</li>
+  <li><strong>The rough length estimate.</strong> Words over 150 a minute is not a learner's real reading time.</li>
+  <li><strong>Three runs per cell.</strong> Three numbers per cell and three pairs per length limit what any one cell can show, which is why section 2 asks you to choose Δ with that in mind.</li>
+</ul>
+
+<h2 id="length-write-up">Writing it up</h2>
+<p>Two places, both in your words:</p>
+<ul>
+  <li><strong>Section 5 of <code>PREREG.md</code></strong>, the outcome: what each measure showed, cell by cell, which row of your section 4 rule it is, whether the lessons met their lengths, what the cost per minute of lesson did, and what you would do next.</li>
+  <li><strong>Section 13 of <code>EVAL.md</code></strong>, the stretch, with its five parts, and <code>PREREG.md</code> beside it.</li>
+</ul>
+<p><code>p3 check --final</code> fails while either file still holds a TODO marker line, and for the study it also looks for three scored teach-only runs in each of the six cells, a complete teach-only comparison at each of the three lengths, and the <code>PREREG.md</code> commit before the first run.</p>
+
+<h2 id="rider-598e">What else the rider changes for 598E</h2>
+<p>For 598E, the rider changes three other things.</p>
+
+<h3 id="second-comparison">Your second blind comparison is the study's</h3>
+<p>The three per-length teach comparisons are your second blind comparison of the project, beside <code>c0-baseline</code> against <code>final</code>, and you make no other on top. The same holds for a 498E student who chose the study.</p>
+
+<h3 id="larger-architecture">A larger architecture</h3>
+<p>You build at least six skills, the four required ones (<code>teach</code>, <code>tutor</code>, <code>quiz</code> and <code>grade</code>) plus two of your own, and at least eight subagents across the ladder. They are counted over what you built, not over what <code>final</code> keeps: a component counts when it appears in any of your snapshots other than <code>c0-baseline</code>, so dropping one for a good reason never costs you. <code>uv run p3 check</code> counts them against these minimums, because <code>p3.json</code> says <code>598E</code>.</p>
+<p>With one new component per round, that means more rounds: about 14 instead of 9, and a longer inventory. My estimate is about 36 hours for the core work, plus the study's 4 to 6, so about 40 to 42 hours in all. If you are well past that by the end of week 2, come and talk to me early.</p>
+
+<h3 id="cost-warning">The cost warning</h3>
+<p>Your architecture is larger than mine: at least eight subagents, where my review-loop config had six and took 7 million tokens per full run. A 598E <code>final</code> may well take 10 to 15 million tokens per full run, and you run it three times, on top of the ablation, the test topics and the study's eighteen teach-only runs, three of them 60-minute lessons through your pipeline.</p>
+<p>Everything that needs <code>final</code> waits until you freeze it, so spread what can be spread:</p>
+<ul>
+  <li>the baseline's runs in week 1;</li>
+  <li>the study's <code>c1-skills</code> runs in week 2, once <code>PREREG.md</code> is committed;</li>
+  <li><code>final</code>'s runs as early in week 3 as you can, so a usage limit late in the week still leaves you time;</li>
+  <li>the 60-minute cells over several days, trying one before you commit to the rest.</li>
+</ul>
+<p>Check <code>/usage</code> in a Claude Code window before each big run, and try every new subagent on an <code>--only</code> run before a full one. If a run stops at your usage limit, <code>p3 bench</code> sets that repeat aside by itself, and <a href="19-troubleshooting.html#usage-limit">When it breaks</a> says what to do while you wait.</p>
+
+<h2 id="next">If it breaks, and where to go next</h2>
+<p>If a run, a comparison or the <code>PREREG.md</code> check does something you do not expect, look in <a href="19-troubleshooting.html">When it breaks</a>, or paste the message to the Guide. When your stretch is written up, <a href="15-hand-in.html">Hand in</a> covers the last check and the Canvas post.</p>
+
+</article>
+<!-- pager:start -->
+<nav class="pager" aria-label="Previous and next chapter">
+<a class="prev" href="15-hand-in.html"><span class="pager-label">Previous</span><span class="pager-title">Hand in</span></a>
+<a class="next" href="17-pace.html"><span class="pager-label">Next</span><span class="pager-title">A pace that works</span></a>
+</nav>
+<!-- pager:end -->
+</main>
+</div>
+
+<script src="book.js"></script>
+</body>
+</html>
