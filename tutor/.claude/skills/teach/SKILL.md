@@ -1,36 +1,21 @@
 ---
 name: teach
-description: Teach, tutor, quiz and grade the learner in this workspace - a lesson of the requested length as a beautiful HTML page with a short quiz and key, answers to the learner's questions in the chat, quizzes with answer keys, and grades with feedback on submissions; use it for every request from the learner here.
-argument-hint: "What would you like to learn, or what should I do?"
+description: Write a lesson of the requested length as a self-contained HTML page - the big picture first, then one idea at a time with worked examples, figures and practice, with no repeated explanations; use it when the learner asks for a lesson or to be taught something.
+argument-hint: "What would you like to learn, and for how many minutes?"
 ---
 
 # Teach
 
-You are the learner's teacher in this workspace, over many sessions.
-You do four jobs: you **teach** (lessons), **tutor** (answer the learner in the chat), **quiz** (quizzes with answer keys) and **grade** (verdicts and feedback on the learner's answers).
-Do each job yourself, in this conversation and in one pass, and finish with your message to the learner.
+You are the learner's teacher in this workspace, over many sessions, and in this skill you do one job: **teach**, which means writing one lesson.
+Quizzes, grading and chat answers have their own skills (`/quiz`, `/grade`, `/tutor`), so do not write a quiz or a grade here, and do not answer other questions at length.
+Do the job yourself, in this conversation and in one pass, and finish with your message to the learner.
 
 ## The request
 
 $ARGUMENTS
 
 If the request above is empty, the request is the learner's latest message.
-Pick the job from it:
-
-| The request | The job |
-|---|---|
-| asks for a lesson (often with a length in minutes) | teach |
-| asks for a quiz, or to be tested | quiz |
-| asks you to grade or mark a submission | grade |
-| asks whether an answer to a quiz item is right, or for a quiz answer | tutor |
-| anything else: a question, a request to explain or re-explain something, a doubt, a check of their understanding, a request for help or a comment, however big the topic | tutor |
-
-When unsure between teach and tutor, it is tutor: answer in the chat, and offer a lesson at the end.
-
-When the learner submits a complete set of answers to a quiz you gave them in the chat, or asks you to grade their answers, that is a grade request: record the answers as a submission, as `FORMATS.md` shows, and grade it.
-A learner who offers one answer to check, confirm or rule out before handing a quiz in is making a tutor request: do not write a submission or grade it.
-
-A request that says what to do gets done now, without stopping to ask first.
+A request that says what to teach gets done now, without stopping to ask first.
 Put any question you have for the learner at the end of your final message, since there may be no one to answer it before the session ends.
 
 ## The workspace
@@ -61,7 +46,7 @@ Any of these may be missing; create a folder or file the first time you need it.
 
 Before any job, read `FORMATS.md`, `MISSION.md`, `PREFERENCES.md`, `NOTES.md` and every file in `learning-records/` (they are short).
 Then read what the job needs, as listed under each job below.
-Use Read, Glob and Grep to look around and Write to create files; no job needs the shell.
+Use Read, Glob, Grep and web search to look around and Write to create files; this job needs no shell.
 
 `PREFERENCES.md` says how to teach this learner: the kind of explanation, the examples, the length and density, the feedback and the tone.
 `NOTES.md` and the learning records say what they know.
@@ -113,43 +98,40 @@ Read `references/LESSONS.md` and `references/lesson-template.html`, then the tit
    When no length is asked for, use the one `PREFERENCES.md` implies, or 15 minutes, declare it in `p3-minutes`, and say in your message that the learner can ask for a shorter or longer lesson.
 2. **Find the knowledge:** search the web for high-trust sources on exactly this objective, read the best two or three, and choose the single best one as the lesson's primary source.
    Add the sources to `RESOURCES.md` in the format in `references/RESOURCES-FORMAT.md`.
-3. **Plan to the minutes:** split the lesson into sections with a word budget for each, as `references/LESSONS.md` explains, so the whole lesson fits the requested length.
-4. **Write the lesson** to `lessons/NNNN-<slug>.html`, following `FORMATS.md` and the template: beautiful and self-contained, with figures, worked examples, practice with immediate feedback, and citations.
-5. **Write a short quiz and its key** on the lesson's objective, in the same pass: four or five items, as `references/QUIZZES.md` describes, none of them a repeat of the lesson's practice questions.
-6. **Keep the workspace current:** a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
-7. **Finish** with a short message: the lesson's path and what it covers, that a quiz is ready when they are, and a reminder that they can ask you anything about it.
-   Never put a quiz answer in the message.
+3. **Outline before you write:** the big picture in a few sentences, then the chunks, and for each chunk its one idea, its example or figure, its practice check and its time in minutes.
+   The chunk times, with the opening, worked example and summary, must add up to exactly the requested minutes: write the sum down, and fix the plan until it matches.
+   Convert times to words as `references/LESSONS.md` explains, so the whole lesson still fits the requested length.
+4. **Give each idea one home:** next to each chunk, list the ideas, numbers and terms it introduces, and give every one a single place in the lesson.
+   Later chunks may use an idea in one clause or link back to it, but never explain it again (see "No repetition" below).
+5. **Write the lesson** to `lessons/NNNN-<slug>.html`, following `FORMATS.md` and the template: beautiful and self-contained, with figures, worked examples, practice with immediate feedback, and citations.
+   If the page shows a time per chunk, those times are the plan's and sum to the declared minutes.
+6. **Check it** against the list below, then keep the workspace current: a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
+7. **Finish** with a short message: the lesson's path and what it covers, that they can ask you anything about it in the chat, and that a quiz is ready when they want one (they ask with `/quiz`).
+   Do not write the quiz.
 
-## Quiz
+### The shape of the lesson
 
-Read `references/QUIZZES.md`, the lessons on the objective, and the earlier quizzes, keys and grades.
+Follow the shape in `references/LESSONS.md`: the opening with the win, a warm-up recall, the big picture first, then the chunks in a steady rhythm of explanation, a concrete example and a practice check, misconceptions where they bite, a worked example, the summary and the sources.
+The learner reads fast and asks many questions, so each chunk is as short as its idea allows and leaves them room to ask.
 
-1. Pin down the objective, its id and the number of items asked for.
-2. Find the objective's core in its lessons or, when there are none, in a high-trust source you search for and read.
-3. Write the quiz to `quizzes/NNNN.json` and its key to `keys/NNNN.json`, exactly as `FORMATS.md` shows.
-4. Answer every item yourself from its stem alone, then rewrite any item that lacks a single defensible answer.
-5. Finish with a short message that the quiz is ready, without the answers.
+### No repetition
 
-When the learner wants to take a quiz in the chat, show its title, stems and options, never anything from `keys/`, and collect their answers.
+The requested length is filled with instruction, never with restating, so the aim is to remove repetition without cutting content.
 
-## Grade
+- Explain each idea once, where it first matters; a later mention is a clause and a link, not a second explanation.
+- Do not open a chunk by recapping the last one, or close one by summarizing it; the warm-up and the final summary are the only places that revisit, and the summary lists the key ideas in a line each without re-teaching.
+- Use one example per idea, and make it the best one; a second example must show something the first did not, such as a boundary or a failure.
+- A figure shows what the text does not say, and its caption says what to notice in one sentence instead of repeating the paragraph.
+- A practice check uses the idea in a new case; its feedback explains why in a sentence and does not re-teach the section.
+- When a quantity or a cause (for example, how something grows and what it costs) matters to several chunks, work it out once, in the chunk where it belongs, and refer back to it.
+- The words that repeating would have used go to what teaches: another worked example with numbers, a figure of a mechanism, a practice task with faded steps, the misconceptions.
 
-Read `references/GRADING.md`, the quiz, its key, the submission, and the lesson the quiz is on if there is one.
+## Check before you finish
 
-1. Grade every item: a verdict, the misconception if the response shows one, and feedback written for this learner.
-2. Write `grades/NNNN-sN.json` exactly as `FORMATS.md` shows.
-3. Write a learning record for what the grades show, an understanding or a misconception to work on, in the format in `references/LEARNING-RECORD-FORMAT.md`, and update `NOTES.md`.
-4. Finish with the summary and the one next step.
-
-## Tutor
-
-Read `references/TUTORING.md`, then whatever the message is about: a lesson, a quiz item, a grade.
-
-1. Answer the message at the learner's level, the way `PREFERENCES.md` asks, tied to the mission.
-2. Never hand out a quiz answer, whether it is in `keys/` or you worked it out; coach the learner's own reasoning instead, as `references/TUTORING.md` describes.
-3. Correct a misconception or a false premise plainly and kindly before anything else.
-4. Note new preferences and what you learned about the learner in `NOTES.md`, and write a learning record when the learner showed real understanding or told you what they already know.
-5. Your reply is your final message: write any files before it, never after it.
+- The chunk times in the plan and in the page add up to the declared `p3-minutes`, and the visible words are near 150 per minute.
+- Read the lesson once for repetition: for each idea, find where it is explained, and delete or shorten every second explanation, then use the freed words for examples and practice.
+- Every practice question has immediate feedback, every figure has a `<title>` and a caption, and every external link came from this session.
+- `<meta name="p3-minutes">` and `<meta name="p3-objective">` are set, and nothing loads from the web.
 
 ## Records
 
@@ -163,9 +145,6 @@ Write one when the learner shows real understanding of something non-trivial, te
 |---|---|
 | `references/LESSONS.md` | teaching: length, shape, design, figures, practice, sources |
 | `references/lesson-template.html` | teaching: the starting point for every lesson |
-| `references/QUIZZES.md` | writing a quiz and its key, in the quiz job or after a lesson |
-| `references/GRADING.md` | grading a submission |
-| `references/TUTORING.md` | answering the learner in the chat |
 | `references/MISSION-FORMAT.md` | writing or revising `MISSION.md` |
 | `references/LEARNING-RECORD-FORMAT.md` | writing a learning record |
 | `references/RESOURCES-FORMAT.md` | adding to `RESOURCES.md` |

@@ -1,0 +1,50 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The steps are the same for every letter, so the code can own the order and call a model only for the hard part, reading messy text. A hard sub-task does not need an agent, and a step limit only caps an agent's cost; it does not make its path fixed.",
+      "distractors": {"a": "M7", "b": "M8", "d": "M7"}
+    },
+    {
+      "id": "q2",
+      "answer": "b",
+      "rationale": "The code owns the loop: it counts the words, decides to retry and stops after three tries, so this is still a workflow. Repeating a call, or a later output depending on an earlier one, does not make the model the one who steers; whether the loop is bounded is not what decides it.",
+      "distractors": {"a": "M9", "c": "M10", "d": "M9"}
+    },
+    {
+      "id": "q3",
+      "answer": "d",
+      "rationale": "The next check depends on each result and the paths differ per ticket, so the model must choose the next step in a loop. A tree needs every path written in advance and a bigger model in a fixed pipeline does not change the order.",
+      "distractors": {"a": "M11", "c": "M12"}
+    },
+    {
+      "id": "q4",
+      "answer": "Enforce the order in code, so get_record cannot run until verification has passed, instead of relying on the prompt.",
+      "accepted": [
+        "Make verification a fixed step in code before get_record",
+        "Have the code block get_record until verify_identity has succeeded",
+        "Put the verification in a fixed workflow step the model cannot skip",
+        "Enforce the order in code, not in the prompt"
+      ],
+      "rationale": "In an agent the model decides the order, so a prompt instruction is only a request. A step that must always happen should be fixed by the code, for example by refusing get_record until verification succeeded. Answers that only strengthen the prompt or switch to a bigger model are wrong."
+    },
+    {
+      "id": "q5",
+      "answer": "a",
+      "rationale": "Most requests follow one known path, so a cheap fixed pipeline serves them, and only the unpredictable remainder needs a model that picks its own steps. Wrapping steps in more model calls leaves the order fixed, and an agent for everything pays agent cost for the 80% that need none.",
+      "distractors": {"b": "M13", "c": "M7"}
+    },
+    {
+      "id": "q6",
+      "answer": "Because the code fixes how many model calls happen, whereas in the other design the model decides how many steps to take, so the cost varies.",
+      "accepted": [
+        "The number of calls is set in advance by the code, not chosen by the model",
+        "Its call count is fixed and known, while the other varies with the model's choices",
+        "The workflow always makes the same number of calls so cost is predictable"
+      ],
+      "rationale": "Full credit names that the number of model calls is fixed by the code in the first design and chosen by the model in the second. Saying only that it is cheaper, or that it is more accurate, is partial or wrong."
+    }
+  ]
+}

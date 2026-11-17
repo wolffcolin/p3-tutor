@@ -1,0 +1,68 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents, and who owns the control flow",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "In the usual distinction between a workflow and an agent, which difference decides which one a system is?",
+      "options": [
+        {"id": "a", "text": "How many different tools the system can call during one request"},
+        {"id": "b", "text": "How large the model is that writes each of the answers"},
+        {"id": "c", "text": "Whether the code or the model decides the next step"},
+        {"id": "d", "text": "Whether the system keeps results from earlier conversations"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "In your makerspace assistant, the program always does the same two things for a manual question: it first calls search_manuals with the student's question, then it gives the top passages to the model, which writes the answer. How is this best described?",
+      "options": [
+        {"id": "a", "text": "A workflow: the program fixes the order and the model only writes text"},
+        {"id": "b", "text": "An agent: the system calls a tool and the model reads the result"},
+        {"id": "c", "text": "An agent: the model produces the final answer that the student sees"},
+        {"id": "d", "text": "Neither: a workflow cannot include any call to a language model"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "Your sponsor's model budget is small. Which of these tasks is the best candidate for a fixed workflow rather than an agent?",
+      "options": [
+        {"id": "a", "text": "Fixing a failing script in a code repository nobody has opened before"},
+        {"id": "b", "text": "Planning a student's project and deciding which machines it will need"},
+        {"id": "c", "text": "Answering whatever questions students think of about the makerspace"},
+        {"id": "d", "text": "Booking a slot: check the calendar, reserve it, send a confirmation"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "numeric",
+      "objective": "O4",
+      "stem": "For a booking request, a fixed workflow always makes exactly 2 model calls. An agent doing the same job averages 5 model calls. Assume every model call costs $0.004. For 200 booking requests in one week, how much more does the agent cost than the workflow, in dollars?",
+      "unit": "dollars"
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O4",
+      "stem": "In one sentence, what property of a task makes an agent a better choice than a fixed workflow?"
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "Your assistant first asks the model to label each student message as either \"manual question\" or \"booking request\". The program then runs one of two step sequences that your team wrote in advance. Who owns the control flow?",
+      "options": [
+        {"id": "a", "text": "The model, because its label decides which path the program takes"},
+        {"id": "b", "text": "The program: your team wrote both paths and the model only picks one"},
+        {"id": "c", "text": "Nobody, because the path changes from one student message to the next"},
+        {"id": "d", "text": "The student, because the message they type decides which path is run"}
+      ]
+    }
+  ]
+}

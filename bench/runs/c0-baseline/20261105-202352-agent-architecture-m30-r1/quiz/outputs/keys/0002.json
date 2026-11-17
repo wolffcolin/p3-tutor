@@ -1,0 +1,45 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "In a workflow, code written in advance fixes the sequence of steps; in an agent, the model dynamically decides the next step and which tools to use. Tool count (a), model size (b) and memory (d) do not decide it.",
+      "distractors": {"a": "M7"}
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "The program fixes the order (search, then answer) every time, so the code owns the control flow: this is a workflow, even though it uses a tool and a model. Using a tool (b) or having the model write the final answer (c) does not make a system an agent, and workflows can include model calls (d).",
+      "distractors": {"b": "M7", "c": "M7"}
+    },
+    {
+      "id": "q3",
+      "answer": "d",
+      "rationale": "Booking has the same predictable steps every time, so a fixed workflow does it reliably and with fewer, cheaper model calls. The other tasks have steps that cannot be listed in advance, which is where an agent earns its extra cost."
+    },
+    {
+      "id": "q4",
+      "answer": 2.4,
+      "tolerance": 0.01,
+      "rationale": "Extra calls per request: 5 - 2 = 3. Extra cost per request: 3 x $0.004 = $0.012. For 200 requests: 200 x $0.012 = $2.40."
+    },
+    {
+      "id": "q5",
+      "answer": "The steps needed cannot be known in advance, because they depend on what earlier steps find.",
+      "accepted": [
+        "The task is open-ended and the number or order of steps depends on intermediate results",
+        "The path to the answer is unpredictable so the model must decide the next step",
+        "The steps can't be fixed ahead of time",
+        "It is open-ended, so the model has to choose its own steps"
+      ],
+      "rationale": "Agents suit tasks where the sequence of steps is unpredictable and depends on what comes back along the way; if the steps can be listed in advance, a fixed workflow is cheaper and more predictable. Answers such as 'the task is harder' or 'it uses tools' miss that the deciding property is whether the path can be fixed ahead of time."
+    },
+    {
+      "id": "q6",
+      "answer": "b",
+      "rationale": "This is a routing workflow: the team's code defines every possible path, and the model only chooses among them. A model making a decision inside the flow does not make it an agent; an agent decides its own steps without a predefined set of paths.",
+      "distractors": {"a": "M7"}
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose an action, run it, feed the result back is what makes a system an agent. A longer prompt or a bigger model only changes what a single call can do, not the structure."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You picked 'the calendar entries, read by opening the booking system on its own'. The model only writes text, and here that text is a request naming check_calendar with the laser cutter and tomorrow's date. The program around the model runs the tool and sends the result back. It is tempting because the end result looks like the model checked the calendar, but the model never touches the booking system."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the agent keeps getting the same failing result, so more steps or more context won't help. A step limit that stops the loop and reports back is the safeguard. Every agent program needs a stopping condition like this."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "The answer is 4, not 1. You wrote that the model runs the 3 tools itself inside one call, but the program runs the tools. Each model call ends with one tool request or the final answer, so three requests plus the answer make 4 calls. Equivalently, the model is called once for each input it gets: the question and the three tool results. This is the same slip as in q2."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "'It sends it back to the model' is the right half: the result goes back as part of the model's next input, and the model is called again. What is missing is why: so the model can use the result to choose its next step or write the final answer. Without that, the model would never see what the tool found."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the program sends the model a list of tools, each with a name and a description, and the model picks the one that fits. Mentioning the parameters would complete it. The second half is wrong: the model does not remember which tool it picked in earlier sessions. It has no memory between calls unless the program puts that information into its input. Remembering across sessions is something we have to build, and it is the next topic."
+    }
+  ],
+  "summary": "You have the loop itself and the stopping condition (q1, q3), and you know the model chooses tools from their descriptions. The idea to fix is who does what: the model only writes text, including tool requests, and the program runs the tools and calls the model again for every step. That mix-up caused your misses on q2 and q4. Also, the model remembers nothing between calls unless the program supplies it. Next step: redraw your laser cutter trace, labelling each step 'model call' or 'program action', then count the model calls and compare with q4."
+}

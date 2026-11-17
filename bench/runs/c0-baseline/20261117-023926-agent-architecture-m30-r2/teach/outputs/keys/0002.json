@@ -1,0 +1,41 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "a",
+      "rationale": "The model keeps nothing between calls; a new conversation starts from only the text the program sends, and the program saved nothing. Options b, c and d each assume memory that is automatic (b and c) or that the model summarizes on its own (d), which is the misconception that the assistant remembers earlier conversations by itself.",
+      "distractors": {"b": "M3", "c": "M3", "d": "M3"}
+    },
+    {
+      "id": "q2",
+      "answer": 5400,
+      "tolerance": 0,
+      "rationale": "Call 1 sends 1,500 + 50 = 1,550. Call 2 adds one tool request and one result (50 + 200): 1,800. Call 3 adds a second pair: 2,050. Total 1,550 + 1,800 + 2,050 = 5,400. Answering 1,550 x 3 = 4,650 forgets that the context grows; answering 2,050 counts only the last call."
+    },
+    {
+      "id": "q3",
+      "answer": "b",
+      "rationale": "The log shows the right chunk was never retrieved, so this is a search problem: look at how manuals are chunked, labelled and indexed. The model cannot use a passage it was never shown, so a bigger model (a) or a stronger instruction (c) will not help, and the notes store (d) is for facts about people and progress, not for manual content."
+    },
+    {
+      "id": "q4",
+      "answer": "The saved note can be stale or wrong, since bookings change after it was written; for live data, call the calendar tool each time (or store only a pointer to it).",
+      "accepted": [
+        "The note goes out of date as bookings change, so look it up fresh with the calendar tool.",
+        "Stale data: the calendar is the source of truth, so call the tool each session instead of reading a saved copy."
+      ],
+      "rationale": "Full credit needs both the risk (a saved copy goes stale, giving a confident but wrong answer) and the fix (query the authoritative tool for live data). Only one of the two is partial. Saying the note is too long or costs too much without mentioning staleness is partial at best."
+    },
+    {
+      "id": "q5",
+      "answer": "It is expensive, because the whole manual set is re-sent and paid for on every model call, and recall gets worse as the context fills, so retrieving only the relevant passage is better.",
+      "accepted": [
+        "It costs far too many tokens on every call; retrieve only the relevant chunk.",
+        "It will not fit in the context window, and a very full context makes the model recall worse; use retrieval.",
+        "Context rot: accuracy falls as the context grows, so load only what is needed."
+      ],
+      "rationale": "Any one sound reason is correct: cost on every call, the window limit, or lower recall as the context fills (context rot). Saying only that it is slow, or that the model cannot read PDFs, is not the idea. Mentioning retrieval as the alternative is good but not required."
+    }
+  ]
+}

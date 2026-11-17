@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 10992,
+  "stop_reason": "end_turn",
+  "session_id": "accd624d-e88b-4016-a1d4-fc4c283b68a7",
+  "total_cost_usd": 0.10209130000000001,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 20191,
+    "cache_read_input_tokens": 83113,
+    "output_tokens": 1300,
+    "output_tokens_details": {
+      "thinking_tokens": 359
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20191,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 251,
+        "cache_read_input_tokens": 30243,
+        "cache_creation_input_tokens": 512,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 512
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1300,
+      "cacheReadInputTokens": 83113,
+      "cacheCreationInputTokens": 20191,
+      "webSearchRequests": 0,
+      "costUSD": 0.10209130000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 359,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20191,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 9,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Tool calling works like a doctor ordering a lab test.\n\nThe doctor (the model) can't run the blood analyzer. They fill in an order form: \"CBC, patient 12.\" The lab (your program) does the test and sends the result back. The doctor reads it and decides what to do next: order another test, or give a diagnosis.\n\nThe model never runs anything. It only writes the order, and your program does the work. The doctor can only order tests on the lab's menu. That menu is your tool descriptions, and it's all the model knows about what it can request.\n\nFor the makerspace assistant, \"check the laser cutter Friday\" is the order, and your calendar function is the lab.\n\nThe analogy breaks in one place: the doctor remembers the patient between orders, but the model is re-given the whole conversation on every call.",
+  "ttft_ms": 957,
+  "type": "result",
+  "duration_ms": 11107,
+  "uuid": "89fbba8c-00c2-435b-a371-06a82c2704f8",
+  "ttft_stream_ms": 629,
+  "time_to_request_ms": 68,
+  "first_content_frame_ms": 630,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1300,
+      "cacheReadInputTokens": 83113,
+      "cacheCreationInputTokens": 20191,
+      "webSearchRequests": 0,
+      "costUSD": 0.10209130000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 359,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20191,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.351Z"
+}

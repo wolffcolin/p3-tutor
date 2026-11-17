@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: context and memory</title>
+  <style>
+    body { max-width: 42rem; margin: 0 auto; padding: 2rem 1rem; font-family: Georgia, serif; line-height: 1.5; }
+    table { width: 100%; border-collapse: collapse; } th, td { text-align: left; padding: 0.4rem; border-bottom: 1px solid #ccc; vertical-align: top; }
+  </style>
+</head>
+<body>
+<h1>Context and memory in an agent</h1>
+<p>From <a href="../lessons/0001-context-and-memory-in-an-agent.html">lesson 1</a>.</p>
+<table>
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td>Context</td><td>All the tokens sent to the model on one call: system prompt, tool definitions, history, tool results; the output counts too.</td></tr>
+  <tr><td>Context window</td><td>The limit on how much the model can work with in one call.</td></tr>
+  <tr><td>Context rot</td><td>Recall and accuracy degrade as the token count grows.</td></tr>
+  <tr><td>Compaction</td><td>Summarize a long conversation and start a new window with the summary.</td></tr>
+  <tr><td>Notes / memory</td><td>Facts saved outside the window and loaded into a later context.</td></tr>
+  <tr><td>Retrieval</td><td>Search a large collection and add only the best chunks to the context.</td></tr>
+</table>
+<h2>Where does it go?</h2>
+<ul>
+  <li>Needed every call: system prompt (keep short).</li>
+  <li>Large and fixed (manuals): searchable store, retrieve chunks.</li>
+  <li>Needed only for this request: keep in context, clear when done.</li>
+  <li>Exact and must persist (training status): database written by the program, loaded at session start.</li>
+  <li>Soft and helpful: short notes file.</li>
+</ul>
+</body>
+</html>

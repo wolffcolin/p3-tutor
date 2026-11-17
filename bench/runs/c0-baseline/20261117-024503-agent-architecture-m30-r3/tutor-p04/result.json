@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 13087,
+  "stop_reason": "end_turn",
+  "session_id": "d79c554c-4594-4690-9cea-80b7dccf2f22",
+  "total_cost_usd": 0.11045219999999999,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 22071,
+    "cache_read_input_tokens": 63562,
+    "output_tokens": 1580,
+    "output_tokens_details": {
+      "thinking_tokens": 306
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22071,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 594,
+        "cache_read_input_tokens": 31992,
+        "cache_creation_input_tokens": 643,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 643
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1580,
+      "cacheReadInputTokens": 63562,
+      "cacheCreationInputTokens": 22071,
+      "webSearchRequests": 0,
+      "costUSD": 0.11045219999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 306,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22071,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Neither five nor ten. The premise isn't true: more agents don't always give better results.\n\nIt's tempting because a team of specialists sounds like it should beat one generalist. But every extra agent adds costs:\n\n- **Tokens.** Each agent has its own context, and agents pass summaries to each other. Anthropic's engineering team reports that multi-agent systems use about 15× the tokens of a plain chat, against about 4× for a single agent. Your budget is small, so this matters.\n- **Handoff errors.** Details get lost or garbled when one agent briefs another.\n- **Harder debugging.** When a booking goes wrong, you have to work out which of ten agents caused it.\n\nHere's a concrete example. A student asks, \"Can I use the laser cutter Thursday at 3? I haven't done the training.\" One agent can handle that. It looks up the manual, checks the calendar, checks the student's training status, and replies. Splitting it into \"manual agent\", \"calendar agent\" and \"booking agent\" would mean three contexts and three rounds of handoffs for work that fits in one context.\n\nSplitting pays off in specific cases:\n\n- The work is large and parallel, such as researching many independent sources at once.\n- One context would overflow with material that doesn't need to be shared.\n- Parts of the work need very different tools or permissions.\n\nYour assistant mostly doesn't fit those. My recommendation is to start with **one agent and a few well-described tools**, and make fixed workflows of the predictable steps, such as \"check the calendar, then book\". Add a second agent only when you can name a concrete problem the first can't handle. That is also an easy position to defend at your design review.\n\nTo check it landed: for the laser-cutter question above, which of the three split cases would apply, if any?\n\nI can also write a lesson on when multi-agent splitting pays off, if you'd like one.",
+  "ttft_ms": 914,
+  "type": "result",
+  "duration_ms": 13211,
+  "uuid": "309b6567-231e-4814-9fac-c225f17ae035",
+  "ttft_stream_ms": 612,
+  "time_to_request_ms": 104,
+  "first_content_frame_ms": 613,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1580,
+      "cacheReadInputTokens": 63562,
+      "cacheCreationInputTokens": 22071,
+      "webSearchRequests": 0,
+      "costUSD": 0.11045219999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 306,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22071,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.351Z"
+}

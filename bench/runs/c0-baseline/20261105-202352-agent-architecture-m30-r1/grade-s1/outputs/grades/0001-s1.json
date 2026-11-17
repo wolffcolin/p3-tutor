@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right. What makes a system an agent is the loop: the model picks an action, the program runs it, and the result comes back for the next step. A longer prompt or a bigger model only changes what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You picked (a), which has the model reading the booking system itself. A model only writes text. Here it writes a structured request: check_calendar with the laser cutter and tomorrow's date as arguments (option c). The program around the model runs the tool and sends the result back. This is easy to believe because the final answer sounds as if the model looked it up. Next time, ask who actually runs the code: the program does."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right. The agent keeps getting the same failing result, so more steps or more context won't help. A step limit that stops the loop and reports back is the safeguard. For the makerspace assistant, it also caps cost per request."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "The answer is 4, not 1. You wrote that the model runs the 3 tools itself, but the program runs them. The model is called once for the question, once after each of the 3 tool results, and the last call writes the final answer. That is 3 tool requests + 1 final answer = 4 calls. Each tool result is a new input, so each one needs a new model call. This also matters for your budget, because every call costs tokens."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "You have the what: the result goes back to the model. The question also asked why. The reason is that the model has not seen the result yet. The program puts it into the model's next input and calls the model again, so the model can use it to pick its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model is sent a list of tools, each with a name and a description, and picks the one that fits. That is why a clear tool description matters for your design. The second half is wrong. The model does not remember its past choices across sessions. Each call starts from only what is in its input, so any memory between sessions has to be saved and supplied by the program. We'll cover that next."
+    }
+  ],
+  "summary": "You have the loop itself: you got q1 and q3 right, you know the model is shown tool names and descriptions, and you know results go back to the model. The idea to fix is who does what. The model only writes a request for a tool, and the program runs it, so q2 and q4 both came from picturing the model running the tools itself. Two more things to fix are saying why the result goes back (so the model can decide its next step) and not assuming the model remembers earlier sessions on its own. Next step: redraw your laser-cutter trace with two columns, 'model writes' and 'program does', and count the model calls. Then we'll move on to context and memory, which is where the memory question gets answered."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "a",
+      "rationale": "The model keeps nothing between calls; each session's context is built from scratch from whatever the program loads, so without a saved store nothing from Monday is available. Window size only limits one conversation; a prompt line cannot create storage.",
+      "distractors": {"b": "M3", "d": "M3"}
+    },
+    {
+      "id": "q2",
+      "answer": "b",
+      "rationale": "The page arrives after call 2, so the first call that can include it is call 3. The program re-sends the history each call, so calls 3, 4, 5 and 6 include it.",
+      "distractors": {"d": "M3"}
+    },
+    {
+      "id": "q3",
+      "answer": "It would be costly, since all that text is re-sent on every call, and a full context can reduce accuracy or may not fit at all.",
+      "accepted": ["cost and context rot", "expensive and may not fit", "too many tokens and worse recall", "too costly and the model may miss the relevant part"],
+      "rationale": "Any two of: token cost on every call, may exceed the window, context rot making the model less accurate on the relevant part."
+    },
+    {
+      "id": "q4",
+      "answer": "b",
+      "rationale": "An exact permission fact should be written by the program, not left to the model, and loaded at session start. Relying on the model to take a note, on the student's say-so, or on a pasted old chat is unreliable or wasteful."
+    },
+    {
+      "id": "q5",
+      "answer": "Begin each chunk with the machine name and section heading (add context to the chunk before indexing).",
+      "accepted": ["add the machine name to each chunk", "add context to each chunk", "prefix chunks with the manual title", "include the machine name in every chunk", "contextual retrieval"],
+      "rationale": "Chunks must make sense alone; adding the machine and section as a prefix, as in contextual retrieval, lets search match the right machine."
+    }
+  ]
+}

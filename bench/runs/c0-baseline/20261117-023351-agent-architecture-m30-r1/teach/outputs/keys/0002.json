@@ -1,0 +1,48 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": 4850,
+      "tolerance": 0,
+      "rationale": "Call 1 input: 1,000 + 100 = 1,100. Call 2 input: 1,100 + 50 + 600 = 1,750. Call 3 input: 1,750 + 50 + 200 = 2,000. Total 1,100 + 1,750 + 2,000 = 4,850. An answer of 2,000 counts only the last call's size and misses that every call re-sends the history; 1,950 or 1,300 miss the request tokens or results."
+    },
+    {
+      "id": "q2",
+      "answer": "b",
+      "rationale": "The model keeps nothing between sessions; what carries over is information saved outside it and loaded back in by a tool. Recalling last week's chat (a) or a big window (c) assumes the model or its window keeps old sessions, which is M3. Rewriting the system prompt with every student (d) is wasteful and not dependable.",
+      "distractors": {"a": "M3", "c": "M3"}
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "Everything in the context is billed on every call, and recall accuracy degrades as the context grows (context rot), so the smallest useful set of text is better. The other options state rules that do not exist."
+    },
+    {
+      "id": "q4",
+      "answer": "Summarize the conversation so far and continue in a new context with the summary (compaction).",
+      "accepted": [
+        "compaction",
+        "summarize the history",
+        "summarize it and start a new context",
+        "clear old tool results",
+        "remove old tool results",
+        "save notes to storage and continue in a fresh context",
+        "write notes to a file and start a new context"
+      ],
+      "rationale": "Any of compaction (summarize and restart), clearing old tool results, or saving notes outside the context and starting fresh is correct. Answers that only say to use a bigger model or try harder do not free space."
+    },
+    {
+      "id": "q5",
+      "answer": "Every token in the context is billed on every call and adds noise, so loading only the one record needed keeps the context small and cheap.",
+      "accepted": [
+        "it saves tokens and cost",
+        "it keeps the context small",
+        "pasting all records costs tokens on every call and clutters the context",
+        "it avoids sending every student's data on every call",
+        "it keeps other students' data private and the context small"
+      ],
+      "rationale": "Full credit names cost or context size: all records would be re-sent and billed on every call and would crowd out relevant text. Privacy of other students' data is also a valid reason. Saying only that the model cannot read databases is wrong."
+    }
+  ]
+}

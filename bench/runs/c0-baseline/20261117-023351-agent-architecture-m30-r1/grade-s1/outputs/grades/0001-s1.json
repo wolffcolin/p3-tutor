@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choosing an action, running it and feeding the result back is what makes a system an agent. A longer prompt or a bigger model only changes what a single call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You picked option a, that the model opens the booking system itself. A model only produces text, so at this point its output is a request naming check_calendar with the arguments (laser cutter, tomorrow's date). The program around the model runs the tool and sends the calendar entries back. It is tempting because the final answer looks as if the model checked the calendar itself."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: a step limit is a stopping condition that ends the loop and reports back. A larger window would not help, since all 40 steps already fit. In the makerspace assistant, a limit also caps cost per request."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You answered 1, on the idea that the model runs the three tools itself within one call. The program runs the tools. Each model call ends with one tool request or the final answer, so the three requests take three calls and the final answer takes a fourth, making 4. Every tool result goes back in as new input for another call, and each call costs money, which matters for your budget."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "'It sends it back to the model' is the right what. The question also asked why: the model needs the result as part of its next input so it can choose its next step or write the final answer. Next time, add the reason after the action."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model is sent a list of tools, each with a name and a description, and picks the one that fits. The second half is wrong. The model does not remember its choices from earlier sessions. Each call starts from only the text it is given, so any memory between sessions has to be saved by the program and put back into the input. Drop that claim and your answer is complete."
+    }
+  ],
+  "summary": "You have the loop itself (q1) and the need for a stopping condition (q3), and you know the model chooses tools from their descriptions. Two ideas to fix. First, the model only writes text: it requests a tool, and the program runs it, and each request or final answer is its own model call (q2, q4). Second, the model has no memory of its own between sessions (q6). Next step: redo your laser-cutter trace from record 0002 and label each step 'model output' or 'program action', then count the model calls."
+}

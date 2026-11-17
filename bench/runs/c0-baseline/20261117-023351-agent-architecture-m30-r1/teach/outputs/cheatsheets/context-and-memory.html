@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: context and memory in an agent</title>
+  <style>
+    body { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem; font-family: Charter, Georgia, serif; line-height: 1.5; background: #fffdf8; color: #1f1d1a; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 1.6rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid #e4dfd4; vertical-align: top; }
+    @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } }
+  </style>
+</head>
+<body>
+  <h1>Context and memory in an agent</h1>
+  <p>From <a href="../lessons/0001-context-and-memory.html">lesson 1</a>.</p>
+  <h2>Terms</h2>
+  <table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td>Context</td><td>Everything the model reads and writes in one call.</td></tr>
+    <tr><td>Context window</td><td>The limit on the context; it holds system prompt, tool descriptions, messages, tool results and output.</td></tr>
+    <tr><td>Context rot</td><td>Recall gets worse as the context grows.</td></tr>
+    <tr><td>Compaction</td><td>Summarize the history and continue in a new context.</td></tr>
+    <tr><td>Notes / memory</td><td>Information saved outside the model and loaded back by a tool.</td></tr>
+    <tr><td>Retrieval</td><td>Finding the few relevant chunks and putting only those in context.</td></tr>
+  </table>
+  <h2>Rules of thumb</h2>
+  <ul>
+    <li>The model keeps nothing between calls: the program re-sends the whole message list, and every call is billed for all of it.</li>
+    <li>Total input tokens = the sum of each call's input, not the size of the last call.</li>
+    <li>Keep the smallest useful context; clear big tool results once used.</li>
+    <li>A bigger window is not memory. Memory between sessions is storage plus a tool to read it.</li>
+    <li>Return short, labelled search results (machine, section, page).</li>
+    <li>Start with the simplest design that works.</li>
+  </ul>
+</body>
+</html>

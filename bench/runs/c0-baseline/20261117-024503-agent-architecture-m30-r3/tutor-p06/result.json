@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 22226,
+  "stop_reason": "end_turn",
+  "session_id": "05554b73-f40d-4853-b4cb-c4831aea7cf0",
+  "total_cost_usd": 0.13662629999999998,
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 24604,
+    "cache_read_input_tokens": 130003,
+    "output_tokens": 2519,
+    "output_tokens_details": {
+      "thinking_tokens": 1127
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 24604,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 598,
+        "cache_read_input_tokens": 34000,
+        "cache_creation_input_tokens": 1168,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1168
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 10,
+      "outputTokens": 2519,
+      "cacheReadInputTokens": 130003,
+      "cacheCreationInputTokens": 24604,
+      "webSearchRequests": 0,
+      "costUSD": 0.13662629999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1127,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 24604,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 10,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Try this: **ordering at a restaurant with a menu.**\n\nPicture someone sitting at a table. They can't see the kitchen, and they've never met the chef. All they have is a **menu**: a list of dishes, each with a short description (\"Pad thai: rice noodles, peanuts, contains shellfish\"). A person at the table can't taste anything from the menu. They read the descriptions and say, \"I'll have the pad thai, no peanuts.\"\n\nThat sentence is the whole request. Nothing has been cooked. A **waiter** takes it to the kitchen, and the kitchen makes the dish. The waiter then puts the plate on the table. Only now can the diner see what they ordered. They look at the plate and decide what to do next: order dessert, send it back, or say \"that's all, thanks.\"\n\nSo tool calling has a few separate parts:\n- **The menu:** the list of available tools, each with a description.\n- **The order:** a precise request that names one dish and its details.\n- **The waiter and kitchen:** the people who actually do the work.\n- **The plate coming back:** the result, which has to reach the diner before they can decide anything.\n- **The meal:** it can take several rounds of ordering, then it ends.\n\nWhere the analogy breaks down: a diner remembers the whole meal, but the model starts each round from only the text it's handed. Also, a real diner could walk into the kitchen. The model can't.\n\nI'm not tying this to your quiz 0001 items, since you've taken it but I haven't graded it yet. So here's your turn: using the story, say in your own words which part is the model, which is your Python program, which is the tool, and what plays the role of the menu in your makerspace assistant. Then tell me which of those you're least sure about.\n\nI can also grade your two quiz attempts now, so we can go through the items together. Or I can write a short lesson on tool calling.",
+  "ttft_ms": 962,
+  "type": "result",
+  "duration_ms": 22346,
+  "uuid": "b09bc59a-027a-4bd4-916d-7555832fd54b",
+  "ttft_stream_ms": 629,
+  "time_to_request_ms": 62,
+  "first_content_frame_ms": 629,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 10,
+      "outputTokens": 2519,
+      "cacheReadInputTokens": 130003,
+      "cacheCreationInputTokens": 24604,
+      "webSearchRequests": 0,
+      "costUSD": 0.13662629999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1127,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 24604,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.351Z"
+}

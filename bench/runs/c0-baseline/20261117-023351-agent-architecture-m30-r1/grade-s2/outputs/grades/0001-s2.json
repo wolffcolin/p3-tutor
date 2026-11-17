@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right. What makes a system an agent is the loop: the model picks an action, the program runs it, and the result comes back. A longer prompt or a bigger model only changes what a single call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right. The model outputs only a structured request: the tool's name plus arguments, here the laser cutter and tomorrow's date. The program around it does the actual calendar lookup."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You picked 'left to run longer, it will eventually fix the bug'. That is tempting, but the agent is repeating the same edit and getting the same failure, and all 40 steps are already in its context. More steps add nothing new, and every extra step costs money, which matters on your budget. The fix is a stopping condition in the program, such as a step limit that ends the loop and reports what happened so far. Every agent loop needs one."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "Your count of 4 is right: three tool requests plus the final answer. Your reasoning is off, though. You wrote that the model 'runs' each tool itself. The model only asks for a tool. The program runs it and sends the result back, and that is why each result triggers another model call. Count it this way: one call for the question, then one for each of the three results, which gives 4."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right, and you gave both parts: the result goes back in as the next input, and the model uses it to decide what to do next. Your group-chat comparison works, because the model only sees what is in the conversation so far."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "The name does help, but it is not the whole story. The model is given each tool's description: its name, what it does and the parameters it takes. It picks the tool whose description fits the request. A name alone can mislead. For example, check_calendar does not say whether it covers machine bookings or room bookings, but a one-line description would. When you write descriptions for your own tools, put the effort there."
+    }
+  ],
+  "summary": "You have the agent loop down, and you now see that the model's output is a request, not an action (q1, q2, q5). Two things to fix. First, a loop needs a stopping condition: a step limit ends a stuck agent, and waiting longer does not (q3). Second, the model never runs tools. The program does, so q4's count was right but its reasoning was wrong. The model chooses tools from their full descriptions, not just their names (q6). Next step: write a two-sentence description for check_calendar, then trace one request step by step, marking which steps the model does and which the program does."
+}

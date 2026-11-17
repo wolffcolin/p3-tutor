@@ -1,0 +1,42 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "a",
+      "rationale": "A model keeps nothing between calls or sessions; the context is rebuilt from what the program sends, so a new session starts with only the fixed text and the new message. Options b, c and d each assume the model stores earlier conversations on its own.",
+      "distractors": {"b": "M3", "c": "M3", "d": "M3"}
+    },
+    {
+      "id": "q2",
+      "answer": 7800,
+      "tolerance": 0,
+      "rationale": "Call 1 sends 2,000 + 100 = 2,100. Call 2 sends 2,100 + 500 = 2,600. Call 3 sends 2,600 + 500 = 3,100. Total 2,100 + 2,600 + 3,100 = 7,800. Check: 2,100 + 2,600 = 4,700, and 4,700 + 3,100 = 7,800."
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "Pasting everything means paying for all those tokens on every call, and accuracy and recall degrade as context grows (context rot). Retrieval keeps the window small. A model can read anything placed in its window without a search tool (b), the window can hold documents (c), and nothing pasted in is saved by the model (d).",
+      "distractors": {"d": "M3"}
+    },
+    {
+      "id": "q4",
+      "answer": "The program saves the training record outside the model (such as in a database) and loads it into the context at the start of the session.",
+      "accepted": [
+        "Store the training status in a database or notes file and load it into the context when the session starts.",
+        "Save it in a record the program reads back into the context on Friday.",
+        "Save a note or record outside the model and put it into the next session's context."
+      ],
+      "rationale": "Full credit needs both parts: saved outside the model, and loaded back into the context for the new session. Saying only that the model remembers it, or that the context window is large enough, is wrong (M3). Saving without loading it back is partial."
+    },
+    {
+      "id": "q5",
+      "answer": "It costs more, because every call resends the whole history, and recall degrades as context grows (context rot); clear old tool results or compact the history into a summary.",
+      "accepted": [
+        "Cost grows and accuracy drops; fix by clearing old tool results or summarizing (compaction).",
+        "It is expensive and the model gets less accurate; summarize the history or drop used tool results."
+      ],
+      "rationale": "Full credit names a valid problem (cost from resending, context rot, or hitting the limit) and a valid remedy (clearing old tool results, compaction or summarizing, or starting a fresh window with a summary). A problem without a remedy, or the reverse, is partial."
+    }
+  ]
+}

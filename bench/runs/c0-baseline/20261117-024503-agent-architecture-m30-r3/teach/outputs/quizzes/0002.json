@@ -1,0 +1,50 @@
+{
+  "id": "0002",
+  "objective": "O3",
+  "title": "Context and memory in an agent",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "A student chats with your assistant on Tuesday and again on Friday, in two separate sessions, and the program saves nothing between them. What does the model have in its context at the start of Friday's session?",
+      "options": [
+        {"id": "a", "text": "Only Friday's system prompt, tools and the student's new message"},
+        {"id": "b", "text": "A short summary of Tuesday's chat that the model keeps itself"},
+        {"id": "c", "text": "All of Tuesday's chat, since the model stores every conversation"},
+        {"id": "d", "text": "Only Tuesday's tool results, because those are stored by the model"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "numeric",
+      "objective": "O3",
+      "stem": "Each model call in a run resends the whole history. The system prompt and tools take 2,000 tokens and the student's question takes 100. The agent makes three calls: the first sends only that, and a 500-token tool result is added after each of the first two calls. How many input tokens are sent across all three calls in total?",
+      "unit": "tokens"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "Your sponsor suggests: \"Models now have 1-million-token windows, so just put all the manuals in every request and drop the search tool.\" Which is the strongest objection?",
+      "options": [
+        {"id": "a", "text": "Every call would pay for all the manual tokens, and recall gets worse"},
+        {"id": "b", "text": "A model cannot read a manual unless a search tool has opened it first"},
+        {"id": "c", "text": "The window can only hold the system prompt, never any documents"},
+        {"id": "d", "text": "Manuals pasted into a request are saved by the model for next time"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O3",
+      "stem": "In one sentence, say how your assistant can know on Friday that a student passed laser cutter training on Monday, given that the model keeps nothing between sessions."
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O3",
+      "stem": "In one or two sentences, name one reason it is a poor idea to keep growing a long run's history untouched, and one way to reduce the problem."
+    }
+  ]
+}

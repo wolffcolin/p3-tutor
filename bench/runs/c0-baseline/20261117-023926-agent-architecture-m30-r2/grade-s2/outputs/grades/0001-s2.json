@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose an action, run it, feed the result back is what makes a system an agent. A longer prompt or a bigger model changes what one call can do, not the structure."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the model only outputs a request naming check_calendar with its arguments. Your program is what actually runs the tool. Keep that split in mind, because it matters again in q4."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You picked 'left to run longer, it will eventually fix the bug'. That is tempting, but the agent got the same failing result 40 times, and all of it is already in its context, so another step gives it nothing new. A loop needs a stopping condition: a step limit that ends the run and reports back to a person (b)."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right: three tool requests plus the final answer is four model calls. But your reason says the model runs the tools itself. It doesn't: each call outputs one tool request, your program runs the tool, and the result goes into the next call. Count it as one model call per input it receives: the question plus three results."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right, and the group-chat comparison fits: the result goes back in as the next input, and the model takes its turn with it in front of it, so it can decide what to do next. You gave both the what and the why."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "The name is part of it, but not the whole. The model chooses from each tool's full description: its name, what it does and the parameters it takes. A name alone can mislead (a tool called check_calendar might only read one room's calendar). For your assistant, the description you write is what the model relies on."
+    }
+  ],
+  "summary": "You have the loop down: what defines an agent, what the model outputs when it wants a tool, and why the result goes back in (q1, q2, q5). Two things to fix. First, the program runs the tools and the model only requests them, so your q4 count was right but the reason was not. Second, an agent needs a stopping condition, and the model picks tools from their full descriptions, not just names. Next step: write a one-sentence description for check_calendar that says what it does and what each argument means, then we move on to context and memory."
+}

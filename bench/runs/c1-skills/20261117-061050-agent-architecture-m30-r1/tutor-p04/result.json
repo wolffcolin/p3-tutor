@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 7767,
+  "stop_reason": "end_turn",
+  "session_id": "548f0a22-4a4a-46b5-8f18-830cfec573a5",
+  "total_cost_usd": 0.0937742,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 19517,
+    "cache_read_input_tokens": 58642,
+    "output_tokens": 983,
+    "output_tokens_details": {
+      "thinking_tokens": 116
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 19517,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 251,
+        "cache_read_input_tokens": 29692,
+        "cache_creation_input_tokens": 389,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 389
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 983,
+      "cacheReadInputTokens": 58642,
+      "cacheCreationInputTokens": 19517,
+      "webSearchRequests": 0,
+      "costUSD": 0.0937742,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 116,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 19517,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Neither. The premise is wrong: more agents don't always give better results, and for your budget they often give worse ones.\n\nEvery extra agent adds its own model calls and its own context. Each handoff between agents also re-sends information and can lose detail. Your assistant does three things: answer from manuals, check the calendar, and book. That is likely one agent with three tools, or a fixed workflow with one agent step, and it costs far less than ten agents.\n\nSplit only when you have a concrete reason:\n- One agent's context gets overloaded, for example by very long manuals.\n- Subtasks are independent and can run in parallel.\n- A subtask needs different tools or permissions.\n\nStart with one agent and split only when you see it fail. Which of your three tasks do you suspect would overload a single agent's context?",
+  "ttft_ms": 1119,
+  "type": "result",
+  "duration_ms": 7916,
+  "uuid": "3c084f74-5bac-4999-8a1b-656a8dca055a",
+  "ttft_stream_ms": 760,
+  "time_to_request_ms": 114,
+  "first_content_frame_ms": 760,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 983,
+      "cacheReadInputTokens": 58642,
+      "cacheCreationInputTokens": 19517,
+      "webSearchRequests": 0,
+      "costUSD": 0.0937742,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 116,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 19517,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.351Z"
+}

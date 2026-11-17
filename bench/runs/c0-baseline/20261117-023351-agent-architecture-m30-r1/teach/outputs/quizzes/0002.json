@@ -1,0 +1,50 @@
+{
+  "id": "0002",
+  "objective": "O3",
+  "title": "Context and memory in an agent",
+  "items": [
+    {
+      "id": "q1",
+      "type": "numeric",
+      "objective": "O3",
+      "stem": "A makerspace assistant run takes three model calls. The system prompt and tool descriptions take 1,000 tokens and the student's question 100 tokens. On call 1 the model requests a tool (a 50-token request); the tool result is 600 tokens. On call 2 the model requests another tool (50 tokens); that result is 200 tokens. On call 3 the model writes the final answer. The program re-sends the full history on every call. How many input tokens are sent in total across the three calls?",
+      "unit": "tokens"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "A student finished 3D printer training last week. Today they open a new chat with your assistant and ask, \"Can I book the printer?\" What is the most dependable way for the assistant to know the training is done?",
+      "options": [
+        {"id": "a", "text": "The model recalls it from last week's chat because it has talked to them"},
+        {"id": "b", "text": "A tool reads the student's training record from storage outside the model"},
+        {"id": "c", "text": "The model has a large window, so last week's chat still fits inside it"},
+        {"id": "d", "text": "The system prompt is rewritten by the model each night to include all students"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "Your team proposes putting all 40 machine manuals, about 2 million tokens in total, into the context on every request, since some current models have large windows. Which is the strongest objection?",
+      "options": [
+        {"id": "a", "text": "Every token is billed on every call, and answer quality can fall as context grows"},
+        {"id": "b", "text": "A model cannot read text that was not part of its training data"},
+        {"id": "c", "text": "A tool result is never allowed to be larger than the user's question"},
+        {"id": "d", "text": "Large windows are only available when the conversation is a single turn"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O3",
+      "stem": "In one sentence, name one thing a program can do when a long agent run is nearly out of context space, so that the run can continue."
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O3",
+      "stem": "A student's training status sits in the makerspace's database. In one sentence, why is it better for the assistant to fetch one student's record with a tool when needed than to paste every student's record into the system prompt?"
+    }
+  ]
+}

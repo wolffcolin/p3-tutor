@@ -1,0 +1,67 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows and agents: who decides the next step",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A county clinic receives about 2,000 scanned referral letters a day, in many layouts and handwriting styles. Every letter gets the same handling: read the patient name, referring doctor and urgency, check that the patient exists in the records system, then file the letter in the matching queue. The team's model budget is small. Which design fits best?",
+      "options": [
+        {"id": "a", "text": "One agent holding all four tools, since reading messy letters takes judgment that must adapt to each letter"},
+        {"id": "b", "text": "One agent holding all four tools with a ten-step limit, so its cost stays as low as a fixed sequence"},
+        {"id": "c", "text": "Code that runs the four steps in the same order for every letter, calling a model only to read each letter"},
+        {"id": "d", "text": "One agent for each of the four steps, since each step then has a model able to adapt to its input"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A summarizer for lab-safety reports works like this: Python code asks a model for a summary and counts its words. If it is over 150 words, the code sends the summary back with \"shorten this\" and counts again, giving up after three tries. A teammate says the repeating makes it an agent. What is the best response?",
+      "options": [
+        {"id": "a", "text": "Agreed: a system that repeats a model call depending on the result of the last one is an agent"},
+        {"id": "b", "text": "Not quite: the code decides whether to repeat and when to stop, so the model does not steer the process"},
+        {"id": "c", "text": "Not quite: it would become an agent only if the retry limit were removed and the loop could run on"},
+        {"id": "d", "text": "Agreed: the model's second output depends on its first, so the model is shaping how the process unfolds"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A makerspace support bot gets tickets such as \"my print keeps detaching\". The useful next check depends on what the last one returned: a log may point to bed temperature, a photo may show warped plastic, or the log may be empty so the bot must ask for something else. No two tickets follow the same sequence of checks, and new fault types appear every few weeks. Which design fits best?",
+      "options": [
+        {"id": "a", "text": "A decision tree in code with one branch per fault seen in past tickets, extended as new faults appear"},
+        {"id": "b", "text": "A fixed pipeline that runs every available check on every ticket and hands all results to a model at the end"},
+        {"id": "c", "text": "A fixed pipeline whose final diagnosis step uses a larger model, so unusual faults are still handled well"},
+        {"id": "d", "text": "A loop where the model picks each next check from the results so far and stops once it can diagnose"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A prescription-refill assistant has two tools, verify_identity and get_record. Its prompt says \"always verify identity before retrieving a record\", yet in testing it retrieved a record without verifying in 3 of 100 runs. In one sentence, how should the design change so that this cannot happen?"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A clinic's rescheduling system runs a fixed pipeline: find the patient's appointment, list open slots with the same clinician, book the one the patient picks. About 80% of requests fit this exactly. The other 20% need other steps (change clinician, switch to video, rebook a referral first) and fail with errors. Model budget is small. Which change fits best?",
+      "options": [
+        {"id": "a", "text": "Keep the pipeline for requests that fit it, and send the rest to an agent that chooses its own steps"},
+        {"id": "b", "text": "Add a model call after each pipeline step that rewrites its output so the next step copes with odd requests"},
+        {"id": "c", "text": "Replace the pipeline with an agent for every request, so all requests get the flexibility the odd ones need"},
+        {"id": "d", "text": "Keep the pipeline and retry each failing request several times, so that it eventually goes through"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A sponsor asks you to promise a maximum model cost per request. One design always makes 4 model calls per request; another makes between 3 and 15, depending on the request. In one sentence, why is the first design easier to promise a cost for?"
+    }
+  ]
+}

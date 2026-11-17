@@ -1,0 +1,37 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The difference is who owns the control flow: in a workflow, predefined code paths decide the steps and the order; in an agent, the model decides its own next step and tool use. Tools (a), the number of model calls (b) and whether a model is present (d) do not separate them, since workflows can call a model many times and use tools."
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "The program fixes the order of the steps and the model only does text work inside two of them, so it is a workflow. Having a model in the sequence (b) or a tool in it (c) does not make a system an agent; the model would have to choose the steps. The count of model calls (d) is not the test."
+    },
+    {
+      "id": "q3",
+      "answer": 25,
+      "tolerance": 0.01,
+      "rationale": "The agent makes 8 - 3 = 5 extra calls per request: 5 x $0.01 = $0.05 more per request, and 500 x $0.05 = $25."
+    },
+    {
+      "id": "q4",
+      "answer": "d",
+      "rationale": "Booking has known steps in a known order, so code can own the flow and the result is predictable and cheap. The other options are open-ended or unpredictable tasks where the needed steps vary by case, which is where an agent's flexibility pays off."
+    },
+    {
+      "id": "q5",
+      "answer": "flexibility",
+      "accepted": ["flexibility", "adaptability", "the flexibility to handle unplanned cases", "it gives up flexibility", "flexible", "ability to adapt", "model-driven decision making"],
+      "rationale": "A fixed workflow follows only the paths its code lists, so it cannot adapt to cases or steps nobody planned for; that is what it trades for predictability and lower cost."
+    },
+    {
+      "id": "q6",
+      "answer": "b",
+      "rationale": "An agent is worth its extra cost and unpredictability when the steps cannot be fixed in advance, so the model must choose them. Interest in agents (a) is not a requirement, and a lower cost (c) or identical steps every time (d) are reasons to keep the workflow."
+    }
+  ]
+}

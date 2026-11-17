@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose an action, run it, feed the result back is the structure that makes it an agent. Prompt length and model size don't change that structure."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You picked the option where the model reads the booking system itself. That assumes the model runs tools; it can only output text. Here that text is a structured request naming check_calendar with the machine and date, and the program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: repeating the same failing step is a loop problem, so the fix is a stopping condition. A bigger context or a firmer prompt doesn't end the loop."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "Same misconception as q2: you have the model running the three tools itself inside one call. The program runs the tools, and each result goes back in as a new model call. Count one call per input: the question plus three results = 4."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "You have the what: the result goes back to the model. The why is missing: it goes into the model's next input so the model can pick its next step or write the final answer. The model only knows what is in its input."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model picks from the tool descriptions it is sent. The second half is wrong: the model doesn't remember past choices across sessions. Memory isn't automatic; the program would have to save and resend it."
+    }
+  ],
+  "summary": "You have the loop's shape, but twice you let the model run the tools; in the loop the model only writes requests as text and the program runs them. Work on that split between what the model does and what the program does. Redraw your laser-cutter trace with two columns, 'model output' and 'program action', and count the model calls."
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: context and memory in an agent</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+<main>
+  <h1>Cheat sheet: context and memory</h1>
+  <p>From <a href="../lessons/0001-context-and-memory.html">lesson 1</a>. Source: <a href="https://anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic, Effective context engineering for AI agents</a>.</p>
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Token</td><td>The chunk of text a model reads and writes; what you are charged for.</td></tr>
+      <tr><td>Context</td><td>The tokens sent to the model for one call.</td></tr>
+      <tr><td>Context window</td><td>The limit on the context's size.</td></tr>
+      <tr><td>Context rot</td><td>Recall gets worse as the context grows.</td></tr>
+      <tr><td>Session</td><td>One conversation; its context is gone when it ends unless saved.</td></tr>
+      <tr><td>Notes</td><td>Facts saved outside the context and loaded back later.</td></tr>
+      <tr><td>Retrieval</td><td>Fetching only the relevant chunks into the context.</td></tr>
+    </tbody>
+  </table>
+  <h2>Rules of thumb</h2>
+  <ul>
+    <li>The model keeps nothing between calls; the program re-sends everything.</li>
+    <li>Cost of a request is about the sum of context sizes over all its calls, plus output.</li>
+    <li>Keep tool results small; clear used ones; compact only for long runs.</li>
+    <li>Save stable facts about people as notes; look up live data and long documents.</li>
+    <li>If an answer is wrong, check first whether the right chunk was retrieved.</li>
+  </ul>
+</main>
+</body>
+</html>

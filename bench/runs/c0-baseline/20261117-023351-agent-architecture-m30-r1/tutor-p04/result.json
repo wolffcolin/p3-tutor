@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 12222,
+  "stop_reason": "end_turn",
+  "session_id": "3b68e8a3-487e-4bb2-b9d2-cc7192463edf",
+  "total_cost_usd": 0.1128369,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 22262,
+    "cache_read_input_tokens": 96129,
+    "output_tokens": 1416,
+    "output_tokens_details": {
+      "thinking_tokens": 106
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22262,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 576,
+        "cache_read_input_tokens": 32497,
+        "cache_creation_input_tokens": 329,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 329
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1416,
+      "cacheReadInputTokens": 96129,
+      "cacheCreationInputTokens": 22262,
+      "webSearchRequests": 0,
+      "costUSD": 0.1128369,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 106,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22262,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 9,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Neither. The premise is the problem: more agents don't always give better results.\n\nThink of a group project. Five people can beat one person on a big job. But every extra person adds meetings, handoffs and a chance that two people misread each other. Past a point, the coordination costs more than the work it saves.\n\nAgents behave the same way. Each one is its own loop of model calls (you've traced that loop already). Each call re-reads its instructions and context, and you pay for every token. Every handoff between agents is also a place where details get lost. If the booking agent tells the manuals agent \"the laser cutter,\" and the student actually asked about the large-format one, that detail is gone. Ten agents means more calls, more tokens and more handoffs than five. With your small budget, that is a real cost.\n\nSplitting tends to pay off in two cases:\n- **The work is big and can run in parallel**, like researching ten separate machines at once.\n- **One agent's context gets overloaded**, with too many tools or too much text for it to choose well.\n\nYour assistant is three tasks: answer from manuals, check the calendar, book time. Those are mostly sequential and small, so a single agent with three well-described tools is the sensible starting point. Parts with a fixed order, such as \"check availability, then book,\" may not need an agent at all. They can be a plain workflow. Only split when you can point to a specific failure that splitting would fix.\n\nSo the question to bring to your design review is \"what problem does a second agent solve that one agent with good tools doesn't?\"\n\nQuick check: for the request \"Book the 3D printer for Friday at 2,\" would you give the booking step its own agent? Say why or why not.\n\nI can teach this properly as a lesson on workflows versus agents and multi-agent systems. First, though, context and memory is next in your plan, if you'd like that one instead.",
+  "ttft_ms": 895,
+  "type": "result",
+  "duration_ms": 12360,
+  "uuid": "87ac7826-592b-448e-b8ae-50de6186464c",
+  "ttft_stream_ms": 637,
+  "time_to_request_ms": 101,
+  "first_content_frame_ms": 637,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1416,
+      "cacheReadInputTokens": 96129,
+      "cacheCreationInputTokens": 22262,
+      "webSearchRequests": 0,
+      "costUSD": 0.1128369,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 106,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22262,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.351Z"
+}

@@ -18,11 +18,38 @@ An example of a finished entry:
 - Kept in final: yes
 -->
 
-### TODO: the component's name
+### tutor
 
-- Kind: TODO
-- Step added: TODO
-- Purpose: TODO
-- With and without: TODO
+- Kind: skill
+- Step added: c1-skills
+- Purpose: The tutor skill handles questions and follow-up explanantions in a conversation with the student. These occur outside lessons and quizzes. It needs to adapt to my preferences for how I learn, and give concise and direct guidance that still respects quiz answer restrictions. It is a skill instead of a subagent because it is a primary task that interacts with the user, rather than a background or supporting task. 
+- With and without: reviews/c1-skills.md, Round 1 (without) and Round 2 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### quiz
+
+- Kind: skill
+- Step added: c1-skills
+- Purpose: The quiz skill generates quizzes and answer keys that fit the learning objectives. It uses varied questions to test understanding rather than just simple recall. Keeping it separate from teach allows its question-writing to be improved and fine-tuned separately. It is a skill because quiz generation is a primary task rather than a background task. 
+- With and without: reviews/c1-skills.md, Round 3 (without) and Round 4 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### grade
+
+- Kind: skill
+- Step added: c1-skills
+- Purpose: The grade skill checks quiz submissions using their answer keys. It gives feedback to identify what mistakes the user made, locate misconceptions, and give instructions on how to correct these problems. Keeping this functionality separate lets it be fine tuned to my preferences without affecting how quizzes are generating. It is a skill because grading is a primary task rather than a review of another agent's work. 
+- With and without: reviews/c1-skills.md, Round 4 (without) and Round 5 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### teach
+
+- Kind: skill
+- Step added: c1-skills
+- Purpose: The teach skill creates lessons with structure to introduce big picture concepts before breaking the ideas down into manageable chunks. It gives worked examples and visualizations to help the user's understanding. The goal is for it to produce a complete lesson of a requested length while avoiding any repetition that isn't needed. It fits best as a skill because it is a primary function. Specialized writing or reviewing work could be delegated to subagents. 
+- With and without: reviews/c1-skills.md, Round 5 (without) and Round 6 (with)
 - Review: TODO
 - Kept in final: TODO

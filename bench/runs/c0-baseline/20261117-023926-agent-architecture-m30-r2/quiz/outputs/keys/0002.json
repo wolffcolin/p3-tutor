@@ -1,0 +1,47 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "What separates a workflow from an agent is who owns the control flow: here the code fixes every step, so it is a workflow. Using a model and a search step (a) or handling varied questions (c) does not make a system an agent, and the number of model calls (d) is not the test: a workflow can make many calls and an agent can make few."
+    },
+    {
+      "id": "q2",
+      "answer": "c",
+      "rationale": "Only in c does the model choose which tool to call and in what order, so the model owns the control flow. In a, b and d the code decides the path; the model fills in one step at a time (a polish step, a routing label, a fixed chain)."
+    },
+    {
+      "id": "q3",
+      "answer": "In a workflow, the developer's code (a predefined path) decides the next step; in an agent, the model decides.",
+      "accepted": [
+        "The code decides in a workflow and the model decides in an agent",
+        "Workflow: predefined code path; agent: the model",
+        "In a workflow the program decides, in an agent the model decides"
+      ],
+      "rationale": "Full credit needs both halves: code or a predefined path for workflows, the model for agents. Naming only one half is partial. Answers about the number of tools, the size of the model or whether memory is used miss the idea."
+    },
+    {
+      "id": "q4",
+      "answer": "a",
+      "rationale": "When the steps and their order are known and must never vary, a fixed workflow guarantees them, and it is also cheaper and easier to test. Letting the model skip the check (b) risks double bookings. Writing to outside data (c) is not a reason to use an agent, and workflows can call tools too (d)."
+    },
+    {
+      "id": "q5",
+      "answer": "A workflow makes only the model calls it needs, because the code already knows the steps; an agent spends extra calls deciding what to do next and re-reads its growing context each time.",
+      "accepted": [
+        "It needs fewer model calls because the code decides the steps",
+        "An agent spends extra model calls deciding the next step, a workflow does not",
+        "A workflow has a predictable number of calls, an agent loops and may take many more",
+        "Fewer tokens, because the agent loop re-sends a growing context on every step"
+      ],
+      "rationale": "Any of these is correct: with known steps, the code does the deciding for free, so the model is called a fixed, small number of times, while an agent loops and each loop is another model call with more context. An answer that says only that workflows are simpler or faster, with no mention of calls or tokens, is partial."
+    },
+    {
+      "id": "q6",
+      "answer": "d",
+      "rationale": "Choose an agent when the path cannot be written down in advance and each next step depends on the last result, as with these open-ended questions. Agents are not always more accurate (a), usually cost more per request because each step is a model call (b), and still need a stopping condition (c), the M6 misconception from quiz 0001.",
+      "distractors": {"c": "M6"}
+    }
+  ]
+}

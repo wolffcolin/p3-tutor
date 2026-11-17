@@ -1,0 +1,68 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows and agents: who owns the control flow",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "What is the difference between a workflow and an agent, when both use a language model and tools?",
+      "options": [
+        {"id": "a", "text": "A workflow never calls tools, while an agent calls tools at some steps"},
+        {"id": "b", "text": "In a workflow the code fixes the steps; in an agent the model chooses them"},
+        {"id": "c", "text": "A workflow uses a small model, while an agent always uses a larger model"},
+        {"id": "d", "text": "In a workflow the model chooses the steps; in an agent the code fixes them"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A makerspace script always runs the same steps for a booking request: (1) a model call extracts the machine and time from the message, (2) the code calls check_calendar, (3) a second model call writes the reply from the result. Is this a workflow or an agent?",
+      "options": [
+        {"id": "a", "text": "An agent, because the model calls and the tool call work together"},
+        {"id": "b", "text": "An agent, because a model reads the student's message in step 1"},
+        {"id": "c", "text": "A workflow, because the code fixes the order of the steps"},
+        {"id": "d", "text": "A workflow, because the model is called only two times in it"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "numeric",
+      "objective": "O4",
+      "stem": "A fixed workflow answers every request with exactly 2 model calls. An agent answers the same kind of request with 4 tool requests, one per call, and then a final-answer call, so 5 model calls. Assume every model call costs the same. For 100 requests, how many more model calls does the agent make than the workflow?",
+      "unit": "model calls"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "Your code first asks the model to label each student message as \"manual question\" or \"booking request\". The code then sends the message down one of two fixed paths that you wrote in advance, based on that label. Who owns the control flow here?",
+      "options": [
+        {"id": "a", "text": "The code owns it, because the model only picks between paths you wrote"},
+        {"id": "b", "text": "The model owns it, because its label decides which path runs"},
+        {"id": "c", "text": "The student owns it, because their message decides the path"},
+        {"id": "d", "text": "Neither owns it, because the label makes the path unpredictable"}
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A student writes: \"My print keeps warping and I do not know why.\" The right next step depends on what the model finds, such as which manual page it needs and what the student says next, and nobody can list the steps in advance. Which design fits best?",
+      "options": [
+        {"id": "a", "text": "A fixed workflow with a long chain of steps for every cause of warping"},
+        {"id": "b", "text": "A fixed workflow with one model call that answers from memory alone"},
+        {"id": "c", "text": "A fixed workflow that always runs the same five manual searches"},
+        {"id": "d", "text": "An agent, because the model must choose its next step from what it finds"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A teammate wants the booking step (check the calendar, then book the slot) to be an agent. In one sentence, give a reason to make it a fixed workflow instead."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "0002",
+  "objective": "O3",
+  "title": "Context and memory in an agent",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "Your makerspace assistant answers a student correctly on Monday. On Thursday the same student opens a new chat and the assistant has no idea about Monday. What is the most accurate reason?",
+      "options": [
+        {"id": "a", "text": "Each session builds its context from scratch, and nothing was saved"},
+        {"id": "b", "text": "The model forgot Monday because its context window was too small"},
+        {"id": "c", "text": "The model deletes old chats after a few days to protect privacy"},
+        {"id": "d", "text": "The system prompt did not tell the model to remember students"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "In one request, the agent makes 6 model calls. A 2,000-token manual page was returned by the tool after call 2 and nothing removes it. How many of the 6 calls include that page in their context?",
+      "options": [
+        {"id": "a", "text": "Only call 3, which is the one that reads it"},
+        {"id": "b", "text": "Calls 3 to 6, because the program re-sends it"},
+        {"id": "c", "text": "Calls 2 to 6, because the model asked for it"},
+        {"id": "d", "text": "None, because the model remembers it internally"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "objective": "O3",
+      "stem": "Your sponsor asks why the team should not simply paste all machine manuals into the system prompt of every call. Give two reasons in one or two sentences."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "The assistant must know whether a student has passed the band-saw training before it books the saw. Which design is the most reliable?",
+      "options": [
+        {"id": "a", "text": "Let the model decide during chats whether to write a note"},
+        {"id": "b", "text": "Have the program save the result and load it each session"},
+        {"id": "c", "text": "Ask the student at the start of every session to say so"},
+        {"id": "d", "text": "Keep the full old chat and paste it into new sessions"}
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O3",
+      "stem": "A manual chunk reads \"Remove the cover, then repeat step 3.\" and the search returns it for a question about the vinyl cutter, but it came from the drill press manual. Name one change to how the chunks are prepared that would reduce this problem."
+    }
+  ]
+}

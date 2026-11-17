@@ -1,0 +1,42 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "The difference is who owns the control flow: in a workflow, code with predefined paths decides the order of the steps; in an agent, the model decides its own next step and tool use. Both can use tools and models of any size, so a, c and d are wrong."
+    },
+    {
+      "id": "q2",
+      "answer": "c",
+      "rationale": "The code fixes the order of the steps, so it is a workflow even though it calls a model twice and a tool once. Using a model or a tool does not make a system an agent; the model choosing the next step does."
+    },
+    {
+      "id": "q3",
+      "answer": 300,
+      "tolerance": 0,
+      "rationale": "The agent makes 4 + 1 = 5 calls per request and the workflow makes 2, so 3 more per request; over 100 requests that is 300. An answer of 500 or 200 counts one side only, and 3 forgets the 100 requests."
+    },
+    {
+      "id": "q4",
+      "answer": "a",
+      "rationale": "This is a routing workflow: the model makes a choice, but only among paths the code already defines, so the code owns the control flow. An agent would choose its own steps and tools freely, in a loop."
+    },
+    {
+      "id": "q5",
+      "answer": "d",
+      "rationale": "The steps cannot be listed in advance, because each depends on what the model finds, so the model must own the control flow: an agent. Fixed chains or fixed searches (a, c) cannot adapt to the unknown cause, and answering from memory alone (b) ignores the manuals and tools."
+    },
+    {
+      "id": "q6",
+      "answer": "The steps are known and always in the same order, so fixed code does the job with fewer model calls, lower cost and more predictable behavior than an agent.",
+      "accepted": [
+        "The steps are always the same, so code is cheaper and more predictable than an agent.",
+        "A fixed workflow is cheaper, faster and more reliable because the order of steps never changes.",
+        "Booking has a known sequence, so a workflow avoids the extra cost and unpredictability of an agent choosing steps.",
+        "An agent could skip or repeat a step or double book, while a workflow always runs the steps in order."
+      ],
+      "rationale": "Full credit: the steps are known in advance and the order never changes, so code can run them, with the benefit of lower cost, fewer calls, speed or predictability. Saying only that workflows are better, with no reason, is partial. Claiming that an agent cannot call tools, or that a workflow needs no model, is wrong."
+    }
+  ]
+}

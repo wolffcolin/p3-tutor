@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose action, run it, feed the result back is the structure that makes it an agent; prompt length and model size only change what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the model only outputs a structured request (tool name plus arguments); the program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed more time would fix it, but the agent gets the same failing result every step, so nothing new enters the loop and it will repeat forever. A loop needs a stopping condition, such as a step limit, that ends it and reports back to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but your reason is not: the model never runs a tool. Each call ends with one tool request, the program runs the tool, and the result goes into the next call. That gives 3 requests plus 1 final answer."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the result goes back in as input for the next model call, so the model can decide its next step or answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "The name is part of it, but the model relies on the whole tool description the program gives it: name, what the tool does and its parameters. A name alone can mislead; check_calendar says nothing about needing a machine and a date."
+    }
+  ],
+  "summary": "You have the loop and the model-asks, program-runs split mostly down, but q4 shows you still slip into thinking the model runs tools itself, and q3 shows you treat stopping as optional. Work on what the model is given at each step: tool descriptions and a stop rule. Next step: write a full description (name, purpose, parameters) for check_calendar, and list two stop conditions for the loop."
+}

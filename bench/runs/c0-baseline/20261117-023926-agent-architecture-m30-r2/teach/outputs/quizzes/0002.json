@@ -1,0 +1,50 @@
+{
+  "id": "0002",
+  "objective": "O3",
+  "title": "Context and memory in the makerspace assistant",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "On Monday, Sam finishes a conversation with your makerspace assistant and says they have completed 3D printer training. On Thursday, Sam opens a new conversation. Your program saved nothing from Monday. What does the assistant know about Sam's training?",
+      "options": [
+        {"id": "a", "text": "Nothing, because the new conversation's context holds only what is sent now"},
+        {"id": "b", "text": "It knows, because the model stores every conversation in its own memory"},
+        {"id": "c", "text": "It knows, because a bigger context window carries over earlier chats"},
+        {"id": "d", "text": "A short summary, because the model compacts each chat by itself"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "numeric",
+      "objective": "O3",
+      "stem": "Each model call re-sends the whole context. Your assistant's system prompt and tool descriptions total 1,500 tokens, and a student's question is 50 tokens. A request takes 3 model calls. After the first call, each tool result (200 tokens) and each tool request (50 tokens) is added to the context for all later calls; the final answer's output is not counted. The first call sends 1,550 tokens, and the second and third calls follow that rule with two tool results and two tool requests added by the third. How many input tokens are sent in total across the 3 calls?",
+      "unit": "tokens"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O3",
+      "stem": "A student asks which coolant the milling machine needs. Your assistant answers wrongly. You check the logs and see that search_manuals returned three chunks about the laser cutter and none about the mill. Where should you look first to fix it?",
+      "options": [
+        {"id": "a", "text": "The model, which should be replaced with a larger and smarter one"},
+        {"id": "b", "text": "The chunking and index, since the right passage was never retrieved"},
+        {"id": "c", "text": "The system prompt, which should tell the model to read harder"},
+        {"id": "d", "text": "The notes store, since memory must hold the answer from before"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O3",
+      "stem": "Your assistant saves each student's booking history as a note and, next session, reads the note instead of calling the calendar tool. In one or two sentences, what can go wrong with this, and what is the better design for live booking data?"
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O3",
+      "stem": "A teammate says: \"We should load the whole 200-page manual set into every request, so the assistant never misses anything.\" Give one reason, in one or two sentences, why this is a poor design for your assistant."
+    }
+  ]
+}
