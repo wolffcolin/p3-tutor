@@ -24,7 +24,7 @@ An example of a finished entry:
 - Step added: c1-skills
 - Purpose: The tutor skill handles questions and follow-up explanantions in a conversation with the student. These occur outside lessons and quizzes. It needs to adapt to my preferences for how I learn, and give concise and direct guidance that still respects quiz answer restrictions. It is a skill instead of a subagent because it is a primary task that interacts with the user, rather than a background or supporting task. 
 - With and without: reviews/c1-skills.md, Round 1 (without) and Round 2 (with)
-- Review: TODO
+- Review: The tutor skill made the responses better in Round 2 compared with Round 1. The response to the Q2 answer request was shorter and more helpful. It replaced an overly lengthy academic integrity expanation with a targeted hint about the tool-call loop. It did still ask too many follow-up questions, which is why I refined the skill again in Round 2. 
 - Kept in final: TODO
 
 ### quiz
@@ -33,7 +33,7 @@ An example of a finished entry:
 - Step added: c1-skills
 - Purpose: The quiz skill generates quizzes and answer keys that fit the learning objectives. It uses varied questions to test understanding rather than just simple recall. Keeping it separate from teach allows its question-writing to be improved and fine-tuned separately. It is a skill because quiz generation is a primary task rather than a background task. 
 - With and without: reviews/c1-skills.md, Round 3 (without) and Round 4 (with)
-- Review: TODO
+- Review: The quiz skill made both the variety and difficulty of questions better. Round 3 had several repetitions in questions about distinguishing workflows from agents, and Round 4 had more interesting applications. This includes Q2's code-controlled retry loop and the approval step requirements in Q5. On the other hand, Q3 was still a bit ambiguous because the troubleshooting process could have been implemented in conditional logic. 
 - Kept in final: TODO
 
 ### grade
@@ -42,7 +42,7 @@ An example of a finished entry:
 - Step added: c1-skills
 - Purpose: The grade skill checks quiz submissions using their answer keys. It gives feedback to identify what mistakes the user made, locate misconceptions, and give instructions on how to correct these problems. Keeping this functionality separate lets it be fine tuned to my preferences without affecting how quizzes are generating. It is a skill because grading is a primary task rather than a review of another agent's work. 
 - With and without: reviews/c1-skills.md, Round 4 (without) and Round 5 (with)
-- Review: TODO
+- Review: The grade skill still had effective misconception detection and it made the feedback more concise. In the full run of c1-skills, submission s1's Q2 and Q4 identified the M4 misconception, while Q5 effectively explained what was missing in the answer. The benchmark kept the 1.00 verdict agreement and misconception detection, although these scores were already perfect before the change. 
 - Kept in final: TODO
 
 ### teach
@@ -50,6 +50,6 @@ An example of a finished entry:
 - Kind: skill
 - Step added: c1-skills
 - Purpose: The teach skill creates lessons with structure to introduce big picture concepts before breaking the ideas down into manageable chunks. It gives worked examples and visualizations to help the user's understanding. The goal is for it to produce a complete lesson of a requested length while avoiding any repetition that isn't needed. It fits best as a skill because it is a primary function. Specialized writing or reviewing work could be delegated to subagents. 
-- With and without: reviews/c1-skills.md, Round 5 (without) and Round 6 (with)
-- Review: TODO
+- With and without: reviews/c1-skills.md, Round 5 (without) and bench/runs/c1-skills/20261117-061050-agent-architecture-m30-r1 (with, the full run of c1-skills)
+- Review: Rewriting the teach skill kept the useful structure and the examples while removing some of the unnecessary repetition. However, the full c1-skills lesson's length ratio was only 0.56, in comparison with the baseline's 0.65. The factual coverage fell from 1.00 to 0.83. The rewrite made the lesson more concise, but it didn't successfully keep the right amount of content, so it could be that this change did not pay off.
 - Kept in final: TODO
