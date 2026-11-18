@@ -57,7 +57,7 @@ One or two sentences: as the requested length grows from 10 to 60 minutes, which
 For example: "The single-agent `c1-skills` loses more than `final` as lessons get longer, because one context writing a 60-minute lesson drifts from the plan, so its `teach_facts_correct` falls further from 10 to 60 minutes, and `final` wins more of the blind pairs at 60 minutes than at 10."
 It should be something you could be wrong about.
 
-TODO: your hypothesis.
+I expect that the single-agent c1-skills configuration will lose more length accuracy than final as the requested lesson duration increases from 10 to 60 minutes. My reasoning for this hypothesis is that longer lessons are harder for one agent alone to plan and write completely, whereas the final architecture can delegate different parts of the lesson generation to subagents specialized for the task. 
 
 ---
 
@@ -72,7 +72,7 @@ Across all three lengths there are nine pairs: 8 of 9 gives a p-value of about 0
 An objective measure, such as `teach_facts_correct` or the judge's level fit, gives three numbers per cell, and you can see a difference only when it is larger than the spread between the three runs.
 So choose a Δ that is large enough to matter and large enough for three runs to see.
 
-TODO: your primary measure and your Δ, with the reason.
+My primary measure will be the teach_length_ratio that compares the estimated reading time for the lesson against the requested duration. I will use Δ = 0.20 as the smallest meaningful difference in how much the length accuracy changes between 10 and 60 minute lessons. For a requested 60 minute lesson, a difference of 0.20 corresponds to about 12 minutes of estimated reading time. I think that is a meaningful difference in instructional content, and it is large enough that three runs per cell might reveal it even though there is generation variability.
 
 ---
 
@@ -88,7 +88,15 @@ At least these:
 - **Cost against length:** tokens per minute of lesson for each config, and whether `final`'s overhead grows in step with length or faster.
   Say whether you divide by the minutes requested or by the estimated minutes.
 
-TODO: your measures, and how you compute each one.
+I will report the following measures for both c1-skills and final at 10, 30 and 60 minute durations:
+
+1. Primary measure: teach_length_ratio, using the mean and range across the three runs in each cell. I will compare the change from 10 to 60 minutes for each configuration. I expect that c1-skills will show a larger decrease in this ratio. 
+
+2. Blind comparisons: I will compare c1-skills against final separately at each length, using three paired lessons per comparison. I will report the wins, losses and ties, and final's share of the non-tie picks. I will not compare lessons of different requested lengths.
+
+3. Length accuracy: I will report teach_length_ratio for each cell. I will treat 1.00 as the requested duration. I will flag lessons outside the benchmark's accepted range of 0.60 to 1.50. If a cell consistently misses the requested length associated with it, I will treat that as an important limitation when interpreting quality comparisons, rather than ignoring it. A ratio above 1.00 means the lesson exceeds the requested duration, so I will not automatically interpret a higher ratio as better quality.
+
+4. Cost: I will report the mean tokens used per run divided by the requested lesson minutes. I will also compare total tokens and the cost increase from 10 to 60 minutes. Using requested minutes keeps the denominator consistent between configurations, although I will consider the actual length ratios when interpreting efficiency.
 
 ---
 
@@ -108,7 +116,9 @@ This is the default rule, and you can tighten it, but do not loosen it after you
 Then name the threats to validity you will report (lecture 22): blinding failures (your could-tell share at each length), judge bias toward longer outputs (lecture 24), the rough length estimate, and three runs per cell.
 Say which one worries you most for your hypothesis.
 
-TODO: confirm or tighten this rule, and name your threats to validity.
+I will use the default decision rule in the template. I will compare the change in mean teach_length_ratio from 10 to 60 minutes for c1-skills and final. If the changes differ by at least Δ = 0.20 in the predicted direction, and the three run ranges at 60 minutes do not overlap, I will consider the hypothesis supported. If the difference is at least 0.20 in the opposite direction with nonoverlapping ranges, I will consider it contradicted. If the difference is smaller than 0.20, I will report that no difference of the preregistered size was observed. Otherwise, the result is inconclusive.
+
+I will report several threats to validity. This includes only three runs per cell, possible failures of blinding when the two architectures produce recognizably different lessons, judge bias toward longer outputs, and the rough reading time estimate of the benchmark. I am mostly concerned about the length estimate because it counts visible words rather than actually measuring instructional value. A longer lesson could feasibly contain unnecessary repetition without teaching more. I will therefore consider the blind comparisons and factual coverage alongside length accuracy. I will not change my primary measure after seeing the results.
 
 ---
 
