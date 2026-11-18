@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: where agent information lives</title>
+  <style>
+    body { max-width: 42rem; margin: 0 auto; padding: 2rem 1rem; font-family: Georgia, serif; line-height: 1.5; background: #fffdf8; color: #1f1d1a; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.4rem; border-bottom: 1px solid #e4dfd4; }
+    @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } }
+  </style>
+</head>
+<body>
+<h1>Where agent information lives</h1>
+<table>
+  <thead><tr><th>Home</th><th>Lasts</th><th>Use for (makerspace)</th></tr></thead>
+  <tbody>
+    <tr><td>Context window</td><td>One call; resent every step</td><td>Current question, recent tool results</td></tr>
+    <tr><td>Notes / memory tool</td><td>Across sessions</td><td>Student preferences, past settings</td></tr>
+    <tr><td>Program-owned record</td><td>Permanent, authoritative</td><td>Training status, live bookings</td></tr>
+    <tr><td>Retrieval index</td><td>Rebuilt when manuals change</td><td>Manual pages, error codes</td></tr>
+  </tbody>
+</table>
+<h2>Rules of thumb</h2>
+<ul>
+  <li>Total input cost = sum of every call's input, not the final size.</li>
+  <li>Trim: filter in the tool, clear old results, then compact.</li>
+  <li>Under about 200,000 tokens of manuals? Try putting them all in the prompt with caching first.</li>
+  <li>Retrieval: chunk, index with embeddings and BM25, return the top few chunks.</li>
+</ul>
+<p><a href="../lessons/0001-context-and-memory-in-an-agent.html">Back to the lesson</a></p>
+</body>
+</html>

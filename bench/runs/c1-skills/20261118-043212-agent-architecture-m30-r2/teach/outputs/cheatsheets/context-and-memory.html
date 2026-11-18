@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Context and memory: cheat sheet</title>
+  <style>
+    body { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem; font-family: Charter, Georgia, serif; line-height: 1.55; background: #fffdf8; color: #1f1d1a; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.4rem 0.5rem; border-bottom: 1px solid #e4dfd4; }
+    code { background: #f3efe6; padding: 0.1em 0.3em; border-radius: 4px; }
+    @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } code { background: #23211e; } a { color: #eaa77a; } }
+  </style>
+</head>
+<body>
+<h1>Context and memory: cheat sheet</h1>
+<p>From <a href="../lessons/0001-context-and-memory.html">lesson 1</a>. The model keeps nothing between calls; your program builds the context each time.</p>
+<h2>Cost</h2>
+<p>Request cost = input tokens summed over every call. Anything in the context is resent on each later call: extra cost = tokens x number of later calls.</p>
+<h2>Where information lives</h2>
+<table>
+  <thead><tr><th>Layer</th><th>Lasts</th><th>Tools</th></tr></thead>
+  <tbody>
+    <tr><td>Context (this call)</td><td>One call</td><td>Keep small; small tool results</td></tr>
+    <tr><td>Message list</td><td>One session</td><td>Clear stale tool results; compact near the limit</td></tr>
+    <tr><td>Storage</td><td>Across sessions</td><td>Database row for exact facts (training status); short note file for soft context</td></tr>
+    <tr><td>Searchable store</td><td>Permanent</td><td>Chunked manuals; pre-inference search, or a <code>search_manual</code> tool (just-in-time)</td></tr>
+  </tbody>
+</table>
+<h2>Rules of thumb</h2>
+<ul>
+  <li>Aim for the smallest set of high-signal tokens; accuracy falls as context grows (context rot).</li>
+  <li>Return few, well-aimed chunks, not many.</li>
+  <li>Never gate a permission on a note the model wrote; check a record.</li>
+</ul>
+</body>
+</html>
