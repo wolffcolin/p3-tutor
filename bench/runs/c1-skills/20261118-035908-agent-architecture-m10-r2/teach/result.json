@@ -1,0 +1,152 @@
+{
+  "duration_api_ms": 122516,
+  "stop_reason": "end_turn",
+  "session_id": "ae4172e6-6961-44fd-8752-449f1f5104fa",
+  "total_cost_usd": 0.5279512999999999,
+  "usage": {
+    "input_tokens": 20,
+    "cache_creation_input_tokens": 74945,
+    "cache_read_input_tokens": 439385,
+    "output_tokens": 14697,
+    "output_tokens_details": {
+      "thinking_tokens": 3343
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 74945,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 636,
+        "cache_read_input_tokens": 85349,
+        "cache_creation_input_tokens": 318,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 318
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 20,
+      "outputTokens": 14697,
+      "cacheReadInputTokens": 439385,
+      "cacheCreationInputTokens": 74945,
+      "webSearchRequests": 0,
+      "costUSD": 0.49072849999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3343,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 74945,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 49623,
+      "outputTokens": 4521,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 3,
+      "costUSD": 0.0372228,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1665,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 22,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I wrote the 10-minute lesson on O3 at `lessons/0001-context-and-memory.html`. I haven't opened it in a browser or counted the words. I estimated the length at about 1,500 words and the six-section timing adds up to 10 minutes.\n\n**What it covers:**\n- **Big picture:** the model remembers nothing between calls, so \"memory\" is whatever text your program chooses to send. That text comes from context, notes or retrieval.\n- **Context window and cost:** the whole history is re-sent on every call. A worked four-call example, with illustrative numbers, shows input growing to 17,800 tokens in total. It also covers context rot.\n- **Between steps and sessions:** how notes carry facts across sessions (the memory tool is the tool loop you already know), plus a short note on compaction. It also corrects the \"bigger window = memory\" mix-up.\n- **Retrieval:** chunking the manuals, and why a chunk loses its source and needs context added.\n- **Worked example:** where each piece of the makerspace assistant's information should live, then a faded \"your turn\".\n\nThere are three practice checks with instant feedback, one figure, and sources cited inline. I also added `RESOURCES.md` and updated `NOTES.md`.\n\n**Caveats:**\n- I couldn't find a community for agent builders that I trusted, so `RESOURCES.md` lists that as a gap.\n- I didn't open the Contextual Retrieval page itself, only its search result. The lesson's retrieval claims (chunks lose context, and the 49% cut in failed retrievals) come from that result and a search summary.\n- I wrote no learning record, since you haven't shown any understanding of this material yet.\n\nYou can ask me anything about the lesson in the chat. A quiz is ready whenever you want it: use `/quiz`.\n\nQuestion for you: the notes say quiz 0001 has two ungraded submissions. Do you want those graded before the O3 quiz?",
+  "ttft_ms": 1044,
+  "type": "result",
+  "duration_ms": 109953,
+  "uuid": "4d9add36-f5b3-4b9c-bd37-365ff435204a",
+  "ttft_stream_ms": 673,
+  "time_to_request_ms": 139,
+  "first_content_frame_ms": 673,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 20,
+      "outputTokens": 14697,
+      "cacheReadInputTokens": 439385,
+      "cacheCreationInputTokens": 74945,
+      "webSearchRequests": 0,
+      "costUSD": 0.49072849999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3343,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 74945,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 49623,
+      "outputTokens": 4521,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 3,
+      "costUSD": 0.0372228,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1665,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}
