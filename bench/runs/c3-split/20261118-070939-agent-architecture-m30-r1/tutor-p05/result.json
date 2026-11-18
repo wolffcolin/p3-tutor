@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 9718,
+  "stop_reason": "end_turn",
+  "session_id": "9cdc9f08-2119-4e51-84c4-69e78436a43d",
+  "total_cost_usd": 0.1000839,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 20491,
+    "cache_read_input_tokens": 60679,
+    "output_tokens": 1204,
+    "output_tokens_details": {
+      "thinking_tokens": 291
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20491,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 299,
+        "cache_read_input_tokens": 30655,
+        "cache_creation_input_tokens": 558,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 558
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1204,
+      "cacheReadInputTokens": 60679,
+      "cacheCreationInputTokens": 20491,
+      "webSearchRequests": 0,
+      "costUSD": 0.1000839,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 291,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20491,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I'm not going to do the full derivation or a training walkthrough. Training models is out of scope in your mission, and PPO needs calculus and policy-gradient background you haven't built yet.\n\nAlso, you don't need RL for better tool calling. The labs that use it train their own models, and you'll call a hosted one, so you can't run PPO on it. Your gains will come from clear tool descriptions, a fixed workflow where the steps are predictable, and a small set of test requests you re-run after each change.\n\nFor reference, PPO's core idea is to nudge the model toward actions that scored better than expected, but clip the change so one update can't move it too far:\n\nL = E[min(r·A, clip(r, 1−ε, 1+ε)·A)]\n\nHere r is the new policy's probability of an action divided by the old policy's, and A is how much better that action was than average.\n\nI can write a lesson on tool descriptions next, since that's the lever you control.",
+  "ttft_ms": 961,
+  "type": "result",
+  "duration_ms": 9877,
+  "uuid": "80981297-1c3b-40d3-8c3f-0942aa724852",
+  "ttft_stream_ms": 646,
+  "time_to_request_ms": 125,
+  "first_content_frame_ms": 647,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1204,
+      "cacheReadInputTokens": 60679,
+      "cacheCreationInputTokens": 20491,
+      "webSearchRequests": 0,
+      "costUSD": 0.1000839,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 291,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20491,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

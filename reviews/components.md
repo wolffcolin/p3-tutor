@@ -80,3 +80,39 @@ An example of a finished entry:
 - With and without: reviews/c2-review.md, Round 3 (without) and the full run of c2-review (with)
 - Review: The reviewer found significant omissions, which lead it to adding cost comparisons for retrievals, details on persistent memory, and practice exercises. Factual coverage rose from 0.83 to 1.00, and the length ratio rose from 0.56 to 0.65. I think these improvements are worth it, even though the tokens used increased from 399k to 1.33M. I believe this because it addressed significant weaknesses from c1-skills. 
 - Kept in final: TODO
+
+### lesson-planner
+
+- Kind: subagent
+- Step added: c3-split
+- Purpose: TODO
+- With and without: reviews/c3-split.md, Round 1 (without) and Round 2 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### lesson-writer
+
+- Kind: subagent
+- Step added: c3-split
+- Purpose: TODO
+- With and without: reviews/c3-split.md, Round 2 (without) and Round 3 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### visual-designer
+
+- Kind: subagent
+- Step added: c3-split
+- Purpose: TODO
+- With and without: reviews/c3-split.md, Round 3 (without) and Round 4 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### references-finder
+
+- Kind: subagent
+- Step added: c3-split
+- Purpose: TODO
+- With and without: reviews/c3-split.md, Round 4 (without) and the full run of c3-split (with)
+- Review: TODO
+- Kept in final: TODO

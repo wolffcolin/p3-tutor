@@ -1,0 +1,139 @@
+{
+  "duration_api_ms": 464821,
+  "stop_reason": "end_turn",
+  "session_id": "6a3e1bd6-57ce-4a28-acbd-074bce39bc2f",
+  "total_cost_usd": 1.5527054,
+  "usage": {
+    "input_tokens": 16,
+    "cache_creation_input_tokens": 30234,
+    "cache_read_input_tokens": 556024,
+    "output_tokens": 8871,
+    "output_tokens_details": {
+      "thinking_tokens": 959
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 30234,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 665,
+        "cache_read_input_tokens": 89561,
+        "cache_creation_input_tokens": 1363,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1363
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 102,
+      "outputTokens": 60429,
+      "cacheReadInputTokens": 1681906,
+      "cacheCreationInputTokens": 251889,
+      "webSearchRequests": 0,
+      "costUSD": 1.5227101000000003,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 13879,
+      "cacheCreationEphemeral5mInputTokens": 171687,
+      "cacheCreationEphemeral1hInputTokens": 80202,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 55533,
+      "outputTokens": 8884,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 2,
+      "costUSD": 0.0299953,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 4996,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_019up4bzJbRP4QHdYBnTpntc",
+      "tool_input": {
+        "command": "cd lessons && sed -i \\\n -e 's|Warm-up <span class=\"section-time\">1.5 min|Warm-up <span class=\"section-time\">1 min|' \\\n -e 's|Finding the right page <span class=\"section-time\">4 min|Finding the right page <span class=\"section-time\">4.5 min|' \\\n -e 's|Worked example <span class=\"section-time\">3.5 min|Worked example <span class=\"section-time\">2.5 min|' \\\n -e 's|Faded practice <span class=\"section-time\">3.5 min|Faded practice <span class=\"section-time\">2.5 min|' \\\n -e 's|Cost and retrieval practice <span class=\"section-time\">2.5 min|Cost and retrieval practice <span class=\"section-time\">2 min|' \\\n -e 's|<h2>Sources and go further</h2>|<h2>Sources and go further <span class=\"section-time\">0.5 min</span></h2>|' \\\n 0001-context-and-memory.html && grep -o 'section-time\">[0-9.]* min' 0001-context-and-memory.html | tr '\\n' ' '",
+        "description": "Retime section labels"
+      }
+    }
+  ],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "origin": {
+    "kind": "task-notification",
+    "producer": "session-task",
+    "runId": "0mwlsdy2w-61d056cf"
+  },
+  "subagent_stats": {
+    "spawned": 5,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 5
+    },
+    "started_in_background": 5,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 5,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "lesson-planner": 1,
+      "references-finder": 1,
+      "lesson-writer": 1,
+      "visual-designer": 1,
+      "lesson-reviewer": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 22,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "The O3 lesson is written at `lessons/0001-context-and-memory.html`. It is 30 minutes, about 4,680 words, and the section times add up to 30.\n\nIt covers:\n- **Context and tokens:** the model keeps nothing between calls, so each call is rebuilt from what the program sends.\n- **Re-sending:** every step re-sends everything. A four-step makerspace request is worked through with illustrative token numbers.\n- **Keeping context small:** context rot, clearing old tool results and compaction.\n- **Memory between sessions:** student records and notes that the program saves and reads back.\n- **Finding the right page:** retrieving one manual page, keyword versus embedding search, and just-in-time versus pre-inference retrieval.\n- **Practice:** a worked example, faded practice on a 3D-printer case, a cost calculation and two figures.\n\nThe cost figures are illustrative: the token counts and the $3 per million tokens price are made up to show the mechanism, and the lesson says so. They assume no prompt caching.\n\nThe reviewer returned REVISE, and I fixed its four serious findings. I added how search picks a page, a new-case cost task and a bad-search check. I cut the repeated cost explanation and corrected the warm-up, which said four steps for a three-step loop. Two minor findings are only partly fixed: I left row 8 of the faded practice in place and trimmed only two of the long paragraphs.\n\nI did not write a cheat sheet. Links to earlier lessons are by name only, because `lessons/` was empty. I did not open the lesson in a browser, so the layout and the two SVG figures have not been checked by eye. The review record is `review-records/0001-teach.md`, and I added the session notes to `NOTES.md`.\n\nYou can ask me anything about the lesson in the chat, and a quiz is ready whenever you want one (ask with `/quiz`).\n\nA question for you: should the next lesson go deeper on retrieval (chunking and embeddings for the manuals) or move on to workflows versus agents?",
+  "ttft_ms": 933,
+  "type": "result",
+  "duration_ms": 54919,
+  "uuid": "b3516802-eaf7-45ad-9522-a73a8ad55bd5",
+  "ttft_stream_ms": 601,
+  "time_to_request_ms": 12,
+  "first_content_frame_ms": 601,
+  "queued_turn_count": 0,
+  "result_index": 5,
+  "model_usage_since_last_result": {},
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

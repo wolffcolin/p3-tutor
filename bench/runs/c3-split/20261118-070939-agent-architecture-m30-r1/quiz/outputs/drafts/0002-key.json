@@ -1,0 +1,40 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "In design X the developer's code fixes the sequence ahead of time; the model is only called inside one step and never decides what comes next. Options a, c and d describe how a model-chosen sequence (design Y) is steered, not how code-owned control flow works."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "When every run takes the same steps, each step can be inspected and tested on its own, so the range lookup can be checked in isolation. Varying choices (a) make diagnosis harder but do not make logs useless, and fixed code is not mistake-free (b); the call count (c) is not the reason."
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "When the next check depends on what the previous one revealed and the checks cannot be listed in advance, the model has to choose the steps, which is what an agent does. A fixed list (b) or decision tree (d) cannot cover paths nobody foresaw, and a single call with no checks (c) cannot gather the missing information."
+    },
+    {
+      "id": "q4",
+      "answer": 9,
+      "tolerance": 0,
+      "rationale": "The agent makes 5 tool-request calls plus 1 final-answer call = 6 calls. 6 x $0.01 x 300 = $18 per day, against 3 x $0.01 x 300 = $9 for the workflow, a difference of $9. An answer of 18 forgets to subtract the workflow's cost; 15 counts only the tool calls and forgets the final answer."
+    },
+    {
+      "id": "q5",
+      "answer": "The morning count and order sheet is a fixed workflow, because the steps are the same every day and known in advance; the nurse's question is an agent, because which checks it needs depends on what it finds.",
+      "accepted": [
+        "Feature 1 fixed workflow (same known steps every time), feature 2 agent (steps depend on what it finds)",
+        "Count and email as a workflow since the steps never change; the free-form question as an agent since the steps can't be predicted"
+      ],
+      "rationale": "Full credit needs the correct assignment and a reason tied to whether the steps are known in advance. A correct assignment with no reason, or with a reason that is about something else (for example that agents are always more accurate), is partial; the reversed assignment is wrong."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "The order never varies, so the code should own it: a prompt asks the model to follow the order but cannot guarantee it, while fixed code does, and it also cuts the number of model calls. A step limit (a) does not enforce order, more examples (b) and a larger model (d) lower the error rate but never make it zero."
+    }
+  ]
+}

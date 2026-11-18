@@ -98,26 +98,31 @@ Read `references/LESSONS.md` and `references/lesson-template.html`, then the tit
    When no length is asked for, use the one `PREFERENCES.md` implies, or 15 minutes, declare it in `p3-minutes`, and say in your message that the learner can ask for a shorter or longer lesson.
 2. **Find the knowledge:** search the web for high-trust sources on exactly this objective, read the best two or three, and choose the single best one as the lesson's primary source.
    Add the sources to `RESOURCES.md` in the format in `references/RESOURCES-FORMAT.md`.
-3. **Outline before you write:** the big picture in a few sentences, then the chunks, and for each chunk its one idea, its example or figure, its practice check and its time in minutes.
-   The chunk times, with the opening, worked example and summary, must add up to exactly the requested minutes: write the sum down, and fix the plan until it matches.
-   Convert times to words as `references/LESSONS.md` explains, so the whole lesson still fits the requested length.
-4. **Give each idea one home:** next to each chunk, list the ideas, numbers and terms it introduces, and give every one a single place in the lesson.
-   Later chunks may use an idea in one clause or link back to it, but never explain it again (see "No repetition" below).
-5. **Write the lesson** to `lessons/NNNN-<slug>.html`, following `FORMATS.md` and the template: beautiful and self-contained, with figures, worked examples, practice with immediate feedback, and citations.
-   If the page shows a time per chunk, those times are the plan's and sum to the declared minutes.
-6. **Check it** against the list below.
-7. **Review once:** start the `lesson-reviewer` subagent with a task message that names the lesson file, the objective and its id and the requested minutes, and says nothing about your reasoning; wait for its report before you do anything else.
+3. **Plan with the planner:** start the `lesson-planner` subagent with a task message that gives the objective and its id, the requested minutes, the win, the primary source and the key facts the lesson must cover (a short list from what you read in step 2), and wait for its report.
+   It writes `drafts/plan.md`: the sections with minutes and word budgets, one home for each idea, the facts assigned to sections, and the examples and figures.
+   Read the plan, and check that its minutes sum to the requested minutes and its budgets to about 150 words per minute; if not, fix the plan yourself with Edit rather than starting the planner again.
+4. **Verify the sources:** start the `references-finder` subagent with a task message that gives the objective and the primary source, and wait for its report.
+   It checks the plan's important claims against the pages, writes `drafts/sources.md` (verified claims, the wording to use for any partly supported or unsupported claim, and the best links) and adds any new source to `RESOURCES.md`.
+   Do not check the lesson's citations yourself afterwards, and do not start the finder again.
+5. **Write with the writer:** start the `lesson-writer` subagent with a task message that names the lesson file to write (`lessons/NNNN-<slug>.html`, the next number and a short slug), the objective and its id and the requested minutes, and wait for its report.
+   It reads `drafts/plan.md`, `drafts/sources.md`, `FORMATS.md`, the template and `RESOURCES.md` itself, writes the whole lesson once to that path, measures it with `.claude/scripts/wordcount.py` and fills any section that came in under its budget; do not write the lesson yourself and do not hand it your notes.
+6. **Check the report:** the total words should be near the plan's total (about 150 per requested minute).
+   If the writer reports it is still short, do not start it again; the lesson reviewer's length check in step 9 handles it.
+7. **Draw the figures:** start the `visual-designer` subagent with a task message that names the lesson file, and wait for its report; it draws each figure slot to scale and edits it into the lesson in place, so do not draw figures yourself.
+8. **Check it** against the list below.
+9. **Review once:** start the `lesson-reviewer` subagent with a task message that names the lesson file, the objective and its id and the requested minutes, and says nothing about your reasoning; wait for its report before you do anything else.
    - `VERDICT: KEEP` (no serious finding): leave the lesson as it is, applying a minor finding only when it is a small edit.
    - `VERDICT: REVISE` (at least one serious finding): fix each serious finding with Edit on the lesson file, not by rewriting it whole, or note in the record why not; the fixes add what is missing (facts, examples, practice) and cut the repeated text, and keep the lesson near the requested length.
+     After revising, measure once with exactly `python3 .claude/scripts/wordcount.py lessons/NNNN-<slug>.html <minutes>` (no other flags and no other shell command, because only that command is allowed) and put the before and after figures in the record.
    - Do not start a second review.
    The lesson file is written once at its final path and revised in place, so `lessons/` never holds a second file and no whole-lesson copy is paid for twice.
-8. **Write the record and keep the workspace current:** `review-records/NNNN-teach.md`, then a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
+10. **Write the record and keep the workspace current:** `review-records/NNNN-teach.md`, then a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
    The record holds:
    - the verdict;
    - for each finding, its check number and severity, the section you edited (or "none"), a brief description or a short quote showing what changed (or why you left it), and whether it is `resolved`, `partly resolved` or `not resolved`;
    - the approximate visible words of the lesson before and after the revision, and the section-time totals before and after (the sum of the per-section minutes against the requested minutes), when the lesson shows or implies them; when there was no revision, the single figures and "no revision".
    Estimate the words by section as the reviewer does, and mark every figure as approximate.
-9. **Finish** with a short message: the lesson's path and what it covers, that they can ask you anything about it in the chat, and that a quiz is ready when they want one (they ask with `/quiz`).
+11. **Finish** with a short message: the lesson's path and what it covers, that they can ask you anything about it in the chat, and that a quiz is ready when they want one (they ask with `/quiz`).
    Do not write the quiz.
 
 ### The shape of the lesson

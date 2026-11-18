@@ -1,0 +1,42 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "In design X the developer's code owns the sequence; the model's reply is an output the program handles, not a decision about what runs next. Options a, c and d give the model control of the next step, which is what happens in design Y."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "With fixed steps the range lookup runs the same way each time, so you can rerun it on last night's input and check it alone. Wording variation (a) exists in both designs, a model step is not automatically the culprit (b), and call count (c) is not what makes the fault reproducible."
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "Causes the team has never seen need checks nobody wrote down, so the model has to choose the next step from what it finds. A fixed list (b) or tree (c) only covers the known causes, and a single call with no checks (d) cannot gather missing information."
+    },
+    {
+      "id": "q4",
+      "answer": 9,
+      "tolerance": 0,
+      "rationale": "The agent makes 2 tool-request calls plus 1 final-answer call = 3 calls: 3 x $0.01 x 300 = $9 per day. The workflow costs 6 x $0.01 x 300 = $18, so the agent saves $9. A fixed workflow is not always cheaper; it is cheaper only when it needs fewer calls than the agent would. An answer of 18 shows the two designs were not compared."
+    },
+    {
+      "id": "q5",
+      "answer": "Booking is a fixed workflow; the print diagnosis is an agent.",
+      "accepted": [
+        "1 workflow, 2 agent",
+        "feature 1 workflow, feature 2 agent",
+        "booking workflow, diagnosis agent",
+        "booking is a workflow and the diagnosis is an agent"
+      ],
+      "rationale": "Booking has known steps in the same order every time (check the calendar, book, confirm), so code can own them; the diagnosis needs checks that depend on what each source shows, so the model must choose. The reversed assignment is wrong; a correct assignment with a wrong reason is partial."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "Every invoice goes through the same steps, so code should own the order: it guarantees it and removes the calls the model spent deciding what to do. A refusal check (a) blocks the bad post but keeps the 9-call loop; examples (b) and a larger model (d) lower the error rate without ever guaranteeing zero."
+    }
+  ]
+}

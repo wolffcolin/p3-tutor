@@ -1,0 +1,68 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who decides the steps",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An expense tool receives a receipt photo. Design X: the code extracts the text, then asks a model for a spending category, then writes the entry to the ledger. Design Y: a model is given read_receipt, lookup_policy, flag_for_review and write_ledger tools and works out its own sequence. For one blurry receipt, the model in design X replies \"category unclear, skip the ledger\". What happens next in design X?",
+      "options": [
+        {"id": "a", "text": "The reply ends the run, since the model is the one that judged the receipt"},
+        {"id": "b", "text": "The program carries on to its next written step, treating the reply as data"},
+        {"id": "c", "text": "The model picks between writing the entry and stopping, using its tool list"},
+        {"id": "d", "text": "The program pauses and asks the model which step should come after this one"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A clinic's nightly job takes each new lab result, looks up the normal range, and sends the patient a templated message; a model only fills in the plain-language wording. Last night 12 messages went out with the wrong range. Why is the cause easier to reproduce and isolate when the job runs the same steps every night than when a model chooses its own tools?",
+      "options": [
+        {"id": "a", "text": "The model's wording varies between runs, so last night's messages cannot be compared"},
+        {"id": "b", "text": "The wording step is the only part that uses a model, so the fault must be there"},
+        {"id": "c", "text": "The job calls the model fewer times, so there is less output to read through"},
+        {"id": "d", "text": "The same lookup runs every night, so last night's input can be rerun and compared"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A data team's nightly report failed. Over the last month, three failures each needed different checks: a stale upstream table, an expired permission, and a schedule clash nobody had anticipated. The team wants an assistant that finds the cause of the next failure, including kinds it has not seen. Which design fits?",
+      "options": [
+        {"id": "a", "text": "The model chooses each check after seeing what the previous one returned, and stops once it has a cause"},
+        {"id": "b", "text": "A fixed list of all known checks run in order, with the model summarising the results at the end"},
+        {"id": "c", "text": "A fixed decision tree for the known causes, with the model only writing the final summary"},
+        {"id": "d", "text": "One model call that reads the whole error log and names the cause without running any checks"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "numeric",
+      "objective": "O4",
+      "stem": "Your team compares two designs for a question-answering feature. The fixed workflow always runs 6 model calls per request. The agent version, on a typical request, asks for 2 tools one after another and then writes its answer; each model call ends with one tool request or the final answer. Assume every model call costs $0.01 and there are 300 requests a day. How many dollars per day does the agent version save on typical requests?",
+      "unit": "dollars per day"
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O4",
+      "stem": "Your makerspace assistant needs two features: (1) book a machine for a student who has given the machine, day and hour; (2) answer \"why did my 3D print fail?\" by working through the manuals, the maintenance log and the booking history. Which feature would you build as a fixed workflow and which as an agent?"
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An invoice assistant is a model with extract_fields, match_purchase_order and post_to_ledger tools, averaging 9 model calls per invoice. About 1 in 50 invoices is posted before it is matched. The team adds \"ALWAYS match before posting\" to the prompt and the rate drops to 1 in 200. Which next step best guarantees the order and keeps cost down?",
+      "options": [
+        {"id": "a", "text": "Make post_to_ledger refuse any invoice that has not been matched, and keep the loop"},
+        {"id": "b", "text": "Add worked examples to the prompt until skipped matches drop to zero"},
+        {"id": "c", "text": "Write the three steps as fixed code and use the model only to read fields"},
+        {"id": "d", "text": "Switch to a larger model that follows long instructions more reliably"}
+      ]
+    }
+  ]
+}

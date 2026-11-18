@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "allow": ["WebSearch", "WebFetch"],
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(python3 .claude/scripts/wordcount.py:*)",
+      "Bash(python3 -I .claude/scripts/wordcount.py:*)"
+    ],
     "deny": ["Agent(p3-guide)"]
   }
 }

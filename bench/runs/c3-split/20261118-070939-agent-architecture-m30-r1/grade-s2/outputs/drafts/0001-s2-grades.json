@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The loop (model picks an action, it runs, the result returns) is the structure that separates an agent from one call; prompts, window size and memory don't change that."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The model only writes a structured request naming the tool and its arguments; the program runs it."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed more steps will eventually fix it. But the agent is getting the same failing result 40 times, so step 41 will be identical: nothing new enters the loop. Every agent needs a stopping condition, like a step limit, that ends the loop and hands the problem to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but the reason isn't: the model doesn't run any tool. Each call outputs one request, and the program runs the tool. So it's 3 requests plus the final answer, or one call per input received: the question and 3 tool results."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "You gave both parts: the result becomes the model's next input, so it can decide its next step. The group-chat analogy fits: the model only sees what's been added to the conversation."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "Name-based is half right: the model does choose from information it's given, not from the code. But it gets the whole description: the name, what the tool does and its parameters. A name alone can mislead, e.g. check_calendar doesn't say it needs a machine and a date. Your own tool descriptions are what you'll write."
+    }
+  ],
+  "summary": "You have the loop structure and the model-requests, program-runs split down; q4 shows that split still slips when you explain. Work on why the loop needs a stopping condition and on how tool descriptions, not just names, drive tool choice. Revisit the stopping-condition section of the agent-loop lesson, then write a description for check_calendar."
+}

@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The loop of action, run, result is what makes it an agent."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The model only writes a structured request naming the tool and its arguments; the program runs it."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed more steps will eventually fix it. That feels like persistence, but the agent gets the same failing result each time, so step 41 is identical to step 40. Every agent needs a stopping condition, like a step limit, that ends the loop and hands the problem to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but the reason isn't: the model doesn't run any tool. Each call outputs one request, and the program runs the tool. So it's 3 tool requests plus the final answer."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Both parts are there: the result becomes the model's next input, so it can decide its next step."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "\"By the name\" leaves out what each tool does and what parameters it takes. The model reads the whole description, and a name alone can mislead: check_calendar doesn't say it needs a machine and a date."
+    }
+  ],
+  "summary": "In q3 and q4 you reasoned about what the loop and the model do and slipped (no stopping condition needed; model runs tools), and in q6 you stopped at a surface detail. Next, write a description for check_calendar with its name, purpose and parameters, and say how the model would use each part."
+}

@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose action, run it, feed the result back is the structure that makes it an agent; a longer prompt or bigger model only changes what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You assumed the model reaches into the booking system itself. It can't: it only writes text. Its output is a structured request naming check_calendar with the machine and date as arguments, and the program around it runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: repeating the same failure needs a stopping condition, and a step limit supplies one; a bigger window or stronger prompt doesn't end a loop."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "Same misconception as q2: the model doesn't run the tools, the program does. The model is called once per input it receives: the question, then each of the 3 tool results. That is 4 calls, each ending in one tool request or the final answer."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "You have what happens: the result goes back to the model. The missing part is why: it goes into the model's next input so the model can use it to pick its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "Right that the model is given each tool's name and description and picks the fit. Wrong that it remembers past choices on its own: a model keeps nothing between sessions unless the program stores it and puts it back in the input. Its choice comes from the descriptions alone."
+    }
+  ],
+  "summary": "You have the loop's shape and the role of tool descriptions, but twice you gave the model abilities it lacks: running tools and remembering across sessions. Work on separating what the model does (writes text) from what the program does (runs tools, stores and supplies memory). Next, retrace one request on paper, labelling each step 'model' or 'program', before the context and memory lesson."
+}

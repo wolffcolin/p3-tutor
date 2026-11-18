@@ -1,0 +1,68 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who decides the steps",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An expense tool receives a receipt photo. Design X: the code always extracts the text, then asks a model for a spending category, then writes the category to the ledger. Design Y: a model is given read_receipt, lookup_policy, flag_for_review and write_ledger tools and works out its own sequence. In design X, what determines that the ledger write comes after the categorising?",
+      "options": [
+        {"id": "a", "text": "The model reasons that a category is needed before it can write an entry"},
+        {"id": "b", "text": "The order of the steps in the program the developer wrote ahead of time"},
+        {"id": "c", "text": "The tool descriptions, which tell the model what order to use them in"},
+        {"id": "d", "text": "The system prompt, which lists the steps the model must follow in turn"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A clinic's nightly job takes each new lab result, looks up the normal range, and sends the patient a templated message; a model only fills in the plain-language wording. Last night 12 messages went out with the wrong range, and the team must find the cause. Why is this easier to diagnose when the job runs the same steps every night than when a model chooses its own tools?",
+      "options": [
+        {"id": "a", "text": "The model's choices differ from run to run, so last night's log would not help"},
+        {"id": "b", "text": "Fixed code never makes mistakes, so the fault must lie in the model's wording"},
+        {"id": "c", "text": "The job calls the model fewer times, so there is less output to read through"},
+        {"id": "d", "text": "The steps are identical each night, so the range lookup can be checked alone"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A data team's nightly report failed. Finding the cause may mean reading the error log, then checking an upstream table, then a schedule or a permissions change, depending on what each check shows. Nobody can list the checks beforehand. Which design fits a diagnosing assistant for this?",
+      "options": [
+        {"id": "a", "text": "The model picks each next check from what the last one showed, until it finds the cause"},
+        {"id": "b", "text": "A fixed list of every possible check, run in order, with the model summarising the results"},
+        {"id": "c", "text": "One model call that reads the whole error log and names the cause without any checks"},
+        {"id": "d", "text": "A fixed decision tree of the ten most common failures, coded by the team in advance"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "numeric",
+      "objective": "O4",
+      "stem": "Your team compares two designs for a question-answering feature. The fixed workflow makes exactly 3 model calls per request. The agent version, on a typical request, asks for 5 tools one after another and then writes its answer; each model call ends with one tool request or the final answer. Assume every model call costs $0.01 and there are 300 requests a day. How many more dollars per day does the agent version cost than the fixed workflow on typical requests?",
+      "unit": "dollars per day"
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A hospital supply room wants two features: (1) every morning, count the stock of each item and email the same order sheet to purchasing; (2) answer a nurse's free-form question such as \"why does the glove count look off this week?\". Which feature would you build as a fixed workflow and which as an agent, and why, in one or two sentences?"
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An invoice assistant is a model with extract_fields, match_purchase_order and post_to_ledger tools, averaging 9 model calls per invoice. About 1 in 50 invoices is posted before it is matched. The team adds \"ALWAYS match before posting\" to the prompt and the rate drops to 1 in 200. Every invoice needs the same three steps in the same order. What is the best next step?",
+      "options": [
+        {"id": "a", "text": "Add a step limit so that runs which skip the match are stopped early"},
+        {"id": "b", "text": "Add worked examples to the prompt until skipped matches drop to zero"},
+        {"id": "c", "text": "Write the three steps as fixed code and use the model only to read fields"},
+        {"id": "d", "text": "Switch to a larger model that follows long instructions more reliably"}
+      ]
+    }
+  ]
+}
