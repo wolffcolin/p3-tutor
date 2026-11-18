@@ -85,34 +85,34 @@ An example of a finished entry:
 
 - Kind: subagent
 - Step added: c3-split
-- Purpose: TODO
+- Purpose: The lesson planner creates an outline before the lesson is written, to ensure the correct structure and length. This outline includes learning objectives, section order, examples, exercises, and word budgets for each section. The c2-review lesson only achieved a length ratio of 0.65, so I wanted a separate planner that would be more effective at creating complete, appropriately long lessons. It is a subagent because planning is a distinct task that supports the writer to have a clear structure without generating the entire lesson itself.
 - With and without: reviews/c3-split.md, Round 1 (without) and Round 2 (with)
-- Review: TODO
+- Review: Adding the planner improved the length ratio from 0.65 to 0.70, and it kept full factual coverage. This resulted in an outline that had a 4,500 word budget and distributed topics and examples throughout. It was useful for helping the writer produce a better lesson. However, the resulting lesson was only 3,131 words, so the planning on its own did not fully solve the length problem. I think it was a useful improvement, but it needed a more specialized writer to fully achieve its purpose. 
 - Kept in final: TODO
 
 ### lesson-writer
 
 - Kind: subagent
 - Step added: c3-split
-- Purpose: TODO
+- Purpose: The lesson writer takes the outline from the planner, and it produces a complete lesson. It follows the word budgets for each section to develop explanations, worked examples and exercises. The planner on its own wasn't able to create the correct length lesson, so I thought a subagent that was focused on producing enough content to fit the length requirements without adding filler would help. It is a subagent because it has a specialized purpose within the overall workflow. 
 - With and without: reviews/c3-split.md, Round 2 (without) and Round 3 (with)
-- Review: TODO
+- Review: The writer helped the length ratio rise from 0.70 to 1.00 while keeping the full factual coverage. The additional content added was actually useful for the learner, I especially liked the expanded token counting example and the exercises that gradually removed hints as the lesson went on. The token usage did rise from 1.30M to 1.62M, and the runtime rose from 4.3 to 5.6 minutes. I think this improvement was worth the added cost, because it was the most substantial improvement in the completeness of the lesson during c3-split.
 - Kept in final: TODO
 
 ### visual-designer
 
 - Kind: subagent
 - Step added: c3-split
-- Purpose: TODO
+- Purpose: The visual designer had the responsibility of creating diagrams after a lesson was written based on the lesson and plan to determine what should be illustrated. I wanted figures to accurately represent concepts taught instead of simply making the lesson look better. It is a subagent because visual design is a separate task the supports lesson creation a as whole and it benefits from having a specific focus.
 - With and without: reviews/c3-split.md, Round 3 (without) and Round 4 (with)
-- Review: TODO
+- Review: The visual designer made the diagrams better without significantly affecting the length of the lesson, as the length ratio stayed close to the target at 0.99. The context window diagram represented the token quantities more accurately and the retrieval diagram explained how search results reduce context usage effectively. The token consumption actually decreased from 1.62M to 1.40M, but runtime rose slightly. I think this component was worthwhile because it made the quality of the explanations better without adding much cost.
 - Kept in final: TODO
 
 ### references-finder
 
 - Kind: subagent
 - Step added: c3-split
-- Purpose: TODO
+- Purpose: The references finder checks the most important technical claims made in the lesson against some external sources before the lesson is fully written. I wanted the writer to have references that were verified ready before the lesson was written instead of citations only getting checked after the lesson was written, to ensure accuracy. It is a subagent because source verification is a distinct task that involves research, and it supports the writer without having to redo the entire lesson review. 
 - With and without: reviews/c3-split.md, Round 4 (without) and the full run of c3-split (with)
-- Review: TODO
+- Review: The references finder finished successfully and the report it created identified 11 technical claims that were supported by sources. The benchmark maintained full coverage of the facts, and it didn't find any misconceptions or dead links. The length ratio was 1.01. However, the teach run consumed 2.06M tokens and it took 7.5 minutes, which is significantly longer and more costly than the non-finder run which consumed 1.40M tokens and took 5.8 minutes. I liked that the explanations were supported by sources, but this is a significant added cost. I think it did improve the confidence the learner could have in the technical accuracy of the lesson, but the automated scores were already fairly strong before it was added. 
 - Kept in final: TODO

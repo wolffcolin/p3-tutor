@@ -336,13 +336,89 @@ Name the rounds that built this step and the inventory entries of the pipeline's
 Then the split: the roles you split the teach job into, what each one receives and returns, what runs in order and what in parallel, and who puts the lesson together at the end.
 Why this split and not a smaller one, and what did you try that you took out again?
 
-TODO: the rounds and entries, and the design of your teach split.
+I documented the changes in reviews/c3-split.md in Rounds 1-4. I added the lesson-planner, lesson-writer, visual-designer, and references-finder subagents to reviews/components.md. The goal was to split the lesson generation work into specialized tasks. The main goal was to address the short lessons that c2-review produced without affecting factual accuracy.
+
+The order the teaching pipeline runs in is as follows: the lesson planner runs first, then the references finder, lesson writer, visual designer and lesson reviewer. The planner gets the learner's context and lesson request, and it uses it to produce a structured outline with section timings, examples, and word budgets in drafts/plan.md. The references finder uses the plan to check the important technical claims and writes its findings to drafts/sources.md. The writer uses these files to build the HTML lesson, and the visual designer follows to add diagrams that are based on the writer's content. Then, last, the lesson reviewer checks the result and the main agent handles any listed revisions.
+
+The stages of teaching run one after another in sequence because each depends on the output of the previous stage. The main agent coordinates the overall process and creates the final lesson after looking at the findings. I chose this split because the components each have a responsibility to handle different problems. Planning and writing manage the lesson completeness, visual design handles diagram quality, and reference checking supports the technical accuracy of the lesson. A smaller split could have combined some of these responsibilities into fewer subagents, but keeping them separated made it easier to evaluate their individual contributions to the output during quick rounds. I didn't remove any of these subagents during this stage. 
 
 ### Your review, the objective checks and the cost
 
 Paste `uv run p3 report --configs c2-review,c3-split`.
 
-TODO: paste the report tables.
+## Results on agent-architecture
+
+Scored full runs (quick runs and --only runs left out); each cell is the mean over the runs, with the range in brackets.
+
+### Quality
+
+| config | runs | teach facts | teach misconc. | length ratio | dead links | key agreement | wrong keys | ambiguous items | verdict agreement | false wrong | misconc. hit | leaks | behavior met |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 1.00 | 0 | 0.65 | 0 | 1.00 | 0 | 0 | 1.00 | 0.00 | 1.00 | 0 | 0.50 |
+| `c3-split` | 1 | 1.00 | 0 | 1.01 | 0 | 0.60 | 0 | 2 | 1.00 | 0.00 | 1.00 | 0 | 0.33 |
+
+Teach facts, key agreement, verdict agreement, false wrong, misconception hit and behavior met are shares (0 to 1); misconceptions, dead links, wrong keys, ambiguous items and leaks are counts per run.
+A dash means no run could be scored on that check, and n= says how many of the runs could.
+A job that failed counts against the config: no lesson scores 0 teach facts, no quiz and key 0 key agreement, a missing grades file disagrees on every item, and a tutor scenario with no reply is not met; leaks need a reply to check, so such a scenario is left out of them.
+The length ratio is a rough reading-time estimate (visible words / 150) over the minutes requested; 0.6 to 1.5 counts as on length.
+
+### Cost: teach
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 1.33M | 39.9k | 3.6 | 1 | 0.89 |
+| `c3-split` | 1 | 2.06M | 69.3k | 7.5 | 5 | 1.55 |
+
+### Cost: quiz
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 335.0k | 22.1k | 3.0 | 1 | 0.46 |
+| `c3-split` | 1 | 385.3k | 23.6k | 2.9 | 1 | 0.49 |
+
+### Cost: grade
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 574.9k | 13.1k | 1.5 | 2 | 0.49 |
+| `c3-split` | 1 | 463.2k | 13.1k | 1.4 | 2 | 0.48 |
+
+### Cost: tutor
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 441.4k | 5.6k | 0.8 | 0 | 0.50 |
+| `c3-split` | 1 | 457.0k | 5.3k | 0.8 | 0 | 0.51 |
+
+### Cost: all jobs
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c2-review` | 1 | 2.68M | 80.7k | 8.9 | 4 | 2.34 |
+| `c3-split` | 1 | 3.36M | 111.3k | 12.7 | 8 | 3.03 |
+
+Costs are per run, summed over the job's scenarios; list-price $ is the list-price equivalent, not what you pay on a subscription.
+
+## Your ratings
+
+Your ratings from 1 to 5 in the major reviews (reviews/<step>.md), which review full runs on the shared topic; a dash means no rating there yet, one that p3 check does not accept, or a job that step does not review (Tutor in c2-review; Quiz, Feedback and Tutor in c3-split).
+
+| job | criterion | c1-skills | c2-review | c3-split | final |
+|---|---|---:|---:|---:|---:|
+| Lesson | Technical correctness and facts | 4 | 5 | 5 | - |
+| Lesson | Pedagogy | 4 | 4 | 4 | - |
+| Lesson | Alignment with the learning goal | 4 | 5 | 5 | - |
+| Lesson | Overall quality | 3 | 4 | 4 | - |
+| Quiz | Difficulty | 4 | 4 | - | - |
+| Quiz | Coverage of the lesson's core | 4 | 5 | - | - |
+| Quiz | Wording and possible misreadings | 3 | 4 | - | - |
+| Quiz | Writing quality | 4 | 4 | - | - |
+| Quiz | Alignment with the learning goal | 4 | 5 | - | - |
+| Feedback | Useful | 5 | 5 | - | - |
+| Feedback | Explains enough | 4 | 5 | - | - |
+| Feedback | Personalized to how I like things explained | 4 | 5 | - | - |
+| Tutor | Guardrails | 4 | - | - | - |
+| Tutor | Personalization | 3 | - | - | - |
 
 ### What the step bought and what it cost
 
@@ -350,7 +426,13 @@ What did the split change in the lesson: its structure, its figures, its referen
 What did it cost in tokens, minutes and subagents against `c2-review`, and how much of that was overhead rather than writing?
 Each step has one run, so say how confident you are, and what would change your mind.
 
-TODO: your judgment of step 3.
+The biggest improvement from c3-split was the length of the lesson. The length ratio rose from 0.65 to 1.01, and factual coverage stayed at 1.00 without any detected misconceptions or dead links. The lesson's structure was more complete, with useful examples, and exercises that became less and less guided as the lesson went on. I like the Python code snippet that showed how conversation histories are maintained, and the diagrams. My ratings for technical correctness and alignment stayed at 5/5. My ratings for pedagogy and overall quality stayed at 4/5. The numerical length improvement was substantial, even though I didn't think the lesson earned higher ratings overall.
+
+The quick rounds seemed to show that the planner and writer were most helpful in their contributions to fixing the length problem. The planner improved the length ratio from 0.65 to 0.70, and the writer subagent brought this number to 1.00. The visual designer helped the accuracy and clarity of the diagrams without changing the length much. The references finder helped the confidence the learner could have in the technical claims, even though factual coverage was already perfect by the automated bench before it was introduced. 
+
+However, the cost of these improvements was significant. The token consumption for the teach workflow rose from 1.33M to 2.06M, and runtime rose from 3.6 to 7.5 minutes. The new pipeline also relies on 5 subagents calls, rather than just one. A lot of this additional cost came from coordinating subagents, checking sources, designing figures, and reviewing the lesson instead of just writing more content. For the complete benchmark, total token consumption increased from 2.68M to 3.36M. 
+
+I think the improvement in lesson completeness do justify some of the increased cost. I think this is especially true for the planner and the writer. However, the architecture is getting expensive, especially for just generating one lesson. My live try created a 19 minute lesson when I requested a 15 minute one, so it seems like the length control isn't totally solved yet, either. The quiz and tutor benchmark scores got worse even though I didn't deliberately change either of those components. Since both configurations only have one full benchmark run, I can't be confident in attributing the differences to the new architecture. If additional runs show worse lesson quality or inconsistent length accuracy, I might reconsider whether these subagents are worth keeping. 
 
 ---
 
