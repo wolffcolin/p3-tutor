@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 5580,
+  "stop_reason": "end_turn",
+  "session_id": "10f87896-8258-46ce-8473-df4ff624c761",
+  "total_cost_usd": 0.0587304,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12098,
+    "cache_read_input_tokens": 50564,
+    "output_tokens": 527,
+    "output_tokens_details": {
+      "thinking_tokens": 118
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12098,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 217,
+        "cache_read_input_tokens": 21234,
+        "cache_creation_input_tokens": 1428,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1428
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 527,
+      "cacheReadInputTokens": 50564,
+      "cacheCreationInputTokens": 12098,
+      "webSearchRequests": 0,
+      "costUSD": 0.0587304,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 118,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12098,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 4,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I can't confirm or rule out an option on a quiz item, so I won't give a verdict on (a). Once the quiz is graded, I'm happy to go through q2 with you.\n\nHere is the idea q2 probes: a model only ever produces text. It cannot open a system, read a file, or execute code. Anything that actually happens, such as running a tool, is done by the program wrapped around the model. The model's part is to write out a tool call as text, and the program then reads that text and acts on it. For example, a model can write \"weather(Paris)\", but only the surrounding program can go and fetch Paris's weather.\n\nCheck each option against that division of work: what does the model produce, and what does the program do?",
+  "ttft_ms": 983,
+  "type": "result",
+  "duration_ms": 5700,
+  "uuid": "5e6224e3-bf5a-4ab3-951c-d3809fd6818a",
+  "ttft_stream_ms": 574,
+  "time_to_request_ms": 85,
+  "first_content_frame_ms": 574,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 527,
+      "cacheReadInputTokens": 50564,
+      "cacheCreationInputTokens": 12098,
+      "webSearchRequests": 0,
+      "costUSD": 0.0587304,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 118,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12098,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

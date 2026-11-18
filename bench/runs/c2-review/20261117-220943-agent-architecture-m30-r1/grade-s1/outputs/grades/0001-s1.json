@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of action, result and next step is what makes it an agent."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You assumed the model reaches into the booking system itself. It looks that way from outside, but the model only outputs text: a structured request naming check_calendar with the laser cutter and tomorrow's date. The program runs the tool and sends back the result."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the context already holds all 40 steps, so what's missing is a stopping condition, and a step limit supplies one."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You said 1 because the model \"runs the 3 tools itself\": same M4 mistake as q2. The program runs them between calls. Each call ends in one tool request or the final answer: 3 + 1 = 4."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "\"Sends it back to the model\" is the what. The why is missing: the model needs the result in its next input to decide its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model picks from the names and descriptions it is sent. The second half is wrong: the model doesn't remember past choices across sessions. Chatbots feel like they remember you, but any memory is the program resending text; the model starts each session blank."
+    }
+  ],
+  "summary": "You have the loop's shape and tool descriptions down, but you credit the model with doing things only the program does: running tools and remembering. Work on separating what the model outputs (text) from what the program does (runs tools, stores and resends information). Redraw your laser cutter trace as two columns, model and program, marking each step."
+}

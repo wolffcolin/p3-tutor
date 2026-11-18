@@ -1,0 +1,67 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who steers",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A veterinary clinic's script handles every emailed appointment request the same way: a model call pulls the pet's name and the symptoms out of the email, the script looks up the pet's file, a second model call drafts a reply, and the script sends it. Which statement about this system is correct?",
+      "options": [
+        {"id": "a", "text": "The model steers it, because it is called twice and its first output feeds the lookup"},
+        {"id": "b", "text": "The model steers it, because it decides what text goes into every reply that is sent"},
+        {"id": "c", "text": "The script steers it, because the order of steps was set in advance and the model only fills in text"},
+        {"id": "d", "text": "Steering is shared, because the script runs the lookup but the model picks when the reply is ready"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A lab prints a label for every sample that arrives. The steps are identical each time: check the sample ID's format, look up the sample record, condense its free-text handling notes to 40 characters, and print. A failed lookup always means printing an error slip instead. Which design fits best, and why?",
+      "options": [
+        {"id": "a", "text": "Steps fixed in code, with the model called only to condense the notes, since the route never varies"},
+        {"id": "b", "text": "A model given the lookup and print tools, since it can reorder steps whenever a lookup fails"},
+        {"id": "c", "text": "A model given the lookup and print tools, since each sample then gets the most capable handling"},
+        {"id": "d", "text": "Steps fixed in code with no model call at all, since printing a label needs no language ability"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An insurance chatbot gives a model five lookup tools and calls it again after each tool result, until the model stops asking for tools. Finance forecast one cost per request, but logged requests use anywhere from 2 to 15 model calls, and the long ones cost far more per call than the short ones. What best explains the spread?",
+      "options": [
+        {"id": "a", "text": "Replies differ in length, so the amount of text the model writes varies from one request to the next"},
+        {"id": "b", "text": "Each tool is billed on its own, so requests that touch more tools carry more separate charges"},
+        {"id": "c", "text": "The loop program retries failed model calls, so errors add repeated calls to some of the requests"},
+        {"id": "d", "text": "The model decides how many steps each request needs, and every later call re-reads a longer history"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A hospital IT team wants help when the lab-results feed to the records system stops. The first useful check depends on the error log: it might point to an expired credential, a changed file format or a network outage, and each leads to different follow-up checks, in a number no one can list ahead of time. A developer proposes a six-step sequence coded in advance. What is its main weakness?",
+      "options": [
+        {"id": "a", "text": "A coded sequence cannot call a model, so nothing in it could read and interpret the error log"},
+        {"id": "b", "text": "The right next check depends on what the last one found, so no single order fits every outage"},
+        {"id": "c", "text": "A coded sequence is only safe for read-only work, and fixing a feed means changing its settings"},
+        {"id": "d", "text": "Nothing; coded sequences are cheaper and easier to test, so they are the right start for any task"}
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A pharmacy's refill assistant lets a model choose which tools to call for each request. One step, checking the patient's allergy list against the drug before a refill is confirmed, must never be skipped. In one sentence, give a reason to run that check as a fixed step in the program instead of leaving it to the model's choice."
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A travel-insurance team proposes one model with tools for every claim. Their logs show 90% of claims follow the same five steps in the same order (verify policy, read receipts, check coverage, compute amount, send decision); the other 10% involve unusual documents that need open-ended investigation. In one or two sentences, how would you redesign it, and what does your design gain over the one-model plan?"
+    }
+  ]
+}

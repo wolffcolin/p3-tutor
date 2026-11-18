@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 6763,
+  "stop_reason": "end_turn",
+  "session_id": "48fd6bb9-afc3-4bbd-8d8e-fd5e0f99c936",
+  "total_cost_usd": 0.0773181,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 15758,
+    "cache_read_input_tokens": 52241,
+    "output_tokens": 905,
+    "output_tokens_details": {
+      "thinking_tokens": 106
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 15758,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 193,
+        "cache_read_input_tokens": 22929,
+        "cache_creation_input_tokens": 3393,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3393
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 905,
+      "cacheReadInputTokens": 52241,
+      "cacheCreationInputTokens": 15758,
+      "webSearchRequests": 0,
+      "costUSD": 0.0773181,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 106,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 15758,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 9,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I can't give you the answer to a quiz item, including on a retake. Here's a hint that applies to every option equally.\n\nThe quiz item describes a loop that never ends by itself. In an agent loop, the model decides each step, and nothing outside the model forces the loop to end. When the model repeats an action, the failure is in the loop. Making the model's inputs bigger or its instructions longer doesn't change what the loop does. The other kind of fix sits in the program around the model, and it works whatever the model decides to do.\n\nWhen you're ready, submit the quiz and I'll go through q3 with you once it's graded.",
+  "ttft_ms": 1030,
+  "type": "result",
+  "duration_ms": 7013,
+  "uuid": "409cd894-9cbb-4404-be33-ec7786832b78",
+  "ttft_stream_ms": 668,
+  "time_to_request_ms": 227,
+  "first_content_frame_ms": 668,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 905,
+      "cacheReadInputTokens": 52241,
+      "cacheCreationInputTokens": 15758,
+      "webSearchRequests": 0,
+      "costUSD": 0.0773181,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 106,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 15758,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

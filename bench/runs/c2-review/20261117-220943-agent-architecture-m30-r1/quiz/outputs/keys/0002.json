@@ -1,0 +1,45 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The order of steps is written in the script, so the script decides what runs next; the model is called at two fixed points and never chooses a step. Being called twice (a), supplying content (b) or writing the final reply (d) is not the same as deciding the next step."
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "The route is the same every time, including the refusal case, so nothing needs deciding: fixed code gives the same result with fewer, predictable model calls, and the model is kept for the one step that needs language. A model choosing steps (b, c) adds calls and variability for no gain, and removing the model entirely (d) loses the step that restates free text."
+    },
+    {
+      "id": "q3",
+      "answer": "d",
+      "rationale": "In a loop the model chooses how many steps a request takes, and each call re-sends the growing history, so cost depends on the path taken. Output length (a) and long tool results (b) cannot explain 2 versus 15 calls, and nothing in the stem says retries (c) happen."
+    },
+    {
+      "id": "q4",
+      "answer": "b",
+      "rationale": "When the useful next step depends on what the last one found and unforeseen causes occur, no fixed order fits; this is where letting the model choose the steps pays off. More fixed checks (a) cannot cover causes nobody has seen, a fixed workflow can call a model at a step (c), and cheaper and easier to test (d) does not help when the path cannot be listed in advance."
+    },
+    {
+      "id": "q5",
+      "answer": "Make the allergy check a fixed step in code that always runs before confirmation, because a model's own choices can skip it.",
+      "accepted": [
+        "Hard-code the allergy check so it always runs before the refill is confirmed; the model can't be relied on to do it.",
+        "Move the check out of the model's control into fixed code so it is guaranteed to happen first.",
+        "Put the allergy check in the program as a mandatory step before confirming, since the model may skip or reorder it."
+      ],
+      "rationale": "A step that must happen every time and in a set position should not depend on the model's choice; fixed code guarantees it, while the rest of the assistant can stay flexible. Only raising the prompt's emphasis (telling the model to always check) is partial, since the model still owns the order. Answers about cost alone miss the point."
+    },
+    {
+      "id": "q6",
+      "answer": "Let the model run its own follow-up searches in a loop for those questions; it costs more model calls and less predictable cost.",
+      "accepted": [
+        "Give the model the search tool and let it decide when to search again, for multi-part questions; cost is more calls and less predictable.",
+        "Use an agent loop for the multi-part questions, keeping the fixed path for simple ones; it is more expensive and variable.",
+        "Let the model choose further searches based on what it finds, at the price of more calls, higher and less predictable cost."
+      ],
+      "rationale": "Multi-part questions need the next search to depend on what the previous one returned, so the model should own the flow there; the price is more model calls, a growing history and unpredictable cost. Full credit needs both the change and the cost. Keeping the simple questions on the fixed path is a good addition but not required; routing the multi-part ones in code is also fine."
+    }
+  ]
+}

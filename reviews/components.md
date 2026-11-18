@@ -53,3 +53,30 @@ An example of a finished entry:
 - With and without: reviews/c1-skills.md, Round 5 (without) and bench/runs/c1-skills/20261117-061050-agent-architecture-m30-r1 (with, the full run of c1-skills)
 - Review: Rewriting the teach skill kept the useful structure and the examples while removing some of the unnecessary repetition. However, the full c1-skills lesson's length ratio was only 0.56, in comparison with the baseline's 0.65. The factual coverage fell from 1.00 to 0.83. The rewrite made the lesson more concise, but it didn't successfully keep the right amount of content, so it could be that this change did not pay off.
 - Kept in final: TODO
+
+### quiz-reviewer
+
+- Kind: subagent
+- Step added: c2-review
+- Purpose: The quiz reviewer checks the generated quizzes for ambiguous wording, incorrect or non-unique answers, easy to recognize distractors, and whether the questions truly test real application of the learned knowledge and concepts. My c1-skills review found problems like Q3 assuming that unpredictable troubleshooting needs an agent when branching logic could also work, and Q6 making assumptions about cost predictability that were misleading. The reviewer is a subagent because it needs fresh context to be truly independant in how it evaluates questions instead of relying on the same agent that wrote them. 
+- With and without: reviews/c2-review.md, Round 1 (without) and Round 2 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### grade-reviewer
+
+- Kind: subagent
+- Step added: c2-review
+- Purpose: The grade reviewer was built to check the quality of the grading feedback instead of just focusing on the verdict accuracy that was already perfect in c1-skills. It checks if the feedback actually differentiates correct conclusions from incorrect reasoning, as seen in s2 Q4, and what specifically an answer was missing, as seen in s1 Q5, and avoids any repetition or lengthy explanations that were not necessary. It is a subagent because checking the generated feedback independently helps it catch problems that the grading skill could overlook when checking its own output. 
+- With and without: reviews/c2-review.md, Round 2 (without) and Round 3 (with)
+- Review: TODO
+- Kept in final: TODO
+
+### lesson-reviewer
+
+- Kind: subagent
+- Step added: c2-review
+- Purpose: The lesson reviewer subagent checks the generated output lessons for how factually complete they are, how much content depth they have, how accurate the section timings are, and how aligned they are with learning objectives. The c1-skills lesson's length ratio was only 0.56 and the factual coverage was 0.83. This implies that the lesson needs to have more content without adding unnecessary repetition. It is a subagent because a separate reviewer can check the completed lesson and find gaps independently, which the original writer could have missed. 
+- With and without: reviews/c2-review.md, Round 3 (without) and the full run of c2-review (with)
+- Review: TODO
+- Kept in final: TODO

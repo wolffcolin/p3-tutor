@@ -1,0 +1,67 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who decides the next step",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A veterinary clinic's script handles every emailed appointment request the same way: a model call pulls the pet's name and the symptoms out of the email, the script looks up the pet's file, a second model call drafts a reply, and the script sends it. Which statement about who decides which step runs next is correct?",
+      "options": [
+        {"id": "a", "text": "The model decides, because it is called twice and its first output determines which pet file is looked up"},
+        {"id": "b", "text": "Neither alone, because the model supplies the content of each step and the script only runs them"},
+        {"id": "c", "text": "The script decides, since the order was set in advance and the model only fills in text at two points"},
+        {"id": "d", "text": "The model decides, because it writes the reply that the clinic finally sends to the pet's owner"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "For every makerspace booking request, the steps are identical: check the student's training record, check the calendar slot, write a friendly confirmation that restates the student's free-text request in a sentence, and save the booking. A missing training record always means sending a refusal message. Which design is best for cost and predictability, and why?",
+      "options": [
+        {"id": "a", "text": "Steps fixed in code, with the model called only to write the confirmation, since no step needs a choice"},
+        {"id": "b", "text": "A model given the three tools, since a model can be trusted to run the steps in the right order"},
+        {"id": "c", "text": "A model given the three tools, since it adapts to each request and so books more accurately overall"},
+        {"id": "d", "text": "Everything fixed in code, even the confirmation text, since a model could alter the booking details"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "An insurance chatbot gives a model five lookup tools and calls it again after each tool result, until the model stops asking for tools. Only model usage is billed. Finance forecast one cost per request, but logged requests use anywhere from 2 to 15 model calls. What is the main reason the per-request estimate is unreliable?",
+      "options": [
+        {"id": "a", "text": "Customer questions differ in length, so the model writes more or less text from one request to another"},
+        {"id": "b", "text": "Some requests touch several tools, and tool results are long, so those requests have bigger single replies"},
+        {"id": "c", "text": "The loop program retries failed model calls, so errors add repeated calls to some of the requests"},
+        {"id": "d", "text": "The model picks how many steps a request needs, and each call re-reads a longer history"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A hospital IT team wants help when the lab-results feed to the records system stops. Past outages had many causes, such as expired credentials, changed file formats, network faults and some nobody had seen before, and what to check next has always depended on what the previous check showed. A developer proposes six checks coded in the same order every time. What is the main weakness?",
+      "options": [
+        {"id": "a", "text": "Six checks are too few; adding more fixed checks to the sequence would cover the remaining causes"},
+        {"id": "b", "text": "The useful next check depends on the last result and new causes keep appearing, so no set order fits"},
+        {"id": "c", "text": "Each check would still need a model call to read its output, so the sequence would no longer be fixed"},
+        {"id": "d", "text": "Nothing; six checks that cover the known causes are cheaper and easier to test than a model-driven loop"}
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A pharmacy's refill assistant lets a model choose its own tool calls. In testing, one run confirmed a refill before checking the patient's allergy list, because the model judged the request routine. In one or two sentences, what would you change in the design, and why?"
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A makerspace team's manual-question assistant runs one fixed path: search the manuals once with the student's question, then have the model answer from the top three pages. Simple questions work, but multi-part ones (for example, which settings apply to a material, depending on a machine the first manual page names) often fail because the single search returns the wrong pages. Without adding more fixed steps, what would you change for those questions, and what does it cost?"
+    }
+  ]
+}

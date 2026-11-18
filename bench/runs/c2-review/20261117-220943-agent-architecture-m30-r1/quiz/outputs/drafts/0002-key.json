@@ -1,0 +1,50 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The order of steps is written in the script, so the script owns the control flow; the model is called at two fixed points and never chooses what happens next. Using a model twice (a) or writing the reply text (b) is not the same as deciding the next step, and the model does not decide when the reply is ready (d): the script moves on after each call.",
+      "distractors": {"a": "M7", "b": "M7", "d": "M7"}
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "The route is identical every time, including the failure case, so there is nothing for a model to decide; fixed code gives the same result with fewer model calls, and the model is kept only for the step that needs language (condensing free text). Flexibility (b) is worth paying for only when the path varies, a more capable approach (c) is not a reason when the steps are known, and dropping the model entirely (d) loses the one step that needs it.",
+      "distractors": {"b": "M9", "c": "M9", "d": "M8"}
+    },
+    {
+      "id": "q3",
+      "answer": "d",
+      "rationale": "In a loop the model chooses how many steps a request takes, and each call re-sends the growing history, so cost varies with the path and grows faster than linearly. Output length (a) varies in a fixed workflow too and is not what makes 2 calls versus 15, and the bill is for model calls, not per tool (b) or from retries (c).",
+      "distractors": {"a": "M11"}
+    },
+    {
+      "id": "q4",
+      "answer": "b",
+      "rationale": "When the next useful step depends on what the previous one found and the number of steps is unknown, a fixed order must guess or encode every branch; this is the case that justifies letting the model choose its steps. A coded sequence can call a model (a), nothing in the stem makes the work unsafe for it (c), and cheaper and easier to test does not make it the right choice when the path varies (d).",
+      "distractors": {"a": "M8", "d": "M10"}
+    },
+    {
+      "id": "q5",
+      "answer": "Code runs the check on every request, in the right place before confirmation, whereas a model choosing its own actions might skip it or do it too late.",
+      "accepted": [
+        "A fixed step is guaranteed to happen every time, but a model might decide to skip it.",
+        "The program guarantees the check always runs before the refill; the model's choices are not guaranteed.",
+        "Because it must happen every time, and code ensures that while a model could skip or reorder it."
+      ],
+      "rationale": "A step that must always happen, in a set position, should not depend on the model's choice, since the model may skip or reorder it; fixed code guarantees it. Answers about cost alone are partial, since the key reason here is the guarantee. Saying the model cannot read an allergy list shows M8."
+    },
+    {
+      "id": "q6",
+      "answer": "Run the routine five steps as a fixed workflow in code and use a model with tools (an agent) only for the unusual claims; the routine 90% become cheaper, more predictable and cannot skip a step, while odd claims still get flexible handling.",
+      "accepted": [
+        "Fixed workflow for the common path, agent only for the unusual claims: cheaper and more predictable for most claims.",
+        "Code routes routine claims through the five steps and hands the odd ones to an agent, saving cost and keeping the routine path reliable.",
+        "Hybrid: a fixed pipeline for the 90% and an agent for the 10%, which lowers cost and variance."
+      ],
+      "rationale": "Full credit needs the split (fixed workflow for the routine path, open-ended handling only for the unusual claims) and a gain (lower and more predictable cost, or the routine steps always being run). Keeping one agent for everything shows M9; making everything a fixed workflow ignores the 10% that need investigation, and is partial or wrong.",
+      "distractors": {}
+    }
+  ]
+}

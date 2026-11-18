@@ -105,8 +105,19 @@ Read `references/LESSONS.md` and `references/lesson-template.html`, then the tit
    Later chunks may use an idea in one clause or link back to it, but never explain it again (see "No repetition" below).
 5. **Write the lesson** to `lessons/NNNN-<slug>.html`, following `FORMATS.md` and the template: beautiful and self-contained, with figures, worked examples, practice with immediate feedback, and citations.
    If the page shows a time per chunk, those times are the plan's and sum to the declared minutes.
-6. **Check it** against the list below, then keep the workspace current: a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
-7. **Finish** with a short message: the lesson's path and what it covers, that they can ask you anything about it in the chat, and that a quiz is ready when they want one (they ask with `/quiz`).
+6. **Check it** against the list below.
+7. **Review once:** start the `lesson-reviewer` subagent with a task message that names the lesson file, the objective and its id and the requested minutes, and says nothing about your reasoning; wait for its report before you do anything else.
+   - `VERDICT: KEEP` (no serious finding): leave the lesson as it is, applying a minor finding only when it is a small edit.
+   - `VERDICT: REVISE` (at least one serious finding): fix each serious finding with Edit on the lesson file, not by rewriting it whole, or note in the record why not; the fixes add what is missing (facts, examples, practice) and cut the repeated text, and keep the lesson near the requested length.
+   - Do not start a second review.
+   The lesson file is written once at its final path and revised in place, so `lessons/` never holds a second file and no whole-lesson copy is paid for twice.
+8. **Write the record and keep the workspace current:** `review-records/NNNN-teach.md`, then a cheat sheet in `cheatsheets/` when the lesson holds something worth looking up later, and `NOTES.md` for anything you learned about the learner.
+   The record holds:
+   - the verdict;
+   - for each finding, its check number and severity, the section you edited (or "none"), a brief description or a short quote showing what changed (or why you left it), and whether it is `resolved`, `partly resolved` or `not resolved`;
+   - the approximate visible words of the lesson before and after the revision, and the section-time totals before and after (the sum of the per-section minutes against the requested minutes), when the lesson shows or implies them; when there was no revision, the single figures and "no revision".
+   Estimate the words by section as the reviewer does, and mark every figure as approximate.
+9. **Finish** with a short message: the lesson's path and what it covers, that they can ask you anything about it in the chat, and that a quiz is ready when they want one (they ask with `/quiz`).
    Do not write the quiz.
 
 ### The shape of the lesson

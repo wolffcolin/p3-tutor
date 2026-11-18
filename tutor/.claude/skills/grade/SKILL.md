@@ -59,8 +59,19 @@ The `summary` adds only what the item feedback does not say, in at most three se
 
 Do not list or re-explain individual items, and do not restate the score.
 
-## After grading
+## Draft, review once, finish
 
-1. Write `grades/NNNN-sN.json` exactly as `FORMATS.md` shows.
-2. Write a learning record when the grades are evidence of real understanding or of a misconception to work on (`.claude/skills/teach/references/LEARNING-RECORD-FORMAT.md`), and update `NOTES.md`.
-3. Finish with the summary and the next step in the chat, in the same few words, with nothing the grades file does not already say at more length.
+The feedback is reviewed by one subagent, `grade-reviewer`, at most once, so the loop stays cheap.
+
+1. **Draft:** write the grades to `drafts/NNNN-sN-grades.json`, exactly in the shape `FORMATS.md` shows.
+   Never write the draft to `grades/`: the bench reads that folder, and it gets the final file once.
+2. **Review:** start the `grade-reviewer` subagent with a task message that names the draft, the quiz, its key and the submission, and says nothing about your reasoning.
+   Wait for its report before you do anything else.
+3. **Decide:**
+   - `VERDICT: KEEP` (no serious finding): write the draft unchanged as the final file, applying a minor finding only when the fix is a small wording or length change.
+   - `VERDICT: REVISE` (at least one serious finding): fix each serious finding, or note in the record why not, and apply the cheap minor fixes.
+     Change a verdict or a misconception id only when you agree after rereading the learner's words and the key.
+     Do not start a second review.
+4. **Finish:** write `grades/NNNN-sN.json` once, with the Write tool directly (not a shell copy), and write `review-records/NNNN-sN-grade.md`: the verdict, each finding with its severity, and what you changed or why you did not.
+5. Write a learning record when the grades are evidence of real understanding or of a misconception to work on (`.claude/skills/teach/references/LEARNING-RECORD-FORMAT.md`), and update `NOTES.md`.
+6. Finish with the summary and the next step in the chat, in the same few words, with nothing the grades file does not already say at more length.

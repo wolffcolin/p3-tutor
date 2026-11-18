@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the choose, run, feed-back loop is what defines an agent."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the model only outputs a structured request (tool name plus arguments); the program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed it would eventually succeed. That's tempting because more tries help a person, but here each try gets identical feedback, so more steps add nothing. The program needs a stopping condition, such as a step limit, that ends the loop and reports back to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but your reason isn't: the model doesn't run any tool. Each call outputs one tool request, the program runs it, and the result triggers the next call. That gives 3 requests plus 1 final answer."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the result goes back as input to the next model call, so the model can decide its next step."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "Your reasoning only works when a name is self-explanatory. The model picks from each tool's description (purpose and parameters), and a name like check_calendar can't say whether it reads or edits."
+    }
+  ],
+  "summary": "Your answers show the loop, but your q4 reasoning has the model running tools and q6 has it choosing by name alone; both come from not separating what the model outputs (a request) from what the program does. Next, write out the full message sequence for q4, marking who acts at each step."
+}

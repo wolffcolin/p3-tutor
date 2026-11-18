@@ -1,0 +1,110 @@
+{
+  "duration_api_ms": 42351,
+  "stop_reason": "end_turn",
+  "session_id": "0e779b29-9f0e-4032-8cbf-4402f0d8db35",
+  "total_cost_usd": 0.24119069999999998,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 3497,
+    "cache_read_input_tokens": 75250,
+    "output_tokens": 2341,
+    "output_tokens_details": {
+      "thinking_tokens": 45
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3497,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 409,
+        "cache_read_input_tokens": 38255,
+        "cache_creation_input_tokens": 2237,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 2237
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 20,
+      "outputTokens": 6322,
+      "cacheReadInputTokens": 214437,
+      "cacheCreationInputTokens": 44638,
+      "webSearchRequests": 0,
+      "costUSD": 0.24119069999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 833,
+      "cacheCreationEphemeral5mInputTokens": 14710,
+      "cacheCreationEphemeral1hInputTokens": 29928,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "origin": {
+    "kind": "task-notification",
+    "producer": "session-task",
+    "runId": "0mwl957cd-08449047"
+  },
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 1
+    },
+    "started_in_background": 1,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "grade-reviewer": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 5,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I graded s1 and wrote `grades/0001-s1.json`: q1 and q3 correct, q5 and q6 partial, q2 and q4 wrong.\n\n- **q2 and q4 (wrong, M4):** you treated the model as running the tools itself. The model only outputs a tool request, and the program runs the tool. In q4 that makes 3 tool requests plus the final answer, so 4 calls.\n- **q5 (partial):** \"Sends it back to the model\" is the what. The why is missing: the model needs the result to choose its next step or write the answer.\n- **q6 (partial, M3):** picking a tool from the names and descriptions it is sent is right. The model does not remember past sessions on its own; any memory is the program resending text.\n\n**Pattern:** you give the model jobs that belong to the program, namely running tools and remembering.\n\n**Next step:** redraw your laser cutter trace as two columns, model and program, and mark which side does each step.\n\nThe `grade-reviewer` returned KEEP with only minor findings, and I applied those wording fixes. I also added `review-records/0001-s1-grade.md`, `learning-records/0003-model-vs-program-roles.md` and the `NOTES.md` update. s2 is still ungraded.",
+  "ttft_ms": 1107,
+  "type": "result",
+  "duration_ms": 15050,
+  "uuid": "768ff9ca-0775-4844-9a72-ccca4369efff",
+  "ttft_stream_ms": 799,
+  "time_to_request_ms": 15,
+  "first_content_frame_ms": 799,
+  "queued_turn_count": 0,
+  "result_index": 1,
+  "model_usage_since_last_result": {},
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: context and memory in an agent</title>
+  <style>
+    body { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem; font-family: Charter, Georgia, serif; line-height: 1.5; background: #fffdf8; color: #1f1d1a; }
+    @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } a { color: #eaa77a; } }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 1.6rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-family: system-ui, sans-serif; }
+    th, td { text-align: left; vertical-align: top; padding: 0.4rem 0.5rem; border-bottom: 1px solid #8884; }
+    code { font-size: 0.85em; }
+    a { color: #9a4517; }
+  </style>
+</head>
+<body>
+<h1>Context and memory in an agent</h1>
+<p>From <a href="../lessons/0001-context-and-memory-in-an-agent.html">lesson 1</a>. The model keeps nothing between calls; memory is what your program sends.</p>
+
+<h2>Where does it go?</h2>
+<table>
+  <thead><tr><th>Information</th><th>Layer</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Needed on every call, same for all</td><td>System prompt (context)</td><td>Tone, cite the manual</td></tr>
+    <tr><td>Per-student, persists across sessions</td><td>Saved notes, loaded at session start</td><td>Training status</td></tr>
+    <tr><td>Live, changing</td><td>Tool lookup</td><td>Calendar slots</td></tr>
+    <tr><td>Bulky, shared, topic-specific</td><td>Searchable library (retrieval)</td><td>Machine manuals</td></tr>
+  </tbody>
+</table>
+
+<h2>Cost rule</h2>
+<p>Input tokens are paid on every call. A chunk of <code>T</code> tokens that arrives before <code>k</code> more calls costs about <code>T &times; k</code>. Clear it from the history once it is used.</p>
+
+<h2>Keeping a run lean</h2>
+<ul>
+  <li>Clear old tool results (lightest).</li>
+  <li>Compact: summarize history into a new window.</li>
+  <li>Sub-agent: clean window, short summary back.</li>
+</ul>
+
+<h2>Retrieval steps</h2>
+<p>Chunk &rarr; index (embeddings + BM25) &rarr; search &rarr; insert top chunks. Prepend the machine and section name to each chunk so it keeps its context.</p>
+</body>
+</html>

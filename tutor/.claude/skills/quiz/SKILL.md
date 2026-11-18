@@ -48,9 +48,24 @@ Use Read, Glob, Grep and Write, plus web search when the objective has no lesson
 
 Follow `FORMATS.md` and the guide: `answer`, `accepted` for `short`, a one-or-two-sentence `rationale`, and a `distractors` entry for each wrong option that encodes a misconception, reusing the workspace's misconception ids.
 
-## Check before you finish
+## Draft, review once, finish
 
-- Cover your key and answer every item from the stem alone; rewrite any item where you hesitate, or where a careful expert could defend a second answer.
-- For each item, ask whether someone who skipped the lesson could pick the answer by wording or by elimination; if so, rewrite it.
+The quiz is reviewed by one subagent, `quiz-reviewer`, at most once, so the loop stays cheap.
+
+1. **Draft:** write the quiz to `drafts/NNNN-quiz.json` and its key to `drafts/NNNN-key.json` (the next number in `quizzes/`), exactly in the shapes `FORMATS.md` shows.
+   Never write drafts to `quizzes/` or `keys/`: the bench reads those folders, and they get the final files once.
+2. **Review:** start the `quiz-reviewer` subagent with a task message that names the two draft paths, the objective and its id, and says nothing about your reasoning.
+   Wait for its report before you do anything else.
+3. **Decide:**
+   - `VERDICT: KEEP` (no serious finding): write the draft unchanged as the final files.
+     Apply a minor finding only if the fix is a small wording change; do not ask for a second review.
+   - `VERDICT: REVISE` (at least one serious finding): fix each serious finding, or note in the record why not, and apply the cheap minor fixes.
+     Do not start a second review; write the revised quiz as the final files.
+4. **Finish:** write `quizzes/NNNN.json` and `keys/NNNN.json` once, with the Write tool directly (not with a shell copy), and write `review-records/NNNN-quiz.md`: the verdict, each finding with its severity, and what you changed or why you did not.
+   Then give a short message that the quiz is ready, with no answers in it.
+
+## Check before you hand the draft to the reviewer
+
+- Cover your key and answer every item from the stem alone; rewrite any item where you hesitate.
 - Check that no two items test the same idea, no item answers another, and the quiz file holds no answer.
-- Write the quiz to `quizzes/NNNN.json` and the key to `keys/NNNN.json` with the next number, then finish with a short message that the quiz is ready, with no answers in it.
+- Check that no item uses the objective's own words to give its answer away.
