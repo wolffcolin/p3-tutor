@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet: context and memory in an agent</title>
+<style>
+  body { font-family: Charter, Georgia, serif; max-width: 42rem; margin: 0 auto; padding: 2rem 1rem; line-height: 1.5; color: #1f1d1a; background: #fffdf8; }
+  h1 { font-size: 1.5rem; } h2 { font-size: 1.05rem; margin-top: 1.5rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid #e4dfd4; vertical-align: top; }
+  @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } }
+</style>
+</head>
+<body>
+<h1>Context and memory in an agent</h1>
+<p>From <a href="../lessons/0001-context-and-memory-in-an-agent.html">lesson 1</a>.</p>
+<h2>Rules</h2>
+<ul>
+  <li>Window = system prompt + tool definitions + history + tool results + output, per call.</li>
+  <li>The model keeps nothing between calls; the program resends the history.</li>
+  <li>Input billed = sum of every step's full input, so cost grows with steps &times; history.</li>
+  <li>Keep context small and high-signal (context rot). Clear old tool results; compact if still too long.</li>
+  <li>Across sessions: records written by code for exact facts, notes for loose ones; load only what the request needs.</li>
+</ul>
+<h2>Where information lives</h2>
+<table>
+  <tr><th>Information</th><th>Home</th></tr>
+  <tr><td>Small, fixed</td><td>System prompt (up-front)</td></tr>
+  <tr><td>Changing, exact</td><td>Tool call, just-in-time</td></tr>
+  <tr><td>Huge document</td><td>Retrieval, few chunks, say "not found" when absent</td></tr>
+  <tr><td>Per-student exact fact</td><td>Database record read by tool</td></tr>
+  <tr><td>Loose preferences</td><td>Notes file, capped on load</td></tr>
+  <tr><td>Stale raw output</td><td>Clear from history</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet: context and memory in an agent</title>
+  <style>
+    body { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem; font-family: Charter, Georgia, serif; line-height: 1.5; color: #1f1d1a; background: #fffdf8; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 1.8rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.4rem 0.5rem; border-bottom: 1px solid #e4dfd4; }
+    code { background: #f3efe6; padding: 0.1em 0.3em; border-radius: 4px; }
+    @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } code { background: #23211e; } }
+  </style>
+</head>
+<body>
+<h1>Context and memory: one-page reference</h1>
+<p>From <a href="../lessons/0001-context-and-memory.html">lesson 1</a>. The model sees only its context window; everything else is text your program puts there.</p>
+
+<h2>Where information lives</h2>
+<table>
+  <tr><th>Place</th><th>Use for</th><th>Lasts</th><th>Cost</th></tr>
+  <tr><td>Context window</td><td>Rules, the chat, current tool results</td><td>One session</td><td>Every call</td></tr>
+  <tr><td>Notes (memory tool)</td><td>Stable facts: preferences, decisions</td><td>Until deleted</td><td>Tokens read back</td></tr>
+  <tr><td>Tool call</td><td>Live facts: calendar, training record</td><td>Fresh each call</td><td>Result size</td></tr>
+  <tr><td>Retrieval index</td><td>Large documents: manuals</td><td>Until re-built</td><td>Chunks retrieved</td></tr>
+</table>
+
+<h2>Cost rule</h2>
+<p>Total input tokens = the sum over every model call of the whole context at that call. Call n input = call n-1 input + the model's request + the tool result.</p>
+
+<h2>Keeping the window small</h2>
+<p>1. Make tools return less. 2. Clear old tool results. 3. Compact long chats (lossy; save must-keep facts to notes). 4. Hand sub-tasks to a sub-agent with a clean window.</p>
+
+<h2>Notes</h2>
+<p>Memory tool is client-side: the model requests <code>view</code>, <code>create</code>, <code>str_replace</code>, <code>insert</code>, <code>delete</code> or <code>rename</code> under <code>/memories</code>; your code runs them and must reject paths outside it. Notes go stale: use tools for live facts.</p>
+
+<h2>Retrieval</h2>
+<p>Chunk, embed, store, retrieve. Add keyword search (BM25) for exact strings such as error codes. Prepend context to chunks that lose it. Under about 200,000 tokens (about 500 pages) consider a cached prompt instead.</p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet: context and memory in an agent</title>
+<style>
+  body { max-width: 42rem; margin: 0 auto; padding: 2rem 1rem; font-family: Charter, Georgia, serif; line-height: 1.5; color: #1f1d1a; background: #fffdf8; }
+  h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid #e4dfd4; vertical-align: top; }
+  code { background: #f3efe6; padding: 0.1em 0.3em; border-radius: 3px; }
+  @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } th, td { border-color: #36332e; } code { background: #23211e; } }
+</style>
+</head>
+<body>
+<h1>Context and memory in an agent</h1>
+<p>From <a href="../lessons/0001-context-and-memory.html">lesson 1</a>. Token counts below are the lesson's invented examples.</p>
+<h2>Key facts</h2>
+<ul>
+  <li>Context window = everything one call sees: system prompt, tool definitions, messages, tool results, output.</li>
+  <li>Nothing persists between steps unless your program re-sends it. Input at step n = all earlier messages + new ones.</li>
+  <li>A tool result is paid for again on every later step. Total input = sum of each step's input.</li>
+  <li>More context is not better: cost grows and recall drops (context rot).</li>
+</ul>
+<h2>Where information lives</h2>
+<table>
+  <thead><tr><th>Home</th><th>Use for</th></tr></thead>
+  <tbody>
+    <tr><td>Context</td><td>Instructions, tool descriptions, current question, results still needed</td></tr>
+    <tr><td>Notes (memory tool, files)</td><td>Soft per-student context the agent writes; survives sessions</td></tr>
+    <tr><td>Retrieval</td><td>Long reference the agent did not write (manuals): chunk, index, return a few chunks</td></tr>
+    <tr><td>Database behind a tool</td><td>Facts that must be exact: training status, bookings</td></tr>
+  </tbody>
+</table>
+<h2>Keeping context small, lightest first</h2>
+<ol>
+  <li>Tools return less.</li>
+  <li>Clear old tool results.</li>
+  <li>Compact (summarize); save must-keep facts to notes first.</li>
+</ol>
+<h2>Retrieval checklist</h2>
+<ul>
+  <li>Chunks of a few hundred tokens, labelled with machine and section.</li>
+  <li>Embeddings for meaning, BM25 for exact terms such as error codes; combine them.</li>
+  <li>Under about 200,000 tokens, putting everything in the prompt may be simpler.</li>
+</ul>
+</body>
+</html>
