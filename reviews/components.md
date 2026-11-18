@@ -60,7 +60,7 @@ An example of a finished entry:
 - Step added: c2-review
 - Purpose: The quiz reviewer checks the generated quizzes for ambiguous wording, incorrect or non-unique answers, easy to recognize distractors, and whether the questions truly test real application of the learned knowledge and concepts. My c1-skills review found problems like Q3 assuming that unpredictable troubleshooting needs an agent when branching logic could also work, and Q6 making assumptions about cost predictability that were misleading. The reviewer is a subagent because it needs fresh context to be truly independant in how it evaluates questions instead of relying on the same agent that wrote them. 
 - With and without: reviews/c2-review.md, Round 1 (without) and Round 2 (with)
-- Review: TODO
+- Review: The reviewer made question quality better by rewriting Q5 so the student had to actually propose their own solution instead of just being told the answer. It also fixed Q4's wording that sort of lead the student to the correct answer. I think these improvements were worthwhile, but the quiz tokens rose from 135k to 335k without affecting the automated scores at all. 
 - Kept in final: TODO
 
 ### grade-reviewer
@@ -69,7 +69,7 @@ An example of a finished entry:
 - Step added: c2-review
 - Purpose: The grade reviewer was built to check the quality of the grading feedback instead of just focusing on the verdict accuracy that was already perfect in c1-skills. It checks if the feedback actually differentiates correct conclusions from incorrect reasoning, as seen in s2 Q4, and what specifically an answer was missing, as seen in s1 Q5, and avoids any repetition or lengthy explanations that were not necessary. It is a subagent because checking the generated feedback independently helps it catch problems that the grading skill could overlook when checking its own output. 
 - With and without: reviews/c2-review.md, Round 2 (without) and Round 3 (with)
-- Review: TODO
+- Review: The reviewer made some small improvements, like getting rid of the repeated explanations in s1 Q4 and making s2 Q6 more specific to what the student's reasoning actually was. However, grading accuract was already perfect. I don't think the small improvements justify doubling the grading tokens from 283k to 575k. 
 - Kept in final: TODO
 
 ### lesson-reviewer
@@ -78,5 +78,5 @@ An example of a finished entry:
 - Step added: c2-review
 - Purpose: The lesson reviewer subagent checks the generated output lessons for how factually complete they are, how much content depth they have, how accurate the section timings are, and how aligned they are with learning objectives. The c1-skills lesson's length ratio was only 0.56 and the factual coverage was 0.83. This implies that the lesson needs to have more content without adding unnecessary repetition. It is a subagent because a separate reviewer can check the completed lesson and find gaps independently, which the original writer could have missed. 
 - With and without: reviews/c2-review.md, Round 3 (without) and the full run of c2-review (with)
-- Review: TODO
+- Review: The reviewer found significant omissions, which lead it to adding cost comparisons for retrievals, details on persistent memory, and practice exercises. Factual coverage rose from 0.83 to 1.00, and the length ratio rose from 0.56 to 0.65. I think these improvements are worth it, even though the tokens used increased from 399k to 1.33M. I believe this because it addressed significant weaknesses from c1-skills. 
 - Kept in final: TODO

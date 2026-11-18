@@ -211,20 +211,104 @@ Name the rounds that built this step and the inventory entries of the reviewers 
 Then the loops' design, for each of teach, quiz and grade: who reviews, what is on each reviewer's checklist and which items came from your `c1-skills` major review, how each reviewer gets a fresh context, how many passes a loop may run and what ends it early, and what each loop records.
 Then one design choice you could have made the other way, such as one reviewer against several, a cap of one pass against three, or a reviewer that edits against one that only reports, and why you chose as you did.
 
-TODO: the rounds and entries, and the design of your review loops.
+I documented the changes in reviews/c2-review.md, in Round 1-3, and I added the quiz reviewer, grade reviewer and lesson reviewer to reviews/components.md. Each of these reviewers is a subagent that checks the output of the corresponding skill independently with a fresh context. 
+
+The quiz subagent looks for ambiguous wording, any obvious distractors, incorrect answer keys and questions that don't test the objective well enough. I felt this was needed because of the ambiguous Q3 I saw in c1-skills. The grade reviewer looks at the feedback to determine if it explains mistakes, differentiates correct answers from incorrect reasoning, finds missing details, and keeps the whole thing as concise as possible. The lesson reviewer checks a lesson for factual completeness, content depth, timing, repetition, and if it gives ample opportunities for the learner to practice. It primarily focuses on the factual coverage and the lesson length issues that were seen in c1-skills. 
+
+Each of these loops only allows one review pass, to prevent excessive token costs. The reviewer reports what issues it finds, and the main agent then decides if any changes are required. The quiz and grade skills create drafts before writing the actual final outputs, and the teach skill just edits the lesson in place. All of the loops create review records explaining what was found and what was changed. 
+
+I decided to use different reviewers instead of one that covers all responsbilities because of the differing requirements of the three jobs. I also added the one pass limit to reduce the overall token cost. While more passes could have potentially improved the quality more, it would make the already very expensive review process harder to justify. 
 
 ### The loops as they ran
 
 For teach, quiz and grade: how many review passes ran in your bench run, what the reviewers flagged, and whether the revisions moved anything you can point at, a fact corrected, an ambiguous item rewritten, feedback that changed.
 The loop records in the run's outputs are the evidence; name the files.
 
-TODO: what the review loops did in the run.
+All three of the loops completed successfully in the c2-review benchmark, and each had one review pass for each generated artifact. The records are in the run folder, in teach/outputs/review-records/, quiz/outputs/review-records, and the grade-s1 and grade-s2 review-records/ directories.
+
+The lesson reviewer found three serious and three minor issues in 0001-teach.md. The problems it found included missing explanations for retrieval costs and persistant notes, and not enough practice for retrieval. The changes added a cost comparison, an example for retrieval, a practice question covering BM25, and an exercise on updating a student's training record. There were also two statements that could have misleaded the learner, and the review and revision pass corrected these. The result was that the factual coverage of the lesson rose from 0.83 to 1.00 and the length ratio rose from 0.56 to 0.65. 
+
+There were two issues the quiz reviewer found in 0002-quiz.md. In Q4, the correct answer was made too obvious. In Q5, the intended change to the architecture was also basically given away by the question. Both of these questions were rewritten, and a few smaller changes were made to fix some question wording issues and distractors that were too obvious. There was a misconception ID that didn't exist in the workspace, and this was removed. The final quiz maintained its 1.00 key agreement and there weren't any detected ambiguous items or incorrect keys. The improvement was mostly qualitative instead of being measurable with the automated checks. 
+
+The grade reviewer looked at two submissions. It saved its findings in 0001-s1-grade.md and 0001-s1-grade.md. Both of these reviews returned KEEP, but they had a few minor suggested changes. These minor suggestions were to shorten some of the repeated explanations, being more direct when referring to a student's reasoning, and making the summary more actionable for the learner. As an example, s1 Q4 now quotes the student in their incorrect claim that the model runs tools, and s2 Q6 addresses the student heavily relying on tool names. None of the actual grading verdicts or misconception IDs changed. These were fairly small changes, even if they were useful. 
 
 ### Your review, the objective checks and the cost
 
 Paste `uv run p3 report --configs c1-skills,c2-review`.
 
-TODO: paste the report tables.
+## Results on agent-architecture
+
+Scored full runs (quick runs and --only runs left out); each cell is the mean over the runs, with the range in brackets.
+
+### Quality
+
+| config | runs | teach facts | teach misconc. | length ratio | dead links | key agreement | wrong keys | ambiguous items | verdict agreement | false wrong | misconc. hit | leaks | behavior met |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 0.83 | 0 | 0.56 | 0 | 1.00 | 0 | 0 | 1.00 | 0.00 | 1.00 | 0 | 0.50 |
+| `c2-review` | 1 | 1.00 | 0 | 0.65 | 0 | 1.00 | 0 | 0 | 1.00 | 0.00 | 1.00 | 0 | 0.50 |
+
+Teach facts, key agreement, verdict agreement, false wrong, misconception hit and behavior met are shares (0 to 1); misconceptions, dead links, wrong keys, ambiguous items and leaks are counts per run.
+A dash means no run could be scored on that check, and n= says how many of the runs could.
+A job that failed counts against the config: no lesson scores 0 teach facts, no quiz and key 0 key agreement, a missing grades file disagrees on every item, and a tutor scenario with no reply is not met; leaks need a reply to check, so such a scenario is left out of them.
+The length ratio is a rough reading-time estimate (visible words / 150) over the minutes requested; 0.6 to 1.5 counts as on length.
+
+### Cost: teach
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 399.0k | 23.5k | 2.3 | 0 | 0.48 |
+| `c2-review` | 1 | 1.33M | 39.9k | 3.6 | 1 | 0.89 |
+
+### Cost: quiz
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 134.9k | 10.2k | 1.4 | 0 | 0.24 |
+| `c2-review` | 1 | 335.0k | 22.1k | 3.0 | 1 | 0.46 |
+
+### Cost: grade
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 283.1k | 7.1k | 0.8 | 0 | 0.31 |
+| `c2-review` | 1 | 574.9k | 13.1k | 1.5 | 2 | 0.49 |
+
+### Cost: tutor
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 435.5k | 4.9k | 0.8 | 0 | 0.47 |
+| `c2-review` | 1 | 441.4k | 5.6k | 0.8 | 0 | 0.50 |
+
+### Cost: all jobs
+
+| config | runs | tokens | output tokens | minutes | subagents | list-price $ |
+|---|---:|---:|---:|---:|---:|---:|
+| `c1-skills` | 1 | 1.25M | 45.8k | 5.4 | 0 | 1.50 |
+| `c2-review` | 1 | 2.68M | 80.7k | 8.9 | 4 | 2.34 |
+
+Costs are per run, summed over the job's scenarios; list-price $ is the list-price equivalent, not what you pay on a subscription.
+
+## Your ratings
+
+Your ratings from 1 to 5 in the major reviews (reviews/<step>.md), which review full runs on the shared topic; a dash means no rating there yet, one that p3 check does not accept, or a job that step does not review (Tutor in c2-review; Quiz, Feedback and Tutor in c3-split).
+
+| job | criterion | c1-skills | c2-review | c3-split | final |
+|---|---|---:|---:|---:|---:|
+| Lesson | Technical correctness and facts | 4 | 5 | - | - |
+| Lesson | Pedagogy | 4 | 4 | - | - |
+| Lesson | Alignment with the learning goal | 4 | 5 | - | - |
+| Lesson | Overall quality | 3 | 4 | - | - |
+| Quiz | Difficulty | 4 | 4 | - | - |
+| Quiz | Coverage of the lesson's core | 4 | 5 | - | - |
+| Quiz | Wording and possible misreadings | 3 | 4 | - | - |
+| Quiz | Writing quality | 4 | 4 | - | - |
+| Quiz | Alignment with the learning goal | 4 | 5 | - | - |
+| Feedback | Useful | 5 | 5 | - | - |
+| Feedback | Explains enough | 4 | 5 | - | - |
+| Feedback | Personalized to how I like things explained | 4 | 5 | - | - |
+| Tutor | Guardrails | 4 | - | - | - |
+| Tutor | Personalization | 3 | - | - | - |
 
 ### What the step bought and what it cost
 
@@ -232,7 +316,15 @@ Did the problems your `c1-skills` review found go away, and which ratings moved?
 Which loop earned its cost and which did not?
 If a loop ran several passes and the final output was no better than the first draft, say so, because that is the finding.
 
-TODO: your judgment of step 2.
+The results show that lesson quality did improve. However they are mixed in terms of the cost of these improvements. The lesson reviewer fixed a few of the problems found in c1-skills. Factual coverage rose from 0.83 to 1.00, and the length ratio increased from 0.56 to 0.65, which meets the benchmarks length ratio requirements. My ratings for technical correctness and alignment rose from 4 to 5, and the overall lesson quality increased from 3 to 4. Pedagogy stayed at 4, because the lesson is still short to take 30 minutes. 
+
+The quiz reviewer did have a positive effect on the questions. My ratings for coverage and alignment increased from 4 to 5. Wording improved from 3 to 4. The automated scores were perfect in both versions, but the reviewer caught some issues the checks didn't, especially for questions that made the answer sort of obvious. The grade reviewer made some useful improvements for feedback, but they were still fairly minor. My ratings for explanation quality and personalization rose from 4 to 5, even though grading accuracy was already perfect. 
+
+The biggest problem with these reviewers was the cost increase. The total token count went from 1.25M to 2.68M, and the cost estimate increased from $1.50 to $2.34. The tokens used for teach rose from 399k to 1.33M, quiz tokens rose from 135k to 335k, and grading tokens from 283k to 575k. Additionally, the total runtime increased from 5.4 to 8.9 minutes.
+
+I think the lesson reviewer's cost is most justified. It found fairly significant omissions and it improved both the objective scores and my personal quality assessment. The quiz reviewer was useful, especially in the realm of question wording, but the cost increase was harder to justify with the automated results. The grade reviewer was the least worth it of the three because the feedback without it was already good, and as expected the revisions offered were pretty small.
+
+Overall, the c2-review did create better learning materials, but the improvements required much higher token consumption. Since both configurations only have a single full run, I can't be confident that the observed improvements would continue across further repeats. The next step should look at splitting lesson generation into more specialized, specific tasks that keep the improvements without adding to the already high overhead. 
 
 ---
 
