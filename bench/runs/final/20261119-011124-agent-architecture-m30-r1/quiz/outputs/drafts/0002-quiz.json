@@ -1,0 +1,73 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who runs the steps",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A vet clinic's intake script sends each owner message to a language model with the instruction \"reply with exactly one label: BOOKING, BILLING or EMERGENCY\". The script then uses an if/else on the label to run the booking form, the billing lookup or the on-call pager code. Who decides what happens after the label comes back?",
+      "options": [
+        {"id": "a", "text": "The model, because its label is what selects the next action"},
+        {"id": "b", "text": "Both share it, because each message leads to a different outcome"},
+        {"id": "c", "text": "The script, because the branches were written before any message came"},
+        {"id": "d", "text": "The model, because a language model is called somewhere in the flow"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A lab's nightly job reads each new safety-incident form, extracts its fields, assigns a severity category, writes a two-line summary and emails it to the safety officer. All four stages run, in that order, for every form, and the group has a small model budget. Which statement about cost is accurate?",
+      "options": [
+        {"id": "a", "text": "A fixed chain spends one call per stage; a model-run loop adds calls that only choose steps"},
+        {"id": "b", "text": "Both cost about the same, since the same four stages must happen in either design"},
+        {"id": "c", "text": "A model-run loop is cheaper, since the model can skip stages a given form does not need"},
+        {"id": "d", "text": "A fixed chain is cheaper only because code is free, not because it makes fewer calls"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A grad student needs a tool to find out why a nightly simulation job failed. One failure is explained by the first log, another needs a config file checked next, and another needs the logs of a crashed node fetched after that. Each next check depends on what the last one showed, and new kinds of failure appear every month. Which design fits best?",
+      "options": [
+        {"id": "a", "text": "A fixed chain that runs every diagnostic in order, then has the model summarize all results"},
+        {"id": "b", "text": "A loop where the model picks each next diagnostic from the last result until it can explain"},
+        {"id": "c", "text": "A fixed chain with an if/else branch per known failure type, extended as new types appear"},
+        {"id": "d", "text": "A fixed chain where the model names the failure type, then code runs one preset diagnostic list"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A clinic booking system must verify a patient's insurance before it confirms any appointment, with no exceptions. A teammate proposes giving a model-driven assistant a verify_insurance tool and a prompt that says \"always verify insurance before booking\". In one or two sentences, why does that not give the guarantee the clinic needs, and what design would?"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A 3D-printer lab's support bot has code that has a model label each question JAMMED, BED-LEVEL or FILAMENT, then runs a preset sequence for that label. The three sequences work well and cover about two-thirds of questions. The rest are varied, rarely repeat, and now get a generic apology. What is the best next step?",
+      "options": [
+        {"id": "a", "text": "Replace the whole bot with a loop where the model chooses every step, even for the three working cases"},
+        {"id": "b", "text": "Keep adding labeled branches until the unmatched share falls to near zero, then stop"},
+        {"id": "c", "text": "Swap in a stronger model for the labeling step so that fewer questions fall outside the labels"},
+        {"id": "d", "text": "Keep the three branches in code and send every unmatched question to a model-run loop with tools"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "Before launch, a QA lead wants to feed a fixed sample input to each stage of a bot, check that stage's output on its own, and later rerun just one stage after editing its prompt. Which design makes this straightforward, and why?",
+      "options": [
+        {"id": "a", "text": "A model-run loop, because each tool call is a step whose result can be checked on its own"},
+        {"id": "b", "text": "A model-run loop, because its final answers can be compared with stored expected answers"},
+        {"id": "c", "text": "A fixed chain, because every run passes through the same stages with known inputs and outputs"},
+        {"id": "d", "text": "A fixed chain, because code stages never vary, so they need no checking at all"}
+      ]
+    }
+  ]
+}

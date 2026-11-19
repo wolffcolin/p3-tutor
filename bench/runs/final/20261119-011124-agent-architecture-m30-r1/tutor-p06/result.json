@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 14605,
+  "stop_reason": "end_turn",
+  "session_id": "99038230-8d6d-4000-94ff-482f94ae34d9",
+  "total_cost_usd": 0.117777,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 22654,
+    "cache_read_input_tokens": 94550,
+    "output_tokens": 1769,
+    "output_tokens_details": {
+      "thinking_tokens": 876
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22654,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 209,
+        "cache_read_input_tokens": 32713,
+        "cache_creation_input_tokens": 890,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 890
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1769,
+      "cacheReadInputTokens": 94550,
+      "cacheCreationInputTokens": 22654,
+      "webSearchRequests": 0,
+      "costUSD": 0.117777,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 876,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22654,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 9,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Think of a doctor working with a lab.\n\nThe doctor can't run a blood test. They can only write an order slip: \"test X, for this patient.\" The lab does the test and puts the result in the chart. The doctor reads the chart and decides what to do next, which may be another order or the diagnosis.\n\nThe model is the doctor and only writes text. Your program is the lab and does the real work. The doctor knows which tests exist only because of the order catalog, a short description of each test. The doctor has never seen inside the lab.\n\nThe analogy breaks down in one place. A real doctor remembers earlier results, but the model only \"remembers\" what is written in the chart you hand it each time.",
+  "ttft_ms": 1035,
+  "type": "result",
+  "duration_ms": 14792,
+  "uuid": "df1be3a0-255d-4ea7-a704-3f28e2237c84",
+  "ttft_stream_ms": 762,
+  "time_to_request_ms": 121,
+  "first_content_frame_ms": 762,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1769,
+      "cacheReadInputTokens": 94550,
+      "cacheCreationInputTokens": 22654,
+      "webSearchRequests": 0,
+      "costUSD": 0.117777,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 876,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 22654,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

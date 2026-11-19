@@ -1,0 +1,73 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Workflows, agents and who runs the steps",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A vet clinic's intake script sends each owner message to a language model with the instruction \"reply with exactly one label: BOOKING, BILLING or EMERGENCY\". The script then uses an if/else on the label to run the booking form, the billing lookup or the on-call pager code. For one message the model writes EMERGENCY and the pager code runs. What made the pager code run?",
+      "options": [
+        {"id": "a", "text": "The model, which picked the pager as its next action by choosing that label"},
+        {"id": "b", "text": "The model's reading of urgency, which it reports by writing that label"},
+        {"id": "c", "text": "The if/else in the script, which maps that label to the pager code"},
+        {"id": "d", "text": "The prompt, which tells the model to carry out the matching action"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A lab's nightly job reads each new safety-incident form, extracts its fields, assigns a severity category, writes a two-line summary and emails it to the safety officer. The first three stages each need one model call and the email is plain code; all four are needed for every form, and the group has a small model budget. The alternative is a loop where the model is given the four stages as tools and the full history is re-sent each turn. Which statement about cost is accurate?",
+      "options": [
+        {"id": "a", "text": "The chain makes only the three calls its stages need; the loop re-reads a growing history and adds a call to decide it is done"},
+        {"id": "b", "text": "Both cost about the same, since the loop runs the same stages and the model only chooses their order"},
+        {"id": "c", "text": "The loop is cheaper, since one running conversation shares context across stages instead of separate calls"},
+        {"id": "d", "text": "The chain costs more, since each stage's call starts from scratch and repeats the form's text"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A grad student needs a tool to find out why a nightly simulation job failed. Past failures were explained by the first log, by a bad config file, or by logs that had to be fetched from a crashed node. Running every available diagnostic takes about an hour and costs real money, and new kinds of failure appear every month. Which design fits best?",
+      "options": [
+        {"id": "a", "text": "A fixed chain that runs every diagnostic in order, then has the model summarize all results"},
+        {"id": "b", "text": "A loop where the model chooses which diagnostic to run next from what it has found so far"},
+        {"id": "c", "text": "A fixed chain with an if/else branch per known failure type, extended as new types appear"},
+        {"id": "d", "text": "A fixed chain where the model names the failure type, then code runs one preset diagnostic list"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A clinic booking system must verify a patient's insurance before it confirms any appointment, with no exceptions. A teammate proposes giving a model-driven assistant a verify_insurance tool and a prompt that says \"always verify insurance before booking\". In one or two sentences, why does that not give the guarantee the clinic needs, and where must the rule be enforced instead?"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A 3D-printer lab's support bot has code that has a model label each question JAMMED, BED-LEVEL or FILAMENT, then runs a preset sequence for that label. The three sequences work well and cover about two-thirds of questions. The rest are varied, rarely repeat, and now get a generic apology. What is the best next step to cover them without raising the cost of the working two-thirds?",
+      "options": [
+        {"id": "a", "text": "Let a model-run loop choose every step for all questions, so one design covers all cases"},
+        {"id": "b", "text": "Keep adding labeled branches for the leftovers, since each branch is cheap and predictable"},
+        {"id": "c", "text": "Swap in a stronger model for the labeling step, since better labels mean fewer misses"},
+        {"id": "d", "text": "Leave the three branches as code and hand unmatched questions to a model-run loop with tools"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A QA lead must check a bot stage by stage before every prompt edit: feed one stage a sample input known in advance, check its output on its own, and rerun just that stage. Which design makes this straightforward, and why?",
+      "options": [
+        {"id": "a", "text": "A model-run loop, because each tool call can be tested alone with a sample input"},
+        {"id": "b", "text": "A model-run loop, because its final answers can be compared with stored expected answers"},
+        {"id": "c", "text": "A fixed chain, because every run passes through the same stages with known inputs and outputs"},
+        {"id": "d", "text": "A fixed chain, because the model calls inside it give the same output every time"}
+      ]
+    }
+  ]
+}

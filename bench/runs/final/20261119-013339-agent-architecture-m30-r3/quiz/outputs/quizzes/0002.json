@@ -1,0 +1,73 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Who decides the next step: fixed workflows and agents",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A pharmacy refill system handles a typed request in this order: a model call extracts the drug and dose, a stock lookup runs, a second model call drafts the reply, and the reply is sent. The order is identical in every log. A developer wants a dosage-limit check between the extraction and the stock lookup. Where must the change be made?",
+      "options": [
+        {"id": "a", "text": "In the prompt of the extraction call, telling the model to do the check next"},
+        {"id": "b", "text": "In the model's tool list, adding a dosage tool for it to use when needed"},
+        {"id": "c", "text": "In the program that runs the calls, adding the check to the sequence"},
+        {"id": "d", "text": "In the stock lookup, which would then call the dosage check itself"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A lab sends a results email for every sample: look up the sample, check it against reference ranges, write a two-line summary, send. Thousands of samples arrive a week and the model budget is tight. A teammate proposes giving the model all four tools and letting it work out what to do. For cost per request, what is the strongest objection?",
+      "options": [
+        {"id": "a", "text": "A model-led run needs a bigger model than any single step does"},
+        {"id": "b", "text": "The model might reorder the steps, which breaks the email format"},
+        {"id": "c", "text": "The model would stop early, so some required checks get skipped"},
+        {"id": "d", "text": "Choosing each next step costs a model call, for a known order"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A student tells the makerspace assistant, \"My print came out stringy and warped.\" The printer logs might point to a temperature problem, a filament-type check or a bed-leveling guide, each needing a different lookup next, and sometimes the assistant must ask the student a question. Why does a program with a set order of steps fit this request poorly?",
+      "options": [
+        {"id": "a", "text": "The right next lookup depends on what the last one found, in too many ways to write branches for"},
+        {"id": "b", "text": "The assistant must read the student's free text, and a program cannot call a model to do that"},
+        {"id": "c", "text": "More than one tool is involved, and only a model-driven loop can combine several tools"},
+        {"id": "d", "text": "The assistant must write an explanation, and any system that writes one is a model-driven loop"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A makerspace booking assistant makes a booking at the wrong time, and you have the logs for that request. In one sentence, why is it easier to find the cause if your code fixes the order of the steps than if the model chooses the steps in a loop?"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A clinic's FAQ bot is three coded steps: label the question's topic, fetch that topic's policy page, write an answer from the page. It fails on questions like \"I'm switching insurers mid-treatment, what changes?\", which need one page, then a second page the first one names, and sometimes a third. Which is the smallest change that fixes these questions without adding cost to the ones that already work?",
+      "options": [
+        {"id": "a", "text": "Always fetch the five closest pages in the fetch step, then write the answer"},
+        {"id": "b", "text": "Let the model choose extra fetches, only on questions labeled multi-page"},
+        {"id": "c", "text": "Sharpen the label step's prompt so each question maps to a better page"},
+        {"id": "d", "text": "Turn the fetch step into a model loop for every question, whatever the topic"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "In a research assistant, code first asks the model once to rewrite the user's query. Then a loop runs: each round the model either requests a search or says it is done, and the code cuts the loop off after 4 rounds. Finally code asks the model once to write the answer and sends it. A sponsor asks about cost per request, assuming every call costs about the same. Which description is correct?",
+      "options": [
+        {"id": "a", "text": "An agent: the model plans the whole run, so calls have no upper limit"},
+        {"id": "b", "text": "A fixed workflow: the cap is set in code, so every request makes 6 calls"},
+        {"id": "c", "text": "Partly each: the model picks the search count, code caps it, so calls vary below a ceiling"},
+        {"id": "d", "text": "A fixed workflow: code orders the steps, so every request costs the same"}
+      ]
+    }
+  ]
+}

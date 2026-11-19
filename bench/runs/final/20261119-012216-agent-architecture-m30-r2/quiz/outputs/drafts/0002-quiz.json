@@ -1,0 +1,73 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Who decides the next step: fixed sequences and model-driven loops",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A hospital pharmacy system handles every prescription the same way. Code sends the scanned text to a language model that extracts the drug and dose, then code looks the drug up in an interaction database, then a second model call drafts a note for the pharmacist. Once the extraction call returns, what makes the lookup happen next?",
+      "options": [
+        {"id": "a", "text": "The model, which read the prescription and knows a check is needed"},
+        {"id": "b", "text": "The program's code, which was written to run the lookup afterwards"},
+        {"id": "c", "text": "The prescription, whose contents decide which step the system takes"},
+        {"id": "d", "text": "The database, whose reply tells the program what step comes next"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A router company builds a helper for customers who write \"my wifi drops every evening\". Possible checks are reading router logs, testing signal strength, comparing firmware versions and scanning for channel congestion. Each result changes which check is worth running next, and no two customers need the same checks in the same order. Which design fits?",
+      "options": [
+        {"id": "a", "text": "Run all four checks in one fixed order for everyone, then write up the results"},
+        {"id": "b", "text": "Make one model call that reads the complaint and writes a diagnosis directly"},
+        {"id": "c", "text": "Have a model pick one of several scripted check sequences, then run that one"},
+        {"id": "d", "text": "Let a model choose each next check from the results so far, until it can diagnose"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A university lab must process 300 incident forms every night. Each form goes through the same three steps: remove personal details, tag the form with one category from a fixed list, add a row to a spreadsheet. The model budget is tight. In one sentence, who should decide the order of these steps, and why?"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "Your team must add a feature that summarizes lab incident reports. Nobody yet knows how much the reports vary, or what a good summary needs to contain. Which starting point is best?",
+      "options": [
+        {"id": "a", "text": "Build a model-driven loop with many tools first, so it can adapt to varied reports"},
+        {"id": "b", "text": "Build several cooperating model-driven loops first, one specialist per report type"},
+        {"id": "c", "text": "Build one fixed sequence of steps, measure where it fails, and add flexibility there"},
+        {"id": "d", "text": "Hold off until the most capable model is picked, since the design depends on it"}
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A bank's refund assistant is a loop in which the model picks from verify_identity, look_up_order and issue_refund. In 2 of 200 test runs it called issue_refund before verify_identity, although its prompt says to verify first. Which change addresses the cause?",
+      "options": [
+        {"id": "a", "text": "Have the code run the identity check before the model is given any other tool"},
+        {"id": "b", "text": "Repeat the verify-first rule several times in the prompt, in capital letters"},
+        {"id": "c", "text": "Switch to a larger model, which should follow the written rule more reliably"},
+        {"id": "d", "text": "Add a tool that tells the model whether the identity has already been verified"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "In a design review for the makerspace assistant, the proposal is one loop where the model chooses among search_manuals, check_calendar and book_machine for every request, capped at 8 steps. Logs from a pilot show 40% of requests are bookings that always run check_calendar and then book_machine, while manual questions vary widely. What is the most important change to the design?",
+      "options": [
+        {"id": "a", "text": "Raise the cap from 8 to 15 steps so long manual questions are not cut off"},
+        {"id": "b", "text": "Run bookings as fixed steps in code, and keep the loop for manual questions"},
+        {"id": "c", "text": "Add worked booking examples to the prompt so the loop gets the order right"},
+        {"id": "d", "text": "Give manuals and bookings each their own loop, with their own tools"}
+      ]
+    }
+  ]
+}

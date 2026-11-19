@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 9820,
+  "stop_reason": "end_turn",
+  "session_id": "37ab55c7-8bf7-4504-a9f2-2ec67038f0dd",
+  "total_cost_usd": 0.10138770000000001,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 20800,
+    "cache_read_input_tokens": 61957,
+    "output_tokens": 1198,
+    "output_tokens_details": {
+      "thinking_tokens": 289
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20800,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 281,
+        "cache_read_input_tokens": 31183,
+        "cache_creation_input_tokens": 566,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 566
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1198,
+      "cacheReadInputTokens": 61957,
+      "cacheCreationInputTokens": 20800,
+      "webSearchRequests": 0,
+      "costUSD": 0.10138770000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 289,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20800,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I'm not going to walk you through a full derivation or a training run. Training models is out of scope in your mission, and it's the wrong tool for your budget.\n\nPPO in one line:\n\n**L = E[ min( r·A, clip(r, 1−ε, 1+ε)·A ) ]**, where r = π_new(action) / π_old(action).\n\nA is the advantage: how much better the action was than expected. Positive A pushes up the probability of that tool call. The clip stops one update from moving the model far from the old one.\n\nFor your assistant, RL would need a reward signal, thousands of rollouts and GPUs. Almost all of the tool-calling gain you'd get at this scale comes from cheaper fixes:\n- clearer tool descriptions\n- a fixed workflow for the predictable steps\n- a test set of real student questions\n\nWant a lesson on improving tool calling that way?",
+  "ttft_ms": 896,
+  "type": "result",
+  "duration_ms": 9976,
+  "uuid": "ff6f238c-56f3-43fb-b651-a21a2fadd8e4",
+  "ttft_stream_ms": 581,
+  "time_to_request_ms": 103,
+  "first_content_frame_ms": 582,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1198,
+      "cacheReadInputTokens": 61957,
+      "cacheCreationInputTokens": 20800,
+      "webSearchRequests": 0,
+      "costUSD": 0.10138770000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 289,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20800,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

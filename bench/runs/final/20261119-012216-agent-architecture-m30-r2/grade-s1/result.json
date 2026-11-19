@@ -1,0 +1,122 @@
+{
+  "duration_api_ms": 25964,
+  "stop_reason": "end_turn",
+  "session_id": "5fb080c0-8ea2-432b-8574-d4737b729c60",
+  "total_cost_usd": 0.1936102,
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 22767,
+    "cache_read_input_tokens": 124135,
+    "output_tokens": 2469,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22767,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 321,
+        "cache_read_input_tokens": 32098,
+        "cache_creation_input_tokens": 1618,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1618
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4115,
+      "cacheReadInputTokens": 147552,
+      "cacheCreationInputTokens": 41409,
+      "webSearchRequests": 0,
+      "costUSD": 0.1936102,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 186,
+      "cacheCreationEphemeral5mInputTokens": 18642,
+      "cacheCreationEphemeral1hInputTokens": 22767,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 1,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "grader": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 12,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I graded submission s1 for quiz 0001 and wrote `grades/0001-s1.json`. You got 2 items correct, 2 partial and 2 wrong.\n\n- **q1, q3:** correct.\n- **q5:** partial. Sending the tool result back to the model is right, but you left out why: the model needs it in its next input to choose its next step or write the answer.\n- **q6:** partial. The model picks tools from their names and descriptions, which is right. It does not remember past picks across sessions (M3).\n- **q2, q4:** wrong. You had the model running the tools itself (M4). The model only writes a tool request. The program runs the tool and calls the model again.\n\n**Next step:** re-read the agent-loop lesson and trace one run, labelling each step \"model\" or \"program\". The next lesson on memory will address M3 and M4.\n\nI also added `learning-records/0003-model-does-not-run-tools.md` and updated `NOTES.md`. `s2` is still ungraded.",
+  "ttft_ms": 1113,
+  "type": "result",
+  "duration_ms": 26219,
+  "uuid": "d738d6de-97b3-4c32-8565-50f9ed8b7e8a",
+  "ttft_stream_ms": 732,
+  "time_to_request_ms": 97,
+  "first_content_frame_ms": 733,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4115,
+      "cacheReadInputTokens": 147552,
+      "cacheCreationInputTokens": 41409,
+      "webSearchRequests": 0,
+      "costUSD": 0.1936102,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 186,
+      "cacheCreationEphemeral5mInputTokens": 18642,
+      "cacheCreationEphemeral1hInputTokens": 22767,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

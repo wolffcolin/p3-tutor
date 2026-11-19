@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose action, run it, feed the result back is the structure that makes it an agent. Prompt length and window size only change what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You picked the model reading the calendar itself. A model only writes text, so it cannot open the booking system. Its output is a request naming check_calendar with the arguments (laser cutter, tomorrow). The program runs the tool and returns the result."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: repeating the same failing step will not fix itself, and all 40 steps already fit in context. A step limit is a stopping condition that hands the problem back to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "Same misconception as q2: you have the model running the tools inside one call. The program runs tools. Each model call ends in one tool request or the final answer, so 3 requests plus 1 final answer is 4 calls."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "You have what happens: the result goes back to the model. You left out why. The program puts it in the model's next input and calls the model again, so the model can use it to pick its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model picks from the tool names and descriptions it is sent. The claim that it remembers its choices from earlier sessions is wrong. A model keeps nothing between calls unless the program sends it again, so memory has to be built in."
+    }
+  ],
+  "summary": "You have the loop's shape and the role of tool descriptions, but you twice gave the model the program's job of running tools, and you assumed memory comes for free. Work on separating what the model does (writes a request) from what the program does (runs it, returns the result, calls again). Next step: redraw the laser-cutter request as two columns, model outputs and program actions, and count the model calls."
+}

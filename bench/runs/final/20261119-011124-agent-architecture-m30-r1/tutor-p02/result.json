@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 5072,
+  "stop_reason": "end_turn",
+  "session_id": "768bea40-2976-4573-b06e-e5a8389a07b9",
+  "total_cost_usd": 0.0620929,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12921,
+    "cache_read_input_tokens": 53269,
+    "output_tokens": 507,
+    "output_tokens_details": {
+      "thinking_tokens": 88
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12921,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 176,
+        "cache_read_input_tokens": 22471,
+        "cache_creation_input_tokens": 1399,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1399
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 507,
+      "cacheReadInputTokens": 53269,
+      "cacheCreationInputTokens": 12921,
+      "webSearchRequests": 0,
+      "costUSD": 0.0620929,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 88,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12921,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 5,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I can't confirm or rule out any option on a quiz item, including a, but here is the idea q2 tests.\n\nA language model only produces text. It can't open a booking system or run code, so when it \"uses\" a tool, what it writes is a structured request that names the tool and gives the argument values. The program around the model reads that request, runs the tool, and handles what comes back. The question asks what the model itself produces at that moment. Check each option against that division of labor: what the model writes versus what the program does.\n\nI'm happy to go through q2 with you once the quiz is graded.",
+  "ttft_ms": 974,
+  "type": "result",
+  "duration_ms": 5215,
+  "uuid": "b60fcd34-c4d3-4022-83bd-9e2a6f97260a",
+  "ttft_stream_ms": 572,
+  "time_to_request_ms": 71,
+  "first_content_frame_ms": 572,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 507,
+      "cacheReadInputTokens": 53269,
+      "cacheCreationInputTokens": 12921,
+      "webSearchRequests": 0,
+      "costUSD": 0.0620929,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 88,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12921,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

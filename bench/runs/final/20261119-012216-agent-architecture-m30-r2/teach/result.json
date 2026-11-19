@@ -1,0 +1,130 @@
+{
+  "duration_api_ms": 419434,
+  "stop_reason": "end_turn",
+  "session_id": "ec8fc884-f25a-45ce-964d-d73793312a4f",
+  "total_cost_usd": 1.4492271999999997,
+  "usage": {
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 29145,
+    "cache_read_input_tokens": 361452,
+    "output_tokens": 7040,
+    "output_tokens_details": {
+      "thinking_tokens": 628
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 29145,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 644,
+        "cache_read_input_tokens": 84866,
+        "cache_creation_input_tokens": 1347,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1347
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 94,
+      "outputTokens": 55631,
+      "cacheReadInputTokens": 1373701,
+      "cacheCreationInputTokens": 240802,
+      "webSearchRequests": 0,
+      "costUSD": 1.4087690999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 11922,
+      "cacheCreationEphemeral5mInputTokens": 165538,
+      "cacheCreationEphemeral1hInputTokens": 75264,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 67081,
+      "outputTokens": 7500,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 3,
+      "costUSD": 0.0404581,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3545,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "origin": {
+    "kind": "task-notification",
+    "producer": "session-task",
+    "runId": "0mwmvekm8-20160f17"
+  },
+  "subagent_stats": {
+    "spawned": 5,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 5
+    },
+    "started_in_background": 5,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 5,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "lesson-planner": 1,
+      "references-finder": 1,
+      "lesson-writer": 1,
+      "visual-designer": 1,
+      "lesson-reviewer": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 24,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "The 30-minute lesson on O3 is written at `lessons/0001-context-and-memory.html`. I haven't opened it in a browser, so the figures and the answer buttons are untested. Its measured length is about 4,540 words, or roughly 30 minutes of reading.\n\nIt covers:\n- **Tokens and the window:** what context is, and why each agent step is a separate call that resends the whole history.\n- **Cost:** a worked per-step cost sum, using invented round numbers.\n- **Context rot:** why a bigger window doesn't mean you can paste in whole manuals.\n- **Between steps:** clearing old tool results and compacting long chats.\n- **Between sessions:** notes saved outside the window, using a per-student training-status file as the example.\n- **Finding the right page:** upfront versus just-in-time retrieval.\n- **Worked example and faded practice:** a booking request costed with the whole manual pasted in versus retrieving one page, then a returning-student design task.\n\nAll token sizes and prices in the lesson are invented and labelled that way. I also saved the sources in `RESOURCES.md`, the review notes in `review-records/0001-teach.md`, and a line in `NOTES.md`.\n\n- **Review:** the reviewer found three serious problems and I fixed all of them, with one caveat. I added the missing reason for context rot, cut the repeated points, and fixed the section times so they sum to 30. Reading time alone is still about 30 minutes, so the practice checks will push the session past it.\n- **Costing:** one minor gap is left: the last step of the faded task asks for a cost sentence, not arithmetic.\n- **Cheat sheet:** I skipped one for this lesson.\n\nYou can ask me anything about the lesson in the chat, and a quiz is ready whenever you want one (`/quiz`).\n\nOne question for you: would you rather have a shorter lesson of about 20 minutes, with the retrieval section and faded practice split into their own follow-up?",
+  "ttft_ms": 799,
+  "type": "result",
+  "duration_ms": 45096,
+  "uuid": "2e83c883-b32d-477c-8d56-6772bbae7e54",
+  "ttft_stream_ms": 547,
+  "time_to_request_ms": 14,
+  "first_content_frame_ms": 548,
+  "queued_turn_count": 0,
+  "result_index": 5,
+  "model_usage_since_last_result": {},
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

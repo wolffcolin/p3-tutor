@@ -1,0 +1,122 @@
+{
+  "duration_api_ms": 28261,
+  "stop_reason": "end_turn",
+  "session_id": "b9dd666a-30a8-497e-b628-d96ed7194680",
+  "total_cost_usd": 0.1997036,
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 22843,
+    "cache_read_input_tokens": 123996,
+    "output_tokens": 2458,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22843,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 277,
+        "cache_read_input_tokens": 32067,
+        "cache_creation_input_tokens": 1725,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1725
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4285,
+      "cacheReadInputTokens": 148946,
+      "cacheCreationInputTokens": 43065,
+      "webSearchRequests": 0,
+      "costUSD": 0.1997036,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 156,
+      "cacheCreationEphemeral5mInputTokens": 20222,
+      "cacheCreationEphemeral1hInputTokens": 22843,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 1,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "grader": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 12,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I graded s1 and wrote `grades/0001-s1.json`. Two items were correct, two partial and two wrong.\n\n- **q1, q3:** correct.\n- **q2, q4:** wrong, both M4. You had the model running the tools itself. It only writes a tool request, and the program runs the tool and calls the model again.\n- **q5:** partial. The result goes back to the model, but you didn't say why: it goes into the next input so the model can pick its next step or write the final answer.\n- **q6:** partial, M3. The model does pick tools from their descriptions. It does not remember earlier sessions unless the program resends that information.\n\n**Next step:** redraw the laser-cutter request as two columns, model outputs and program actions, and count the model calls.\n\nI also added learning record `0003` and updated `NOTES.md`. `s2` is still ungraded.",
+  "ttft_ms": 1004,
+  "type": "result",
+  "duration_ms": 28526,
+  "uuid": "65f74305-3cb6-46d8-9f0a-20b2a7df166f",
+  "ttft_stream_ms": 1003,
+  "time_to_request_ms": 106,
+  "first_content_frame_ms": 1003,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4285,
+      "cacheReadInputTokens": 148946,
+      "cacheCreationInputTokens": 43065,
+      "webSearchRequests": 0,
+      "costUSD": 0.1997036,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 156,
+      "cacheCreationEphemeral5mInputTokens": 20222,
+      "cacheCreationEphemeral1hInputTokens": 22843,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

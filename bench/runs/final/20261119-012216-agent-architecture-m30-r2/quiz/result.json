@@ -1,0 +1,110 @@
+{
+  "duration_api_ms": 162258,
+  "stop_reason": "end_turn",
+  "session_id": "9ba8d1a8-28ee-4cc3-bd6f-c99f39c4f627",
+  "total_cost_usd": 0.43467140000000004,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 7820,
+    "cache_read_input_tokens": 90683,
+    "output_tokens": 4857,
+    "output_tokens_details": {
+      "thinking_tokens": 1497
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7820,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 174,
+        "cache_read_input_tokens": 46796,
+        "cache_creation_input_tokens": 4911,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 4911
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 22,
+      "outputTokens": 19957,
+      "cacheReadInputTokens": 253604,
+      "cacheCreationInputTokens": 59424,
+      "webSearchRequests": 0,
+      "costUSD": 0.43467140000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 10362,
+      "cacheCreationEphemeral5mInputTokens": 18666,
+      "cacheCreationEphemeral1hInputTokens": 40758,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "origin": {
+    "kind": "task-notification",
+    "producer": "session-task",
+    "runId": "0mwmvijl4-4d28448e"
+  },
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 1
+    },
+    "started_in_background": 1,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "quiz-reviewer": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 4,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Quiz 0002 on O4 is ready: six items (five multiple choice and one short answer), with the key and the review record written. There is no lesson on O4 yet, so the quiz runs ahead of the lessons.\n\nThe reviewer asked for a revision, and I applied it without a second review. I fixed the weak wrong options, removed places where a stem gave its answer away, and made the three items that overlapped test different angles.\n\nI left `distractors` out of the key, because no O4 misconception ids exist in the workspace and I didn't invent any.",
+  "ttft_ms": 14526,
+  "type": "result",
+  "duration_ms": 35526,
+  "uuid": "54aa3cc4-d9d2-4f1e-a0ee-8f5873d56305",
+  "ttft_stream_ms": 568,
+  "time_to_request_ms": 13,
+  "first_content_frame_ms": 568,
+  "queued_turn_count": 0,
+  "result_index": 1,
+  "model_usage_since_last_result": {},
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

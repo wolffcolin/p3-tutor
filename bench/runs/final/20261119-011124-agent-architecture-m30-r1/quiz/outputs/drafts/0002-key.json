@@ -1,0 +1,40 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The branches are fixed in the script, so the script owns the control flow; the model only fills in one label. Calling a model somewhere does not make the model the one who chooses the next step."
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "With a known sequence there is nothing for the model to decide, so each stage is one call. A loop adds calls to choose the next step and re-reads a growing history, and here it would skip nothing."
+    },
+    {
+      "id": "q3",
+      "answer": "b",
+      "rationale": "The path depends on intermediate results and the failure types keep changing, so the model has to own the next-step choice. Fixed chains either waste calls on every diagnostic or need constant new branches."
+    },
+    {
+      "id": "q4",
+      "answer": "The model chooses whether and when to call tools, so it can skip or reorder verification; code that always runs verification before the booking step (a fixed workflow) enforces it.",
+      "accepted": [
+        "A prompt is only an instruction the model may not follow; hard-code the verification step before booking in a fixed workflow",
+        "The model decides which tools to call, so it might skip the check; put verification in code as a fixed step before booking",
+        "Prompts do not guarantee order; a fixed workflow where code always runs the insurance check first does"
+      ],
+      "rationale": "In an agent the model owns the control flow, so a rule in the prompt is a request, not a guarantee. A hard requirement belongs in code that runs the step every time, in order."
+    },
+    {
+      "id": "q5",
+      "answer": "d",
+      "rationale": "Keep the predictable, working paths as fixed code and give only the open-ended remainder to a model-run loop. Adding branches cannot cover varied, non-repeating questions, a better labeler still cannot label what has no label, and replacing everything adds cost to cases that already work."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "A fixed chain has the same stages every run, so each stage has a known input and an expected output that can be tested and rerun alone. Model calls inside stages still vary, so they still need checking."
+    }
+  ]
+}

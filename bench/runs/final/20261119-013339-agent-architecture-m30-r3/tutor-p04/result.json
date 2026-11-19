@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 8581,
+  "stop_reason": "end_turn",
+  "session_id": "87b66f55-4968-4345-bd99-476063f8d5c4",
+  "total_cost_usd": 0.0991513,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 20599,
+    "cache_read_input_tokens": 61833,
+    "output_tokens": 1056,
+    "output_tokens_details": {
+      "thinking_tokens": 76
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20599,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 278,
+        "cache_read_input_tokens": 31121,
+        "cache_creation_input_tokens": 427,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 427
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1056,
+      "cacheReadInputTokens": 61833,
+      "cacheCreationInputTokens": 20599,
+      "webSearchRequests": 0,
+      "costUSD": 0.0991513,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 76,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20599,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Neither. \"More agents always give better results\" is false, so the five-or-ten question doesn't have an answer yet.\n\nYou may be assuming that agents work like people on a team, where more hands means more done. Each extra agent adds model calls, repeated context and hand-off points where information gets lost or garbled. That costs tokens, and your budget is small. Splitting only pays off when the work is separable. That means different tools, very different context, or parts that can run in parallel.\n\nYour assistant does three things: answer from manuals, check the calendar, and book equipment. Start with one agent that has three well-described tools. Make anything with a fixed order a plain workflow step, for example always checking the calendar before booking. Split later only if one agent measurably gets confused or its context gets too big.\n\nDo you want a lesson on workflows versus agents and when splitting pays off? Your mission covers it.",
+  "ttft_ms": 871,
+  "type": "result",
+  "duration_ms": 8666,
+  "uuid": "536575cc-0646-46d1-9374-5de6a9757995",
+  "ttft_stream_ms": 533,
+  "time_to_request_ms": 57,
+  "first_content_frame_ms": 534,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1056,
+      "cacheReadInputTokens": 61833,
+      "cacheCreationInputTokens": 20599,
+      "webSearchRequests": 0,
+      "costUSD": 0.0991513,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 76,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20599,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

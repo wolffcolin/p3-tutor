@@ -1,0 +1,122 @@
+{
+  "duration_api_ms": 25444,
+  "stop_reason": "end_turn",
+  "session_id": "ff73f51c-4af1-4875-aeb4-b38ea6442439",
+  "total_cost_usd": 0.18511920000000004,
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 22595,
+    "cache_read_input_tokens": 123860,
+    "output_tokens": 2356,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22595,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 297,
+        "cache_read_input_tokens": 31949,
+        "cache_creation_input_tokens": 1595,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1595
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4058,
+      "cacheReadInputTokens": 153297,
+      "cacheCreationInputTokens": 38114,
+      "webSearchRequests": 0,
+      "costUSD": 0.18511920000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 183,
+      "cacheCreationEphemeral5mInputTokens": 15519,
+      "cacheCreationEphemeral1hInputTokens": 22595,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 1,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "grader": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 12,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I graded s2: 3 correct, 2 partial, 1 wrong. The grades are in `grades/0001-s2.json`.\n\n- **Right:** q1, q2 and q5. You have the loop structure and the request/result cycle.\n- **q3 (wrong, M6):** a loop needs a stopping condition. Retrying the same failure adds nothing, so a step limit should end it and hand the problem back to a person.\n- **q4 (partial, M4):** 4 was the right count, but the model doesn't run tools. It requests one, and the program runs it.\n- **q6 (partial):** the model picks a tool from its description, not just its name.\n\n**Next step:** reread the lesson's tool-calling and stopping-condition sections. Then write a one-line description for `check_calendar` and say how the model would use it.\n\nI also added learning record 0003 and updated `NOTES.md`. s1 is still ungraded.",
+  "ttft_ms": 839,
+  "type": "result",
+  "duration_ms": 25725,
+  "uuid": "f6ff9abc-5a87-4847-9570-8357e6855d67",
+  "ttft_stream_ms": 561,
+  "time_to_request_ms": 103,
+  "first_content_frame_ms": 561,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 4058,
+      "cacheReadInputTokens": 153297,
+      "cacheCreationInputTokens": 38114,
+      "webSearchRequests": 0,
+      "costUSD": 0.18511920000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 183,
+      "cacheCreationEphemeral5mInputTokens": 15519,
+      "cacheCreationEphemeral1hInputTokens": 22595,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

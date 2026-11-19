@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 7764,
+  "stop_reason": "end_turn",
+  "session_id": "7833588a-add3-4dd3-bee0-b2556dcc235b",
+  "total_cost_usd": 0.09825400000000001,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 20583,
+    "cache_read_input_tokens": 61900,
+    "output_tokens": 972,
+    "output_tokens_details": {
+      "thinking_tokens": 87
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20583,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 245,
+        "cache_read_input_tokens": 31152,
+        "cache_creation_input_tokens": 380,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 380
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 972,
+      "cacheReadInputTokens": 61900,
+      "cacheCreationInputTokens": 20583,
+      "webSearchRequests": 0,
+      "costUSD": 0.09825400000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 87,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20583,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "No, that's not right. A language model keeps nothing between requests. It only sees the text your code sends in that one call, and each new session starts blank.\n\nChat products look like they remember because the app resends the earlier messages, or saved notes, along with each new message. The model never stores them.\n\nFor your makerspace assistant, you build the memory yourself. For example, after a session you save \"Sam: completed laser cutter training, Nov 11\" to a database. At the start of Sam's next session, your code looks that up and puts it in the prompt. Without that step, the assistant has no idea who Sam is.\n\nThis is the \"what to save between sessions\" decision from your mission, and it's also a cost decision, because everything you re-supply is tokens you pay for. I can write a lesson on it if you want.",
+  "ttft_ms": 893,
+  "type": "result",
+  "duration_ms": 7893,
+  "uuid": "22a85186-c397-443c-b721-a883febe285e",
+  "ttft_stream_ms": 613,
+  "time_to_request_ms": 73,
+  "first_content_frame_ms": 614,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 972,
+      "cacheReadInputTokens": 61900,
+      "cacheCreationInputTokens": 20583,
+      "webSearchRequests": 0,
+      "costUSD": 0.09825400000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 87,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 20583,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

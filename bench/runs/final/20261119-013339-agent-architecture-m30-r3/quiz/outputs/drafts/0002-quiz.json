@@ -1,0 +1,73 @@
+{
+  "id": "0002",
+  "objective": "O4",
+  "title": "Who decides the next step: fixed workflows and agents",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A pharmacy's refill system runs a Python script. It calls a model to pull the drug and dose out of a patient's typed request, then runs ordinary code to check stock, then calls the model again to draft a reply, then sends it. After the extraction call finishes, what decides that the stock check runs next?",
+      "options": [
+        {"id": "a", "text": "The model's reading of the extracted fields, which shows a stock check is due"},
+        {"id": "b", "text": "A list of allowed steps in the prompt, from which the model picks the next"},
+        {"id": "c", "text": "The order of the calls written in the script, the same on every run"},
+        {"id": "d", "text": "The stock database, which signals when a new request has been extracted"}
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A lab sends a results email for every sample: look up the sample, check it against reference ranges, write a two-line summary, send. These four steps never change, there are thousands of samples a week, and the budget is tight. A teammate proposes giving the model all four tools and letting it work out what to do. What is the strongest objection?",
+      "options": [
+        {"id": "a", "text": "Models cannot call four different tools reliably in one request"},
+        {"id": "b", "text": "Tools built for a script cannot be reused when a model calls them"},
+        {"id": "c", "text": "The model would stop early, so some required checks get skipped"},
+        {"id": "d", "text": "Choosing each next step costs a model call, for an order already known"}
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A student tells the makerspace assistant, \"My print came out stringy and warped.\" The printer logs might point to a temperature problem, a filament-type check or a bed-leveling guide, each needing a different lookup next, and sometimes the assistant must ask the student a question. Why does a script with a set order of steps fit this request poorly?",
+      "options": [
+        {"id": "a", "text": "The right next lookup depends on what the last one found, which no set order anticipates"},
+        {"id": "b", "text": "The student's message is free text, which a script cannot turn into fields"},
+        {"id": "c", "text": "The assistant has several tools, which a script cannot sequence in one run"},
+        {"id": "d", "text": "The reply needs a written explanation, which only a model can produce"}
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "objective": "O4",
+      "stem": "A student says, \"Book the 3D printer for Thursday at 2 pm.\" Every booking goes the same way: read the machine and time from the message, check the calendar, then either book the slot or offer the nearest free slots. Should your code or the model own the order of these steps? Answer in one sentence with your reason."
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "A clinic's FAQ bot is three coded steps: label the question's topic, fetch that topic's policy page, write an answer from the page. It handles most questions but fails on ones like \"I'm switching insurers mid-treatment, what changes?\", which need one page, then a second page the first one names, and sometimes a third. What is the most proportionate fix?",
+      "options": [
+        {"id": "a", "text": "Swap in a larger model for the answer-writing step"},
+        {"id": "b", "text": "Let the model choose further page fetches, only for questions that need them"},
+        {"id": "c", "text": "Add more detail to the labeling step's prompt so it picks better"},
+        {"id": "d", "text": "Rebuild the whole bot so the model picks every step itself"}
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "mcq",
+      "objective": "O4",
+      "stem": "In a research assistant, code first asks the model once to rewrite the user's query. Then a loop runs: each round the model either requests a search or says it is done, and the code cuts the loop off after 4 rounds. Finally code asks the model once to write the answer and sends it. A sponsor asks how to describe this design and what to expect for cost per request.",
+      "options": [
+        {"id": "a", "text": "An agent: the model steers part of it, so cost has no upper limit"},
+        {"id": "b", "text": "A fixed workflow: the cap is set in code, so every request makes 6 calls"},
+        {"id": "c", "text": "A mix: the model picks the number of searches, code caps it, so cost varies below a ceiling"},
+        {"id": "d", "text": "A fixed workflow: code orders the steps, so every request costs the same"}
+      ]
+    }
+  ]
+}

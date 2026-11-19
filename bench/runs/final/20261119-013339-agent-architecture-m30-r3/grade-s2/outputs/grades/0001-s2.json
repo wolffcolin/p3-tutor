@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose an action, run it, feed the result back is the structure that makes it an agent. A longer prompt or bigger model only changes what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the model only outputs a structured request (tool name plus arguments). The program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed more time would eventually fix it. But the agent is getting the same failing result every step, so more steps add nothing. A loop needs a stopping condition, such as a step limit, that ends it and reports back to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but your reason is wrong: the model does not run any tool. It outputs a request each call, and the program runs the tool. Count it as one call per input: the question plus three tool results, so 4."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the result goes back in as the model's next input so it can decide its next step. That is also why every step is a separate model call."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "The name is part of it, but a name alone can mislead (what does check_calendar do with a bad date?). The model reads the full description the program gives it: name, what the tool does, and its parameters. It picks the tool whose description fits."
+    }
+  ],
+  "summary": "You have the loop and the model's request format down, but q4 shows you still slip into picturing the model running the tools. Work on the stopping condition and on what a tool description contains. Next step: redraw the laser-cutter request as a table with one row per model call, marking what the model outputs and what the program does, then write a full description for check_calendar."
+}

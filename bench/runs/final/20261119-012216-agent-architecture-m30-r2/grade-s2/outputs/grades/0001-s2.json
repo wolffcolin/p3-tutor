@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s2",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The loop (model picks an action, it runs, the result returns) is the structure that separates an agent from one call."
+    },
+    {
+      "id": "q2",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "The model only outputs a request naming the tool and its arguments; the program runs it."
+    },
+    {
+      "id": "q3",
+      "verdict": "wrong",
+      "misconception": "M6",
+      "feedback": "You assumed more time would eventually fix it, so the loop needs no stopping condition. But the agent is getting the same failure every step, so more steps add nothing. A step limit ends the loop and hands the problem back to a person."
+    },
+    {
+      "id": "q4",
+      "verdict": "partial",
+      "misconception": "M4",
+      "feedback": "4 is right, but your reason is not: the model does not run any tool. It requests one, the program runs it, and the model is called again with the result. That gives 3 tool-request calls plus 1 final-answer call."
+    },
+    {
+      "id": "q5",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "You gave both parts: the result goes back as the model's next input, so it can decide its next step."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "The name is part of it, but a name alone can mislead (what does search_manuals search?). The program gives the model each tool's description: name, what it does and its parameters. The model picks the tool whose description fits the request."
+    }
+  ],
+  "summary": "You have the loop structure and the request/result cycle down. The weak spot is who does what: the model only requests, and the program runs the tool (your q4 reasoning), and a loop needs a stopping condition. Reread the lesson's tool-calling and stopping-condition sections, then write a one-line description for check_calendar and say how the model would use it."
+}

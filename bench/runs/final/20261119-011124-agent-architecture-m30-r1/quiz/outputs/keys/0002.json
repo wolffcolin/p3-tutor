@@ -1,0 +1,44 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The branches are fixed in the script, so the script owns the control flow; the model only supplies one label. Calling a model, or its reading of urgency, does not make it the one choosing the next step."
+    },
+    {
+      "id": "q2",
+      "answer": "a",
+      "rationale": "With a known sequence the chain makes only the model calls its stages need. A loop re-sends a growing history each turn and spends a further call to decide it is finished, with no stage to skip."
+    },
+    {
+      "id": "q3",
+      "answer": "b",
+      "rationale": "Running everything is slow and costly, and branches or presets cannot cover failure types that keep changing, so the model must choose the next check from what it has found."
+    },
+    {
+      "id": "q4",
+      "answer": "Enforce it in code",
+      "accepted": [
+        "enforce it in code",
+        "in code, not the prompt",
+        "the model may skip the tool; enforce it in code",
+        "hard-code the check before booking",
+        "a fixed workflow",
+        "the booking step must refuse until verification has succeeded",
+        "a code guard that blocks booking until insurance is verified"
+      ],
+      "rationale": "When the model owns the control flow, a prompt rule is a request it may skip or reorder. A hard requirement must be enforced by code, either as a fixed step before booking or as a booking tool that refuses until verification has succeeded."
+    },
+    {
+      "id": "q5",
+      "answer": "d",
+      "rationale": "Keep the predictable, working paths as fixed code and give only the open-ended remainder to a model-run loop. Branches cannot cover varied, non-repeating questions, a better labeler cannot label what has no label, and a full loop adds cost to cases that already work."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "A fixed chain has the same stages every run, so each has a known input and expected output that can be tested and rerun alone. Model calls inside stages still vary, and a loop's path differs from run to run."
+    }
+  ]
+}

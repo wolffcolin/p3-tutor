@@ -1,0 +1,122 @@
+{
+  "duration_api_ms": 27160,
+  "stop_reason": "end_turn",
+  "session_id": "f0a4016f-e537-48e2-88a7-c0e2c11707e9",
+  "total_cost_usd": 0.19243450000000004,
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 22751,
+    "cache_read_input_tokens": 123951,
+    "output_tokens": 2474,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22751,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 304,
+        "cache_read_input_tokens": 32015,
+        "cache_creation_input_tokens": 1685,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1685
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 18,
+      "outputTokens": 4330,
+      "cacheReadInputTokens": 171895,
+      "cacheCreationInputTokens": 39113,
+      "webSearchRequests": 0,
+      "costUSD": 0.19243450000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 142,
+      "cacheCreationEphemeral5mInputTokens": 16362,
+      "cacheCreationEphemeral1hInputTokens": 22751,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 1,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "grader": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 12,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I graded s2 and wrote `grades/0001-s2.json`: q1, q2 and q5 are correct, q4 and q6 are partial, and q3 is wrong.\n\n- **q3 (wrong, M6):** more steps don't help when the same failure repeats. The loop needs a stopping condition, such as a step limit, that ends it and reports to a person.\n- **q4 (partial, M4):** you got the count right, but your reason had the model running the tool. The model only outputs a request, and the program runs the tool.\n- **q6 (partial):** a tool's name is only part of what the model reads. It also reads what the tool does and its parameters.\n\n**Next step:** redraw the laser-cutter request as a table with one row per model call. Mark what the model outputs and what the program does in each row. Then write a full description for `check_calendar`.\n\nI also added learning record `0003` and updated `NOTES.md`. s1 is still ungraded.",
+  "ttft_ms": 970,
+  "type": "result",
+  "duration_ms": 27483,
+  "uuid": "01ddf178-cfd9-43d9-b090-fad60952d375",
+  "ttft_stream_ms": 663,
+  "time_to_request_ms": 127,
+  "first_content_frame_ms": 663,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 18,
+      "outputTokens": 4330,
+      "cacheReadInputTokens": 171895,
+      "cacheCreationInputTokens": 39113,
+      "webSearchRequests": 0,
+      "costUSD": 0.19243450000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 142,
+      "cacheCreationEphemeral5mInputTokens": 16362,
+      "cacheCreationEphemeral1hInputTokens": 22751,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

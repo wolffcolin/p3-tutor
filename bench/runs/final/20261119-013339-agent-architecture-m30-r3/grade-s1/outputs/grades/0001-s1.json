@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Yes: the loop of choose action, run it, feed back the result is the structure that makes it an agent, not prompt length or model size."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You assumed the model opens the booking system itself. A model only writes text, so it can't touch anything. Its output is a request naming check_calendar with the laser cutter and tomorrow's date. The surrounding program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the context already holds all 40 steps, so only a stopping condition like a step limit breaks the repetition."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You said 1, as if the model runs the three tools itself inside one call (same misconception as q2). The program runs the tools. Each tool request ends a model call, and each result starts a new one: 3 tool requests plus the final answer is 4 calls."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "You have what happens: the result goes back to the model. You left out why. It goes into the model's next input, and the program calls the model again, so the model can use it to pick its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model is given tool names and descriptions and picks the best fit. The claim that it remembers earlier picks across sessions is wrong. A model keeps nothing between calls unless the program puts it in the input, so memory is not automatic."
+    }
+  ],
+  "summary": "You have the loop's overall shape and the stopping safeguard down. The gap is who does what: the model only writes requests as text, and the program runs the tools and calls the model again. Redraw the makerspace request as two columns, model output and program action, for each step, then retry q2 and q4."
+}

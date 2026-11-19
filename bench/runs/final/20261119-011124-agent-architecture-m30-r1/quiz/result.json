@@ -1,0 +1,110 @@
+{
+  "duration_api_ms": 159892,
+  "stop_reason": "end_turn",
+  "session_id": "1d84b726-245e-4719-a4e2-233043041b5b",
+  "total_cost_usd": 0.4329567,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 7637,
+    "cache_read_input_tokens": 89863,
+    "output_tokens": 5178,
+    "output_tokens_details": {
+      "thinking_tokens": 1515
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7637,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 254,
+        "cache_read_input_tokens": 46174,
+        "cache_creation_input_tokens": 5152,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5152
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 20,
+      "outputTokens": 20309,
+      "cacheReadInputTokens": 209762,
+      "cacheCreationInputTokens": 59314,
+      "webSearchRequests": 0,
+      "costUSD": 0.4329567,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 10549,
+      "cacheCreationEphemeral5mInputTokens": 18937,
+      "cacheCreationEphemeral1hInputTokens": 40377,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "origin": {
+    "kind": "task-notification",
+    "producer": "session-task",
+    "runId": "0mwmv3g3g-ef974ff2"
+  },
+  "subagent_stats": {
+    "spawned": 1,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 1
+    },
+    "started_in_background": 1,
+    "max_depth": 1,
+    "spawned_by_subagents": 0,
+    "completed": 1,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {
+      "quiz-reviewer": 1
+    }
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 4,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Quiz 0002 on O4 is ready: `quizzes/0002.json` has six items (five multiple-choice, one short answer), with its key in `keys/0002.json`.\n\nThe quiz is ahead of the lessons, since there is no lesson on O4 yet. It tests who runs the steps, cost, when a model-run loop is needed, enforcing a rule in code, a hybrid design for a partly open-ended task, and testing a pipeline stage by stage. The scenarios are in new domains.\n\nThe reviewer asked for revisions, and I applied them, mainly to the cost item and the short-answer item. The details are in `review-records/0002-quiz.md`. I did not run a second review.\n\nThe workspace names no misconception ids yet, so the key has no `distractors` entries.",
+  "ttft_ms": 13122,
+  "type": "result",
+  "duration_ms": 34130,
+  "uuid": "d843fdfd-b157-478f-adcb-c7fc2d8e1ae6",
+  "ttft_stream_ms": 435,
+  "time_to_request_ms": 14,
+  "first_content_frame_ms": 435,
+  "queued_turn_count": 0,
+  "result_index": 1,
+  "model_usage_since_last_result": {},
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

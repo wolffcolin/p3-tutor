@@ -1,0 +1,36 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "The model only classifies; the code decides what each label leads to, so the code still owns the control flow. Branching on a model's output is still a fixed workflow."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "With one to six checks in 41 orders, and results redirecting the path, the next step must be chosen at run time by the model in a loop. A fixed order, a single call or a route fixed up front cannot adapt mid-way."
+    },
+    {
+      "id": "q3",
+      "answer": "Nothing: the path is the same every time, so the model choosing each step adds cost without benefit.",
+      "accepted": ["nothing", "nothing, the actions never vary", "no benefit", "nothing useful", "nothing, the path is identical every time"],
+      "rationale": "The traces were identical, so the model's per-step decisions changed nothing while adding four calls per form. A learner who answers 'flexibility' or 'accuracy' treats a loop as the default."
+    },
+    {
+      "id": "q4",
+      "answer": "c",
+      "rationale": "With unknown variation and a small budget, start with the simplest fixed design and add model-chosen steps only where measured failures show the need. A loop or several loops pays cost first; keeping the fixed sequence regardless ignores that it may fail."
+    },
+    {
+      "id": "q5",
+      "answer": "a",
+      "rationale": "The failure exists because the model owns the order; code that runs the check first guarantees it. Prompt rules, a larger model or a status tool only make the right order more likely, not certain."
+    },
+    {
+      "id": "q6",
+      "answer": "b",
+      "rationale": "Bookings follow the same calls every time and the request type is known, so code can run them cheaply and reliably; the loop stays where the path varies. A higher cap, examples or a second loop keep the model in charge of a path that needs no decision."
+    }
+  ]
+}

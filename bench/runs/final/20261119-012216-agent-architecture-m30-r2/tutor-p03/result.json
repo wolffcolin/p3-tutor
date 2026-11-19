@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 6762,
+  "stop_reason": "end_turn",
+  "session_id": "7b35a320-3a75-41bf-82ac-6ec764eec8a1",
+  "total_cost_usd": 0.0727659,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 14736,
+    "cache_read_input_tokens": 56099,
+    "output_tokens": 820,
+    "output_tokens_details": {
+      "thinking_tokens": 57
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14736,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 213,
+        "cache_read_input_tokens": 25355,
+        "cache_creation_input_tokens": 330,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 330
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 820,
+      "cacheReadInputTokens": 56099,
+      "cacheCreationInputTokens": 14736,
+      "webSearchRequests": 0,
+      "costUSD": 0.0727659,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 57,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 14736,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 7,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "No, that's not right. A language model keeps nothing between conversations, and your assistant won't remember what a student said last week unless you build that in.\n\nThe model only sees the text you send it on each call. It's tempting to think otherwise because chat apps feel continuous. That continuity comes from the app, which saves the history and resends it.\n\nFor your assistant, that means you decide what to save. For example, store \"Sam: completed laser cutter training, 3 Nov\" in a database. At the start of Sam's next session, look up that record and put it in the prompt. The model only \"remembers\" what you put back in front of it.\n\nWhich facts would the assistant need to look up every visit, and which could it skip?",
+  "ttft_ms": 883,
+  "type": "result",
+  "duration_ms": 6925,
+  "uuid": "9da99848-b7fc-425b-bf30-574dc62f30c7",
+  "ttft_stream_ms": 596,
+  "time_to_request_ms": 121,
+  "first_content_frame_ms": 596,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 820,
+      "cacheReadInputTokens": 56099,
+      "cacheCreationInputTokens": 14736,
+      "webSearchRequests": 0,
+      "costUSD": 0.0727659,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 57,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 14736,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}

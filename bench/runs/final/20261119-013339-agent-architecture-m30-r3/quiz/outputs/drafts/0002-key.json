@@ -1,0 +1,45 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The script's own call order fixes every step, so code owns the control flow. Picking a model-chosen next step (a or b) means the model owns it, even if the prompt lists the allowed steps."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "When the order is known and never varies, letting the model choose it adds a model call per decision and run-to-run variation for no gain. Options a and b are false, and c is a risk that a fixed order avoids but not the main reason."
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "Which lookup comes next depends on what the previous one found, so no fixed sequence can be written in advance; that is where a model-directed loop earns its cost. Free text, many tools and written output are all handled inside fixed workflows too."
+    },
+    {
+      "id": "q4",
+      "answer": "The code should own the order, because the steps and their order are the same for every booking.",
+      "accepted": [
+        "code",
+        "your code",
+        "the code",
+        "a fixed workflow",
+        "fixed workflow",
+        "code, because the steps are the same every time",
+        "The code, because every booking follows the same steps",
+        "code, since the order of steps is known in advance"
+      ],
+      "rationale": "The sequence is known and identical each time, with only a branch on free or busy, so a fixed workflow with a model used just for reading the message and phrasing the reply is cheaper and more predictable. Answering that the model should own the order shows the belief that anything involving a model should be an agent."
+    },
+    {
+      "id": "q5",
+      "answer": "b",
+      "rationale": "Only the questions that need a variable number of fetches need model-chosen steps, so give the model that control in that branch and keep the rest fixed. A bigger model or better labels do not give the fixed path an extra fetch, and rebuilding everything pays agent cost on the easy questions."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "Code owns the outer order and the cap, but the model owns how many searches happen, so the design is a mix. Worst case is 1 + 4 + 1 = 6 calls, so the cost has a ceiling, but a request that finishes after one search costs less."
+    }
+  ]
+}

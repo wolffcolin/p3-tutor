@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submission": "s1",
+  "items": [
+    {
+      "id": "q1",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: the loop of choose an action, run it, feed the result back is the structure that makes it an agent. A longer prompt or bigger model only changes what one call can do."
+    },
+    {
+      "id": "q2",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "You think the model opens the booking system itself. It can't: a model only writes text. Here it outputs a request naming check_calendar with the machine and date as arguments, and the program runs the tool."
+    },
+    {
+      "id": "q3",
+      "verdict": "correct",
+      "misconception": null,
+      "feedback": "Right: repeating the same failing step needs a stopping condition. A bigger window or a firmer prompt would not end the loop."
+    },
+    {
+      "id": "q4",
+      "verdict": "wrong",
+      "misconception": "M4",
+      "feedback": "Same misconception as q2: the model does not run the tools. Each tool request ends one model call, and the program runs the tool and calls the model again. Three tool requests plus the final answer is 4 calls."
+    },
+    {
+      "id": "q5",
+      "verdict": "partial",
+      "misconception": null,
+      "feedback": "\"Sends it back to the model\" is the what, and it is right. You left out the why: the model needs the result in its next input so it can pick its next step or write the final answer."
+    },
+    {
+      "id": "q6",
+      "verdict": "partial",
+      "misconception": "M3",
+      "feedback": "The first half is right: the model picks from the tool names and descriptions it is sent. The claim that it remembers past picks across sessions is wrong. It has no automatic memory; it knows only what is in its current input."
+    }
+  ],
+  "summary": "You have the loop's shape and how tools are chosen, but twice you gave the model abilities it lacks: running tools (q2, q4) and remembering across sessions (q6). Work on who does what: the model only writes requests and answers, and the program runs tools and passes results back. Next step: re-read the agent-loop lesson and trace one run, labelling each step 'model' or 'program'."
+}

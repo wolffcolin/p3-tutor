@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet: context and memory in an agent</title>
+<style>
+  body { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem; font-family: Charter, Georgia, serif; line-height: 1.5; background: #fffdf8; color: #1f1d1a; }
+  @media (prefers-color-scheme: dark) { body { background: #171614; color: #e9e5dc; } }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.4rem; border-bottom: 1px solid #8884; }
+</style>
+</head>
+<body>
+<h1>Context and memory in an agent</h1>
+<p>From <a href="../lessons/0003-context-and-memory-in-an-agent.html">lesson 0003</a>.</p>
+<ul>
+  <li>The model sees only the tokens the program sends in each call. The program resends the whole messages list every step, so input grows each step.</li>
+  <li>Input at call n = input at call n-1 + the model's output + the tool result.</li>
+  <li>Billing is per input and output token. More context also means weaker recall (context rot).</li>
+  <li>Too long: clear old tool results first, then compact (summarize and restart).</li>
+  <li>Between sessions nothing persists unless the app saves it. The memory tool is client-side: the model asks, the app runs the file operation.</li>
+</ul>
+<table>
+  <thead><tr><th>Place</th><th>Lasts</th><th>Cost</th><th>Makerspace</th></tr></thead>
+  <tbody>
+    <tr><td>Context</td><td>This conversation</td><td>Paid at every step</td><td>Question, tool results</td></tr>
+    <tr><td>Saved notes</td><td>Between sessions</td><td>Tokens when loaded</td><td>Training record</td></tr>
+    <tr><td>Retrieved source</td><td>Fetched fresh</td><td>Passage plus an extra call</td><td>Manual page, calendar</td></tr>
+  </tbody>
+</table>
+<p>Source: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a>.</p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "c",
+      "rationale": "The order is written into the program that runs the calls, so a new step is added there. Options a and b hand the choice of the next step to the model, and d hides a fixed step inside another step, which still leaves the program's order as the thing to change."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "When the order is known and never varies, letting the model choose it adds a model call per decision for no gain. Options b and c are risks that a fixed order also avoids, but they are not about cost, and a is not generally true."
+    },
+    {
+      "id": "q3",
+      "answer": "a",
+      "rationale": "The next lookup depends on findings that vary in too many ways to branch on in advance, which is where model-chosen steps pay off. Free text, several tools and written output are all handled inside fixed workflows too, so b, c and d wrongly equate using a model or tools with being an agent."
+    },
+    {
+      "id": "q4",
+      "answer": "With a fixed order, each step runs the same way every time with known inputs and outputs, so you can check steps in turn and find the one that went wrong; in a loop the path differs per run.",
+      "accepted": [
+        "The steps always run in the same known order, so you can find which step went wrong",
+        "Because the path is the same every run, you can locate the faulty step",
+        "A fixed order is predictable, so each step can be checked on its own",
+        "In a loop the path changes every run, so it is harder to trace which step failed"
+      ],
+      "rationale": "A fixed order is predictable and each step can be tested and inspected separately, whereas a model-directed run takes a different path each time. An answer that only mentions cost does not address debugging."
+    },
+    {
+      "id": "q5",
+      "answer": "b",
+      "rationale": "Only the multi-page questions need a variable number of fetches, so give the model control of extra fetches there and keep the rest fixed. Fetching five pages always adds cost to every question, a better label does not give the fixed path an extra fetch, and a loop for every question adds agent cost to the easy ones."
+    },
+    {
+      "id": "q6",
+      "answer": "c",
+      "rationale": "Code owns the outer order and the cap, but the model owns how many searches happen, so control is shared. The worst case is 1 + 4 + 1 = 6 calls, which is a ceiling on calls, but a request that finishes after one search makes fewer."
+    }
+  ]
+}

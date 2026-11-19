@@ -1,0 +1,36 @@
+{
+  "id": "0002",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "The order is written into the program, so code moves from extraction to lookup; the model only does the work inside each step. Using a model in a step does not hand it the control flow."
+    },
+    {
+      "id": "q2",
+      "answer": "d",
+      "rationale": "When each result changes what to do next and paths differ per customer, the model must choose the next step in a loop. A fixed order, a single call or a scripted route picked up front cannot adapt mid-way."
+    },
+    {
+      "id": "q3",
+      "answer": "The code, because the steps are the same every time, so a fixed sequence is cheaper and more predictable.",
+      "accepted": ["the code", "the program", "the program's code", "code, because the steps never vary", "the developer, in code, because the steps are fixed"],
+      "rationale": "Known, identical steps need no model-made decisions; a fixed sequence avoids the extra model calls and variability of a loop, which matters on a small budget. An answer that gives the model the ordering shows the learner treats a loop as the default."
+    },
+    {
+      "id": "q4",
+      "answer": "c",
+      "rationale": "Start with the simplest design that could work, here a fixed sequence, and add model-chosen steps only where measured failures show the need. Starting with a loop or several loops pays cost and unpredictability before knowing they are needed."
+    },
+    {
+      "id": "q5",
+      "answer": "a",
+      "rationale": "The ordering failure exists because the model owns the order; code that runs the check first guarantees it. Prompt wording, a larger model or an extra status tool only make the right order more likely, not certain."
+    },
+    {
+      "id": "q6",
+      "answer": "b",
+      "rationale": "Bookings follow the same two steps every time, so code can run them cheaply and reliably; the loop stays where the path really varies. A higher cap, examples or a second loop keep the model in charge of a path that never needed a decision."
+    }
+  ]
+}

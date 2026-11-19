@@ -1,0 +1,120 @@
+{
+  "duration_api_ms": 9882,
+  "stop_reason": "end_turn",
+  "session_id": "9d45216d-492e-47b5-9636-9d85039ba998",
+  "total_cost_usd": 0.0808533,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 15264,
+    "cache_read_input_tokens": 80313,
+    "output_tokens": 1175,
+    "output_tokens_details": {
+      "thinking_tokens": 202
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 15264,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 357,
+        "cache_read_input_tokens": 25795,
+        "cache_creation_input_tokens": 418,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 418
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1175,
+      "cacheReadInputTokens": 80313,
+      "cacheCreationInputTokens": 15264,
+      "webSearchRequests": 0,
+      "costUSD": 0.0808533,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 202,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 15264,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Tool calling means the model only writes a request, and something else does the actual work.\n\nPicture someone in a sealed room with no phone and no internet. A menu is taped to the wall: \"Check calendar: give me a date\" and \"Book machine: give me a machine and a time.\" They can only pass a slip of paper through a hatch.\n\nA student asks, \"Is the laser cutter free Friday?\" The person writes \"Check calendar: Friday\" and passes it out. They can't look anything up themselves. A clerk outside reads the slip, checks the real calendar, and slides back \"booked 2–4pm.\" Only then does the person in the room write the answer.\n\nMapping:\n- **Person in the room:** the model.\n- **Menu:** the tool descriptions.\n- **Slip:** the tool call, which is just text.\n- **Clerk:** your program, which runs the tool.\n\nThe analogy breaks in one place. The person remembers the conversation between slips. The model doesn't, so each time it is called, the program has to hand it the whole conversation again, including the clerk's replies.\n\nDoes the clerk being your program, not the model, make sense?",
+  "ttft_ms": 985,
+  "type": "result",
+  "duration_ms": 10070,
+  "uuid": "4c1eecab-76b1-4400-bc60-9f2723d7481a",
+  "ttft_stream_ms": 572,
+  "time_to_request_ms": 88,
+  "first_content_frame_ms": 572,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1175,
+      "cacheReadInputTokens": 80313,
+      "cacheCreationInputTokens": 15264,
+      "webSearchRequests": 0,
+      "costUSD": 0.0808533,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 202,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 15264,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "credential_expires_at": "2026-12-15T18:13:34.343Z"
+}
