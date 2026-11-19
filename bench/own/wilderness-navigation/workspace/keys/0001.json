@@ -1,0 +1,54 @@
+{
+  "id": "0001",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "A smaller representative fraction denominator means a larger map scale; 1:24,000 covers less ground per centimeter and typically gives more local detail.",
+      "distractors": {
+        "a": "M1",
+        "c": "M1"
+      }
+    },
+    {
+      "id": "q2",
+      "answer": 250,
+      "tolerance": 0.1,
+      "rationale": "The reciprocal of 70 degrees is 70 + 180 = 250 degrees."
+    },
+    {
+      "id": "q3",
+      "answer": "Closely spaced contours show a steep slope, and the contour interval is the elevation difference between adjacent contour lines.",
+      "accepted": [
+        "Close contours mean a steeper slope; contour interval is the vertical elevation change from one contour to the next.",
+        "Steep terrain; each successive contour differs in elevation by the map’s stated contour interval."
+      ],
+      "rationale": "The answer must cover both steepness from spacing and the vertical-elevation meaning of the contour interval."
+    },
+    {
+      "id": "q4",
+      "answer": "b",
+      "rationale": "Across an ordinary stream valley, contour V shapes point upstream toward higher ground.",
+      "distractors": {
+        "a": "M4",
+        "c": "M5"
+      }
+    },
+    {
+      "id": "q5",
+      "answer": 600,
+      "tolerance": 1,
+      "rationale": "2.5 cm × 24,000 = 60,000 cm = 600 meters."
+    },
+    {
+      "id": "q6",
+      "answer": "Pick a visible landmark on the selected bearing, walk to it, and repeat the sighting from there.",
+      "accepted": [
+        "Sight an object along the bearing, walk to it, then pick another.",
+        "Aim at a tree or rock on the compass line; walk there and repeat.",
+        "Use the compass to select a landmark ahead, travel to it, and sight the next one."
+      ],
+      "rationale": "A correct response names sighting a fixed feature along the bearing and repeating the process as the hiker moves."
+    }
+  ]
+}

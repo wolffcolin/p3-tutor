@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submissions": {
+    "s1": [
+      {
+        "id": "q1",
+        "verdict": "wrong",
+        "misconception": "M1",
+        "why": "Selected option a, reversing which map is larger-scale. At equal print size, the 1:24,000 map generally depicts more local detail."
+      },
+      {
+        "id": "q2",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "250 degrees is 180 degrees opposite a 70-degree outward bearing."
+      },
+      {
+        "id": "q3",
+        "verdict": "partial",
+        "misconception": null,
+        "why": "Correctly identifies close contours as steep terrain, but omits that the contour interval is the fixed vertical elevation difference between successive contour lines, which the question also asks for."
+      },
+      {
+        "id": "q4",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "Option b correctly identifies the usual upstream-pointing contour V in a stream valley."
+      },
+      {
+        "id": "q5",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "At 1:24,000, 2.5 cm is 60,000 cm or 600 meters on the ground."
+      },
+      {
+        "id": "q6",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "Though informally worded, the learner correctly describes sighting a visible landmark on the bearing, walking to it, and repeating. Interpret “lines up with the needle” in the context of a compass already set to the desired bearing; it does not claim that following magnetic north is always the route."
+      }
+    ]
+  }
+}

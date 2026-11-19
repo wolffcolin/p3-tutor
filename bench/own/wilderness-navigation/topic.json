@@ -1,0 +1,100 @@
+{
+  "id": "wilderness-navigation",
+  "title": "Wilderness Navigation: Topographic Maps, Bearings, and Route Planning",
+  "learner_summary": "A recreational hiker can identify basic topographic-map symbols and has used marked trails, but is new to systematic off-trail navigation. They can read a compass dial and estimate distances but sometimes confuse map north, magnetic north, and the direction of a back bearing. The next lesson should build on map-reading basics without assuming experience navigating in poor visibility.",
+  "minutes": 30,
+  "teach_objective": "O2",
+  "quiz_objective": "O3",
+  "graded_quiz": "0001",
+  "submissions": [
+    "s1"
+  ],
+  "objectives": [
+    {
+      "id": "O1",
+      "text": "Interpret map scales, contour lines, and basic compass directions on a topographic map."
+    },
+    {
+      "id": "O2",
+      "text": "Take, adjust, and follow a map-derived bearing using a compass, including back bearings and checks against terrain."
+    },
+    {
+      "id": "O3",
+      "text": "Plan a short off-trail route using handrails, catching features, checkpoints, and conservative turnaround criteria."
+    }
+  ],
+  "facts": [
+    {
+      "id": "F2.1",
+      "objective": "O2",
+      "text": "A bearing is a clockwise angle measured from a stated north reference; a grid or true bearing and a magnetic bearing are not automatically interchangeable."
+    },
+    {
+      "id": "F2.2",
+      "objective": "O2",
+      "text": "A map-to-terrain bearing can be measured by aligning a compass edge with the intended route on the map and orienting the compass housing to the map north reference before accounting for declination."
+    },
+    {
+      "id": "F2.3",
+      "objective": "O2",
+      "text": "Magnetic declination is the local angular difference between magnetic north and true north, and the correct adjustment depends on the map north reference and the sign of the local declination."
+    },
+    {
+      "id": "F2.4",
+      "objective": "O2",
+      "text": "In a region with 10 degrees east magnetic declination, a 100-degree true bearing corresponds to a 90-degree magnetic bearing, assuming no additional compass correction."
+    },
+    {
+      "id": "F2.5",
+      "objective": "O2",
+      "text": "The reciprocal or back bearing is 180 degrees from the outward bearing: add 180 degrees if the bearing is below 180 degrees, otherwise subtract 180 degrees."
+    },
+    {
+      "id": "F2.6",
+      "objective": "O2",
+      "text": "To follow a bearing, orient the compass to the desired magnetic heading, select a visible object on that line, travel to it, and repeat rather than watching the compass continuously while walking."
+    },
+    {
+      "id": "F2.7",
+      "objective": "O2",
+      "text": "A compass heading should be cross-checked with identifiable terrain or checkpoints; a single bearing alone does not establish an exact position."
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "M1",
+      "text": "A 1:100,000 map shows more local detail than a 1:24,000 map.",
+      "correction": "At the same physical map size, 1:24,000 is the larger-scale map and generally shows more local detail."
+    },
+    {
+      "id": "M2",
+      "text": "Closely spaced contour lines indicate a gentle slope.",
+      "correction": "For a fixed contour interval, closer contour spacing indicates a steeper slope."
+    },
+    {
+      "id": "M3",
+      "text": "To return along a straight route, keep the original bearing unchanged.",
+      "correction": "The return direction is the reciprocal bearing, 180 degrees opposite the outward bearing."
+    },
+    {
+      "id": "M4",
+      "text": "Contour-line V shapes in a stream valley usually point downhill.",
+      "correction": "Where contours cross an ordinary stream valley, the V generally points upstream, toward higher elevation."
+    },
+    {
+      "id": "M5",
+      "text": "The north end of a magnetic compass needle always points to true north.",
+      "correction": "The needle aligns approximately with the local magnetic field; magnetic declination must be considered when translating between true and magnetic bearings."
+    },
+    {
+      "id": "M6",
+      "text": "If one landform matches the map, the hiker has identified their exact location.",
+      "correction": "A single landform or bearing rarely establishes a unique position; use multiple independent landmarks and terrain checks."
+    },
+    {
+      "id": "M7",
+      "text": "Once a bearing is chosen, the hiker should walk while staring at the compass dial.",
+      "correction": "Sight a stable point along the bearing, walk to it while attending to footing and surroundings, then repeat and verify against terrain."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "quiz": "0001",
+  "learner": "Sample hiker",
+  "answers": [
+    {
+      "id": "q1",
+      "response": "a"
+    },
+    {
+      "id": "q2",
+      "response": 250
+    },
+    {
+      "id": "q3",
+      "response": "When the lines crowd together the hill is steeper."
+    },
+    {
+      "id": "q4",
+      "response": "b"
+    },
+    {
+      "id": "q5",
+      "response": 600
+    },
+    {
+      "id": "q6",
+      "response": "I would choose a tree that lines up with the needle, walk to that tree, then choose another target on the same heading."
+    }
+  ]
+}

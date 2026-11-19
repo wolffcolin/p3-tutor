@@ -1,0 +1,73 @@
+{
+  "id": "0001",
+  "objective": "O1",
+  "title": "Map and Compass Fundamentals",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "Two topographic maps cover the same region and are printed at the same page size. Which statement about scale is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The 1:100,000 map generally shows more local detail than the 1:24,000 map."
+        },
+        {
+          "id": "b",
+          "text": "The 1:24,000 map generally shows more local detail than the 1:100,000 map."
+        },
+        {
+          "id": "c",
+          "text": "Scale denominators do not affect how much ground distance a centimeter represents."
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "numeric",
+      "objective": "O1",
+      "stem": "You walk on a straight compass bearing of 70 degrees. What is the reciprocal bearing, in degrees?",
+      "unit": "degrees"
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "objective": "O1",
+      "stem": "On a topographic map with a fixed contour interval, explain what closely spaced contours indicate about slope, and what the contour interval measures."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "Where contour lines cross a typical stream valley, which way does the V-shaped bend generally point?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Downstream, toward lower elevation."
+        },
+        {
+          "id": "b",
+          "text": "Upstream, toward higher elevation."
+        },
+        {
+          "id": "c",
+          "text": "Always toward magnetic north, regardless of slope."
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "numeric",
+      "objective": "O1",
+      "stem": "On a map with scale 1:24,000, a straight route measures 2.5 cm. How many meters does that represent on the ground?",
+      "unit": "meters"
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O1",
+      "stem": "After setting a compass to a desired bearing on a clear day, describe a practical way to walk that line without constantly staring at the compass."
+    }
+  ]
+}
