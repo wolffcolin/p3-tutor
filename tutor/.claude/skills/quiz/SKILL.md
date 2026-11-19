@@ -17,9 +17,11 @@ If the request above is empty, the request is the learner's latest message.
 ## Read first
 
 Read `FORMATS.md` (the quiz and key shapes, exactly), `MISSION.md`, `PREFERENCES.md`, `NOTES.md` and every file in `learning-records/`.
-Then read `.claude/skills/teach/references/QUIZZES.md` for item types, option rules and the key's fields, the lessons on the objective, and earlier quizzes, keys and grades.
+Then read `.claude/skills/teach/references/QUIZZES.md` for item types, option rules and the key's fields, the lessons on the objective, and earlier quizzes and grades.
 This skill sets the difficulty and the design process; where it differs from that guide, this skill wins.
 Never write under `.claude/`.
+Never read, search, list or edit anything in `keys/`, not even a key you wrote: a hook blocks reading it in this conversation, and the one place a key is written is step 4 below.
+To avoid repeating an earlier quiz, compare with the earlier quizzes in `quizzes/`, which hold no answers, and with `grades/` and `learning-records/`, never with an earlier key; misconception ids come from `NOTES.md`, the learning records and `QUIZZES.md`.
 Use Read, Glob, Grep and Write, plus web search when the objective has no lesson.
 
 ## Plan before you write
@@ -46,6 +48,7 @@ Use Read, Glob, Grep and Write, plus web search when the objective has no lesson
 
 ## Write the key
 
+Write the key into the draft, `drafts/NNNN-key.json`, never straight into `keys/`.
 Follow `FORMATS.md` and the guide: `answer`, `accepted` for `short`, a one-or-two-sentence `rationale`, and a `distractors` entry for each wrong option that encodes a misconception, reusing the workspace's misconception ids.
 
 ## Draft, review once, finish
@@ -56,12 +59,12 @@ The quiz is reviewed by one subagent, `quiz-reviewer`, at most once, so the loop
    Never write drafts to `quizzes/` or `keys/`: the bench reads those folders, and they get the final files once.
 2. **Review:** start the `quiz-reviewer` subagent with a task message that names the two draft paths, the objective and its id, and says nothing about your reasoning.
    Wait for its report before you do anything else.
-3. **Decide:**
+3. **Decide:** change the drafts in `drafts/`, never a key in `keys/`.
    - `VERDICT: KEEP` (no serious finding): write the draft unchanged as the final files.
      Apply a minor finding only if the fix is a small wording change; do not ask for a second review.
    - `VERDICT: REVISE` (at least one serious finding): fix each serious finding, or note in the record why not, and apply the cheap minor fixes.
      Do not start a second review; write the revised quiz as the final files.
-4. **Finish:** write `quizzes/NNNN.json` and `keys/NNNN.json` once, with the Write tool directly (not with a shell copy), and write `review-records/NNNN-quiz.md`: the verdict, each finding with its severity, and what you changed or why you did not.
+4. **Finish:** write `quizzes/NNNN.json` and `keys/NNNN.json` once, each a single Write call from the final draft you already hold (not a shell copy, and no read or edit of `keys/NNNN.json` afterwards, to check or to fix), and write `review-records/NNNN-quiz.md`: the verdict, each finding with its severity, and what you changed or why you did not.
    Then give a short message that the quiz is ready, with no answers in it.
 
 ## Check before you hand the draft to the reviewer

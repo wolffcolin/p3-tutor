@@ -6,6 +6,22 @@
       "Bash(python3 .claude/scripts/wordcount.py:*)",
       "Bash(python3 -I .claude/scripts/wordcount.py:*)"
     ],
-    "deny": ["Agent(p3-guide)"]
+    "deny": [
+      "Agent(p3-guide)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/keys_guard.py\"",
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
   }
 }

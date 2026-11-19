@@ -19,59 +19,17 @@ One answer offered for checking before the quiz is handed in is not a submission
 ## Read first
 
 Read `FORMATS.md` (the grades file, exactly), `MISSION.md`, `PREFERENCES.md`, `NOTES.md` and every file in `learning-records/`.
-Then read `.claude/skills/teach/references/GRADING.md` for the verdict rules (meaning over wording, `partial`, tolerance, misconception ids), the quiz, its key, the submission, and the lesson on the objective if there is one.
-This skill sets how the feedback is written; where it differs from that guide, this skill wins.
 Never write under `.claude/`.
+Never read, search or list `keys/`: a hook blocks it for this conversation, and the `grader` subagent is the only one that reads a key.
 
-## Verdicts and misconceptions
+## Grade with the grader
 
-Follow the guide: judge what the response means, use `partial` for a half-right answer, name a misconception id only when the response shows it, and use `null` otherwise.
-Never invent an id.
-If you are sure the key is wrong, grade against what is right and say so in the summary.
+Verdicts, misconception ids and the feedback are written by the `grader` subagent, which holds the rules for them, so this skill does not repeat them.
 
-## Write the feedback
-
-The learner wants to be told what went wrong and how to fix it, in as few words as will do it, and reads only what is short.
-Each item's feedback follows the same order, and stops when the fix is stated:
-
-- **Correct:** one sentence, naming the reason it works.
-  Add a second only for an unusual route, or for one insight that links to the next idea.
-  Never restate the question or praise.
-- **Partial:** one sentence on what was right, then the exact gap and the fix.
-- **Wrong:** (1) the diagnosis, your best idea of where the reasoning went wrong, naming the misconception in plain words; (2) the correct idea in one or two sentences, with a small example only if the idea is new.
-  Give the corrected reasoning, not a lecture on the topic.
-
-Limits:
-
-- Aim for 25 to 50 words per item and never more than 70; a correct item is usually under 25.
-- Be blunt but not rude, with no praise padding, no hedging and no generic advice ("review the lesson", "think carefully about").
-  Point at the specific step in their reasoning, or the specific thing in the scenario they missed.
-- Do not repeat across items: when two misses share one misconception, explain it in the first and say "same misconception as q2" in the next, in a clause.
-- If the item's rationale is in the key, use it as your source, not as text to paste.
-
-## The summary
-
-The `summary` adds only what the item feedback does not say, in at most three sentences:
-
-- the pattern across the misses, if there is one (or that they have the idea down, if there is none);
-- the one thing to work on next;
-- one concrete next step, such as a named lesson section or a kind of practice.
-
-Do not list or re-explain individual items, and do not restate the score.
-
-## Draft, review once, finish
-
-The feedback is reviewed by one subagent, `grade-reviewer`, at most once, so the loop stays cheap.
-
-1. **Draft:** write the grades to `drafts/NNNN-sN-grades.json`, exactly in the shape `FORMATS.md` shows.
-   Never write the draft to `grades/`: the bench reads that folder, and it gets the final file once.
-2. **Review:** start the `grade-reviewer` subagent with a task message that names the draft, the quiz, its key and the submission, and says nothing about your reasoning.
+1. **Grade:** start the `grader` subagent with a task message that names the quiz (`quizzes/NNNN.json`), the submission (`submissions/sN.json`) and the objective, and nothing about what the answers should be.
    Wait for its report before you do anything else.
-3. **Decide:**
-   - `VERDICT: KEEP` (no serious finding): write the draft unchanged as the final file, applying a minor finding only when the fix is a small wording or length change.
-   - `VERDICT: REVISE` (at least one serious finding): fix each serious finding, or note in the record why not, and apply the cheap minor fixes.
-     Change a verdict or a misconception id only when you agree after rereading the learner's words and the key.
-     Do not start a second review.
-4. **Finish:** write `grades/NNNN-sN.json` once, with the Write tool directly (not a shell copy), and write `review-records/NNNN-sN-grade.md`: the verdict, each finding with its severity, and what you changed or why you did not.
-5. Write a learning record when the grades are evidence of real understanding or of a misconception to work on (`.claude/skills/teach/references/LEARNING-RECORD-FORMAT.md`), and update `NOTES.md`.
-6. Finish with the summary and the next step in the chat, in the same few words, with nothing the grades file does not already say at more length.
+   It writes the draft to `drafts/NNNN-sN-grades.json`; read the draft, and never write a draft to `grades/`, because the bench reads that folder and it gets the final file once.
+2. **Finish:** write the draft unchanged as `grades/NNNN-sN.json`, once, with the Write tool directly (not a shell copy).
+   You cannot see the key, so you never change a verdict or a misconception id yourself.
+3. Write a learning record when the grades are evidence of real understanding or of a misconception to work on (`.claude/skills/teach/references/LEARNING-RECORD-FORMAT.md`), and update `NOTES.md`.
+4. Finish with the grader's summary and the next step in the chat, in the same few words, with nothing the grades file does not already say at more length.

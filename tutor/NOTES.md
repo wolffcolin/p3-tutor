@@ -6,3 +6,6 @@
 ## Preferences observed
 - Wants brief answers, no math for conceptual asides, asks many follow-ups.
 - Asked for a conceptual explanation of PPO (curiosity, not tied to the tutor build).
+
+## Lesson log
+- Lesson 0001 (O1): multi-agent task division, 15 min. Learner knows single agents and tool calling; new to orchestration. No MISSION.md yet; ask at end of the session.

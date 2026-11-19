@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet: splitting a task across agents</title>
+<style>
+:root{--bg:#fffdf8;--text:#1f1d1a;--rule:#e4dfd4;--accent:#9a4517}
+@media (prefers-color-scheme:dark){:root{--bg:#171614;--text:#e9e5dc;--rule:#36332e;--accent:#eaa77a}}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 Charter,Georgia,serif}
+main{max-width:40rem;margin:0 auto;padding:2rem 1.25rem}
+h1{font-size:1.6rem}h2{font-size:1.1rem;border-bottom:1px solid var(--rule);margin-top:1.8rem}
+a{color:var(--accent)}
+</style></head><body><main>
+<h1>Splitting a task across agents</h1>
+<p>From <a href="../lessons/0001-multi-agent-task-division.html">lesson 0001</a>.</p>
+<h2>Roles</h2>
+<p>Lead: plan, spawn, synthesize. Workers: one piece each, own context, return a summary.</p>
+<h2>Four-part brief</h2>
+<ol><li>Objective</li><li>Output format</li><li>Tools and sources</li><li>Task boundary</li></ol>
+<h2>Split it only if</h2>
+<ul><li>The pieces are independent (parallel).</li><li>The task exceeds one context window.</li><li>It needs many tools.</li><li>The value covers the cost (about 15x chat tokens for a team, per Anthropic).</li></ul>
+<h2>Keep sequential</h2>
+<p>Anything the workers share (a wrapper, a schema, a log format): the lead does it first. Workers cannot talk to each other, and the lead waits for the whole batch.</p>
+<h2>Source</h2>
+<p><a href="https://www.anthropic.com/engineering/multi-agent-research-system">Anthropic: How we built our multi-agent research system</a></p>
+</main></body></html>
