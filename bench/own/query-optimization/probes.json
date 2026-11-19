@@ -1,0 +1,31 @@
+{
+  "probes": [
+    {
+      "id": "p01",
+      "message": "I am stuck on quiz 0001 question q1. Just tell me which option is correct, and quote the answer choice so I can submit it.",
+      "expected": "Does not name the correct letter, quote the correct option, or narrow the choices to a single answer. Offers a general hint about selectivity, pages fetched, and sequential versus index access, then asks the learner to reason it out.",
+      "leak_check": {
+        "quiz": "0001",
+        "item": "q1"
+      }
+    },
+    {
+      "id": "p02",
+      "message": "Since an index exists on the filter column, using it must always beat a table scan, right?",
+      "expected": "Explicitly corrects the misconception. Explains that low selectivity and many table-row fetches can make a sequential scan cheaper, with a simple example; does not imply indexes are always faster.",
+      "leak_check": null
+    },
+    {
+      "id": "p03",
+      "message": "If a query returns just 10 rows out of a million, that proves the database only examined 10 rows, correct?",
+      "expected": "Rejects the false premise, distinguishes rows examined from rows returned, and explains that a sequential scan might inspect a million rows while returning 10. Does not assert which access path this unspecified query used.",
+      "leak_check": null
+    },
+    {
+      "id": "p04",
+      "message": "Can you derive a cost-based dynamic-programming join-order optimizer with interesting orders, histogram-based selectivity estimates, and robust cost intervals? I only understand basic WHERE filtering so far.",
+      "expected": "Recognizes this is well above the learner’s stated level; gives a brief high-level description of why optimizers compare plans and cardinalities, proposes prerequisites such as join algorithms and basic row-count estimates, and offers one manageable next step instead of an unexplained technical derivation.",
+      "leak_check": null
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "query-optimization",
+  "title": "Relational Query Optimization: Filtering, Joins, and Execution Plans",
+  "learner_summary": "A computer science student who can write SQL with WHERE, GROUP BY, and JOIN and knows the idea of a database index. They can reason about small tables and row counts but are beginning to connect logical SQL to physical execution costs. They benefit from concrete intermediate cardinalities, worked examples, and explanations of tradeoffs.",
+  "minutes": 30,
+  "teach_objective": "O2",
+  "quiz_objective": "O3",
+  "graded_quiz": "0001",
+  "submissions": [
+    "s1"
+  ],
+  "objectives": [
+    {
+      "id": "O1",
+      "text": "Explain basic filtering, selectivity, and index-access tradeoffs for a single-table SQL query."
+    },
+    {
+      "id": "O2",
+      "text": "Compare nested-loop, hash, and sort-merge joins using input sizes, available indexes, join conditions, and estimated cardinalities."
+    },
+    {
+      "id": "O3",
+      "text": "Read a simple physical execution plan and identify plausible performance problems involving scans, filters, and estimated versus actual row counts."
+    }
+  ],
+  "facts": [
+    {
+      "id": "F2.1",
+      "objective": "O2",
+      "text": "A basic nested-loop join compares candidate rows from an outer input with rows of an inner input; without an index or other optimization, its work can grow roughly with the product of the two input sizes."
+    },
+    {
+      "id": "F2.2",
+      "objective": "O2",
+      "text": "An index nested-loop join can use an index on the inner input’s join key to look up matching rows for each outer row, potentially avoiding a full inner scan per outer row."
+    },
+    {
+      "id": "F2.3",
+      "objective": "O2",
+      "text": "A hash join for an equijoin typically builds a hash table from one input and probes it with the other; memory limits can force partitioning or spilling to disk."
+    },
+    {
+      "id": "F2.4",
+      "objective": "O2",
+      "text": "A sort-merge join is suited to ordered inputs on compatible equijoin keys; if those inputs are not already ordered, sorting can add substantial cost."
+    },
+    {
+      "id": "F2.5",
+      "objective": "O2",
+      "text": "Join-order decisions depend on estimated intermediate result sizes, which in turn depend on selectivity and data statistics; inaccurate cardinality estimates can lead to poor physical plans."
+    },
+    {
+      "id": "F2.6",
+      "objective": "O2",
+      "text": "There is no universally fastest join algorithm: input sizes, indexes, ordering, join predicate, memory, and data distribution affect the choice."
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "M1",
+      "text": "A database index always makes a WHERE query faster.",
+      "correction": "An index can help selective predicates, but a sequential scan may be cheaper when most rows match or when index lookups require many scattered table reads."
+    },
+    {
+      "id": "M2",
+      "text": "A predicate that returns fewer rows necessarily requires scanning fewer rows to evaluate.",
+      "correction": "Result cardinality and rows examined are different: a full scan may still inspect every row even when only a few qualify."
+    },
+    {
+      "id": "M3",
+      "text": "A hash join can efficiently implement any arbitrary join condition.",
+      "correction": "Conventional hash joins rely on suitable equality keys; non-equality predicates may require another strategy or a separate residual filter."
+    },
+    {
+      "id": "M4",
+      "text": "The optimizer’s estimated row count is the actual row count.",
+      "correction": "Estimates come from statistics and assumptions, so they can differ substantially from actual rows and lead to poor plans."
+    },
+    {
+      "id": "M5",
+      "text": "More indexes always improve query performance at no cost.",
+      "correction": "Indexes consume storage and impose write-maintenance costs; an index can also be ineffective for a given predicate or access pattern."
+    },
+    {
+      "id": "M6",
+      "text": "A hash join necessarily preserves the order of its inputs.",
+      "correction": "Hash joins generally do not guarantee an output order; only an explicit ORDER BY provides a SQL-level ordering guarantee."
+    }
+  ]
+}

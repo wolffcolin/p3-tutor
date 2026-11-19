@@ -1,0 +1,53 @@
+{
+  "id": "0001",
+  "items": [
+    {
+      "id": "q1",
+      "answer": "b",
+      "rationale": "When a large fraction of rows qualify and many columns are required, sequential access can be cheaper than many index lookups and heap fetches.",
+      "distractors": {
+        "a": "M1",
+        "c": "M2"
+      }
+    },
+    {
+      "id": "q2",
+      "answer": 1000,
+      "tolerance": 0,
+      "rationale": "20,000 × 0.05 = 1,000 estimated matching rows."
+    },
+    {
+      "id": "q3",
+      "answer": "A full scan examines every table row, but the filter returns only qualifying rows.",
+      "accepted": [
+        "A full table scan reads all rows while the WHERE clause outputs only those that match.",
+        "Rows scanned can be much greater than rows returned by a selective filter."
+      ],
+      "rationale": "Must distinguish rows inspected from rows that satisfy the predicate."
+    },
+    {
+      "id": "q4",
+      "answer": "c",
+      "rationale": "An index can accelerate some reads but takes disk space and must be maintained during writes.",
+      "distractors": {
+        "a": "M5",
+        "b": "M5"
+      }
+    },
+    {
+      "id": "q5",
+      "answer": 2.5,
+      "tolerance": 0.01,
+      "rationale": "300 ÷ 12,000 × 100 = 2.5 percent."
+    },
+    {
+      "id": "q6",
+      "answer": "Most rows are expected to match, so a sequential scan can be cheaper than index lookups.",
+      "accepted": [
+        "The predicate is not selective enough to make the index worthwhile.",
+        "Fetching many matching rows through the index would cost more than a sequential scan."
+      ],
+      "rationale": "A valid answer mentions selectivity or index-driven random fetch cost; having an index does not guarantee using it."
+    }
+  ]
+}

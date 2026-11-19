@@ -1,0 +1,30 @@
+{
+  "quiz": "0001",
+  "learner": "Sample learner",
+  "answers": [
+    {
+      "id": "q1",
+      "response": "a"
+    },
+    {
+      "id": "q2",
+      "response": "1000"
+    },
+    {
+      "id": "q3",
+      "response": "The scan looks at the rows, then the WHERE filter keeps the ones that match, but I think it only needs to read the matching rows if the predicate is selective."
+    },
+    {
+      "id": "q4",
+      "response": "c"
+    },
+    {
+      "id": "q5",
+      "response": "2.5"
+    },
+    {
+      "id": "q6",
+      "response": "It would mostly be reading the same big chunk anyway, so walking down the table can beat hopping all over it through an index."
+    }
+  ]
+}

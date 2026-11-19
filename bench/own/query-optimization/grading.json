@@ -1,0 +1,43 @@
+{
+  "quiz": "0001",
+  "submissions": {
+    "s1": [
+      {
+        "id": "q1",
+        "verdict": "wrong",
+        "misconception": "M1",
+        "why": "Selected a, which asserts an index must be fastest. For a predicate matching 85% of a table, a sequential scan can cost less."
+      },
+      {
+        "id": "q2",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "20,000 multiplied by 0.05 equals 1,000 rows."
+      },
+      {
+        "id": "q3",
+        "verdict": "partial",
+        "misconception": "M2",
+        "why": "Correctly distinguishes scanning from filtering in the first clause, but wrongly concludes that selectivity alone means a full scan reads only matching rows."
+      },
+      {
+        "id": "q4",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "Option c correctly states the storage and write-maintenance tradeoff."
+      },
+      {
+        "id": "q5",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "300 / 12,000 × 100 = 2.5%; the answer uses the requested percentage scale."
+      },
+      {
+        "id": "q6",
+        "verdict": "correct",
+        "misconception": null,
+        "why": "The unusual wording about walking down the table versus hopping around expresses the valid cost difference between sequential access and many scattered index lookups."
+      }
+    ]
+  }
+}

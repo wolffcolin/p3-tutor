@@ -1,0 +1,73 @@
+{
+  "id": "0001",
+  "objective": "O1",
+  "title": "Filtering and Index Access",
+  "items": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "A WHERE predicate matches about 85% of a large table, and the query needs many columns from each matching row. Which plan could reasonably be cheapest?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An index scan must be fastest because the predicate has an index."
+        },
+        {
+          "id": "b",
+          "text": "A sequential scan may be cheaper than many index-driven row fetches."
+        },
+        {
+          "id": "c",
+          "text": "Only the matching rows are examined, regardless of access path."
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "numeric",
+      "objective": "O1",
+      "stem": "A table has 20,000 rows. If a predicate has estimated selectivity 0.05, how many rows are estimated to pass the filter?",
+      "unit": "rows"
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "objective": "O1",
+      "stem": "In one sentence, distinguish the number of rows examined during a full table scan from the number returned by a selective WHERE predicate."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "objective": "O1",
+      "stem": "Which is a real tradeoff of adding an index to a frequently updated table?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Indexes only consume storage when the indexed column contains NULL."
+        },
+        {
+          "id": "b",
+          "text": "Indexes remove all cost from INSERT and UPDATE operations."
+        },
+        {
+          "id": "c",
+          "text": "Indexes can improve some reads but add storage and write-maintenance overhead."
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "numeric",
+      "objective": "O1",
+      "stem": "A full table scan examines 12,000 rows and returns 300 rows. What percentage of examined rows passed the filter? Give a number from 0 to 100.",
+      "unit": "percent"
+    },
+    {
+      "id": "q6",
+      "type": "short",
+      "objective": "O1",
+      "stem": "A query filters on a column with an index but the optimizer chooses a sequential scan. Give one plausible performance-based reason for that choice."
+    }
+  ]
+}
